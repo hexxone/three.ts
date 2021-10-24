@@ -1,11 +1,6 @@
-export default /* glsl */`
-#if defined( USE_COLOR_ALPHA )
 
-	varying vec4 vColor;
+#if defined( USE_COLOR ) || defined( USE_INSTANCING_COLOR )
 
-#elif defined( USE_COLOR ) || defined( USE_INSTANCING_COLOR )
-
-	varying vec3 vColor;
+varying vec3 vColor;
 
 #endif
-`;

@@ -1,11 +1,9 @@
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { Vector3 } from '../math/Vector3.js';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Vector3 } from '../math/Vector3';
 
 class BoxGeometry extends BufferGeometry {
-
 	constructor( width = 1, height = 1, depth = 1, widthSegments = 1, heightSegments = 1, depthSegments = 1 ) {
-
 		super();
 
 		this.type = 'BoxGeometry';
@@ -16,7 +14,7 @@ class BoxGeometry extends BufferGeometry {
 			depth: depth,
 			widthSegments: widthSegments,
 			heightSegments: heightSegments,
-			depthSegments: depthSegments
+			depthSegments: depthSegments,
 		};
 
 		const scope = this;
@@ -56,7 +54,6 @@ class BoxGeometry extends BufferGeometry {
 		this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
 
 		function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
-
 			const segmentWidth = width / gridX;
 			const segmentHeight = height / gridY;
 
@@ -75,11 +72,9 @@ class BoxGeometry extends BufferGeometry {
 			// generate vertices, normals and uvs
 
 			for ( let iy = 0; iy < gridY1; iy ++ ) {
-
 				const y = iy * segmentHeight - heightHalf;
 
 				for ( let ix = 0; ix < gridX1; ix ++ ) {
-
 					const x = ix * segmentWidth - widthHalf;
 
 					// set values to correct vector component
@@ -110,9 +105,7 @@ class BoxGeometry extends BufferGeometry {
 					// counters
 
 					vertexCounter += 1;
-
 				}
-
 			}
 
 			// indices
@@ -122,9 +115,7 @@ class BoxGeometry extends BufferGeometry {
 			// 3. so we need to generate six (2*3) indices per segment
 
 			for ( let iy = 0; iy < gridY; iy ++ ) {
-
 				for ( let ix = 0; ix < gridX; ix ++ ) {
-
 					const a = numberOfVertices + ix + gridX1 * iy;
 					const b = numberOfVertices + ix + gridX1 * ( iy + 1 );
 					const c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
@@ -138,9 +129,7 @@ class BoxGeometry extends BufferGeometry {
 					// increase counter
 
 					groupCount += 6;
-
 				}
-
 			}
 
 			// add a group to the geometry. this will ensure multi material support
@@ -154,17 +143,8 @@ class BoxGeometry extends BufferGeometry {
 			// update total number of vertices
 
 			numberOfVertices += vertexCounter;
-
 		}
-
 	}
-
-	static fromJSON( data ) {
-
-		return new BoxGeometry( data.width, data.height, data.depth, data.widthSegments, data.heightSegments, data.depthSegments );
-
-	}
-
 }
 
 export { BoxGeometry, BoxGeometry as BoxBufferGeometry };

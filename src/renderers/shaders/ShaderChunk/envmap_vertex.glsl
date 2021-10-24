@@ -1,37 +1,36 @@
-export default /* glsl */`
+
 #ifdef USE_ENVMAP
 
 	#ifdef ENV_WORLDPOS
 
-		vWorldPosition = worldPosition.xyz;
+vWorldPosition = worldPosition.xyz;
 
 	#else
 
-		vec3 cameraToVertex;
+vec3 cameraToVertex;
 
-		if ( isOrthographic ) {
+if(isOrthographic) {
 
-			cameraToVertex = normalize( vec3( - viewMatrix[ 0 ][ 2 ], - viewMatrix[ 1 ][ 2 ], - viewMatrix[ 2 ][ 2 ] ) );
+cameraToVertex = normalize(vec3(- viewMatrix[0][2], - viewMatrix[1][2], - viewMatrix[2][2]));
 
-		} else {
+} else {
 
-			cameraToVertex = normalize( worldPosition.xyz - cameraPosition );
+cameraToVertex = normalize(worldPosition.xyz - cameraPosition);
 
-		}
+}
 
-		vec3 worldNormal = inverseTransformDirection( transformedNormal, viewMatrix );
+vec3 worldNormal = inverseTransformDirection(transformedNormal, viewMatrix);
 
 		#ifdef ENVMAP_MODE_REFLECTION
 
-			vReflect = reflect( cameraToVertex, worldNormal );
+vReflect = reflect(cameraToVertex, worldNormal);
 
 		#else
 
-			vReflect = refract( cameraToVertex, worldNormal, refractionRatio );
+vReflect = refract(cameraToVertex, worldNormal, refractionRatio);
 
 		#endif
 
 	#endif
 
 #endif
-`;

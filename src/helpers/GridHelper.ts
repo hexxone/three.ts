@@ -1,13 +1,11 @@
-import { LineSegments } from '../objects/LineSegments.js';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Color } from '../math/Color.js';
+import { LineSegments } from '../objects/LineSegments';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Color } from '../math/Color';
 
 class GridHelper extends LineSegments {
-
 	constructor( size = 10, divisions = 10, color1 = 0x444444, color2 = 0x888888 ) {
-
 		color1 = new Color( color1 );
 		color2 = new Color( color2 );
 
@@ -15,10 +13,9 @@ class GridHelper extends LineSegments {
 		const step = size / divisions;
 		const halfSize = size / 2;
 
-		const vertices = [], colors = [];
+		const vertices = []; const colors = [];
 
 		for ( let i = 0, j = 0, k = - halfSize; i <= divisions; i ++, k += step ) {
-
 			vertices.push( - halfSize, 0, k, halfSize, 0, k );
 			vertices.push( k, 0, - halfSize, k, 0, halfSize );
 
@@ -28,7 +25,6 @@ class GridHelper extends LineSegments {
 			color.toArray( colors, j ); j += 3;
 			color.toArray( colors, j ); j += 3;
 			color.toArray( colors, j ); j += 3;
-
 		}
 
 		const geometry = new BufferGeometry();
@@ -40,9 +36,7 @@ class GridHelper extends LineSegments {
 		super( geometry, material );
 
 		this.type = 'GridHelper';
-
 	}
-
 }
 
 

@@ -1,6 +1,6 @@
-import { TangentSpaceNormalMap } from '../constants.js';
-import { Material } from './Material.js';
-import { Vector2 } from '../math/Vector2.js';
+import { TangentSpaceNormalMap } from '../constants';
+import { Material } from './Material';
+import { Vector2 } from '../math/Vector2';
 
 /**
  * parameters = {
@@ -20,15 +20,19 @@ import { Vector2 } from '../math/Vector2.js';
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>
  *
+ *  skinning: <bool>,
+ *  morphTargets: <bool>,
+ *  morphNormals: <bool>,
+ *
  *  flatShading: <bool>
  * }
  */
 
 class MeshNormalMaterial extends Material {
-
-	constructor( parameters ) {
-
+	constructor(parameters) {
 		super();
+
+		Object.defineProperty(this, 'isMeshNormalMaterial', { value: true });
 
 		this.type = 'MeshNormalMaterial';
 
@@ -37,7 +41,7 @@ class MeshNormalMaterial extends Material {
 
 		this.normalMap = null;
 		this.normalMapType = TangentSpaceNormalMap;
-		this.normalScale = new Vector2( 1, 1 );
+		this.normalScale = new Vector2(1, 1);
 
 		this.displacementMap = null;
 		this.displacementScale = 1;
@@ -48,22 +52,24 @@ class MeshNormalMaterial extends Material {
 
 		this.fog = false;
 
+		this.skinning = false;
+		this.morphTargets = false;
+		this.morphNormals = false;
+
 		this.flatShading = false;
 
-		this.setValues( parameters );
-
+		this.setValues(parameters);
 	}
 
-	copy( source ) {
-
-		super.copy( source );
+	copy(source) {
+		super.copy(source);
 
 		this.bumpMap = source.bumpMap;
 		this.bumpScale = source.bumpScale;
 
 		this.normalMap = source.normalMap;
 		this.normalMapType = source.normalMapType;
-		this.normalScale.copy( source.normalScale );
+		this.normalScale.copy(source.normalScale);
 
 		this.displacementMap = source.displacementMap;
 		this.displacementScale = source.displacementScale;
@@ -72,14 +78,14 @@ class MeshNormalMaterial extends Material {
 		this.wireframe = source.wireframe;
 		this.wireframeLinewidth = source.wireframeLinewidth;
 
+		this.skinning = source.skinning;
+		this.morphTargets = source.morphTargets;
+		this.morphNormals = source.morphNormals;
+
 		this.flatShading = source.flatShading;
 
 		return this;
-
 	}
-
 }
-
-MeshNormalMaterial.prototype.isMeshNormalMaterial = true;
 
 export { MeshNormalMaterial };

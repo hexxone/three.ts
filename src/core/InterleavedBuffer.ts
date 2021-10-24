@@ -1,130 +1,105 @@
-import * as MathUtils from '../math/MathUtils.js';
-import { StaticDrawUsage } from '../constants.js';
+import { MathUtils } from '../math/MathUtils';
+import { StaticDrawUsage } from '../constants';
 
-class InterleavedBuffer {
+function InterleavedBuffer( array, stride ) {
+	this.array = array;
+	this.stride = stride;
+	this.count = array !== undefined ? array.length / stride : 0;
 
-	constructor( array, stride ) {
+	this.usage = StaticDrawUsage;
+	this.updateRange = { offset: 0, count: - 1 };
 
-		this.array = array;
-		this.stride = stride;
-		this.count = array !== undefined ? array.length / stride : 0;
+	this.version = 0;
 
-		this.usage = StaticDrawUsage;
-		this.updateRange = { offset: 0, count: - 1 };
+	this.uuid = MathUtils.generateUUID();
+}
 
-		this.version = 0;
+Object.defineProperty( InterleavedBuffer.prototype, 'needsUpdate', {
 
-		this.uuid = MathUtils.generateUUID();
-
-	}
-
-	onUploadCallback() {}
-
-	set needsUpdate( value ) {
-
+	set: function( value ) {
 		if ( value === true ) this.version ++;
+	},
 
-	}
+} );
 
-	setUsage( value ) {
+Object.assign( InterleavedBuffer.prototype, {
 
+	isInterleavedBuffer: true,
+
+	onUploadCallback: function() { },
+
+	setUsage: function( value ) {
 		this.usage = value;
 
 		return this;
+	},
 
-	}
-
-	copy( source ) {
-
+	copy: function( source ) {
 		this.array = new source.array.constructor( source.array );
 		this.count = source.count;
 		this.stride = source.stride;
 		this.usage = source.usage;
 
 		return this;
+	},
 
-	}
-
-	copyAt( index1, attribute, index2 ) {
-
+	copyAt: function( index1, attribute, index2 ) {
 		index1 *= this.stride;
 		index2 *= attribute.stride;
 
 		for ( let i = 0, l = this.stride; i < l; i ++ ) {
-
 			this.array[ index1 + i ] = attribute.array[ index2 + i ];
-
 		}
 
 		return this;
+	},
 
-	}
-
-	set( value, offset = 0 ) {
-
+	set: function( value, offset = 0 ) {
 		this.array.set( value, offset );
 
 		return this;
+	},
 
-	}
-
-	clone( data ) {
-
+	clone: function( data ) {
 		if ( data.arrayBuffers === undefined ) {
-
 			data.arrayBuffers = {};
-
 		}
 
 		if ( this.array.buffer._uuid === undefined ) {
-
 			this.array.buffer._uuid = MathUtils.generateUUID();
-
 		}
 
 		if ( data.arrayBuffers[ this.array.buffer._uuid ] === undefined ) {
-
 			data.arrayBuffers[ this.array.buffer._uuid ] = this.array.slice( 0 ).buffer;
-
 		}
 
 		const array = new this.array.constructor( data.arrayBuffers[ this.array.buffer._uuid ] );
 
-		const ib = new this.constructor( array, this.stride );
+		const ib = new InterleavedBuffer( array, this.stride );
 		ib.setUsage( this.usage );
 
 		return ib;
+	},
 
-	}
-
-	onUpload( callback ) {
-
+	onUpload: function( callback ) {
 		this.onUploadCallback = callback;
 
 		return this;
+	},
 
-	}
-
-	toJSON( data ) {
-
+	toJSON: function( data ) {
 		if ( data.arrayBuffers === undefined ) {
-
 			data.arrayBuffers = {};
-
 		}
 
 		// generate UUID for array buffer if necessary
 
 		if ( this.array.buffer._uuid === undefined ) {
-
 			this.array.buffer._uuid = MathUtils.generateUUID();
-
 		}
 
 		if ( data.arrayBuffers[ this.array.buffer._uuid ] === undefined ) {
-
 			data.arrayBuffers[ this.array.buffer._uuid ] = Array.prototype.slice.call( new Uint32Array( this.array.buffer ) );
-
 		}
 
 		//
@@ -133,13 +108,10 @@ class InterleavedBuffer {
 			uuid: this.uuid,
 			buffer: this.array.buffer._uuid,
 			type: this.array.constructor.name,
-			stride: this.stride
+			stride: this.stride,
 		};
+	},
 
-	}
-
-}
-
-InterleavedBuffer.prototype.isInterleavedBuffer = true;
+} );
 
 export { InterleavedBuffer };

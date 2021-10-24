@@ -1,11 +1,9 @@
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { Vector3 } from '../math/Vector3.js';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Vector3 } from '../math/Vector3';
 
 class TorusGeometry extends BufferGeometry {
-
 	constructor( radius = 1, tube = 0.4, radialSegments = 8, tubularSegments = 6, arc = Math.PI * 2 ) {
-
 		super();
 		this.type = 'TorusGeometry';
 
@@ -14,7 +12,7 @@ class TorusGeometry extends BufferGeometry {
 			tube: tube,
 			radialSegments: radialSegments,
 			tubularSegments: tubularSegments,
-			arc: arc
+			arc: arc,
 		};
 
 		radialSegments = Math.floor( radialSegments );
@@ -36,9 +34,7 @@ class TorusGeometry extends BufferGeometry {
 		// generate vertices, normals and uvs
 
 		for ( let j = 0; j <= radialSegments; j ++ ) {
-
 			for ( let i = 0; i <= tubularSegments; i ++ ) {
-
 				const u = i / tubularSegments * arc;
 				const v = j / radialSegments * Math.PI * 2;
 
@@ -62,17 +58,13 @@ class TorusGeometry extends BufferGeometry {
 
 				uvs.push( i / tubularSegments );
 				uvs.push( j / radialSegments );
-
 			}
-
 		}
 
 		// generate indices
 
 		for ( let j = 1; j <= radialSegments; j ++ ) {
-
 			for ( let i = 1; i <= tubularSegments; i ++ ) {
-
 				// indices
 
 				const a = ( tubularSegments + 1 ) * j + i - 1;
@@ -84,9 +76,7 @@ class TorusGeometry extends BufferGeometry {
 
 				indices.push( a, b, d );
 				indices.push( b, c, d );
-
 			}
-
 		}
 
 		// build geometry
@@ -95,15 +85,7 @@ class TorusGeometry extends BufferGeometry {
 		this.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
 		this.setAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
 		this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
-
 	}
-
-	static fromJSON( data ) {
-
-		return new TorusGeometry( data.radius, data.tube, data.radialSegments, data.tubularSegments, data.arc );
-
-	}
-
 }
 
 export { TorusGeometry, TorusGeometry as TorusBufferGeometry };

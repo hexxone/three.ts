@@ -1,11 +1,9 @@
-import { Light } from './Light.js';
-import { DirectionalLightShadow } from './DirectionalLightShadow.js';
-import { Object3D } from '../core/Object3D.js';
+import { Light } from './Light';
+import { DirectionalLightShadow } from './DirectionalLightShadow';
+import { Object3D } from '../core/Object3D';
 
 class DirectionalLight extends Light {
-
 	constructor( color, intensity ) {
-
 		super( color, intensity );
 
 		this.type = 'DirectionalLight';
@@ -16,26 +14,16 @@ class DirectionalLight extends Light {
 		this.target = new Object3D();
 
 		this.shadow = new DirectionalLightShadow();
-
-	}
-
-	dispose() {
-
-		this.shadow.dispose();
-
 	}
 
 	copy( source ) {
-
 		super.copy( source );
 
 		this.target = source.target.clone();
 		this.shadow = source.shadow.clone();
 
 		return this;
-
 	}
-
 }
 
 DirectionalLight.prototype.isDirectionalLight = true;

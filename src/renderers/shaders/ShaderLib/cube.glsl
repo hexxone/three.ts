@@ -5,15 +5,14 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vWorldDirection = transformDirection( position, modelMatrix );
+vWorldDirection = transformDirection(position, modelMatrix);
 
 	#include <begin_vertex>
 	#include <project_vertex>
 
-	gl_Position.z = gl_Position.w; // set z to camera.far
+gl_Position.z = gl_Position.w; // set z to camera.far
 
-}
-`;
+};
 
 export const fragment = /* glsl */`
 #include <envmap_common_pars_fragment>
@@ -25,14 +24,13 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vec3 vReflect = vWorldDirection;
+vec3 vReflect = vWorldDirection;
 	#include <envmap_fragment>
 
-	gl_FragColor = envColor;
-	gl_FragColor.a *= opacity;
+gl_FragColor = envColor;
+gl_FragColor.a *= opacity;
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>
 
-}
-`;
+};

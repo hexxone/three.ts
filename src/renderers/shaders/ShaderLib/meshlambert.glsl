@@ -5,8 +5,8 @@ varying vec3 vLightFront;
 varying vec3 vIndirectFront;
 
 #ifdef DOUBLE_SIDED
-	varying vec3 vLightBack;
-	varying vec3 vIndirectBack;
+varying vec3 vLightBack;
+varying vec3 vIndirectBack;
 #endif
 
 #include <common>
@@ -47,8 +47,7 @@ void main() {
 	#include <lights_lambert_vertex>
 	#include <shadowmap_vertex>
 	#include <fog_vertex>
-}
-`;
+};
 
 export const fragment = /* glsl */`
 uniform vec3 diffuse;
@@ -59,10 +58,9 @@ varying vec3 vLightFront;
 varying vec3 vIndirectFront;
 
 #ifdef DOUBLE_SIDED
-	varying vec3 vLightBack;
-	varying vec3 vIndirectBack;
+varying vec3 vLightBack;
+varying vec3 vIndirectBack;
 #endif
-
 
 #include <common>
 #include <packing>
@@ -92,9 +90,9 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	vec4 diffuseColor = vec4( diffuse, opacity );
-	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
-	vec3 totalEmissiveRadiance = emissive;
+vec4 diffuseColor = vec4(diffuse, opacity);
+ReflectedLight reflectedLight = ReflectedLight(vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
+vec3 totalEmissiveRadiance = emissive;
 
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
@@ -108,35 +106,35 @@ void main() {
 
 	#ifdef DOUBLE_SIDED
 
-		reflectedLight.indirectDiffuse += ( gl_FrontFacing ) ? vIndirectFront : vIndirectBack;
+reflectedLight.indirectDiffuse += (gl_FrontFacing) ? vIndirectFront : vIndirectBack;
 
 	#else
 
-		reflectedLight.indirectDiffuse += vIndirectFront;
+reflectedLight.indirectDiffuse += vIndirectFront;
 
 	#endif
 
 	#include <lightmap_fragment>
 
-	reflectedLight.indirectDiffuse *= BRDF_Lambert( diffuseColor.rgb );
+reflectedLight.indirectDiffuse *= BRDF_Lambert(diffuseColor.rgb);
 
 	#ifdef DOUBLE_SIDED
 
-		reflectedLight.directDiffuse = ( gl_FrontFacing ) ? vLightFront : vLightBack;
+reflectedLight.directDiffuse = (gl_FrontFacing) ? vLightFront : vLightBack;
 
 	#else
 
-		reflectedLight.directDiffuse = vLightFront;
+reflectedLight.directDiffuse = vLightFront;
 
 	#endif
 
-	reflectedLight.directDiffuse *= BRDF_Lambert( diffuseColor.rgb ) * getShadowMask();
+reflectedLight.directDiffuse *= BRDF_Lambert(diffuseColor.rgb) * getShadowMask();
 
 	// modulation
 
 	#include <aomap_fragment>
 
-	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
+vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + totalEmissiveRadiance;
 
 	#include <envmap_fragment>
 
@@ -146,5 +144,4 @@ void main() {
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 	#include <dithering_fragment>
-}
-`;
+};

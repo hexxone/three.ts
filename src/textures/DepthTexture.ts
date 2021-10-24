@@ -1,16 +1,12 @@
-import { Texture } from './Texture.js';
-import { NearestFilter, UnsignedShortType, UnsignedInt248Type, DepthFormat, DepthStencilFormat } from '../constants.js';
+import { Texture } from './Texture';
+import { NearestFilter, UnsignedShortType, UnsignedInt248Type, DepthFormat, DepthStencilFormat } from '../constants';
 
 class DepthTexture extends Texture {
-
 	constructor( width, height, type, mapping, wrapS, wrapT, magFilter, minFilter, anisotropy, format ) {
-
 		format = format !== undefined ? format : DepthFormat;
 
 		if ( format !== DepthFormat && format !== DepthStencilFormat ) {
-
 			throw new Error( 'DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat' );
-
 		}
 
 		if ( type === undefined && format === DepthFormat ) type = UnsignedShortType;
@@ -24,11 +20,8 @@ class DepthTexture extends Texture {
 		this.minFilter = minFilter !== undefined ? minFilter : NearestFilter;
 
 		this.flipY = false;
-		this.generateMipmaps	= false;
-
+		this.generateMipmaps = false;
 	}
-
-
 }
 
 DepthTexture.prototype.isDepthTexture = true;

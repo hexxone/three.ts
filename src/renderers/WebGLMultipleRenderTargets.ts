@@ -1,36 +1,40 @@
-import { WebGLRenderTarget } from './WebGLRenderTarget.js';
+import { Texture } from '../textures/Texture';
+import { WebGLRenderTarget } from './WebGLRenderTarget';
 
 class WebGLMultipleRenderTargets extends WebGLRenderTarget {
 
-	constructor( width, height, count ) {
+	textures: Texture[];
 
-		super( width, height );
+	constructor(width, height, count) {
+		super(width, height);
+
+		Object.defineProperty(this, 'isWebGLMultipleRenderTargets', { value: true });
 
 		const texture = this.texture;
 
-		this.texture = [];
+		this.textures = [];
 
-		for ( let i = 0; i < count; i ++ ) {
+		for (let i = 0; i < count; i++) {
 
-			this.texture[ i ] = texture.clone();
+			this.textures[i] = texture.clone();
 
 		}
 
 	}
 
-	setSize( width, height, depth = 1 ) {
+	setSize(width, height, depth = 1) {
 
-		if ( this.width !== width || this.height !== height || this.depth !== depth ) {
+		if (this.width !== width || this.height !== height || this.depth !== depth) {
 
 			this.width = width;
 			this.height = height;
 			this.depth = depth;
 
-			for ( let i = 0, il = this.texture.length; i < il; i ++ ) {
+			for (let i = 0, il = this.textures.length; i < il; i++) {
 
-				this.texture[ i ].image.width = width;
-				this.texture[ i ].image.height = height;
-				this.texture[ i ].image.depth = depth;
+				this.textures[i].image.width = width;
+				this.textures[i].image.height = height;
+				this.textures[i].image.depth = depth;
 
 			}
 
@@ -38,14 +42,14 @@ class WebGLMultipleRenderTargets extends WebGLRenderTarget {
 
 		}
 
-		this.viewport.set( 0, 0, width, height );
-		this.scissor.set( 0, 0, width, height );
+		this.viewport.set(0, 0, width, height);
+		this.scissor.set(0, 0, width, height);
 
 		return this;
 
 	}
 
-	copy( source ) {
+	copy(source) {
 
 		this.dispose();
 
@@ -53,18 +57,18 @@ class WebGLMultipleRenderTargets extends WebGLRenderTarget {
 		this.height = source.height;
 		this.depth = source.depth;
 
-		this.viewport.set( 0, 0, this.width, this.height );
-		this.scissor.set( 0, 0, this.width, this.height );
+		this.viewport.set(0, 0, this.width, this.height);
+		this.scissor.set(0, 0, this.width, this.height);
 
 		this.depthBuffer = source.depthBuffer;
 		this.stencilBuffer = source.stencilBuffer;
 		this.depthTexture = source.depthTexture;
 
-		this.texture.length = 0;
+		this.textures.length = 0;
 
-		for ( let i = 0, il = source.texture.length; i < il; i ++ ) {
+		for (let i = 0, il = source.texture.length; i < il; i++) {
 
-			this.texture[ i ] = source.texture[ i ].clone();
+			this.textures[i] = source.texture[i].clone();
 
 		}
 
@@ -73,7 +77,5 @@ class WebGLMultipleRenderTargets extends WebGLRenderTarget {
 	}
 
 }
-
-WebGLMultipleRenderTargets.prototype.isWebGLMultipleRenderTargets = true;
 
 export { WebGLMultipleRenderTargets };

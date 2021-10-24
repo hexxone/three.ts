@@ -5,7 +5,7 @@ varying vec3 vViewPosition;
 
 #ifdef USE_TRANSMISSION
 
-	varying vec3 vWorldPosition;
+varying vec3 vWorldPosition;
 
 #endif
 
@@ -43,7 +43,7 @@ void main() {
 	#include <logdepthbuf_vertex>
 	#include <clipping_planes_vertex>
 
-	vViewPosition = - mvPosition.xyz;
+vViewPosition = - mvPosition.xyz;
 
 	#include <worldpos_vertex>
 	#include <shadowmap_vertex>
@@ -51,11 +51,10 @@ void main() {
 
 #ifdef USE_TRANSMISSION
 
-	vWorldPosition = worldPosition.xyz;
+vWorldPosition = worldPosition.xyz;
 
 #endif
-}
-`;
+};
 
 export const fragment = /* glsl */`
 #define STANDARD
@@ -72,30 +71,30 @@ uniform float metalness;
 uniform float opacity;
 
 #ifdef IOR
-	uniform float ior;
+uniform float ior;
 #endif
 
 #ifdef SPECULAR
-	uniform float specularIntensity;
-	uniform vec3 specularTint;
+uniform float specularIntensity;
+uniform vec3 specularTint;
 
 	#ifdef USE_SPECULARINTENSITYMAP
-		uniform sampler2D specularIntensityMap;
+uniform sampler2D specularIntensityMap;
 	#endif
 
 	#ifdef USE_SPECULARTINTMAP
-		uniform sampler2D specularTintMap;
+uniform sampler2D specularTintMap;
 	#endif
 #endif
 
 #ifdef USE_CLEARCOAT
-	uniform float clearcoat;
-	uniform float clearcoatRoughness;
+uniform float clearcoat;
+uniform float clearcoatRoughness;
 #endif
 
 #ifdef USE_SHEEN
-	uniform vec3 sheenTint;
-	uniform float sheenRoughness;
+uniform vec3 sheenTint;
+uniform float sheenRoughness;
 #endif
 
 varying vec3 vViewPosition;
@@ -134,9 +133,9 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	vec4 diffuseColor = vec4( diffuse, opacity );
-	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
-	vec3 totalEmissiveRadiance = emissive;
+vec4 diffuseColor = vec4(diffuse, opacity);
+ReflectedLight reflectedLight = ReflectedLight(vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
+vec3 totalEmissiveRadiance = emissive;
 
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
@@ -160,20 +159,20 @@ void main() {
 	// modulation
 	#include <aomap_fragment>
 
-	vec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
-	vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
+vec3 totalDiffuse = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse;
+vec3 totalSpecular = reflectedLight.directSpecular + reflectedLight.indirectSpecular;
 
 	#include <transmission_fragment>
 
-	vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
+vec3 outgoingLight = totalDiffuse + totalSpecular + totalEmissiveRadiance;
 
 	#ifdef USE_CLEARCOAT
 
-		float dotNVcc = saturate( dot( geometry.clearcoatNormal, geometry.viewDir ) );
+float dotNVcc = saturate(dot(geometry.clearcoatNormal, geometry.viewDir));
 
-		vec3 Fcc = F_Schlick( material.clearcoatF0, material.clearcoatF90, dotNVcc );
+vec3 Fcc = F_Schlick(material.clearcoatF0, material.clearcoatF90, dotNVcc);
 
-		outgoingLight = outgoingLight * ( 1.0 - clearcoat * Fcc ) + clearcoatSpecular * clearcoat;
+outgoingLight = outgoingLight * (1.0 - clearcoat * Fcc) + clearcoatSpecular * clearcoat;
 
 	#endif
 
@@ -184,5 +183,4 @@ void main() {
 	#include <premultiplied_alpha_fragment>
 	#include <dithering_fragment>
 
-}
-`;
+};

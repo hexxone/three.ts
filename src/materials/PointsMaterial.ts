@@ -1,5 +1,5 @@
-import { Material } from './Material.js';
-import { Color } from '../math/Color.js';
+import { Material } from './Material';
+import { Color } from '../math/Color';
 
 /**
  * parameters = {
@@ -11,18 +11,20 @@ import { Color } from '../math/Color.js';
  *  size: <float>,
  *  sizeAttenuation: <bool>
  *
+ *  morphTargets: <bool>
  * }
  */
 
 class PointsMaterial extends Material {
 
-	constructor( parameters ) {
-
+	constructor(parameters?) {
 		super();
+
+		Object.defineProperty(this, 'isPointsMaterial', { value: true });
 
 		this.type = 'PointsMaterial';
 
-		this.color = new Color( 0xffffff );
+		this.color = new Color(0xffffff);
 
 		this.map = null;
 
@@ -31,15 +33,15 @@ class PointsMaterial extends Material {
 		this.size = 1;
 		this.sizeAttenuation = true;
 
-		this.setValues( parameters );
+		this.morphTargets = false;
 
+		this.setValues(parameters);
 	}
 
-	copy( source ) {
+	copy(source) {
+		super.copy(source);
 
-		super.copy( source );
-
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.map = source.map;
 
@@ -48,12 +50,10 @@ class PointsMaterial extends Material {
 		this.size = source.size;
 		this.sizeAttenuation = source.sizeAttenuation;
 
+		this.morphTargets = source.morphTargets;
+
 		return this;
-
 	}
-
 }
-
-PointsMaterial.prototype.isPointsMaterial = true;
 
 export { PointsMaterial };

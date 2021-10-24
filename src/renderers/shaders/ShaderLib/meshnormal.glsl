@@ -3,7 +3,7 @@ export const vertex = /* glsl */`
 
 #if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )
 
-	varying vec3 vViewPosition;
+varying vec3 vViewPosition;
 
 #endif
 
@@ -37,12 +37,11 @@ void main() {
 
 #if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )
 
-	vViewPosition = - mvPosition.xyz;
+vViewPosition = - mvPosition.xyz;
 
 #endif
 
-}
-`;
+};
 
 export const fragment = /* glsl */`
 #define NORMAL
@@ -51,7 +50,7 @@ uniform float opacity;
 
 #if defined( FLAT_SHADED ) || defined( USE_BUMPMAP ) || defined( TANGENTSPACE_NORMALMAP )
 
-	varying vec3 vViewPosition;
+varying vec3 vViewPosition;
 
 #endif
 
@@ -70,7 +69,6 @@ void main() {
 	#include <normal_fragment_begin>
 	#include <normal_fragment_maps>
 
-	gl_FragColor = vec4( packNormalToRGB( normal ), opacity );
+gl_FragColor = vec4(packNormalToRGB(normal), opacity);
 
-}
-`;
+};

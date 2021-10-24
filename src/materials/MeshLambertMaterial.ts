@@ -1,6 +1,6 @@
-import { Material } from './Material.js';
-import { MultiplyOperation } from '../constants.js';
-import { Color } from '../math/Color.js';
+import { Material } from './Material';
+import { MultiplyOperation } from '../constants';
+import { Color } from '../math/Color';
 
 /**
  * parameters = {
@@ -31,18 +31,21 @@ import { Color } from '../math/Color.js';
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>,
  *
+ *  skinning: <bool>,
+ *  morphTargets: <bool>,
+ *  morphNormals: <bool>
  * }
  */
 
 class MeshLambertMaterial extends Material {
-
-	constructor( parameters ) {
-
+	constructor(parameters) {
 		super();
+
+		Object.defineProperty(this, 'isMeshLambertMaterial', { value: true })
 
 		this.type = 'MeshLambertMaterial';
 
-		this.color = new Color( 0xffffff ); // diffuse
+		this.color = new Color(0xffffff); // diffuse
 
 		this.map = null;
 
@@ -52,7 +55,7 @@ class MeshLambertMaterial extends Material {
 		this.aoMap = null;
 		this.aoMapIntensity = 1.0;
 
-		this.emissive = new Color( 0x000000 );
+		this.emissive = new Color(0x000000);
 		this.emissiveIntensity = 1.0;
 		this.emissiveMap = null;
 
@@ -70,15 +73,17 @@ class MeshLambertMaterial extends Material {
 		this.wireframeLinecap = 'round';
 		this.wireframeLinejoin = 'round';
 
-		this.setValues( parameters );
+		this.skinning = false;
+		this.morphTargets = false;
+		this.morphNormals = false;
 
+		this.setValues(parameters);
 	}
 
-	copy( source ) {
+	copy(source) {
+		super.copy(source);
 
-		super.copy( source );
-
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.map = source.map;
 
@@ -88,7 +93,7 @@ class MeshLambertMaterial extends Material {
 		this.aoMap = source.aoMap;
 		this.aoMapIntensity = source.aoMapIntensity;
 
-		this.emissive.copy( source.emissive );
+		this.emissive.copy(source.emissive);
 		this.emissiveMap = source.emissiveMap;
 		this.emissiveIntensity = source.emissiveIntensity;
 
@@ -106,12 +111,12 @@ class MeshLambertMaterial extends Material {
 		this.wireframeLinecap = source.wireframeLinecap;
 		this.wireframeLinejoin = source.wireframeLinejoin;
 
+		this.skinning = source.skinning;
+		this.morphTargets = source.morphTargets;
+		this.morphNormals = source.morphNormals;
+
 		return this;
-
 	}
-
 }
-
-MeshLambertMaterial.prototype.isMeshLambertMaterial = true;
 
 export { MeshLambertMaterial };

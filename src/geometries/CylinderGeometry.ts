@@ -1,12 +1,10 @@
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { Vector3 } from '../math/Vector3.js';
-import { Vector2 } from '../math/Vector2.js';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Vector3 } from '../math/Vector3';
+import { Vector2 } from '../math/Vector2';
 
 class CylinderGeometry extends BufferGeometry {
-
 	constructor( radiusTop = 1, radiusBottom = 1, height = 1, radialSegments = 8, heightSegments = 1, openEnded = false, thetaStart = 0, thetaLength = Math.PI * 2 ) {
-
 		super();
 		this.type = 'CylinderGeometry';
 
@@ -18,7 +16,7 @@ class CylinderGeometry extends BufferGeometry {
 			heightSegments: heightSegments,
 			openEnded: openEnded,
 			thetaStart: thetaStart,
-			thetaLength: thetaLength
+			thetaLength: thetaLength,
 		};
 
 		const scope = this;
@@ -45,10 +43,8 @@ class CylinderGeometry extends BufferGeometry {
 		generateTorso();
 
 		if ( openEnded === false ) {
-
 			if ( radiusTop > 0 ) generateCap( true );
 			if ( radiusBottom > 0 ) generateCap( false );
-
 		}
 
 		// build geometry
@@ -59,7 +55,6 @@ class CylinderGeometry extends BufferGeometry {
 		this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
 
 		function generateTorso() {
-
 			const normal = new Vector3();
 			const vertex = new Vector3();
 
@@ -71,7 +66,6 @@ class CylinderGeometry extends BufferGeometry {
 			// generate vertices, normals and uvs
 
 			for ( let y = 0; y <= heightSegments; y ++ ) {
-
 				const indexRow = [];
 
 				const v = y / heightSegments;
@@ -81,7 +75,6 @@ class CylinderGeometry extends BufferGeometry {
 				const radius = v * ( radiusBottom - radiusTop ) + radiusTop;
 
 				for ( let x = 0; x <= radialSegments; x ++ ) {
-
 					const u = x / radialSegments;
 
 					const theta = u * thetaLength + thetaStart;
@@ -108,21 +101,17 @@ class CylinderGeometry extends BufferGeometry {
 					// save index of vertex in respective row
 
 					indexRow.push( index ++ );
-
 				}
 
 				// now save vertices of the row in our index array
 
 				indexArray.push( indexRow );
-
 			}
 
 			// generate indices
 
 			for ( let x = 0; x < radialSegments; x ++ ) {
-
 				for ( let y = 0; y < heightSegments; y ++ ) {
-
 					// we use the index array to access the correct indices
 
 					const a = indexArray[ y ][ x ];
@@ -138,9 +127,7 @@ class CylinderGeometry extends BufferGeometry {
 					// update group counter
 
 					groupCount += 6;
-
 				}
-
 			}
 
 			// add a group to the geometry. this will ensure multi material support
@@ -150,11 +137,9 @@ class CylinderGeometry extends BufferGeometry {
 			// calculate new start value for groups
 
 			groupStart += groupCount;
-
 		}
 
 		function generateCap( top ) {
-
 			// save the index of the first center vertex
 			const centerIndexStart = index;
 
@@ -171,7 +156,6 @@ class CylinderGeometry extends BufferGeometry {
 			// we must generate a center vertex per face/segment
 
 			for ( let x = 1; x <= radialSegments; x ++ ) {
-
 				// vertex
 
 				vertices.push( 0, halfHeight * sign, 0 );
@@ -187,7 +171,6 @@ class CylinderGeometry extends BufferGeometry {
 				// increase index
 
 				index ++;
-
 			}
 
 			// save the index of the last center vertex
@@ -196,7 +179,6 @@ class CylinderGeometry extends BufferGeometry {
 			// now we generate the surrounding vertices, normals and uvs
 
 			for ( let x = 0; x <= radialSegments; x ++ ) {
-
 				const u = x / radialSegments;
 				const theta = u * thetaLength + thetaStart;
 
@@ -223,32 +205,25 @@ class CylinderGeometry extends BufferGeometry {
 				// increase index
 
 				index ++;
-
 			}
 
 			// generate indices
 
 			for ( let x = 0; x < radialSegments; x ++ ) {
-
 				const c = centerIndexStart + x;
 				const i = centerIndexEnd + x;
 
 				if ( top === true ) {
-
 					// face top
 
 					indices.push( i, i + 1, c );
-
 				} else {
-
 					// face bottom
 
 					indices.push( i + 1, i, c );
-
 				}
 
 				groupCount += 3;
-
 			}
 
 			// add a group to the geometry. this will ensure multi material support
@@ -258,17 +233,8 @@ class CylinderGeometry extends BufferGeometry {
 			// calculate new start value for groups
 
 			groupStart += groupCount;
-
 		}
-
 	}
-
-	static fromJSON( data ) {
-
-		return new CylinderGeometry( data.radiusTop, data.radiusBottom, data.height, data.radialSegments, data.heightSegments, data.openEnded, data.thetaStart, data.thetaLength );
-
-	}
-
 }
 
 

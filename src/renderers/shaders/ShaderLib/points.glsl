@@ -16,13 +16,13 @@ void main() {
 	#include <morphtarget_vertex>
 	#include <project_vertex>
 
-	gl_PointSize = size;
+gl_PointSize = size;
 
 	#ifdef USE_SIZEATTENUATION
 
-		bool isPerspective = isPerspectiveMatrix( projectionMatrix );
+bool isPerspective = isPerspectiveMatrix(projectionMatrix);
 
-		if ( isPerspective ) gl_PointSize *= ( scale / - mvPosition.z );
+if(isPerspective) gl_PointSize *= (scale / - mvPosition.z);
 
 	#endif
 
@@ -31,8 +31,7 @@ void main() {
 	#include <worldpos_vertex>
 	#include <fog_vertex>
 
-}
-`;
+};
 
 export const fragment = /* glsl */`
 uniform vec3 diffuse;
@@ -50,15 +49,15 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	vec3 outgoingLight = vec3( 0.0 );
-	vec4 diffuseColor = vec4( diffuse, opacity );
+vec3 outgoingLight = vec3(0.0);
+vec4 diffuseColor = vec4(diffuse, opacity);
 
 	#include <logdepthbuf_fragment>
 	#include <map_particle_fragment>
 	#include <color_fragment>
 	#include <alphatest_fragment>
 
-	outgoingLight = diffuseColor.rgb;
+outgoingLight = diffuseColor.rgb;
 
 	#include <output_fragment>
 	#include <tonemapping_fragment>
@@ -66,5 +65,4 @@ void main() {
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 
-}
-`;
+};

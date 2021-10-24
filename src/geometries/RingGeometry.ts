@@ -1,12 +1,10 @@
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { Vector2 } from '../math/Vector2.js';
-import { Vector3 } from '../math/Vector3.js';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
 
 class RingGeometry extends BufferGeometry {
-
 	constructor( innerRadius = 0.5, outerRadius = 1, thetaSegments = 8, phiSegments = 1, thetaStart = 0, thetaLength = Math.PI * 2 ) {
-
 		super();
 
 		this.type = 'RingGeometry';
@@ -17,7 +15,7 @@ class RingGeometry extends BufferGeometry {
 			thetaSegments: thetaSegments,
 			phiSegments: phiSegments,
 			thetaStart: thetaStart,
-			thetaLength: thetaLength
+			thetaLength: thetaLength,
 		};
 
 		thetaSegments = Math.max( 3, thetaSegments );
@@ -40,9 +38,7 @@ class RingGeometry extends BufferGeometry {
 		// generate vertices, normals and uvs
 
 		for ( let j = 0; j <= phiSegments; j ++ ) {
-
 			for ( let i = 0; i <= thetaSegments; i ++ ) {
-
 				// values are generate from the inside of the ring to the outside
 
 				const segment = thetaStart + i / thetaSegments * thetaLength;
@@ -64,23 +60,19 @@ class RingGeometry extends BufferGeometry {
 				uv.y = ( vertex.y / outerRadius + 1 ) / 2;
 
 				uvs.push( uv.x, uv.y );
-
 			}
 
 			// increase the radius for next row of vertices
 
 			radius += radiusStep;
-
 		}
 
 		// indices
 
 		for ( let j = 0; j < phiSegments; j ++ ) {
-
 			const thetaSegmentLevel = j * ( thetaSegments + 1 );
 
 			for ( let i = 0; i < thetaSegments; i ++ ) {
-
 				const segment = i + thetaSegmentLevel;
 
 				const a = segment;
@@ -92,9 +84,7 @@ class RingGeometry extends BufferGeometry {
 
 				indices.push( a, b, d );
 				indices.push( b, c, d );
-
 			}
-
 		}
 
 		// build geometry
@@ -103,15 +93,7 @@ class RingGeometry extends BufferGeometry {
 		this.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
 		this.setAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
 		this.setAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
-
 	}
-
-	static fromJSON( data ) {
-
-		return new RingGeometry( data.innerRadius, data.outerRadius, data.thetaSegments, data.phiSegments, data.thetaStart, data.thetaLength );
-
-	}
-
 }
 
 

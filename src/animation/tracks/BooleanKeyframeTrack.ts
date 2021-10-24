@@ -1,10 +1,10 @@
-import { InterpolateDiscrete } from '../../constants.js';
-import { KeyframeTrack } from '../KeyframeTrack.js';
+import { InterpolateDiscrete } from '../../constants';
+import { KeyframeTrack } from '../KeyframeTrack';
 
 /**
  * A Track of Boolean keyframe values.
  */
-class BooleanKeyframeTrack extends KeyframeTrack {}
+class BooleanKeyframeTrack extends KeyframeTrack { }
 
 BooleanKeyframeTrack.prototype.ValueTypeName = 'bool';
 BooleanKeyframeTrack.prototype.ValueBufferType = Array;

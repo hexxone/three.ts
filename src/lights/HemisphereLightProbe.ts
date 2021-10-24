@@ -1,11 +1,9 @@
-import { Color } from '../math/Color.js';
-import { Vector3 } from '../math/Vector3.js';
-import { LightProbe } from './LightProbe.js';
+import { Color } from '../math/Color';
+import { Vector3 } from '../math/Vector3';
+import { LightProbe } from './LightProbe';
 
 class HemisphereLightProbe extends LightProbe {
-
 	constructor( skyColor, groundColor, intensity = 1 ) {
-
 		super( undefined, intensity );
 
 		const color1 = new Color().set( skyColor );
@@ -20,9 +18,7 @@ class HemisphereLightProbe extends LightProbe {
 
 		this.sh.coefficients[ 0 ].copy( sky ).add( ground ).multiplyScalar( c0 );
 		this.sh.coefficients[ 1 ].copy( sky ).sub( ground ).multiplyScalar( c1 );
-
 	}
-
 }
 
 HemisphereLightProbe.prototype.isHemisphereLightProbe = true;

@@ -1,5 +1,5 @@
-import { CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping } from '../../constants.js';
-import { PMREMGenerator } from '../../extras/PMREMGenerator.js';
+import { CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping } from '../../constants';
+import { PMREMGenerator } from '../../extras/PMREMGenerator';
 
 function WebGLCubeUVMaps( renderer ) {
 

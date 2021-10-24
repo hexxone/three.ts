@@ -1,11 +1,9 @@
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { Vector3 } from '../math/Vector3.js';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Vector3 } from '../math/Vector3';
 
 class TorusKnotGeometry extends BufferGeometry {
-
 	constructor( radius = 1, tube = 0.4, tubularSegments = 64, radialSegments = 8, p = 2, q = 3 ) {
-
 		super();
 		this.type = 'TorusKnotGeometry';
 
@@ -15,7 +13,7 @@ class TorusKnotGeometry extends BufferGeometry {
 			tubularSegments: tubularSegments,
 			radialSegments: radialSegments,
 			p: p,
-			q: q
+			q: q,
 		};
 
 		tubularSegments = Math.floor( tubularSegments );
@@ -43,7 +41,6 @@ class TorusKnotGeometry extends BufferGeometry {
 		// generate vertices, normals and uvs
 
 		for ( let i = 0; i <= tubularSegments; ++ i ) {
-
 			// the radian "u" is used to calculate the position on the torus curve of the current tubular segement
 
 			const u = i / tubularSegments * p * Math.PI * 2;
@@ -67,7 +64,6 @@ class TorusKnotGeometry extends BufferGeometry {
 			N.normalize();
 
 			for ( let j = 0; j <= radialSegments; ++ j ) {
-
 				// now calculate the vertices. they are nothing more than an extrusion of the torus curve.
 				// because we extrude a shape in the xy-plane, there is no need to calculate a z-value.
 
@@ -94,17 +90,13 @@ class TorusKnotGeometry extends BufferGeometry {
 
 				uvs.push( i / tubularSegments );
 				uvs.push( j / radialSegments );
-
 			}
-
 		}
 
 		// generate indices
 
 		for ( let j = 1; j <= tubularSegments; j ++ ) {
-
 			for ( let i = 1; i <= radialSegments; i ++ ) {
-
 				// indices
 
 				const a = ( radialSegments + 1 ) * ( j - 1 ) + ( i - 1 );
@@ -116,9 +108,7 @@ class TorusKnotGeometry extends BufferGeometry {
 
 				indices.push( a, b, d );
 				indices.push( b, c, d );
-
 			}
-
 		}
 
 		// build geometry
@@ -131,7 +121,6 @@ class TorusKnotGeometry extends BufferGeometry {
 		// this function calculates the current position on the torus curve
 
 		function calculatePositionOnCurve( u, p, q, radius, position ) {
-
 			const cu = Math.cos( u );
 			const su = Math.sin( u );
 			const quOverP = q / p * u;
@@ -140,17 +129,8 @@ class TorusKnotGeometry extends BufferGeometry {
 			position.x = radius * ( 2 + cs ) * 0.5 * cu;
 			position.y = radius * ( 2 + cs ) * su * 0.5;
 			position.z = radius * Math.sin( quOverP ) * 0.5;
-
 		}
-
 	}
-
-	static fromJSON( data ) {
-
-		return new TorusKnotGeometry( data.radius, data.tube, data.tubularSegments, data.radialSegments, data.p, data.q );
-
-	}
-
 }
 
 export { TorusKnotGeometry, TorusKnotGeometry as TorusKnotBufferGeometry };

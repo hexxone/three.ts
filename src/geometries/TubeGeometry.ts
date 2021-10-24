@@ -1,13 +1,10 @@
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import * as Curves from '../extras/curves/Curves.js';
-import { Vector2 } from '../math/Vector2.js';
-import { Vector3 } from '../math/Vector3.js';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
 
 class TubeGeometry extends BufferGeometry {
-
-	constructor( path = new Curves[ 'QuadraticBezierCurve3' ]( new Vector3( - 1, - 1, 0 ), new Vector3( - 1, 1, 0 ), new Vector3( 1, 1, 0 ) ), tubularSegments = 64, radius = 1, radialSegments = 8, closed = false ) {
-
+	constructor( path, tubularSegments = 64, radius = 1, radialSegments = 8, closed = false ) {
 		super();
 		this.type = 'TubeGeometry';
 
@@ -16,7 +13,7 @@ class TubeGeometry extends BufferGeometry {
 			tubularSegments: tubularSegments,
 			radius: radius,
 			radialSegments: radialSegments,
-			closed: closed
+			closed: closed,
 		};
 
 		const frames = path.computeFrenetFrames( tubularSegments, closed );
@@ -55,11 +52,8 @@ class TubeGeometry extends BufferGeometry {
 		// functions
 
 		function generateBufferData() {
-
 			for ( let i = 0; i < tubularSegments; i ++ ) {
-
 				generateSegment( i );
-
 			}
 
 			// if the geometry is not closed, generate the last row of vertices and normals
@@ -77,11 +71,9 @@ class TubeGeometry extends BufferGeometry {
 			// finally create faces
 
 			generateIndices();
-
 		}
 
 		function generateSegment( i ) {
-
 			// we use getPointAt to sample evenly distributed points from the given path
 
 			P = path.getPointAt( i / tubularSegments, P );
@@ -94,7 +86,6 @@ class TubeGeometry extends BufferGeometry {
 			// generate normals and vertices for the current segment
 
 			for ( let j = 0; j <= radialSegments; j ++ ) {
-
 				const v = j / radialSegments * Math.PI * 2;
 
 				const sin = Math.sin( v );
@@ -116,17 +107,12 @@ class TubeGeometry extends BufferGeometry {
 				vertex.z = P.z + radius * normal.z;
 
 				vertices.push( vertex.x, vertex.y, vertex.z );
-
 			}
-
 		}
 
 		function generateIndices() {
-
 			for ( let j = 1; j <= tubularSegments; j ++ ) {
-
 				for ( let i = 1; i <= radialSegments; i ++ ) {
-
 					const a = ( radialSegments + 1 ) * ( j - 1 ) + ( i - 1 );
 					const b = ( radialSegments + 1 ) * j + ( i - 1 );
 					const c = ( radialSegments + 1 ) * j + i;
@@ -136,56 +122,28 @@ class TubeGeometry extends BufferGeometry {
 
 					indices.push( a, b, d );
 					indices.push( b, c, d );
-
 				}
-
 			}
-
 		}
 
 		function generateUVs() {
-
 			for ( let i = 0; i <= tubularSegments; i ++ ) {
-
 				for ( let j = 0; j <= radialSegments; j ++ ) {
-
 					uv.x = i / tubularSegments;
 					uv.y = j / radialSegments;
 
 					uvs.push( uv.x, uv.y );
-
 				}
-
 			}
-
 		}
-
 	}
-
 	toJSON() {
-
-		const data = super.toJSON();
+		const data = BufferGeometry.prototype.toJSON.call( this );
 
 		data.path = this.parameters.path.toJSON();
 
 		return data;
-
 	}
-
-	static fromJSON( data ) {
-
-		// This only works for built-in curves (e.g. CatmullRomCurve3).
-		// User defined curves or instances of CurvePath will not be deserialized.
-		return new TubeGeometry(
-			new Curves[ data.path.type ]().fromJSON( data.path ),
-			data.tubularSegments,
-			data.radius,
-			data.radialSegments,
-			data.closed
-		);
-
-	}
-
 }
 
 

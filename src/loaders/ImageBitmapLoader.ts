@@ -1,38 +1,33 @@
-import { Cache } from './Cache.js';
-import { Loader } from './Loader.js';
+import { Cache } from './Cache';
+import { Loader } from './Loader';
 
-class ImageBitmapLoader extends Loader {
-
-	constructor( manager ) {
-
-		super( manager );
-
-		if ( typeof createImageBitmap === 'undefined' ) {
-
-			console.warn( 'THREE.ImageBitmapLoader: createImageBitmap() not supported.' );
-
-		}
-
-		if ( typeof fetch === 'undefined' ) {
-
-			console.warn( 'THREE.ImageBitmapLoader: fetch() not supported.' );
-
-		}
-
-		this.options = { premultiplyAlpha: 'none' };
-
+function ImageBitmapLoader( manager ) {
+	if ( typeof createImageBitmap === 'undefined' ) {
+		console.warn( 'THREE.ImageBitmapLoader: createImageBitmap() not supported.' );
 	}
 
-	setOptions( options ) {
+	if ( typeof fetch === 'undefined' ) {
+		console.warn( 'THREE.ImageBitmapLoader: fetch() not supported.' );
+	}
 
+	Loader.call( this, manager );
+
+	this.options = { premultiplyAlpha: 'none' };
+}
+
+ImageBitmapLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
+
+	constructor: ImageBitmapLoader,
+
+	isImageBitmapLoader: true,
+
+	setOptions: function setOptions( options ) {
 		this.options = options;
 
 		return this;
+	},
 
-	}
-
-	load( url, onLoad, onProgress, onError ) {
-
+	load: function( url, onLoad, onProgress, onError ) {
 		if ( url === undefined ) url = '';
 
 		if ( this.path !== undefined ) url = this.path + url;
@@ -44,56 +39,41 @@ class ImageBitmapLoader extends Loader {
 		const cached = Cache.get( url );
 
 		if ( cached !== undefined ) {
-
 			scope.manager.itemStart( url );
 
-			setTimeout( function () {
-
+			setTimeout( function() {
 				if ( onLoad ) onLoad( cached );
 
 				scope.manager.itemEnd( url );
-
 			}, 0 );
 
 			return cached;
-
 		}
 
 		const fetchOptions = {};
 		fetchOptions.credentials = ( this.crossOrigin === 'anonymous' ) ? 'same-origin' : 'include';
 		fetchOptions.headers = this.requestHeader;
 
-		fetch( url, fetchOptions ).then( function ( res ) {
-
+		fetch( url, fetchOptions ).then( function( res ) {
 			return res.blob();
-
-		} ).then( function ( blob ) {
-
+		} ).then( function( blob ) {
 			return createImageBitmap( blob, Object.assign( scope.options, { colorSpaceConversion: 'none' } ) );
-
-		} ).then( function ( imageBitmap ) {
-
+		} ).then( function( imageBitmap ) {
 			Cache.add( url, imageBitmap );
 
 			if ( onLoad ) onLoad( imageBitmap );
 
 			scope.manager.itemEnd( url );
-
-		} ).catch( function ( e ) {
-
+		} ).catch( function( e ) {
 			if ( onError ) onError( e );
 
 			scope.manager.itemError( url );
 			scope.manager.itemEnd( url );
-
 		} );
 
 		scope.manager.itemStart( url );
+	},
 
-	}
-
-}
-
-ImageBitmapLoader.prototype.isImageBitmapLoader = true;
+} );
 
 export { ImageBitmapLoader };

@@ -1,10 +1,8 @@
-import { Light } from './Light.js';
-import { PointLightShadow } from './PointLightShadow.js';
+import { Light } from './Light';
+import { PointLightShadow } from './PointLightShadow';
 
 class PointLight extends Light {
-
 	constructor( color, intensity, distance = 0, decay = 1 ) {
-
 		super( color, intensity );
 
 		this.type = 'PointLight';
@@ -13,32 +11,21 @@ class PointLight extends Light {
 		this.decay = decay; // for physically correct lights, should be 2.
 
 		this.shadow = new PointLightShadow();
-
 	}
 
 	get power() {
-
-		// compute the light's luminous power (in lumens) from its intensity (in candela)
-		// for an isotropic light source, luminous power (lm) = 4 π luminous intensity (cd)
+		// intensity = power per solid angle.
+		// ref: equation (15) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
 		return this.intensity * 4 * Math.PI;
-
 	}
 
 	set power( power ) {
-
-		// set the light's intensity (in candela) from the desired luminous power (in lumens)
+		// intensity = power per solid angle.
+		// ref: equation (15) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
 		this.intensity = power / ( 4 * Math.PI );
-
-	}
-
-	dispose() {
-
-		this.shadow.dispose();
-
 	}
 
 	copy( source ) {
-
 		super.copy( source );
 
 		this.distance = source.distance;
@@ -47,9 +34,7 @@ class PointLight extends Light {
 		this.shadow = source.shadow.clone();
 
 		return this;
-
 	}
-
 }
 
 PointLight.prototype.isPointLight = true;

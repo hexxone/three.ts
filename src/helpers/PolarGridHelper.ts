@@ -1,13 +1,11 @@
-import { LineSegments } from '../objects/LineSegments.js';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Color } from '../math/Color.js';
+import { LineSegments } from '../objects/LineSegments';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Color } from '../math/Color';
 
 class PolarGridHelper extends LineSegments {
-
 	constructor( radius = 10, radials = 16, circles = 8, divisions = 64, color1 = 0x444444, color2 = 0x888888 ) {
-
 		color1 = new Color( color1 );
 		color2 = new Color( color2 );
 
@@ -17,7 +15,6 @@ class PolarGridHelper extends LineSegments {
 		// create the radials
 
 		for ( let i = 0; i <= radials; i ++ ) {
-
 			const v = ( i / radials ) * ( Math.PI * 2 );
 
 			const x = Math.sin( v ) * radius;
@@ -30,19 +27,16 @@ class PolarGridHelper extends LineSegments {
 
 			colors.push( color.r, color.g, color.b );
 			colors.push( color.r, color.g, color.b );
-
 		}
 
 		// create the circles
 
 		for ( let i = 0; i <= circles; i ++ ) {
-
 			const color = ( i & 1 ) ? color1 : color2;
 
 			const r = radius - ( radius / circles * i );
 
 			for ( let j = 0; j < divisions; j ++ ) {
-
 				// first vertex
 
 				let v = ( j / divisions ) * ( Math.PI * 2 );
@@ -62,9 +56,7 @@ class PolarGridHelper extends LineSegments {
 
 				vertices.push( x, 0, z );
 				colors.push( color.r, color.g, color.b );
-
 			}
-
 		}
 
 		const geometry = new BufferGeometry();
@@ -76,9 +68,7 @@ class PolarGridHelper extends LineSegments {
 		super( geometry, material );
 
 		this.type = 'PolarGridHelper';
-
 	}
-
 }
 
 

@@ -1,13 +1,13 @@
-import { Camera } from '../cameras/Camera.js';
-import { Vector3 } from '../math/Vector3.js';
-import { LineSegments } from '../objects/LineSegments.js';
-import { Color } from '../math/Color.js';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial.js';
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
+import { Camera } from '../cameras/Camera';
+import { Vector3 } from '../math/Vector3';
+import { LineSegments } from '../objects/LineSegments';
+import { Color } from '../math/Color';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
 
-const _vector = /*@__PURE__*/ new Vector3();
-const _camera = /*@__PURE__*/ new Camera();
+const _vector = /* @__PURE__*/ new Vector3();
+const _camera = /* @__PURE__*/ new Camera();
 
 /**
  *	- shows frustum, line of sight and up of the camera
@@ -17,9 +17,7 @@ const _camera = /*@__PURE__*/ new Camera();
  */
 
 class CameraHelper extends LineSegments {
-
 	constructor( camera ) {
-
 		const geometry = new BufferGeometry();
 		const material = new LineBasicMaterial( { color: 0xffffff, vertexColors: true, toneMapped: false } );
 
@@ -84,25 +82,19 @@ class CameraHelper extends LineSegments {
 		addLine( 'cf3', 'cf4', colorCross );
 
 		function addLine( a, b, color ) {
-
 			addPoint( a, color );
 			addPoint( b, color );
-
 		}
 
 		function addPoint( id, color ) {
-
 			vertices.push( 0, 0, 0 );
 			colors.push( color.r, color.g, color.b );
 
 			if ( pointMap[ id ] === undefined ) {
-
 				pointMap[ id ] = [];
-
 			}
 
 			pointMap[ id ].push( ( vertices.length / 3 ) - 1 );
-
 		}
 
 		geometry.setAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
@@ -121,15 +113,13 @@ class CameraHelper extends LineSegments {
 		this.pointMap = pointMap;
 
 		this.update();
-
 	}
 
 	update() {
-
 		const geometry = this.geometry;
 		const pointMap = this.pointMap;
 
-		const w = 1, h = 1;
+		const w = 1; const h = 1;
 
 		// we need just camera projection matrix inverse
 		// world matrix must be identity
@@ -174,37 +164,22 @@ class CameraHelper extends LineSegments {
 		setPoint( 'cn4', pointMap, geometry, _camera, 0, h, - 1 );
 
 		geometry.getAttribute( 'position' ).needsUpdate = true;
-
 	}
-
-	dispose() {
-
-		this.geometry.dispose();
-		this.material.dispose();
-
-	}
-
 }
 
 
 function setPoint( point, pointMap, geometry, camera, x, y, z ) {
-
 	_vector.set( x, y, z ).unproject( camera );
 
 	const points = pointMap[ point ];
 
 	if ( points !== undefined ) {
-
 		const position = geometry.getAttribute( 'position' );
 
 		for ( let i = 0, l = points.length; i < l; i ++ ) {
-
 			position.setXYZ( points[ i ], _vector.x, _vector.y, _vector.z );
-
 		}
-
 	}
-
 }
 
 export { CameraHelper };

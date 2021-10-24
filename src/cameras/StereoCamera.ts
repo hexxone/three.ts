@@ -1,14 +1,12 @@
-import { Matrix4 } from '../math/Matrix4.js';
-import * as MathUtils from '../math/MathUtils.js';
-import { PerspectiveCamera } from './PerspectiveCamera.js';
+import { Matrix4 } from '../math/Matrix4';
+import { MathUtils } from '../math/MathUtils';
+import { PerspectiveCamera } from './PerspectiveCamera';
 
-const _eyeRight = /*@__PURE__*/ new Matrix4();
-const _eyeLeft = /*@__PURE__*/ new Matrix4();
+const _eyeRight = new Matrix4();
+const _eyeLeft = new Matrix4();
 
 class StereoCamera {
-
 	constructor() {
-
 		this.type = 'StereoCamera';
 
 		this.aspect = 1;
@@ -30,13 +28,11 @@ class StereoCamera {
 			near: null,
 			far: null,
 			zoom: null,
-			eyeSep: null
+			eyeSep: null,
 		};
-
 	}
 
 	update( camera ) {
-
 		const cache = this._cache;
 
 		const needsUpdate = cache.focus !== camera.focus || cache.fov !== camera.fov ||
@@ -44,7 +40,6 @@ class StereoCamera {
 			cache.far !== camera.far || cache.zoom !== camera.zoom || cache.eyeSep !== this.eyeSep;
 
 		if ( needsUpdate ) {
-
 			cache.focus = camera.focus;
 			cache.fov = camera.fov;
 			cache.aspect = camera.aspect * this.aspect;
@@ -60,7 +55,7 @@ class StereoCamera {
 			const eyeSepHalf = cache.eyeSep / 2;
 			const eyeSepOnProjection = eyeSepHalf * cache.near / cache.focus;
 			const ymax = ( cache.near * Math.tan( MathUtils.DEG2RAD * cache.fov * 0.5 ) ) / cache.zoom;
-			let xmin, xmax;
+			let xmin; let xmax;
 
 			// translate xOffset
 
@@ -86,14 +81,11 @@ class StereoCamera {
 			projectionMatrix.elements[ 8 ] = ( xmax + xmin ) / ( xmax - xmin );
 
 			this.cameraR.projectionMatrix.copy( projectionMatrix );
-
 		}
 
 		this.cameraL.matrixWorld.copy( camera.matrixWorld ).multiply( _eyeLeft );
 		this.cameraR.matrixWorld.copy( camera.matrixWorld ).multiply( _eyeRight );
-
 	}
-
 }
 
 export { StereoCamera };

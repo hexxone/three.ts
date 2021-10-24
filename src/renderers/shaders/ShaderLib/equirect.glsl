@@ -5,13 +5,12 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vWorldDirection = transformDirection( position, modelMatrix );
+vWorldDirection = transformDirection(position, modelMatrix);
 
 	#include <begin_vertex>
 	#include <project_vertex>
 
-}
-`;
+};
 
 export const fragment = /* glsl */`
 uniform sampler2D tEquirect;
@@ -22,16 +21,15 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vec3 direction = normalize( vWorldDirection );
+vec3 direction = normalize(vWorldDirection);
 
-	vec2 sampleUV = equirectUv( direction );
+vec2 sampleUV = equirectUv(direction);
 
-	vec4 texColor = texture2D( tEquirect, sampleUV );
+vec4 texColor = texture2D(tEquirect, sampleUV);
 
-	gl_FragColor = mapTexelToLinear( texColor );
+gl_FragColor = mapTexelToLinear(texColor);
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>
 
-}
-`;
+};

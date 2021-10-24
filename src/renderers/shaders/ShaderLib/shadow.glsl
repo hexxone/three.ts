@@ -22,8 +22,7 @@ void main() {
 	#include <shadowmap_vertex>
 	#include <fog_vertex>
 
-}
-`;
+};
 
 export const fragment = /* glsl */`
 uniform vec3 color;
@@ -39,11 +38,10 @@ uniform float opacity;
 
 void main() {
 
-	gl_FragColor = vec4( color, opacity * ( 1.0 - getShadowMask() ) );
+gl_FragColor = vec4(color, opacity * (1.0 - getShadowMask()));
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>
 	#include <fog_fragment>
 
-}
-`;
+};

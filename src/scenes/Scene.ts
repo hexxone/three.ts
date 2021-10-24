@@ -1,9 +1,7 @@
-import { Object3D } from '../core/Object3D.js';
+import { Object3D } from '../core/Object3D';
 
 class Scene extends Object3D {
-
 	constructor() {
-
 		super();
 
 		this.type = 'Scene';
@@ -17,15 +15,11 @@ class Scene extends Object3D {
 		this.autoUpdate = true; // checked by the renderer
 
 		if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
-
 			__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
-
 		}
-
 	}
 
 	copy( source, recursive ) {
-
 		super.copy( source, recursive );
 
 		if ( source.background !== null ) this.background = source.background.clone();
@@ -38,19 +32,17 @@ class Scene extends Object3D {
 		this.matrixAutoUpdate = source.matrixAutoUpdate;
 
 		return this;
-
 	}
 
 	toJSON( meta ) {
-
 		const data = super.toJSON( meta );
 
+		if ( this.background !== null ) data.object.background = this.background.toJSON( meta );
+		if ( this.environment !== null ) data.object.environment = this.environment.toJSON( meta );
 		if ( this.fog !== null ) data.object.fog = this.fog.toJSON();
 
 		return data;
-
 	}
-
 }
 
 Scene.prototype.isScene = true;

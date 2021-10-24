@@ -1,10 +1,19 @@
-import { Curve } from '../core/Curve.js';
-import { Vector2 } from '../../math/Vector2.js';
+import { Curve } from '../core/Curve';
+import { Vector2 } from '../../math/Vector2';
 
 class EllipseCurve extends Curve {
+	type: string;
+	aX: number;
+	aY: number;
+	xRadius: number;
+	yRadius: number;
+	aStartAngle: number;
+	aEndAngle: number;
+	aClockwise: boolean;
+	aRotation: number;
+	isEllipseCurve: boolean;
 
 	constructor( aX = 0, aY = 0, xRadius = 1, yRadius = 1, aStartAngle = 0, aEndAngle = Math.PI * 2, aClockwise = false, aRotation = 0 ) {
-
 		super();
 
 		this.type = 'EllipseCurve';
@@ -21,11 +30,9 @@ class EllipseCurve extends Curve {
 		this.aClockwise = aClockwise;
 
 		this.aRotation = aRotation;
-
 	}
 
-	getPoint( t, optionalTarget ) {
-
+	getPoint( t, optionalTarget? ) {
 		const point = optionalTarget || new Vector2();
 
 		const twoPi = Math.PI * 2;
@@ -37,31 +44,19 @@ class EllipseCurve extends Curve {
 		while ( deltaAngle > twoPi ) deltaAngle -= twoPi;
 
 		if ( deltaAngle < Number.EPSILON ) {
-
 			if ( samePoints ) {
-
 				deltaAngle = 0;
-
 			} else {
-
 				deltaAngle = twoPi;
-
 			}
-
 		}
 
 		if ( this.aClockwise === true && ! samePoints ) {
-
 			if ( deltaAngle === twoPi ) {
-
 				deltaAngle = - twoPi;
-
 			} else {
-
 				deltaAngle = deltaAngle - twoPi;
-
 			}
-
 		}
 
 		const angle = this.aStartAngle + t * deltaAngle;
@@ -69,7 +64,6 @@ class EllipseCurve extends Curve {
 		let y = this.aY + this.yRadius * Math.sin( angle );
 
 		if ( this.aRotation !== 0 ) {
-
 			const cos = Math.cos( this.aRotation );
 			const sin = Math.sin( this.aRotation );
 
@@ -79,15 +73,12 @@ class EllipseCurve extends Curve {
 			// Rotate the point about the center of the ellipse.
 			x = tx * cos - ty * sin + this.aX;
 			y = tx * sin + ty * cos + this.aY;
-
 		}
 
 		return point.set( x, y );
-
 	}
 
 	copy( source ) {
-
 		super.copy( source );
 
 		this.aX = source.aX;
@@ -104,11 +95,9 @@ class EllipseCurve extends Curve {
 		this.aRotation = source.aRotation;
 
 		return this;
-
 	}
 
 	toJSON() {
-
 		const data = super.toJSON();
 
 		data.aX = this.aX;
@@ -125,11 +114,9 @@ class EllipseCurve extends Curve {
 		data.aRotation = this.aRotation;
 
 		return data;
-
 	}
 
 	fromJSON( json ) {
-
 		super.fromJSON( json );
 
 		this.aX = json.aX;
@@ -146,9 +133,7 @@ class EllipseCurve extends Curve {
 		this.aRotation = json.aRotation;
 
 		return this;
-
 	}
-
 }
 
 EllipseCurve.prototype.isEllipseCurve = true;

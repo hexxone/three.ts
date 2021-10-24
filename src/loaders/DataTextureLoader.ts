@@ -1,7 +1,7 @@
-import { LinearFilter, LinearMipmapLinearFilter, ClampToEdgeWrapping } from '../constants.js';
-import { FileLoader } from './FileLoader.js';
-import { DataTexture } from '../textures/DataTexture.js';
-import { Loader } from './Loader.js';
+import { LinearFilter, LinearMipmapLinearFilter, ClampToEdgeWrapping } from '../constants';
+import { FileLoader } from './FileLoader';
+import { DataTexture } from '../textures/DataTexture';
+import { Loader } from './Loader';
 
 /**
  * Abstract Base class to load generic binary textures formats (rgbe, hdr, ...)
@@ -9,16 +9,15 @@ import { Loader } from './Loader.js';
  * Sub classes have to implement the parse() method which will be used in load().
  */
 
-class DataTextureLoader extends Loader {
+function DataTextureLoader( manager ) {
+	Loader.call( this, manager );
+}
 
-	constructor( manager ) {
+DataTextureLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
 
-		super( manager );
+	constructor: DataTextureLoader,
 
-	}
-
-	load( url, onLoad, onProgress, onError ) {
-
+	load: function( url, onLoad, onProgress, onError ) {
 		const scope = this;
 
 		const texture = new DataTexture();
@@ -28,22 +27,17 @@ class DataTextureLoader extends Loader {
 		loader.setRequestHeader( this.requestHeader );
 		loader.setPath( this.path );
 		loader.setWithCredentials( scope.withCredentials );
-		loader.load( url, function ( buffer ) {
-
+		loader.load( url, function( buffer ) {
 			const texData = scope.parse( buffer );
 
 			if ( ! texData ) return;
 
 			if ( texData.image !== undefined ) {
-
 				texture.image = texData.image;
-
 			} else if ( texData.data !== undefined ) {
-
 				texture.image.width = texData.width;
 				texture.image.height = texData.height;
 				texture.image.data = texData.data;
-
 			}
 
 			texture.wrapS = texData.wrapS !== undefined ? texData.wrapS : ClampToEdgeWrapping;
@@ -55,60 +49,40 @@ class DataTextureLoader extends Loader {
 			texture.anisotropy = texData.anisotropy !== undefined ? texData.anisotropy : 1;
 
 			if ( texData.encoding !== undefined ) {
-
 				texture.encoding = texData.encoding;
-
 			}
 
 			if ( texData.flipY !== undefined ) {
-
 				texture.flipY = texData.flipY;
-
 			}
 
 			if ( texData.format !== undefined ) {
-
 				texture.format = texData.format;
-
 			}
 
 			if ( texData.type !== undefined ) {
-
 				texture.type = texData.type;
-
 			}
 
 			if ( texData.mipmaps !== undefined ) {
-
 				texture.mipmaps = texData.mipmaps;
 				texture.minFilter = LinearMipmapLinearFilter; // presumably...
-
 			}
 
 			if ( texData.mipmapCount === 1 ) {
-
 				texture.minFilter = LinearFilter;
-
-			}
-
-			if ( texData.generateMipmaps !== undefined ) {
-
-				texture.generateMipmaps = texData.generateMipmaps;
-
 			}
 
 			texture.needsUpdate = true;
 
 			if ( onLoad ) onLoad( texture, texData );
-
 		}, onProgress, onError );
 
 
 		return texture;
+	},
 
-	}
-
-}
+} );
 
 
 export { DataTextureLoader };

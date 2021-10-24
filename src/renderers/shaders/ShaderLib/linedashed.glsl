@@ -13,7 +13,7 @@ varying float vLineDistance;
 
 void main() {
 
-	vLineDistance = scale * lineDistance;
+vLineDistance = scale * lineDistance;
 
 	#include <color_vertex>
 	#include <begin_vertex>
@@ -23,8 +23,7 @@ void main() {
 	#include <clipping_planes_vertex>
 	#include <fog_vertex>
 
-}
-`;
+};
 
 export const fragment = /* glsl */`
 uniform vec3 diffuse;
@@ -45,19 +44,19 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	if ( mod( vLineDistance, totalSize ) > dashSize ) {
+if(mod(vLineDistance, totalSize) > dashSize) {
 
-		discard;
+discard;
 
-	}
+}
 
-	vec3 outgoingLight = vec3( 0.0 );
-	vec4 diffuseColor = vec4( diffuse, opacity );
+vec3 outgoingLight = vec3(0.0);
+vec4 diffuseColor = vec4(diffuse, opacity);
 
 	#include <logdepthbuf_fragment>
 	#include <color_fragment>
 
-	outgoingLight = diffuseColor.rgb; // simple shader
+outgoingLight = diffuseColor.rgb; // simple shader
 
 	#include <output_fragment>
 	#include <tonemapping_fragment>
@@ -65,5 +64,4 @@ void main() {
 	#include <fog_fragment>
 	#include <premultiplied_alpha_fragment>
 
-}
-`;
+};

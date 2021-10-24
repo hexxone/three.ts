@@ -1,11 +1,9 @@
-import { Mesh } from '../objects/Mesh.js';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial.js';
-import { SphereGeometry } from '../geometries/SphereGeometry.js';
+import { Mesh } from '../objects/Mesh';
+import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
+import { SphereGeometry } from '../geometries/SphereGeometry';
 
 class PointLightHelper extends Mesh {
-
 	constructor( light, sphereSize, color ) {
-
 		const geometry = new SphereGeometry( sphereSize, 4, 2 );
 		const material = new MeshBasicMaterial( { wireframe: true, fog: false, toneMapped: false } );
 
@@ -46,26 +44,18 @@ class PointLightHelper extends Mesh {
 
 	this.add( this.lightDistance );
 	*/
-
 	}
 
 	dispose() {
-
 		this.geometry.dispose();
 		this.material.dispose();
-
 	}
 
 	update() {
-
 		if ( this.color !== undefined ) {
-
 			this.material.color.set( this.color );
-
 		} else {
-
 			this.material.color.copy( this.light.color );
-
 		}
 
 		/*
@@ -82,9 +72,7 @@ class PointLightHelper extends Mesh {
 
 		}
 		*/
-
 	}
-
 }
 
 

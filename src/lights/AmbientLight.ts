@@ -1,17 +1,11 @@
-import { Light } from './Light.js';
+import { Light } from './Light';
 
-class AmbientLight extends Light {
+export class AmbientLight extends Light {
+	constructor(color, intensity) {
+		super(color, intensity);
 
-	constructor( color, intensity ) {
-
-		super( color, intensity );
+		Object.defineProperty(this, 'isAmbientLight', { value: true });
 
 		this.type = 'AmbientLight';
-
 	}
-
 }
-
-AmbientLight.prototype.isAmbientLight = true;
-
-export { AmbientLight };

@@ -1,17 +1,13 @@
-import { Object3D } from '../core/Object3D.js';
+import { Object3D } from '../core/Object3D';
 
 class Group extends Object3D {
-
 	constructor() {
-
 		super();
 
 		this.type = 'Group';
 
+		Object.defineProperty(this, 'isGroup', { value: true });
 	}
-
 }
-
-Group.prototype.isGroup = true;
 
 export { Group };

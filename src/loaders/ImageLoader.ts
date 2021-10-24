@@ -1,17 +1,12 @@
-import { Cache } from './Cache.js';
-import { Loader } from './Loader.js';
-import { createElementNS } from '../utils.js';
+import { Cache } from './Cache';
+import { Loader } from './Loader';
 
 class ImageLoader extends Loader {
-
 	constructor( manager ) {
-
 		super( manager );
-
 	}
 
 	load( url, onLoad, onProgress, onError ) {
-
 		if ( this.path !== undefined ) url = this.path + url;
 
 		url = this.manager.resolveURL( url );
@@ -21,60 +16,45 @@ class ImageLoader extends Loader {
 		const cached = Cache.get( url );
 
 		if ( cached !== undefined ) {
-
 			scope.manager.itemStart( url );
 
-			setTimeout( function () {
-
+			setTimeout( function() {
 				if ( onLoad ) onLoad( cached );
 
 				scope.manager.itemEnd( url );
-
 			}, 0 );
 
 			return cached;
-
 		}
 
-		const image = createElementNS( 'img' );
+		const image = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'img' );
 
 		function onImageLoad() {
-
-			removeEventListeners();
+			image.removeEventListener( 'load', onImageLoad, false );
+			image.removeEventListener( 'error', onImageError, false );
 
 			Cache.add( url, this );
 
 			if ( onLoad ) onLoad( this );
 
 			scope.manager.itemEnd( url );
-
 		}
 
 		function onImageError( event ) {
-
-			removeEventListeners();
+			image.removeEventListener( 'load', onImageLoad, false );
+			image.removeEventListener( 'error', onImageError, false );
 
 			if ( onError ) onError( event );
 
 			scope.manager.itemError( url );
 			scope.manager.itemEnd( url );
-
-		}
-
-		function removeEventListeners() {
-
-			image.removeEventListener( 'load', onImageLoad, false );
-			image.removeEventListener( 'error', onImageError, false );
-
 		}
 
 		image.addEventListener( 'load', onImageLoad, false );
 		image.addEventListener( 'error', onImageError, false );
 
 		if ( url.substr( 0, 5 ) !== 'data:' ) {
-
 			if ( this.crossOrigin !== undefined ) image.crossOrigin = this.crossOrigin;
-
 		}
 
 		scope.manager.itemStart( url );
@@ -82,9 +62,7 @@ class ImageLoader extends Loader {
 		image.src = url;
 
 		return image;
-
 	}
-
 }
 
 

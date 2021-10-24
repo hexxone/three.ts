@@ -1,5 +1,5 @@
-import { Material } from './Material.js';
-import { Vector3 } from '../math/Vector3.js';
+import { Material } from './Material';
+import { Vector3 } from '../math/Vector3';
 
 /**
  * parameters = {
@@ -7,6 +7,9 @@ import { Vector3 } from '../math/Vector3.js';
  *  referencePosition: <float>,
  *  nearDistance: <float>,
  *  farDistance: <float>,
+ *
+ *  skinning: <bool>,
+ *  morphTargets: <bool>,
  *
  *  map: new THREE.Texture( <Image> ),
  *
@@ -21,15 +24,23 @@ import { Vector3 } from '../math/Vector3.js';
 
 class MeshDistanceMaterial extends Material {
 
-	constructor( parameters ) {
+	referencePosition: Vector3;
+	nearDistance: number;
+	farDistance: number;
 
+	constructor(parameters) {
 		super();
+
+		Object.defineProperty(this, 'isMeshDistanceMaterial', { value: true });
 
 		this.type = 'MeshDistanceMaterial';
 
 		this.referencePosition = new Vector3();
 		this.nearDistance = 1;
 		this.farDistance = 1000;
+
+		this.skinning = false;
+		this.morphTargets = false;
 
 		this.map = null;
 
@@ -41,17 +52,18 @@ class MeshDistanceMaterial extends Material {
 
 		this.fog = false;
 
-		this.setValues( parameters );
-
+		this.setValues(parameters);
 	}
 
-	copy( source ) {
+	copy(source) {
+		super.copy(source);
 
-		super.copy( source );
-
-		this.referencePosition.copy( source.referencePosition );
+		this.referencePosition.copy(source.referencePosition);
 		this.nearDistance = source.nearDistance;
 		this.farDistance = source.farDistance;
+
+		this.skinning = source.skinning;
+		this.morphTargets = source.morphTargets;
 
 		this.map = source.map;
 
@@ -62,11 +74,7 @@ class MeshDistanceMaterial extends Material {
 		this.displacementBias = source.displacementBias;
 
 		return this;
-
 	}
-
 }
-
-MeshDistanceMaterial.prototype.isMeshDistanceMaterial = true;
 
 export { MeshDistanceMaterial };

@@ -1,7 +1,7 @@
-import { TangentSpaceNormalMap } from '../constants.js';
-import { Material } from './Material.js';
-import { Vector2 } from '../math/Vector2.js';
-import { Color } from '../math/Color.js';
+import { TangentSpaceNormalMap } from '../constants';
+import { Material } from './Material';
+import { Vector2 } from '../math/Vector2';
+import { Color } from '../math/Color';
 
 /**
  * parameters = {
@@ -25,17 +25,22 @@ import { Color } from '../math/Color.js';
  *
  *  alphaMap: new THREE.Texture( <Image> ),
  *
+ *  skinning: <bool>,
+ *  morphTargets: <bool>,
+ *  morphNormals: <bool>
+ *
  *  flatShading: <bool>
  * }
  */
 
 class MeshMatcapMaterial extends Material {
 
+	defines: { MATCAP: string; };
+
 	constructor( parameters ) {
-
 		super();
-
-		this.defines = { 'MATCAP': '' };
+		
+		Object.defineProperty(this, 'isMeshMatcapMaterial', { value: true });
 
 		this.type = 'MeshMatcapMaterial';
 
@@ -58,15 +63,19 @@ class MeshMatcapMaterial extends Material {
 
 		this.alphaMap = null;
 
+		this.skinning = false;
+		this.morphTargets = false;
+		this.morphNormals = false;
+
 		this.flatShading = false;
 
-		this.setValues( parameters );
+		this.defines = { 'MATCAP': '' };
 
+		this.setValues( parameters );
 	}
 
 
 	copy( source ) {
-
 		super.copy( source );
 
 		this.defines = { 'MATCAP': '' };
@@ -90,14 +99,14 @@ class MeshMatcapMaterial extends Material {
 
 		this.alphaMap = source.alphaMap;
 
+		this.skinning = source.skinning;
+		this.morphTargets = source.morphTargets;
+		this.morphNormals = source.morphNormals;
+
 		this.flatShading = source.flatShading;
 
 		return this;
-
 	}
-
 }
-
-MeshMatcapMaterial.prototype.isMeshMatcapMaterial = true;
 
 export { MeshMatcapMaterial };

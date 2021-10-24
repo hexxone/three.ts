@@ -1,6 +1,6 @@
-import { ZeroCurvatureEnding } from '../../constants.js';
-import { Interpolant } from '../Interpolant.js';
-import { WrapAroundEnding, ZeroSlopeEnding } from '../../constants.js';
+import { ZeroCurvatureEnding } from '../../constants';
+import { Interpolant } from '../Interpolant';
+import { WrapAroundEnding, ZeroSlopeEnding } from '../../constants';
 
 /**
  * Fast and simple cubic spline interpolant.
@@ -12,37 +12,35 @@ import { WrapAroundEnding, ZeroSlopeEnding } from '../../constants.js';
 
 class CubicInterpolant extends Interpolant {
 
-	constructor( parameterPositions, sampleValues, sampleSize, resultBuffer ) {
+	_weightPrev: number = - 0;
+	_offsetPrev: number = - 0;
+	_weightNext: number = - 0;
+	_offsetNext: number = - 0;
 
-		super( parameterPositions, sampleValues, sampleSize, resultBuffer );
+	DefaultSettings_: {
+		endingStart: number,
+		endingEnd: number,
+	};
 
-		this._weightPrev = - 0;
-		this._offsetPrev = - 0;
-		this._weightNext = - 0;
-		this._offsetNext = - 0;
+	constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
+		super(parameterPositions, sampleValues, sampleSize, resultBuffer);
 
 		this.DefaultSettings_ = {
-
 			endingStart: ZeroCurvatureEnding,
-			endingEnd: ZeroCurvatureEnding
-
+			endingEnd: ZeroCurvatureEnding,
 		};
-
 	}
 
-	intervalChanged_( i1, t0, t1 ) {
-
+	intervalChanged_(i1, t0, t1) {
 		const pp = this.parameterPositions;
-		let iPrev = i1 - 2,
-			iNext = i1 + 1,
+		let iPrev = i1 - 2;
+		let iNext = i1 + 1;
 
-			tPrev = pp[ iPrev ],
-			tNext = pp[ iNext ];
+		let tPrev = pp[iPrev];
+		let tNext = pp[iNext];
 
-		if ( tPrev === undefined ) {
-
-			switch ( this.getSettings_().endingStart ) {
-
+		if (tPrev === undefined) {
+			switch (this.getSettings_().endingStart) {
 				case ZeroSlopeEnding:
 
 					// f'(t0) = 0
@@ -55,7 +53,7 @@ class CubicInterpolant extends Interpolant {
 
 					// use the other end of the curve
 					iPrev = pp.length - 2;
-					tPrev = t0 + pp[ iPrev ] - pp[ iPrev + 1 ];
+					tPrev = t0 + pp[iPrev] - pp[iPrev + 1];
 
 					break;
 
@@ -64,15 +62,11 @@ class CubicInterpolant extends Interpolant {
 					// f''(t0) = 0 a.k.a. Natural Spline
 					iPrev = i1;
 					tPrev = t1;
-
 			}
-
 		}
 
-		if ( tNext === undefined ) {
-
-			switch ( this.getSettings_().endingEnd ) {
-
+		if (tNext === undefined) {
+			switch (this.getSettings_().endingEnd) {
 				case ZeroSlopeEnding:
 
 					// f'(tN) = 0
@@ -85,7 +79,7 @@ class CubicInterpolant extends Interpolant {
 
 					// use the other end of the curve
 					iNext = 1;
-					tNext = t1 + pp[ 1 ] - pp[ 0 ];
+					tNext = t1 + pp[1] - pp[0];
 
 					break;
 
@@ -94,56 +88,49 @@ class CubicInterpolant extends Interpolant {
 					// f''(tN) = 0, a.k.a. Natural Spline
 					iNext = i1 - 1;
 					tNext = t0;
-
 			}
-
 		}
 
-		const halfDt = ( t1 - t0 ) * 0.5,
-			stride = this.valueSize;
+		const halfDt = (t1 - t0) * 0.5;
+		const stride = this.valueSize;
 
-		this._weightPrev = halfDt / ( t0 - tPrev );
-		this._weightNext = halfDt / ( tNext - t1 );
+		this._weightPrev = halfDt / (t0 - tPrev);
+		this._weightNext = halfDt / (tNext - t1);
 		this._offsetPrev = iPrev * stride;
 		this._offsetNext = iNext * stride;
-
 	}
 
-	interpolate_( i1, t0, t, t1 ) {
+	interpolate_(i1, t0, t, t1) {
+		const result = this.resultBuffer;
+		const values = this.sampleValues;
+		const stride = this.valueSize;
 
-		const result = this.resultBuffer,
-			values = this.sampleValues,
-			stride = this.valueSize,
+		const o1 = i1 * stride; const o0 = o1 - stride;
+		const oP = this._offsetPrev; const oN = this._offsetNext;
+		const wP = this._weightPrev; const wN = this._weightNext;
 
-			o1 = i1 * stride,		o0 = o1 - stride,
-			oP = this._offsetPrev, 	oN = this._offsetNext,
-			wP = this._weightPrev,	wN = this._weightNext,
-
-			p = ( t - t0 ) / ( t1 - t0 ),
-			pp = p * p,
-			ppp = pp * p;
+		const p = (t - t0) / (t1 - t0);
+		const pp = p * p;
+		const ppp = pp * p;
 
 		// evaluate polynomials
 
 		const sP = - wP * ppp + 2 * wP * pp - wP * p;
-		const s0 = ( 1 + wP ) * ppp + ( - 1.5 - 2 * wP ) * pp + ( - 0.5 + wP ) * p + 1;
-		const s1 = ( - 1 - wN ) * ppp + ( 1.5 + wN ) * pp + 0.5 * p;
+		const s0 = (1 + wP) * ppp + (- 1.5 - 2 * wP) * pp + (- 0.5 + wP) * p + 1;
+		const s1 = (- 1 - wN) * ppp + (1.5 + wN) * pp + 0.5 * p;
 		const sN = wN * ppp - wN * pp;
 
 		// combine data linearly
 
-		for ( let i = 0; i !== stride; ++ i ) {
-
-			result[ i ] =
-					sP * values[ oP + i ] +
-					s0 * values[ o0 + i ] +
-					s1 * values[ o1 + i ] +
-					sN * values[ oN + i ];
-
+		for (let i = 0; i !== stride; ++i) {
+			result[i] =
+				sP * values[oP + i] +
+				s0 * values[o0 + i] +
+				s1 * values[o1 + i] +
+				sN * values[oN + i];
 		}
 
 		return result;
-
 	}
 
 }

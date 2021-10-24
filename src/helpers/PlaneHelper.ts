@@ -1,18 +1,16 @@
-import { Line } from '../objects/Line.js';
-import { Mesh } from '../objects/Mesh.js';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial.js';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial.js';
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { FrontSide, BackSide } from '../constants.js';
+import { Line } from '../objects/Line';
+import { Mesh } from '../objects/Mesh';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { FrontSide, BackSide } from '../constants';
 
 class PlaneHelper extends Line {
-
 	constructor( plane, size = 1, hex = 0xffff00 ) {
-
 		const color = hex;
 
-		const positions = [ 1, - 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, - 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0 ];
+		const positions = [1, - 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, - 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0];
 
 		const geometry = new BufferGeometry();
 		geometry.setAttribute( 'position', new Float32BufferAttribute( positions, 3 ) );
@@ -26,18 +24,16 @@ class PlaneHelper extends Line {
 
 		this.size = size;
 
-		const positions2 = [ 1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, 1, 1, - 1, - 1, 1, 1, - 1, 1 ];
+		const positions2 = [1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, 1, 1, - 1, - 1, 1, 1, - 1, 1];
 
 		const geometry2 = new BufferGeometry();
 		geometry2.setAttribute( 'position', new Float32BufferAttribute( positions2, 3 ) );
 		geometry2.computeBoundingSphere();
 
 		this.add( new Mesh( geometry2, new MeshBasicMaterial( { color: color, opacity: 0.2, transparent: true, depthWrite: false, toneMapped: false } ) ) );
-
 	}
 
 	updateMatrixWorld( force ) {
-
 		let scale = - this.plane.constant;
 
 		if ( Math.abs( scale ) < 1e-8 ) scale = 1e-8; // sign does not matter
@@ -49,9 +45,7 @@ class PlaneHelper extends Line {
 		this.lookAt( this.plane.normal );
 
 		super.updateMatrixWorld( force );
-
 	}
-
 }
 
 export { PlaneHelper };

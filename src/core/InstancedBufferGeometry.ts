@@ -1,46 +1,40 @@
-import { BufferGeometry } from './BufferGeometry.js';
+import { BufferGeometry } from './BufferGeometry';
 
-class InstancedBufferGeometry extends BufferGeometry {
+function InstancedBufferGeometry() {
+	BufferGeometry.call( this );
 
-	constructor() {
+	this.type = 'InstancedBufferGeometry';
+	this.instanceCount = Infinity;
+}
 
-		super();
+InstancedBufferGeometry.prototype = Object.assign( Object.create( BufferGeometry.prototype ), {
 
-		this.type = 'InstancedBufferGeometry';
-		this.instanceCount = Infinity;
+	constructor: InstancedBufferGeometry,
 
-	}
+	isInstancedBufferGeometry: true,
 
-	copy( source ) {
-
-		super.copy( source );
+	copy: function( source ) {
+		BufferGeometry.prototype.copy.call( this, source );
 
 		this.instanceCount = source.instanceCount;
 
 		return this;
+	},
 
-	}
-
-	clone() {
-
+	clone: function() {
 		return new this.constructor().copy( this );
+	},
 
-	}
-
-	toJSON() {
-
-		const data = super.toJSON( this );
+	toJSON: function() {
+		const data = BufferGeometry.prototype.toJSON.call( this );
 
 		data.instanceCount = this.instanceCount;
 
 		data.isInstancedBufferGeometry = true;
 
 		return data;
+	},
 
-	}
-
-}
-
-InstancedBufferGeometry.prototype.isInstancedBufferGeometry = true;
+} );
 
 export { InstancedBufferGeometry };

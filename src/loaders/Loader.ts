@@ -1,9 +1,14 @@
-import { DefaultLoadingManager } from './LoadingManager.js';
+import { DefaultLoadingManager } from './LoadingManager';
 
 class Loader {
+	manager: any;
+	crossOrigin: string;
+	withCredentials: boolean;
+	path: string;
+	resourcePath: string;
+	requestHeader: {};
 
-	constructor( manager ) {
-
+	constructor( manager? ) {
 		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 
 		this.crossOrigin = 'anonymous';
@@ -11,60 +16,50 @@ class Loader {
 		this.path = '';
 		this.resourcePath = '';
 		this.requestHeader = {};
-
 	}
 
-	load( /* url, onLoad, onProgress, onError */ ) {}
+
+	load( url, onLoad, onProgress, onError ) {
+		const e = 'Loader.load not implemented!';
+		console.error( e );
+		onError( e );
+		throw e;
+	}
 
 	loadAsync( url, onProgress ) {
-
 		const scope = this;
 
-		return new Promise( function ( resolve, reject ) {
-
+		return new Promise( function( resolve, reject ) {
 			scope.load( url, resolve, onProgress, reject );
-
 		} );
-
 	}
 
-	parse( /* data */ ) {}
+	parse( data ) { }
 
 	setCrossOrigin( crossOrigin ) {
-
 		this.crossOrigin = crossOrigin;
 		return this;
-
 	}
 
 	setWithCredentials( value ) {
-
 		this.withCredentials = value;
 		return this;
-
 	}
 
 	setPath( path ) {
-
 		this.path = path;
 		return this;
-
 	}
 
 	setResourcePath( resourcePath ) {
-
 		this.resourcePath = resourcePath;
 		return this;
-
 	}
 
 	setRequestHeader( requestHeader ) {
-
 		this.requestHeader = requestHeader;
 		return this;
-
 	}
-
 }
 
 export { Loader };

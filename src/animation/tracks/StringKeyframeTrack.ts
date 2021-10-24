@@ -1,10 +1,10 @@
-import { InterpolateDiscrete } from '../../constants.js';
-import { KeyframeTrack } from '../KeyframeTrack.js';
+import { InterpolateDiscrete } from '../../constants';
+import { KeyframeTrack } from '../KeyframeTrack';
 
 /**
  * A Track that interpolates Strings
  */
-class StringKeyframeTrack extends KeyframeTrack {}
+class StringKeyframeTrack extends KeyframeTrack { }
 
 StringKeyframeTrack.prototype.ValueTypeName = 'string';
 StringKeyframeTrack.prototype.ValueBufferType = Array;

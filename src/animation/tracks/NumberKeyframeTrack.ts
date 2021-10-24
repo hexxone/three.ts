@@ -1,9 +1,11 @@
-import { KeyframeTrack } from '../KeyframeTrack.js';
+import { KeyframeTrack } from '../KeyframeTrack';
 
 /**
  * A Track of numeric keyframe values.
  */
-class NumberKeyframeTrack extends KeyframeTrack {}
+class NumberKeyframeTrack extends KeyframeTrack {
+	static parse: any;
+}
 
 NumberKeyframeTrack.prototype.ValueTypeName = 'number';
 // ValueBufferType is inherited

@@ -1,13 +1,11 @@
-import { Float32BufferAttribute } from '../core/BufferAttribute.js';
-import { BufferGeometry } from '../core/BufferGeometry.js';
-import { Vector3 } from '../math/Vector3.js';
-import { Vector2 } from '../math/Vector2.js';
-import * as MathUtils from '../math/MathUtils.js';
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Vector3 } from '../math/Vector3';
+import { Vector2 } from '../math/Vector2';
+import { MathUtils } from '../math/MathUtils';
 
 class LatheGeometry extends BufferGeometry {
-
-	constructor( points = [ new Vector2( 0, 0.5 ), new Vector2( 0.5, 0 ), new Vector2( 0, - 0.5 ) ], segments = 12, phiStart = 0, phiLength = Math.PI * 2 ) {
-
+	constructor( points, segments = 12, phiStart = 0, phiLength = Math.PI * 2 ) {
 		super();
 
 		this.type = 'LatheGeometry';
@@ -16,7 +14,7 @@ class LatheGeometry extends BufferGeometry {
 			points: points,
 			segments: segments,
 			phiStart: phiStart,
-			phiLength: phiLength
+			phiLength: phiLength,
 		};
 
 		segments = Math.floor( segments );
@@ -40,14 +38,12 @@ class LatheGeometry extends BufferGeometry {
 		// generate vertices and uvs
 
 		for ( let i = 0; i <= segments; i ++ ) {
-
 			const phi = phiStart + i * inverseSegments * phiLength;
 
 			const sin = Math.sin( phi );
 			const cos = Math.cos( phi );
 
 			for ( let j = 0; j <= ( points.length - 1 ); j ++ ) {
-
 				// vertex
 
 				vertex.x = points[ j ].x * sin;
@@ -62,18 +58,13 @@ class LatheGeometry extends BufferGeometry {
 				uv.y = j / ( points.length - 1 );
 
 				uvs.push( uv.x, uv.y );
-
-
 			}
-
 		}
 
 		// indices
 
 		for ( let i = 0; i < segments; i ++ ) {
-
 			for ( let j = 0; j < ( points.length - 1 ); j ++ ) {
-
 				const base = j + i * points.length;
 
 				const a = base;
@@ -85,9 +76,7 @@ class LatheGeometry extends BufferGeometry {
 
 				indices.push( a, b, d );
 				indices.push( b, c, d );
-
 			}
-
 		}
 
 		// build geometry
@@ -104,7 +93,6 @@ class LatheGeometry extends BufferGeometry {
 		// because the corresponding vertices are identical (but still have different UVs).
 
 		if ( phiLength === Math.PI * 2 ) {
-
 			const normals = this.attributes.normal.array;
 			const n1 = new Vector3();
 			const n2 = new Vector3();
@@ -115,7 +103,6 @@ class LatheGeometry extends BufferGeometry {
 			const base = segments * points.length * 3;
 
 			for ( let i = 0, j = 0; i < points.length; i ++, j += 3 ) {
-
 				// select the normal of the vertex in the first line
 
 				n1.x = normals[ j + 0 ];
@@ -137,19 +124,9 @@ class LatheGeometry extends BufferGeometry {
 				normals[ j + 0 ] = normals[ base + j + 0 ] = n.x;
 				normals[ j + 1 ] = normals[ base + j + 1 ] = n.y;
 				normals[ j + 2 ] = normals[ base + j + 2 ] = n.z;
-
 			}
-
 		}
-
 	}
-
-	static fromJSON( data ) {
-
-		return new LatheGeometry( data.points, data.segments, data.phiStart, data.phiLength );
-
-	}
-
 }
 
 

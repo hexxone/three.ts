@@ -1,6 +1,6 @@
-import { Material } from './Material.js';
-import { MultiplyOperation } from '../constants.js';
-import { Color } from '../math/Color.js';
+import { Material } from './Material';
+import { MultiplyOperation } from '../constants';
+import { Color } from '../math/Color';
 
 /**
  * parameters = {
@@ -28,18 +28,27 @@ import { Color } from '../math/Color.js';
  *
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>,
+ *
+ *  skinning: <bool>,
+ *  morphTargets: <bool>
  * }
  */
 
 class MeshBasicMaterial extends Material {
 
-	constructor( parameters ) {
+	color: any;
+	opacity: number;
 
+	constructor(parameters?) {
 		super();
+
+		Object.defineProperty(this, 'isMeshBasicMaterial', {
+			value: true
+		});
 
 		this.type = 'MeshBasicMaterial';
 
-		this.color = new Color( 0xffffff ); // emissive
+		this.color = new Color(0xffffff); // emissive
 
 		this.map = null;
 
@@ -63,15 +72,16 @@ class MeshBasicMaterial extends Material {
 		this.wireframeLinecap = 'round';
 		this.wireframeLinejoin = 'round';
 
-		this.setValues( parameters );
+		this.skinning = false;
+		this.morphTargets = false;
 
+		this.setValues(parameters);
 	}
 
-	copy( source ) {
+	copy(source) {
+		super.copy(source);
 
-		super.copy( source );
-
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.map = source.map;
 
@@ -95,12 +105,11 @@ class MeshBasicMaterial extends Material {
 		this.wireframeLinecap = source.wireframeLinecap;
 		this.wireframeLinejoin = source.wireframeLinejoin;
 
+		this.skinning = source.skinning;
+		this.morphTargets = source.morphTargets;
+
 		return this;
-
 	}
-
 }
-
-MeshBasicMaterial.prototype.isMeshBasicMaterial = true;
 
 export { MeshBasicMaterial };

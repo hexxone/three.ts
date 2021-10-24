@@ -1,5 +1,3 @@
-export default /* glsl */`
 #ifdef USE_ALPHATEST
-	uniform float alphaTest;
+uniform float alphaTest;
 #endif
-`;

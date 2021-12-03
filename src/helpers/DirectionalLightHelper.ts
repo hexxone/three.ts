@@ -1,15 +1,15 @@
-import { Vector3 } from '../math/Vector3';
-import { Object3D } from '../core/Object3D';
-import { Line } from '../objects/Line';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { BufferGeometry } from '../core/BufferGeometry';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { BufferGeometry, Float32BufferAttribute, Line, LineBasicMaterial, Object3D, Vector3 } from '../';
 
 const _v1 = /* @__PURE__*/ new Vector3();
 const _v2 = /* @__PURE__*/ new Vector3();
 const _v3 = /* @__PURE__*/ new Vector3();
 
 class DirectionalLightHelper extends Object3D {
+	light: any;
+	color: any;
+	lightPlane: Line;
+	targetLine: Line;
+
 	constructor( light, size, color ) {
 		super();
 		this.light = light;

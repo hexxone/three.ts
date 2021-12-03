@@ -1,6 +1,5 @@
 import { Material } from './Material';
-import { MultiplyOperation } from '../constants';
-import { Color } from '../math/Color';
+import { MultiplyOperation, Color } from '../';
 
 /**
  * parameters = {
@@ -38,14 +37,14 @@ import { Color } from '../math/Color';
  */
 
 class MeshLambertMaterial extends Material {
-	constructor(parameters) {
+	constructor( parameters ) {
 		super();
 
-		Object.defineProperty(this, 'isMeshLambertMaterial', { value: true })
+		this.isMeshLambertMaterial = true;
 
 		this.type = 'MeshLambertMaterial';
 
-		this.color = new Color(0xffffff); // diffuse
+		this.color = new Color( 0xffffff ); // diffuse
 
 		this.map = null;
 
@@ -55,7 +54,7 @@ class MeshLambertMaterial extends Material {
 		this.aoMap = null;
 		this.aoMapIntensity = 1.0;
 
-		this.emissive = new Color(0x000000);
+		this.emissive = new Color( 0x000000 );
 		this.emissiveIntensity = 1.0;
 		this.emissiveMap = null;
 
@@ -77,13 +76,13 @@ class MeshLambertMaterial extends Material {
 		this.morphTargets = false;
 		this.morphNormals = false;
 
-		this.setValues(parameters);
+		this.setValues( parameters );
 	}
 
-	copy(source) {
-		super.copy(source);
+	copy( source: MeshLambertMaterial ) {
+		super.copy( source );
 
-		this.color.copy(source.color);
+		this.color.copy( source.color );
 
 		this.map = source.map;
 
@@ -93,7 +92,7 @@ class MeshLambertMaterial extends Material {
 		this.aoMap = source.aoMap;
 		this.aoMapIntensity = source.aoMapIntensity;
 
-		this.emissive.copy(source.emissive);
+		this.emissive.copy( source.emissive );
 		this.emissiveMap = source.emissiveMap;
 		this.emissiveIntensity = source.emissiveIntensity;
 

@@ -1,5 +1,4 @@
 class Vector4 {
-
 	x: number;
 	y: number;
 	z: number;
@@ -12,8 +11,6 @@ class Vector4 {
 		this.y = y;
 		this.z = z;
 		this.w = w;
-
-		Object.defineProperty(this, 'isVector4', { value: true });
 	}
 
 	get width() {
@@ -100,7 +97,7 @@ class Vector4 {
 		return new Vector4(this.x, this.y, this.z, this.w);
 	}
 
-	copy(v) {
+	copy(v: Vector4) {
 		this.x = v.x;
 		this.y = v.y;
 		this.z = v.z;
@@ -479,7 +476,7 @@ class Vector4 {
 		return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z) && (v.w === this.w));
 	}
 
-	fromArray(array, offset = 0) {
+	fromArray(array: number[], offset = 0) {
 		this.x = array[offset];
 		this.y = array[offset + 1];
 		this.z = array[offset + 2];
@@ -488,7 +485,7 @@ class Vector4 {
 		return this;
 	}
 
-	toArray(array = [], offset = 0) {
+	toArray(array: number[] = [], offset = 0): number[] {
 		array[offset] = this.x;
 		array[offset + 1] = this.y;
 		array[offset + 2] = this.z;

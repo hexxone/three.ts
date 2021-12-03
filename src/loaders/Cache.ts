@@ -1,34 +1,33 @@
-const Cache = {
+class CacheClass {
+	enabled = false;
 
-	enabled: false,
+	files = {};
 
-	files: {},
-
-	add: function( key, file ) {
+	add( key, file ) {
 		if ( this.enabled === false ) return;
 
 		// console.log( 'THREE.Cache', 'Adding key:', key );
 
 		this.files[ key ] = file;
-	},
+	}
 
-	get: function( key ) {
+	get( key ) {
 		if ( this.enabled === false ) return;
 
 		// console.log( 'THREE.Cache', 'Checking key:', key );
 
 		return this.files[ key ];
-	},
+	}
 
-	remove: function( key ) {
+	remove( key ) {
 		delete this.files[ key ];
-	},
+	}
 
-	clear: function() {
+	clear() {
 		this.files = {};
-	},
+	}
+}
 
-};
+const Cache = new CacheClass();
 
-
-export { Cache };
+export { Cache, CacheClass };

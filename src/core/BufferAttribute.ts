@@ -1,8 +1,5 @@
-import { Vector4 } from '../math/Vector4';
-import { Vector3 } from '../math/Vector3';
-import { Vector2 } from '../math/Vector2';
-import { Color } from '../math/Color';
-import { StaticDrawUsage } from '../constants';
+
+import { Color, StaticDrawUsage, Vector2, Vector3, Vector4 } from '../';
 
 const _vector = new Vector3();
 const _vector2 = new Vector2();
@@ -16,6 +13,10 @@ class BufferAttribute {
 	usage: number;
 	updateRange: { offset: number; count: number; };
 	version: number;
+
+	isBufferAttribute = true;
+	isInstancedBufferAttribute: boolean;
+	isInterleavedBufferAttribute: boolean;
 
 	constructor( array, itemSize, normalized? ) {
 		if ( Array.isArray( array ) ) {
@@ -36,9 +37,13 @@ class BufferAttribute {
 	}
 
 
-	isBufferAttribute: true
+	set needsUpdate( value ) {
+		if ( value === true ) this.version ++;
+	}
 
-	onUploadCallback() { }
+	onUploadCallback() {
+
+	}
 
 	setUsage( value ) {
 		this.usage = value;
@@ -299,7 +304,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	clone() {
+	clone( ...args ) {
 		return new BufferAttribute( this.array, this.itemSize ).copy( this );
 	}
 
@@ -313,92 +318,74 @@ class BufferAttribute {
 	}
 }
 
-Object.defineProperty( BufferAttribute.prototype, 'needsUpdate', {
-	set: function( value ) {
-		if ( value === true ) this.version ++;
-	},
-} );
+//
+
+class Int8BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Int8Array( array ), itemSize, normalized );
+	}
+}
+
+class Uint8BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Uint8Array( array ), itemSize, normalized );
+	}
+}
+
+class Uint8ClampedBufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Uint8ClampedArray( array ), itemSize, normalized );
+	}
+}
 
 //
 
-function Int8BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Int8Array( array ), itemSize, normalized );
+class Int16BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Int16Array( array ), itemSize, normalized );
+	}
 }
 
-Int8BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Int8BufferAttribute.prototype.constructor = Int8BufferAttribute;
-
-
-function Uint8BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Uint8Array( array ), itemSize, normalized );
+class Uint16BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Uint16Array( array ), itemSize, normalized );
+	}
 }
 
-Uint8BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Uint8BufferAttribute.prototype.constructor = Uint8BufferAttribute;
+//
 
-
-function Uint8ClampedBufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Uint8ClampedArray( array ), itemSize, normalized );
+class Int32BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Int32Array( array ), itemSize, normalized );
+	}
 }
 
-Uint8ClampedBufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Uint8ClampedBufferAttribute.prototype.constructor = Uint8ClampedBufferAttribute;
 
-
-function Int16BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Int16Array( array ), itemSize, normalized );
+class Uint32BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Uint32Array( array ), itemSize, normalized );
+	}
 }
 
-Int16BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Int16BufferAttribute.prototype.constructor = Int16BufferAttribute;
+//
 
-
-function Uint16BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Uint16Array( array ), itemSize, normalized );
+class Float16BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Uint16Array( array ), itemSize, normalized );
+	}
 }
 
-Uint16BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Uint16BufferAttribute.prototype.constructor = Uint16BufferAttribute;
-
-
-function Int32BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Int32Array( array ), itemSize, normalized );
+class Float32BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Float32Array( array ), itemSize, normalized );
+	}
 }
 
-Int32BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Int32BufferAttribute.prototype.constructor = Int32BufferAttribute;
-
-
-function Uint32BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Uint32Array( array ), itemSize, normalized );
+class Float64BufferAttribute extends BufferAttribute {
+	constructor( array, itemSize, normalized? ) {
+		super( new Float64Array( array ), itemSize, normalized );
+	}
 }
-
-Uint32BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Uint32BufferAttribute.prototype.constructor = Uint32BufferAttribute;
-
-function Float16BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Uint16Array( array ), itemSize, normalized );
-}
-
-Float16BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Float16BufferAttribute.prototype.constructor = Float16BufferAttribute;
-Float16BufferAttribute.prototype.isFloat16BufferAttribute = true;
-
-function Float32BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Float32Array( array ), itemSize, normalized );
-}
-
-Float32BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Float32BufferAttribute.prototype.constructor = Float32BufferAttribute;
-
-
-function Float64BufferAttribute( array, itemSize, normalized? ) {
-	BufferAttribute.call( this, new Float64Array( array ), itemSize, normalized );
-}
-
-Float64BufferAttribute.prototype = Object.create( BufferAttribute.prototype );
-Float64BufferAttribute.prototype.constructor = Float64BufferAttribute;
-
 //
 
 export {

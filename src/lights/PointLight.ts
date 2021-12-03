@@ -5,6 +5,8 @@ class PointLight extends Light {
 	constructor( color, intensity, distance = 0, decay = 1 ) {
 		super( color, intensity );
 
+		this.isPointLight = true;
+
 		this.type = 'PointLight';
 
 		this.distance = distance;
@@ -25,7 +27,7 @@ class PointLight extends Light {
 		this.intensity = power / ( 4 * Math.PI );
 	}
 
-	copy( source ) {
+	copy( source: PointLight ) {
 		super.copy( source );
 
 		this.distance = source.distance;
@@ -36,7 +38,5 @@ class PointLight extends Light {
 		return this;
 	}
 }
-
-PointLight.prototype.isPointLight = true;
 
 export { PointLight };

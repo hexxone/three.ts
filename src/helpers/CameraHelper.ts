@@ -1,10 +1,4 @@
-import { Camera } from '../cameras/Camera';
-import { Vector3 } from '../math/Vector3';
-import { LineSegments } from '../objects/LineSegments';
-import { Color } from '../math/Color';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry, Camera, Color, Float32BufferAttribute, LineBasicMaterial, LineSegments, Vector3 } from '../';
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _camera = /* @__PURE__*/ new Camera();
@@ -17,6 +11,9 @@ const _camera = /* @__PURE__*/ new Camera();
  */
 
 class CameraHelper extends LineSegments {
+	camera: any;
+	pointMap: {};
+
 	constructor( camera ) {
 		const geometry = new BufferGeometry();
 		const material = new LineBasicMaterial( { color: 0xffffff, vertexColors: true, toneMapped: false } );

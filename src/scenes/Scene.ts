@@ -1,9 +1,16 @@
-import { Object3D } from '../core/Object3D';
+import { Material, Object3D, WebGLRenderTarget, Texture, Color, FogExp2 } from '../';
+import { Fog } from './Fog';
 
 class Scene extends Object3D {
+	background: WebGLRenderTarget & Texture & Color;
+	environment: any;
+	fog: Fog | FogExp2;
+	overrideMaterial: Material;
+
 	constructor() {
 		super();
 
+		this.isScene = true;
 		this.type = 'Scene';
 
 		this.background = null;
@@ -14,15 +21,15 @@ class Scene extends Object3D {
 
 		this.autoUpdate = true; // checked by the renderer
 
-		if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
-			__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
+		if ( typeof window !== 'undefined' && typeof window[ '__THREE_DEVTOOLS__' ] !== 'undefined' ) {
+			window[ '__THREE_DEVTOOLS__' ].dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
 		}
 	}
 
-	copy( source, recursive ) {
+	copy( source: Scene, recursive: boolean ) {
 		super.copy( source, recursive );
 
-		if ( source.background !== null ) this.background = source.background.clone();
+		if ( source.background !== null ) this.background = source.background.clone() as any;
 		if ( source.environment !== null ) this.environment = source.environment.clone();
 		if ( source.fog !== null ) this.fog = source.fog.clone();
 
@@ -44,7 +51,5 @@ class Scene extends Object3D {
 		return data;
 	}
 }
-
-Scene.prototype.isScene = true;
 
 export { Scene };

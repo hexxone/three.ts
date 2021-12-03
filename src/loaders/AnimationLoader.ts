@@ -1,4 +1,4 @@
-import { AnimationClip } from '../animation/AnimationClip';
+import { AnimationClip } from '../';
 import { FileLoader } from './FileLoader';
 import { Loader } from './Loader';
 

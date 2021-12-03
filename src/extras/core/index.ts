@@ -5,4 +5,5 @@ export * from './ShapePath';
 export * from './Font';
 export * from './CurvePath';
 export * from './Curve';
+export * from './Interpolations';
 

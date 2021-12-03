@@ -1,10 +1,10 @@
 import { LightShadow } from './LightShadow';
-import { OrthographicCamera } from '../cameras/OrthographicCamera';
+import { OrthographicCamera } from '../';
 
 export class DirectionalLightShadow extends LightShadow {
 	constructor() {
-		super(new OrthographicCamera(- 5, 5, 5, - 5, 0.5, 500));
+		super( new OrthographicCamera( - 5, 5, 5, - 5, 0.5, 500 ) );
 
-		Object.defineProperty(this, 'isDirectionalLightShadow', { value: true });
+		this.isDirectionalLightShadow = true;
 	}
 }

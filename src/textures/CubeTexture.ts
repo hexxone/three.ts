@@ -1,20 +1,16 @@
 import { Texture } from './Texture';
-import { CubeReflectionMapping, RGBFormat } from '../constants';
+import { CubeReflectionMapping, RGBFormat } from '../';
 
 class CubeTexture extends Texture {
-
 	_needsFlipEnvMap: boolean;
 
-	constructor(images, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, format?, type?, anisotropy?, encoding?) {
+	constructor( images?, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, format?, type?, anisotropy?, encoding? ) {
 		images = images !== undefined ? images : [];
 		mapping = mapping !== undefined ? mapping : CubeReflectionMapping;
 		format = format !== undefined ? format : RGBFormat;
-		super(images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
+		super( images, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding );
 
-
-		Object.defineProperty(this, 'isCubeTexture', {
-			value: true
-		});
+		this.isCubeTexture = true;
 
 		// Why CubeTexture._needsFlipEnvMap is necessary:
 		//
@@ -35,7 +31,7 @@ class CubeTexture extends Texture {
 		return this.image;
 	}
 
-	set images(value) {
+	set images( value ) {
 		this.image = value;
 	}
 }

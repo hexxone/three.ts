@@ -1,7 +1,5 @@
-import { TangentSpaceNormalMap } from '../constants';
+import { Color, TangentSpaceNormalMap, Vector2 } from '../';
 import { Material } from './Material';
-import { Vector2 } from '../math/Vector2';
-import { Color } from '../math/Color';
 
 /**
  * parameters = {
@@ -34,14 +32,12 @@ import { Color } from '../math/Color';
  */
 
 class MeshMatcapMaterial extends Material {
-
 	defines: { MATCAP: string; };
 
 	constructor( parameters ) {
 		super();
-		
-		Object.defineProperty(this, 'isMeshMatcapMaterial', { value: true });
 
+		this.isMeshMatcapMaterial = true;
 		this.type = 'MeshMatcapMaterial';
 
 		this.color = new Color( 0xffffff ); // diffuse
@@ -75,7 +71,7 @@ class MeshMatcapMaterial extends Material {
 	}
 
 
-	copy( source ) {
+	copy( source: MeshMatcapMaterial ) {
 		super.copy( source );
 
 		this.defines = { 'MATCAP': '' };

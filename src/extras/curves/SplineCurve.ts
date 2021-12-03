@@ -1,14 +1,15 @@
-import { Curve } from '../core/Curve';
-import { catmullRom } from '../core/Interpolations';
-import { Vector2 } from '../../math/Vector2';
+import { Curve, catmullRom, Vector2 } from '../../';
 
 class SplineCurve extends Curve {
-	constructor( points = [] ) {
+	points: Vector2[];
+
+	constructor( points?: Vector2[] ) {
 		super();
 
+		this.isSplineCurve = true;
 		this.type = 'SplineCurve';
 
-		this.points = points;
+		this.points = points || [];
 	}
 
 	getPoint( t, optionalTarget = new Vector2() ) {
@@ -33,7 +34,7 @@ class SplineCurve extends Curve {
 		return point;
 	}
 
-	copy( source ) {
+	copy( source: SplineCurve ) {
 		super.copy( source );
 
 		this.points = [];
@@ -73,7 +74,5 @@ class SplineCurve extends Curve {
 		return this;
 	}
 }
-
-SplineCurve.prototype.isSplineCurve = true;
 
 export { SplineCurve };

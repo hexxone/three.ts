@@ -1,6 +1,4 @@
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { ShapeUtils } from '../extras/ShapeUtils';
+import { BufferGeometry, Float32BufferAttribute, ShapeUtils } from '../';
 
 class ShapeGeometry extends BufferGeometry {
 	constructor( shapes, curveSegments = 12 ) {
@@ -105,7 +103,7 @@ class ShapeGeometry extends BufferGeometry {
 	}
 
 	toJSON() {
-		const data = BufferGeometry.prototype.toJSON.call( this );
+		const data = super.toJSON();
 
 		const shapes = this.parameters.shapes;
 

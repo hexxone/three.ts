@@ -1,17 +1,40 @@
-import { Object3D } from '../core/Object3D';
-import { Color } from '../math/Color';
+import { Color, Object3D } from '../';
+import { LightShadow } from './LightShadow';
 
 class Light extends Object3D {
+	color: Color;
+	intensity: number;
+	groundColor: any;
+	distance: any;
+	angle: any;
+	decay: any;
+	penumbra: any;
+	shadow: LightShadow;
+
+	width: number;
+	height: number;
+
+	isLightProbe: boolean;
+	isAmbientLight: boolean;
+	isAmbientLightProbe: boolean;
+	isDirectionalLight: boolean;
+	isSpotLight: boolean;
+	isRectAreaLight: boolean;
+	isPointLight: boolean;
+	isHemisphereLight: boolean;
+	isHemisphereLightProbe: boolean;
+
 	constructor( color, intensity = 1 ) {
 		super();
 
+		this.isLight = true;
 		this.type = 'Light';
 
 		this.color = new Color( color );
 		this.intensity = intensity;
 	}
 
-	copy( source ) {
+	copy( source: Light ) {
 		super.copy( source );
 
 		this.color.copy( source.color );
@@ -38,7 +61,5 @@ class Light extends Object3D {
 		return data;
 	}
 }
-
-Light.prototype.isLight = true;
 
 export { Light };

@@ -1,13 +1,13 @@
-import { Font } from '../extras/core/Font';
+import { Font } from '../';
 import { FileLoader } from './FileLoader';
 import { Loader } from './Loader';
 
 class FontLoader extends Loader {
-	constructor( manager ) {
+	constructor( manager? ) {
 		super( manager );
 	}
 
-	load( url, onLoad, onProgress, onError ) {
+	load( url, onLoad?, onProgress?, onError? ) {
 		const scope = this;
 
 		const loader = new FileLoader( this.manager );

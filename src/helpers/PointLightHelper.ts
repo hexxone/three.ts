@@ -1,8 +1,9 @@
-import { Mesh } from '../objects/Mesh';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
-import { SphereGeometry } from '../geometries/SphereGeometry';
+import { Mesh, MeshBasicMaterial, SphereGeometry } from '../';
 
 class PointLightHelper extends Mesh {
+	light: any;
+	color: any;
+
 	constructor( light, sphereSize, color ) {
 		const geometry = new SphereGeometry( sphereSize, 4, 2 );
 		const material = new MeshBasicMaterial( { wireframe: true, fog: false, toneMapped: false } );

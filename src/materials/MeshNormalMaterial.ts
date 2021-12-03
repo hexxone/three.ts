@@ -1,6 +1,5 @@
-import { TangentSpaceNormalMap } from '../constants';
+import { TangentSpaceNormalMap, Vector2 } from '../';
 import { Material } from './Material';
-import { Vector2 } from '../math/Vector2';
 
 /**
  * parameters = {
@@ -29,11 +28,10 @@ import { Vector2 } from '../math/Vector2';
  */
 
 class MeshNormalMaterial extends Material {
-	constructor(parameters) {
+	constructor( parameters ) {
 		super();
 
-		Object.defineProperty(this, 'isMeshNormalMaterial', { value: true });
-
+		this.isMeshNormalMaterial = true;
 		this.type = 'MeshNormalMaterial';
 
 		this.bumpMap = null;
@@ -41,7 +39,7 @@ class MeshNormalMaterial extends Material {
 
 		this.normalMap = null;
 		this.normalMapType = TangentSpaceNormalMap;
-		this.normalScale = new Vector2(1, 1);
+		this.normalScale = new Vector2( 1, 1 );
 
 		this.displacementMap = null;
 		this.displacementScale = 1;
@@ -58,18 +56,18 @@ class MeshNormalMaterial extends Material {
 
 		this.flatShading = false;
 
-		this.setValues(parameters);
+		this.setValues( parameters );
 	}
 
-	copy(source) {
-		super.copy(source);
+	copy( source: MeshNormalMaterial ) {
+		super.copy( source );
 
 		this.bumpMap = source.bumpMap;
 		this.bumpScale = source.bumpScale;
 
 		this.normalMap = source.normalMap;
 		this.normalMapType = source.normalMapType;
-		this.normalScale.copy(source.normalScale);
+		this.normalScale.copy( source.normalScale );
 
 		this.displacementMap = source.displacementMap;
 		this.displacementScale = source.displacementScale;

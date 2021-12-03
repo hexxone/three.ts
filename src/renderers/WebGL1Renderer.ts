@@ -1,10 +1,10 @@
 import { WebGLRenderer } from './WebGLRenderer';
 
 class WebGL1Renderer extends WebGLRenderer {
-	constructor(parameters?) {
-		super(parameters);
+	constructor( parameters? ) {
+		super( parameters );
 
-		Object.defineProperty(this, 'isWebGL1Renderer', { value: true });
+		this.isWebGL1Renderer = true;
 	}
 }
 

@@ -2,11 +2,11 @@ import { Cache } from './Cache';
 import { Loader } from './Loader';
 
 class ImageLoader extends Loader {
-	constructor( manager ) {
+	constructor( manager? ) {
 		super( manager );
 	}
 
-	load( url, onLoad, onProgress, onError ) {
+	load( url, onLoad?, onProgress?, onError? ) {
 		if ( this.path !== undefined ) url = this.path + url;
 
 		url = this.manager.resolveURL( url );
@@ -29,7 +29,7 @@ class ImageLoader extends Loader {
 
 		const image = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'img' );
 
-		function onImageLoad() {
+		const onImageLoad = function( event ) {
 			image.removeEventListener( 'load', onImageLoad, false );
 			image.removeEventListener( 'error', onImageError, false );
 
@@ -38,9 +38,9 @@ class ImageLoader extends Loader {
 			if ( onLoad ) onLoad( this );
 
 			scope.manager.itemEnd( url );
-		}
+		};
 
-		function onImageError( event ) {
+		const onImageError = function( event ) {
 			image.removeEventListener( 'load', onImageLoad, false );
 			image.removeEventListener( 'error', onImageError, false );
 
@@ -48,18 +48,18 @@ class ImageLoader extends Loader {
 
 			scope.manager.itemError( url );
 			scope.manager.itemEnd( url );
-		}
+		};
 
 		image.addEventListener( 'load', onImageLoad, false );
 		image.addEventListener( 'error', onImageError, false );
 
 		if ( url.substr( 0, 5 ) !== 'data:' ) {
-			if ( this.crossOrigin !== undefined ) image.crossOrigin = this.crossOrigin;
+			if ( this.crossOrigin !== undefined ) image.setAttribute( 'crossOrigin', this.crossOrigin );
 		}
 
 		scope.manager.itemStart( url );
 
-		image.src = url;
+		image.setAttribute( 'src', url );
 
 		return image;
 	}

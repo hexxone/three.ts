@@ -1,6 +1,5 @@
 import { Material } from './Material';
-import { MultiplyOperation } from '../constants';
-import { Color } from '../math/Color';
+import { MultiplyOperation, Color } from '../';
 
 /**
  * parameters = {
@@ -35,20 +34,14 @@ import { Color } from '../math/Color';
  */
 
 class MeshBasicMaterial extends Material {
-
-	color: any;
-	opacity: number;
-
-	constructor(parameters?) {
+	constructor( parameters? ) {
 		super();
 
-		Object.defineProperty(this, 'isMeshBasicMaterial', {
-			value: true
-		});
+		this.isMeshBasicMaterial = true;
 
 		this.type = 'MeshBasicMaterial';
 
-		this.color = new Color(0xffffff); // emissive
+		this.color = new Color( 0xffffff ); // emissive
 
 		this.map = null;
 
@@ -75,13 +68,13 @@ class MeshBasicMaterial extends Material {
 		this.skinning = false;
 		this.morphTargets = false;
 
-		this.setValues(parameters);
+		this.setValues( parameters );
 	}
 
-	copy(source) {
-		super.copy(source);
+	copy( source: MeshBasicMaterial ) {
+		super.copy( source );
 
-		this.color.copy(source.color);
+		this.color.copy( source.color );
 
 		this.map = source.map;
 

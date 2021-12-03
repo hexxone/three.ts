@@ -5,7 +5,6 @@ const _startP = /* @__PURE__*/ new Vector3();
 const _startEnd = /* @__PURE__*/ new Vector3();
 
 class Line3 {
-
 	start: Vector3;
 	end: Vector3;
 
@@ -21,7 +20,7 @@ class Line3 {
 		return this;
 	}
 
-	copy( line ) {
+	copy( line: Line3 ) {
 		this.start.copy( line.start );
 		this.end.copy( line.end );
 

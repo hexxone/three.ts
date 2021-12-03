@@ -1,51 +1,45 @@
-import { Vector3 } from '../math/Vector3';
+import { Vector3 } from '../';
 import { BufferAttribute } from './BufferAttribute';
 
 const _vector = new Vector3();
 
-function InterleavedBufferAttribute( interleavedBuffer, itemSize, offset, normalized ) {
-	this.name = '';
+class InterleavedBufferAttribute {
+	name: string;
+	data: any;
+	itemSize: any;
+	offset: any;
+	normalized: boolean;
 
-	this.data = interleavedBuffer;
-	this.itemSize = itemSize;
-	this.offset = offset;
+	count: number;
+	interleavedBuffers: any;
 
-	this.normalized = normalized === true;
-}
 
-Object.defineProperties( InterleavedBufferAttribute.prototype, {
+	isInterleavedBufferAttribute = true;
 
-	count: {
+	constructor( interleavedBuffer, itemSize, offset, normalized ) {
+		this.name = '';
 
-		get: function() {
-			return this.data.count;
-		},
+		this.data = interleavedBuffer;
+		this.itemSize = itemSize;
+		this.offset = offset;
 
-	},
+		this.normalized = normalized === true;
+	}
 
-	array: {
+	get gount() {
+		return this.data.count;
+	}
 
-		get: function() {
-			return this.data.array;
-		},
+	get array() {
+		return this.data.array;
+	}
 
-	},
+	set needsUpdate( value ) {
+		this.data.needsUpdate = value;
+	}
 
-	needsUpdate: {
 
-		set: function( value ) {
-			this.data.needsUpdate = value;
-		},
-
-	},
-
-} );
-
-Object.assign( InterleavedBufferAttribute.prototype, {
-
-	isInterleavedBufferAttribute: true,
-
-	applyMatrix4: function( m ) {
+	applyMatrix4( m ) {
 		for ( let i = 0, l = this.data.count; i < l; i ++ ) {
 			_vector.x = this.getX( i );
 			_vector.y = this.getY( i );
@@ -57,58 +51,58 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 		}
 
 		return this;
-	},
+	}
 
-	setX: function( index, x ) {
+	setX( index, x ) {
 		this.data.array[ index * this.data.stride + this.offset ] = x;
 
 		return this;
-	},
+	}
 
-	setY: function( index, y ) {
+	setY( index, y ) {
 		this.data.array[ index * this.data.stride + this.offset + 1 ] = y;
 
 		return this;
-	},
+	}
 
-	setZ: function( index, z ) {
+	setZ( index, z ) {
 		this.data.array[ index * this.data.stride + this.offset + 2 ] = z;
 
 		return this;
-	},
+	}
 
-	setW: function( index, w ) {
+	setW( index, w ) {
 		this.data.array[ index * this.data.stride + this.offset + 3 ] = w;
 
 		return this;
-	},
+	}
 
-	getX: function( index ) {
+	getX( index ) {
 		return this.data.array[ index * this.data.stride + this.offset ];
-	},
+	}
 
-	getY: function( index ) {
+	getY( index ) {
 		return this.data.array[ index * this.data.stride + this.offset + 1 ];
-	},
+	}
 
-	getZ: function( index ) {
+	getZ( index ) {
 		return this.data.array[ index * this.data.stride + this.offset + 2 ];
-	},
+	}
 
-	getW: function( index ) {
+	getW( index ) {
 		return this.data.array[ index * this.data.stride + this.offset + 3 ];
-	},
+	}
 
-	setXY: function( index, x, y ) {
+	setXY( index, x, y ) {
 		index = index * this.data.stride + this.offset;
 
 		this.data.array[ index + 0 ] = x;
 		this.data.array[ index + 1 ] = y;
 
 		return this;
-	},
+	}
 
-	setXYZ: function( index, x, y, z ) {
+	setXYZ( index, x, y, z ) {
 		index = index * this.data.stride + this.offset;
 
 		this.data.array[ index + 0 ] = x;
@@ -116,9 +110,9 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 		this.data.array[ index + 2 ] = z;
 
 		return this;
-	},
+	}
 
-	setXYZW: function( index, x, y, z, w ) {
+	setXYZW( index, x, y, z, w ) {
 		index = index * this.data.stride + this.offset;
 
 		this.data.array[ index + 0 ] = x;
@@ -127,9 +121,9 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 		this.data.array[ index + 3 ] = w;
 
 		return this;
-	},
+	}
 
-	clone: function( data ) {
+	clone( data ) {
 		if ( data === undefined ) {
 			console.log( 'THREE.InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data.' );
 
@@ -155,9 +149,9 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 
 			return new InterleavedBufferAttribute( data.interleavedBuffers[ this.data.uuid ], this.itemSize, this.offset, this.normalized );
 		}
-	},
+	}
 
-	toJSON: function( data ) {
+	toJSON( data: any ) {
 		if ( data === undefined ) {
 			console.log( 'THREE.InterleavedBufferAttribute.toJSON(): Serializing an interlaved buffer attribute will deinterleave buffer data.' );
 
@@ -174,6 +168,7 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 			// deinterleave data and save it as an ordinary buffer attribute for now
 
 			return {
+				name: '',
 				itemSize: this.itemSize,
 				type: this.array.constructor.name,
 				array: array,
@@ -191,6 +186,7 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 			}
 
 			return {
+				name: '',
 				isInterleavedBufferAttribute: true,
 				itemSize: this.itemSize,
 				data: this.data.uuid,
@@ -198,9 +194,7 @@ Object.assign( InterleavedBufferAttribute.prototype, {
 				normalized: this.normalized,
 			};
 		}
-	},
-
-} );
-
+	}
+}
 
 export { InterleavedBufferAttribute };

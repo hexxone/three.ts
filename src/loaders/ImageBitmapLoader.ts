@@ -50,7 +50,7 @@ ImageBitmapLoader.prototype = Object.assign( Object.create( Loader.prototype ), 
 			return cached;
 		}
 
-		const fetchOptions = {};
+		const fetchOptions = {} as any;
 		fetchOptions.credentials = ( this.crossOrigin === 'anonymous' ) ? 'same-origin' : 'include';
 		fetchOptions.headers = this.requestHeader;
 

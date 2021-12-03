@@ -1,5 +1,5 @@
 import { Material } from './Material';
-import { BasicDepthPacking } from '../constants';
+import { BasicDepthPacking } from '../';
 
 /**
  * parameters = {
@@ -20,14 +20,12 @@ import { BasicDepthPacking } from '../constants';
  */
 
 class MeshDepthMaterial extends Material {
-
 	depthPacking: number;
 
-	constructor(parameters) {
+	constructor( parameters ) {
 		super();
 
-		Object.defineProperty(this, 'isMeshDepthMaterial', { value: true })
-
+		this.isMeshDepthMaterial = true;
 		this.type = 'MeshDepthMaterial';
 
 		this.depthPacking = BasicDepthPacking;
@@ -48,11 +46,11 @@ class MeshDepthMaterial extends Material {
 
 		this.fog = false;
 
-		this.setValues(parameters);
+		this.setValues( parameters );
 	}
 
-	copy(source) {
-		super.copy(source);
+	copy( source: MeshDepthMaterial ) {
+		super.copy( source );
 
 		this.depthPacking = source.depthPacking;
 

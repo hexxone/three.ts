@@ -1,13 +1,12 @@
-import { Vector3 } from '../math/Vector3';
-import { Object3D } from '../core/Object3D';
-import { LineSegments } from '../objects/LineSegments';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { BufferGeometry } from '../core/BufferGeometry';
+import { BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments, Object3D, Vector3 } from '../';
 
 const _vector = /* @__PURE__*/ new Vector3();
 
 class SpotLightHelper extends Object3D {
+	light: any;
+	color: any;
+	cone: LineSegments;
+
 	constructor( light, color ) {
 		super();
 		this.light = light;

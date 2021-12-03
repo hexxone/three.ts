@@ -1,14 +1,18 @@
 import { Light } from './Light';
 import { SpotLightShadow } from './SpotLightShadow';
-import { Object3D } from '../core/Object3D';
+import { Object3D, DefaultUp } from '../';
 
 class SpotLight extends Light {
+	target: Object3D;
+
 	constructor( color, intensity, distance = 0, angle = Math.PI / 3, penumbra = 0, decay = 1 ) {
 		super( color, intensity );
 
+		this.isSpotLight = true;
+
 		this.type = 'SpotLight';
 
-		this.position.copy( Object3D.DefaultUp );
+		this.position.copy( DefaultUp );
 		this.updateMatrix();
 
 		this.target = new Object3D();
@@ -33,7 +37,7 @@ class SpotLight extends Light {
 		this.intensity = power / Math.PI;
 	}
 
-	copy( source ) {
+	copy( source: SpotLight ) {
 		super.copy( source );
 
 		this.distance = source.distance;
@@ -48,7 +52,5 @@ class SpotLight extends Light {
 		return this;
 	}
 }
-
-SpotLight.prototype.isSpotLight = true;
 
 export { SpotLight };

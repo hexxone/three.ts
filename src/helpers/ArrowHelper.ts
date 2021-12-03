@@ -1,19 +1,13 @@
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Object3D } from '../core/Object3D';
-import { CylinderGeometry } from '../geometries/CylinderGeometry';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { Mesh } from '../objects/Mesh';
-import { Line } from '../objects/Line';
-import { Vector3 } from '../math/Vector3';
+import { BufferGeometry, CylinderGeometry, Float32BufferAttribute, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, Object3D, Vector3 } from '../';
 
 const _axis = /* @__PURE__*/ new Vector3();
 let _lineGeometry; let _coneGeometry;
 
 class ArrowHelper extends Object3D {
-	// dir is assumed to be normalized
+	line: Line;
+	cone: Mesh;
 
+	// dir is assumed to be normalized
 	constructor( dir = new Vector3( 0, 0, 1 ), origin = new Vector3( 0, 0, 0 ), length = 1, color = 0xffff00, headLength = length * 0.2, headWidth = headLength * 0.2 ) {
 		super();
 
@@ -71,7 +65,7 @@ class ArrowHelper extends Object3D {
 		this.cone.material.color.set( color );
 	}
 
-	copy( source ) {
+	copy( source: ArrowHelper ) {
 		super.copy( source, false );
 
 		this.line.copy( source.line );

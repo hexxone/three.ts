@@ -1,10 +1,11 @@
+export * from './Mesh';
 
 export * from './Sprite';
 export * from './LOD';
 export * from './SkinnedMesh';
 export * from './Skeleton';
 export * from './Bone';
-export * from './Mesh';
+
 export * from './InstancedMesh';
 export * from './LineSegments';
 export * from './LineLoop';

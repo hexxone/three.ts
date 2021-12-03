@@ -1,6 +1,5 @@
-import { LinearFilter } from '../constants';
+import { CompressedTexture, LinearFilter } from '../';
 import { FileLoader } from './FileLoader';
-import { CompressedTexture } from '../textures/CompressedTexture';
 import { Loader } from './Loader';
 
 /**
@@ -9,15 +8,12 @@ import { Loader } from './Loader';
  * Sub classes have to implement the parse() method which will be used in load().
  */
 
-function CompressedTextureLoader( manager ) {
-	Loader.call( this, manager );
-}
+class CompressedTextureLoader extends Loader {
+	constructor( manager? ) {
+		super( manager );
+	}
 
-CompressedTextureLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
-
-	constructor: CompressedTextureLoader,
-
-	load: function( url, onLoad, onProgress, onError ) {
+	load( url, onLoad?, onProgress?, onError? ) {
 		const scope = this;
 
 		const images = [];
@@ -100,9 +96,8 @@ CompressedTextureLoader.prototype = Object.assign( Object.create( Loader.prototy
 		}
 
 		return texture;
-	},
-
-} );
+	}
+}
 
 
 export { CompressedTextureLoader };

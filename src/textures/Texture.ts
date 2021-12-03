@@ -1,4 +1,3 @@
-import { EventDispatcher } from '../core/EventDispatcher';
 import {
 	MirroredRepeatWrapping,
 	ClampToEdgeWrapping,
@@ -7,13 +6,14 @@ import {
 	UnsignedByteType,
 	RGBAFormat,
 	LinearMipmapLinearFilter,
+	EventDispatcher,
 	LinearFilter,
 	UVMapping,
-} from '../constants';
-import { MathUtils } from '../math/MathUtils';
-import { Vector2 } from '../math/Vector2';
-import { Matrix3 } from '../math/Matrix3';
-import { ImageUtils } from '../extras/ImageUtils';
+	ImageUtils,
+	MathUtils,
+	Matrix3,
+	Vector2,
+} from '../';
 
 let textureId = 0;
 
@@ -47,7 +47,15 @@ class Texture extends EventDispatcher {
 	encoding: number;
 	version: number;
 	onUpdate: any;
-	isTexture: boolean;
+
+	isTexture = true;
+	isCubeTexture: boolean;
+	isDepthTexture: boolean;
+	isCanvasTexture: boolean;
+	isVideoTexture: boolean;
+	isDataTexture3D: boolean;
+	isDataTexture2DArray: boolean;
+	isCompressedTexture: boolean;
 
 	constructor( image = Texture.DEFAULT_IMAGE,
 		mapping = Texture.DEFAULT_MAPPING,
@@ -115,7 +123,7 @@ class Texture extends EventDispatcher {
 		return new Texture().copy( this );
 	}
 
-	copy( source ) {
+	copy( source: Texture ) {
 		this.name = source.name;
 
 		this.image = source.image;
@@ -317,8 +325,6 @@ class Texture extends EventDispatcher {
 
 Texture.DEFAULT_IMAGE = undefined;
 Texture.DEFAULT_MAPPING = UVMapping;
-
-Texture.prototype.isTexture = true;
 
 function serializeImage( image ) {
 	if ( ( typeof HTMLImageElement !== 'undefined' && image instanceof HTMLImageElement ) ||

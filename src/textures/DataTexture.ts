@@ -1,17 +1,13 @@
 import { Texture } from './Texture';
-import { NearestFilter } from '../constants';
+import { NearestFilter } from '../';
 
 class DataTexture extends Texture {
-	image: { data: any; width: any; height: any; };
-	magFilter: any;
-	minFilter: any;
-	generateMipmaps: boolean;
-	flipY: boolean;
-	unpackAlignment: number;
 	isDataTexture: boolean;
 
-	constructor( data, width, height, format?, type?, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, anisotropy?, encoding? ) {
+	constructor( data?, width?, height?, format?, type?, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, anisotropy?, encoding? ) {
 		super( null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding );
+
+		this.isDataTexture = true;
 
 		this.image = { data: data || null, width: width || 1, height: height || 1 };
 
@@ -25,7 +21,5 @@ class DataTexture extends Texture {
 		this.needsUpdate = true;
 	}
 }
-
-DataTexture.prototype.isDataTexture = true;
 
 export { DataTexture };

@@ -1,14 +1,15 @@
+import { LoadingManager } from '.';
 import { DefaultLoadingManager } from './LoadingManager';
 
 class Loader {
-	manager: any;
+	manager: LoadingManager;
 	crossOrigin: string;
 	withCredentials: boolean;
 	path: string;
 	resourcePath: string;
 	requestHeader: {};
 
-	constructor( manager? ) {
+	constructor( manager?: LoadingManager ) {
 		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 
 		this.crossOrigin = 'anonymous';
@@ -18,15 +19,22 @@ class Loader {
 		this.requestHeader = {};
 	}
 
-
-	load( url, onLoad, onProgress, onError ) {
+	/**
+	 * functions needs to be overwritten by each loader
+	 * @param url
+	 * @param onLoad
+	 * @param onProgress
+	 * @param onError
+	 * @public
+	 */
+	load( url: string, onLoad?, onProgress?, onError? ) {
 		const e = 'Loader.load not implemented!';
 		console.error( e );
 		onError( e );
 		throw e;
 	}
 
-	loadAsync( url, onProgress ) {
+	loadAsync( url, onProgress? ) {
 		const scope = this;
 
 		return new Promise( function( resolve, reject ) {
@@ -34,7 +42,7 @@ class Loader {
 		} );
 	}
 
-	parse( data ) { }
+	parse( data, bool? ): any { }
 
 	setCrossOrigin( crossOrigin ) {
 		this.crossOrigin = crossOrigin;

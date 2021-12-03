@@ -1,16 +1,13 @@
-import { Vector3 } from '../math/Vector3';
-import { Color } from '../math/Color';
-import { Object3D } from '../core/Object3D';
-import { Mesh } from '../objects/Mesh';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
-import { OctahedronGeometry } from '../geometries/OctahedronGeometry';
-import { BufferAttribute } from '../core/BufferAttribute';
+import { BufferAttribute, Color, Mesh, MeshBasicMaterial, Object3D, OctahedronGeometry, Vector3 } from '../';
 
 const _vector = /* @__PURE__*/ new Vector3();
-const _color1 = /* @__PURE__*/ new Color();
-const _color2 = /* @__PURE__*/ new Color();
+const _color1 = /* @__PURE__*/ new Color( 0 );
+const _color2 = /* @__PURE__*/ new Color( 0 );
 
 class HemisphereLightHelper extends Object3D {
+	light: any;
+	color: any;
+
 	constructor( light, size, color ) {
 		super();
 		this.light = light;

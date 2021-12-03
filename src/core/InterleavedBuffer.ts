@@ -1,49 +1,51 @@
-import { MathUtils } from '../math/MathUtils';
-import { StaticDrawUsage } from '../constants';
+import { MathUtils, StaticDrawUsage } from '../';
+import { AnyTypedArray } from '../../../';
 
-function InterleavedBuffer( array, stride ) {
-	this.array = array;
-	this.stride = stride;
-	this.count = array !== undefined ? array.length / stride : 0;
+class InterleavedBuffer {
+	array: typeof AnyTypedArray;
+	stride: any;
+	count: number;
+	usage: number;
+	updateRange: { offset: number; count: number; };
+	version: number;
+	uuid: string;
 
-	this.usage = StaticDrawUsage;
-	this.updateRange = { offset: 0, count: - 1 };
+	constructor( array: typeof AnyTypedArray, stride ) {
+		this.array = array;
+		this.stride = stride;
+		this.count = array !== undefined ? array.length / stride : 0;
 
-	this.version = 0;
+		this.usage = StaticDrawUsage;
+		this.updateRange = { offset: 0, count: - 1 };
 
-	this.uuid = MathUtils.generateUUID();
-}
+		this.version = 0;
 
-Object.defineProperty( InterleavedBuffer.prototype, 'needsUpdate', {
+		this.uuid = MathUtils.generateUUID();
+	}
 
-	set: function( value ) {
+	set needsUpdate( value ) {
 		if ( value === true ) this.version ++;
-	},
+	}
 
-} );
 
-Object.assign( InterleavedBuffer.prototype, {
+	onUploadCallback() { }
 
-	isInterleavedBuffer: true,
-
-	onUploadCallback: function() { },
-
-	setUsage: function( value ) {
+	setUsage( value ) {
 		this.usage = value;
 
 		return this;
-	},
+	}
 
-	copy: function( source ) {
+	copy( source ) {
 		this.array = new source.array.constructor( source.array );
 		this.count = source.count;
 		this.stride = source.stride;
 		this.usage = source.usage;
 
 		return this;
-	},
+	}
 
-	copyAt: function( index1, attribute, index2 ) {
+	copyAt( index1, attribute, index2 ) {
 		index1 *= this.stride;
 		index2 *= attribute.stride;
 
@@ -52,66 +54,65 @@ Object.assign( InterleavedBuffer.prototype, {
 		}
 
 		return this;
-	},
+	}
 
-	set: function( value, offset = 0 ) {
+	set( value, offset = 0 ) {
 		this.array.set( value, offset );
 
 		return this;
-	},
+	}
 
-	clone: function( data ) {
+	clone( data ) {
 		if ( data.arrayBuffers === undefined ) {
 			data.arrayBuffers = {};
 		}
 
-		if ( this.array.buffer._uuid === undefined ) {
-			this.array.buffer._uuid = MathUtils.generateUUID();
+		if ( ( this.array.buffer as any )._uuid === undefined ) {
+			( this.array.buffer as any )._uuid = MathUtils.generateUUID();
 		}
 
-		if ( data.arrayBuffers[ this.array.buffer._uuid ] === undefined ) {
-			data.arrayBuffers[ this.array.buffer._uuid ] = this.array.slice( 0 ).buffer;
+		if ( data.arrayBuffers[ ( this.array.buffer as any )._uuid ] === undefined ) {
+			data.arrayBuffers[ ( this.array.buffer as any )._uuid ] = this.array.slice( 0 ).buffer;
 		}
 
-		const array = new this.array.constructor( data.arrayBuffers[ this.array.buffer._uuid ] );
+		const array = new ( this.array.constructor as any )( data.arrayBuffers[ ( this.array.buffer as any )._uuid ] );
 
 		const ib = new InterleavedBuffer( array, this.stride );
 		ib.setUsage( this.usage );
 
 		return ib;
-	},
+	}
 
-	onUpload: function( callback ) {
+	onUpload( callback ) {
 		this.onUploadCallback = callback;
 
 		return this;
-	},
+	}
 
-	toJSON: function( data ) {
+	toJSON( data ) {
 		if ( data.arrayBuffers === undefined ) {
 			data.arrayBuffers = {};
 		}
 
 		// generate UUID for array buffer if necessary
 
-		if ( this.array.buffer._uuid === undefined ) {
-			this.array.buffer._uuid = MathUtils.generateUUID();
+		if ( ( this.array.buffer as any )._uuid === undefined ) {
+			( this.array.buffer as any )._uuid = MathUtils.generateUUID();
 		}
 
-		if ( data.arrayBuffers[ this.array.buffer._uuid ] === undefined ) {
-			data.arrayBuffers[ this.array.buffer._uuid ] = Array.prototype.slice.call( new Uint32Array( this.array.buffer ) );
+		if ( data.arrayBuffers[ ( this.array.buffer as any )._uuid ] === undefined ) {
+			data.arrayBuffers[ ( this.array.buffer as any )._uuid ] = Array.prototype.slice.call( new Uint32Array( this.array.buffer ) );
 		}
 
 		//
 
 		return {
 			uuid: this.uuid,
-			buffer: this.array.buffer._uuid,
+			buffer: ( this.array.buffer as any )._uuid,
 			type: this.array.constructor.name,
 			stride: this.stride,
 		};
-	},
-
-} );
+	}
+}
 
 export { InterleavedBuffer };

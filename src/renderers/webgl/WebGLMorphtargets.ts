@@ -1,3 +1,6 @@
+import { Object3D, BufferGeometry, Material } from '../../';
+import { WebGLProgram } from './WebGLProgram';
+
 function numericalSort( a, b ) {
 	return a[ 0 ] - b[ 0 ];
 }
@@ -6,17 +9,23 @@ function absNumericalSort( a, b ) {
 	return Math.abs( b[ 1 ] ) - Math.abs( a[ 1 ] );
 }
 
-function WebGLMorphtargets( gl ) {
-	const influencesList = {};
-	const morphInfluences = new Float32Array( 8 );
+class WebGLMorphtargets {
+	_gl: GLESRenderingContext;
 
-	const workInfluences = [];
+	influencesList = {};
+	morphInfluences = new Float32Array( 8 );
 
-	for ( let i = 0; i < 8; i ++ ) {
-		workInfluences[ i ] = [i, 0];
+	workInfluences = [];
+
+	constructor( gl: GLESRenderingContext ) {
+		this._gl = gl;
+
+		for ( let i = 0; i < 8; i ++ ) {
+			this.workInfluences[ i ] = [i, 0];
+		}
 	}
 
-	function update( object, geometry, material, program ) {
+	update( object: Object3D, geometry: BufferGeometry, material: Material, program: WebGLProgram ) {
 		const objectInfluences = object.morphTargetInfluences;
 
 		// When object doesn't have morph target influences defined, we treat it as a 0-length array
@@ -24,7 +33,7 @@ function WebGLMorphtargets( gl ) {
 
 		const length = objectInfluences === undefined ? 0 : objectInfluences.length;
 
-		let influences = influencesList[ geometry.id ];
+		let influences = this.influencesList[ geometry.id ];
 
 		if ( influences === undefined ) {
 			// initialise list
@@ -35,7 +44,7 @@ function WebGLMorphtargets( gl ) {
 				influences[ i ] = [i, 0];
 			}
 
-			influencesList[ geometry.id ] = influences;
+			this.influencesList[ geometry.id ] = influences;
 		}
 
 		// Collect influences
@@ -51,15 +60,15 @@ function WebGLMorphtargets( gl ) {
 
 		for ( let i = 0; i < 8; i ++ ) {
 			if ( i < length && influences[ i ][ 1 ] ) {
-				workInfluences[ i ][ 0 ] = influences[ i ][ 0 ];
-				workInfluences[ i ][ 1 ] = influences[ i ][ 1 ];
+				this.workInfluences[ i ][ 0 ] = influences[ i ][ 0 ];
+				this.workInfluences[ i ][ 1 ] = influences[ i ][ 1 ];
 			} else {
-				workInfluences[ i ][ 0 ] = Number.MAX_SAFE_INTEGER;
-				workInfluences[ i ][ 1 ] = 0;
+				this.workInfluences[ i ][ 0 ] = Number.MAX_SAFE_INTEGER;
+				this.workInfluences[ i ][ 1 ] = 0;
 			}
 		}
 
-		workInfluences.sort( numericalSort );
+		this.workInfluences.sort( numericalSort );
 
 		const morphTargets = material.morphTargets && geometry.morphAttributes.position;
 		const morphNormals = material.morphNormals && geometry.morphAttributes.normal;
@@ -67,7 +76,7 @@ function WebGLMorphtargets( gl ) {
 		let morphInfluencesSum = 0;
 
 		for ( let i = 0; i < 8; i ++ ) {
-			const influence = workInfluences[ i ];
+			const influence = this.workInfluences[ i ];
 			const index = influence[ 0 ];
 			const value = influence[ 1 ];
 
@@ -80,7 +89,7 @@ function WebGLMorphtargets( gl ) {
 					geometry.setAttribute( 'morphNormal' + i, morphNormals[ index ] );
 				}
 
-				morphInfluences[ i ] = value;
+				this.morphInfluences[ i ] = value;
 				morphInfluencesSum += value;
 			} else {
 				if ( morphTargets && geometry.hasAttribute( 'morphTarget' + i ) === true ) {
@@ -91,7 +100,7 @@ function WebGLMorphtargets( gl ) {
 					geometry.deleteAttribute( 'morphNormal' + i );
 				}
 
-				morphInfluences[ i ] = 0;
+				this.morphInfluences[ i ] = 0;
 			}
 		}
 
@@ -100,15 +109,9 @@ function WebGLMorphtargets( gl ) {
 		// When baseinfluence = 1 - sum(influence), the above is equivalent to sum((target - base) * influence)
 		const morphBaseInfluence = geometry.morphTargetsRelative ? 1 : 1 - morphInfluencesSum;
 
-		program.getUniforms().setValue( gl, 'morphTargetBaseInfluence', morphBaseInfluence );
-		program.getUniforms().setValue( gl, 'morphTargetInfluences', morphInfluences );
+		program.getUniforms().setValue( this._gl, 'morphTargetBaseInfluence', morphBaseInfluence );
+		program.getUniforms().setValue( this._gl, 'morphTargetInfluences', this.morphInfluences );
 	}
-
-	return {
-
-		update: update,
-
-	};
 }
 
 

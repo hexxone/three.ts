@@ -1,7 +1,4 @@
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { Vector3 } from '../math/Vector3';
-import { Vector2 } from '../math/Vector2';
+import { BufferGeometry, Float32BufferAttribute, Vector2, Vector3 } from '../';
 
 class CylinderGeometry extends BufferGeometry {
 	constructor( radiusTop = 1, radiusBottom = 1, height = 1, radialSegments = 8, heightSegments = 1, openEnded = false, thetaStart = 0, thetaLength = Math.PI * 2 ) {

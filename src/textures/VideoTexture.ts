@@ -1,9 +1,11 @@
-import { RGBFormat, LinearFilter } from '../constants';
+import { RGBFormat, LinearFilter } from '../';
 import { Texture } from './Texture';
 
 class VideoTexture extends Texture {
-	constructor( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy ) {
+	constructor( video, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, format?, type?, anisotropy? ) {
 		super( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
+
+		this.isVideoTexture = true;
 
 		this.format = format !== undefined ? format : RGBFormat;
 
@@ -19,13 +21,13 @@ class VideoTexture extends Texture {
 			video.requestVideoFrameCallback( updateVideo );
 		}
 
-		if ( 'requestVideoFrameCallback' in video ) {
+		if ( typeof video[ 'requestVideoFrameCallback' ] !== 'undefined' ) {
 			video.requestVideoFrameCallback( updateVideo );
 		}
 	}
 
 	clone() {
-		return new this.constructor( this.image ).copy( this );
+		return new VideoTexture( this.image ).copy( this );
 	}
 
 	update() {
@@ -37,7 +39,5 @@ class VideoTexture extends Texture {
 		}
 	}
 }
-
-VideoTexture.prototype.isVideoTexture = true;
 
 export { VideoTexture };

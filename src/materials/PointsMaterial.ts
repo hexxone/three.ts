@@ -1,5 +1,5 @@
 import { Material } from './Material';
-import { Color } from '../math/Color';
+import { Color, MaterialParameters } from '../';
 
 /**
  * parameters = {
@@ -16,15 +16,13 @@ import { Color } from '../math/Color';
  */
 
 class PointsMaterial extends Material {
-
-	constructor(parameters?) {
+	constructor( parameters?: MaterialParameters ) {
 		super();
 
-		Object.defineProperty(this, 'isPointsMaterial', { value: true });
-
+		this.isPointsMaterial = true;
 		this.type = 'PointsMaterial';
 
-		this.color = new Color(0xffffff);
+		this.color = new Color( 0xffffff );
 
 		this.map = null;
 
@@ -35,13 +33,13 @@ class PointsMaterial extends Material {
 
 		this.morphTargets = false;
 
-		this.setValues(parameters);
+		this.setValues( parameters );
 	}
 
-	copy(source) {
-		super.copy(source);
+	copy( source: PointsMaterial ) {
+		super.copy( source );
 
-		this.color.copy(source.color);
+		this.color.copy( source.color );
 
 		this.map = source.map;
 

@@ -1,6 +1,5 @@
-import { LinearFilter, LinearMipmapLinearFilter, ClampToEdgeWrapping } from '../constants';
+import { LinearFilter, LinearMipmapLinearFilter, ClampToEdgeWrapping, DataTexture } from '../';
 import { FileLoader } from './FileLoader';
-import { DataTexture } from '../textures/DataTexture';
 import { Loader } from './Loader';
 
 /**

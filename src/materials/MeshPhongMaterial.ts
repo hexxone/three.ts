@@ -1,7 +1,5 @@
-import { MultiplyOperation, TangentSpaceNormalMap } from '../constants';
+import { MultiplyOperation, TangentSpaceNormalMap, Vector2, Color } from '../';
 import { Material } from './Material';
-import { Vector2 } from '../math/Vector2';
-import { Color } from '../math/Color';
 
 /**
  * parameters = {
@@ -54,15 +52,14 @@ import { Color } from '../math/Color';
  */
 
 class MeshPhongMaterial extends Material {
-	constructor(parameters) {
+	constructor( parameters ) {
 		super();
 
-		Object.defineProperty(this, 'isMeshPhongMaterial', { value: true });
-
+		this.isMeshPhongMaterial = true;
 		this.type = 'MeshPhongMaterial';
 
-		this.color = new Color(0xffffff); // diffuse
-		this.specular = new Color(0x111111);
+		this.color = new Color( 0xffffff ); // diffuse
+		this.specular = new Color( 0x111111 );
 		this.shininess = 30;
 
 		this.map = null;
@@ -73,7 +70,7 @@ class MeshPhongMaterial extends Material {
 		this.aoMap = null;
 		this.aoMapIntensity = 1.0;
 
-		this.emissive = new Color(0x000000);
+		this.emissive = new Color( 0x000000 );
 		this.emissiveIntensity = 1.0;
 		this.emissiveMap = null;
 
@@ -82,7 +79,7 @@ class MeshPhongMaterial extends Material {
 
 		this.normalMap = null;
 		this.normalMapType = TangentSpaceNormalMap;
-		this.normalScale = new Vector2(1, 1);
+		this.normalScale = new Vector2( 1, 1 );
 
 		this.displacementMap = null;
 		this.displacementScale = 1;
@@ -108,14 +105,14 @@ class MeshPhongMaterial extends Material {
 
 		this.flatShading = false;
 
-		this.setValues(parameters);
+		this.setValues( parameters );
 	}
 
-	copy(source) {
-		super.copy(source);
+	copy( source: MeshPhongMaterial ) {
+		super.copy( source );
 
-		this.color.copy(source.color);
-		this.specular.copy(source.specular);
+		this.color.copy( source.color );
+		this.specular.copy( source.specular );
 		this.shininess = source.shininess;
 
 		this.map = source.map;
@@ -126,7 +123,7 @@ class MeshPhongMaterial extends Material {
 		this.aoMap = source.aoMap;
 		this.aoMapIntensity = source.aoMapIntensity;
 
-		this.emissive.copy(source.emissive);
+		this.emissive.copy( source.emissive );
 		this.emissiveMap = source.emissiveMap;
 		this.emissiveIntensity = source.emissiveIntensity;
 
@@ -135,7 +132,7 @@ class MeshPhongMaterial extends Material {
 
 		this.normalMap = source.normalMap;
 		this.normalMapType = source.normalMapType;
-		this.normalScale.copy(source.normalScale);
+		this.normalScale.copy( source.normalScale );
 
 		this.displacementMap = source.displacementMap;
 		this.displacementScale = source.displacementScale;

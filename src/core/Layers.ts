@@ -1,6 +1,6 @@
 class Layers {
 	mask: number;
-	
+
 	constructor() {
 		this.mask = 1 | 0;
 	}

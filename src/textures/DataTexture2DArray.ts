@@ -1,9 +1,13 @@
 import { Texture } from './Texture';
-import { ClampToEdgeWrapping, NearestFilter } from '../constants';
+import { ClampToEdgeWrapping, NearestFilter } from '../';
 
 class DataTexture2DArray extends Texture {
+	wrapR: number;
+
 	constructor( data = null, width = 1, height = 1, depth = 1 ) {
 		super( null );
+
+		this.isDataTexture2DArray = true;
 
 		this.image = { data, width, height, depth };
 
@@ -18,7 +22,5 @@ class DataTexture2DArray extends Texture {
 		this.needsUpdate = true;
 	}
 }
-
-DataTexture2DArray.prototype.isDataTexture2DArray = true;
 
 export { DataTexture2DArray };

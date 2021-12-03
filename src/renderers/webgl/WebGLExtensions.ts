@@ -1,38 +1,33 @@
 import { WebGLCapabilities } from './WebGLCapabilities';
 
+const MOZ_EXTENSIONS = ['WEBGL_depth_texture', 'EXT_texture_filter_anisotropic', 'WEBGL_compressed_texture_s3tc'];
+
+const WEBKIT_EXTENSIONS = [...MOZ_EXTENSIONS, 'WEBGL_compressed_texture_pvrtc'];
+
 class WebGLExtensions {
-	gl: any;
+	_gl: GLESRenderingContext;
+
 	extensions = {};
 
-	constructor( gl ) {
-		this.gl = gl;
+	constructor( gl: GLESRenderingContext ) {
+		this._gl = gl;
 	}
 
 	getExtension( name: string ) {
-		if ( this.extensions[ name ] !== undefined ) {
-			return this.extensions[ name ];
-		}
+		// try get existing
+		if ( this.extensions[ name ] !== undefined ) {return this.extensions[ name ]}
 
-		let extension = this.gl.getExtension( name );
-		if ( ! extension ) {
-			switch ( name ) {
-			case 'WEBGL_depth_texture':
-				extension = this.gl.getExtension( 'MOZ_WEBGL_depth_texture' ) || this.gl.getExtension( 'WEBKIT_WEBGL_depth_texture' );
-				break;
-			case 'EXT_texture_filter_anisotropic':
-				extension = this.gl.getExtension( 'MOZ_EXT_texture_filter_anisotropic' ) || this.gl.getExtension( 'WEBKIT_EXT_texture_filter_anisotropic' );
-				break;
-			case 'WEBGL_compressed_texture_s3tc':
-				extension = this.gl.getExtension( 'MOZ_WEBGL_compressed_texture_s3tc' ) || this.gl.getExtension( 'WEBKIT_WEBGL_compressed_texture_s3tc' );
-				break;
-			case 'WEBGL_compressed_texture_pvrtc':
-				extension = this.gl.getExtension( 'WEBKIT_WEBGL_compressed_texture_pvrtc' );
-				break;
-			}
-		}
+		// try get default
+		let extension = this._gl.getExtension( name );
 
+		// try get Firefox specific
+		if ( ! extension && MOZ_EXTENSIONS.includes( name ) ) {extension = this._gl.getExtension( 'MOZ_' + name )}
+
+		// try get Apple specific
+		if ( ! extension && WEBKIT_EXTENSIONS.includes( name ) ) {extension = this._gl.getExtension( 'WEBKIT_' + name )}
+
+		// save & return
 		this.extensions[ name ] = extension;
-
 		return extension;
 	}
 

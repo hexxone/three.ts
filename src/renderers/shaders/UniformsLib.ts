@@ -1,6 +1,4 @@
-import { Color } from '../../math/Color';
-import { Vector2 } from '../../math/Vector2';
-import { Matrix3 } from '../../math/Matrix3';
+import { Color, Matrix3, Vector2 } from '../../';
 
 /**
  * Uniforms library for shared webgl shaders
@@ -8,9 +6,15 @@ import { Matrix3 } from '../../math/Matrix3';
 
 const UniformsLib = {
 
+	// what is this and where does it come from?
+	LTC_FLOAT_1: null,
+	LTC_FLOAT_2: null,
+	LTC_HALF_1: null,
+	LTC_HALF_2: null,
+
 	common: {
 
-		diffuse: { value: new Color(0xffffff) },
+		diffuse: { value: new Color( 0xffffff ) },
 		opacity: { value: 1.0 },
 
 		map: { value: null },
@@ -18,7 +22,7 @@ const UniformsLib = {
 		uv2Transform: { value: new Matrix3() },
 
 		alphaMap: { value: null },
-		alphaTest: { value: 0 }
+		alphaTest: { value: 0 },
 
 	},
 
@@ -69,7 +73,7 @@ const UniformsLib = {
 	normalmap: {
 
 		normalMap: { value: null },
-		normalScale: { value: new Vector2(1, 1) },
+		normalScale: { value: new Vector2( 1, 1 ) },
 
 	},
 
@@ -104,7 +108,7 @@ const UniformsLib = {
 		fogDensity: { value: 0.00025 },
 		fogNear: { value: 1 },
 		fogFar: { value: 2000 },
-		fogColor: { value: new Color(255, 255, 255) },
+		fogColor: { value: new Color( 255, 255, 255 ) },
 
 	},
 
@@ -205,7 +209,7 @@ const UniformsLib = {
 
 	points: {
 
-		diffuse: { value: new Color(238, 238, 238) },
+		diffuse: { value: new Color( 238, 238, 238 ) },
 		opacity: { value: 1.0 },
 		size: { value: 1.0 },
 		scale: { value: 1.0 },
@@ -217,9 +221,9 @@ const UniformsLib = {
 
 	sprite: {
 
-		diffuse: { value: new Color(238, 238, 238) },
+		diffuse: { value: new Color( 238, 238, 238 ) },
 		opacity: { value: 1.0 },
-		center: { value: new Vector2(0.5, 0.5) },
+		center: { value: new Vector2( 0.5, 0.5 ) },
 		rotation: { value: 0.0 },
 		map: { value: null },
 		alphaMap: { value: null },

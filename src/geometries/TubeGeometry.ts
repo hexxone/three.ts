@@ -1,9 +1,10 @@
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { Vector2 } from '../math/Vector2';
-import { Vector3 } from '../math/Vector3';
+import { BufferGeometry, Float32BufferAttribute, Vector2, Vector3 } from '../';
 
 class TubeGeometry extends BufferGeometry {
+	tangents: any;
+	normals: any;
+	binormals: any;
+
 	constructor( path, tubularSegments = 64, radius = 1, radialSegments = 8, closed = false ) {
 		super();
 		this.type = 'TubeGeometry';
@@ -137,8 +138,9 @@ class TubeGeometry extends BufferGeometry {
 			}
 		}
 	}
+
 	toJSON() {
-		const data = BufferGeometry.prototype.toJSON.call( this );
+		const data = super.toJSON() as any;
 
 		data.path = this.parameters.path.toJSON();
 

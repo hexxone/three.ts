@@ -1,4 +1,4 @@
-import { AudioContext } from '../audio/AudioContext';
+import { AudioContext } from '../';
 import { FileLoader } from './FileLoader';
 import { Loader } from './Loader';
 

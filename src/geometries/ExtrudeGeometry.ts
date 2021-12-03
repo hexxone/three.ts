@@ -20,11 +20,7 @@
  * }
  */
 
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { Vector2 } from '../math/Vector2';
-import { Vector3 } from '../math/Vector3';
-import { ShapeUtils } from '../extras/ShapeUtils';
+import { BufferGeometry, Float32BufferAttribute, ShapeUtils, Vector2, Vector3 } from '../';
 
 class ExtrudeGeometry extends BufferGeometry {
 	constructor( shapes, options ) {
@@ -559,7 +555,7 @@ class ExtrudeGeometry extends BufferGeometry {
 	}
 
 	toJSON() {
-		const data = BufferGeometry.prototype.toJSON.call( this );
+		const data = super.toJSON();
 
 		const shapes = this.parameters.shapes;
 		const options = this.parameters.options;

@@ -1,18 +1,18 @@
+import { Camera, Cylindrical, Matrix3, Matrix4, Spherical } from '../';
+import { Euler } from './Euler';
 import { MathUtils } from './MathUtils';
 import { Quaternion } from './Quaternion';
 
 class Vector3 {
-
 	x: number;
 	y: number;
 	z: number;
+	isVector3 = true;
 
 	constructor(x = 0, y = 0, z = 0) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-
-		Object.defineProperty(this, 'isVector3', { value: true });
 	}
 
 	set(x, y, z) {
@@ -51,7 +51,7 @@ class Vector3 {
 		return this;
 	}
 
-	setComponent(index, value) {
+	setComponent(index: number, value: number) {
 		switch (index) {
 			case 0: this.x = value; break;
 			case 1: this.y = value; break;
@@ -62,7 +62,7 @@ class Vector3 {
 		return this;
 	}
 
-	getComponent(index) {
+	getComponent(index: number) {
 		switch (index) {
 			case 0: return this.x;
 			case 1: return this.y;
@@ -75,7 +75,7 @@ class Vector3 {
 		return new Vector3(this.x, this.y, this.z);
 	}
 
-	copy(v) {
+	copy(v: Vector3) {
 		this.x = v.x;
 		this.y = v.y;
 		this.z = v.z;
@@ -83,7 +83,7 @@ class Vector3 {
 		return this;
 	}
 
-	add(v, w?) {
+	add(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn('THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead.');
 			return this.addVectors(v, w);
@@ -96,7 +96,7 @@ class Vector3 {
 		return this;
 	}
 
-	addScalar(s) {
+	addScalar(s: number) {
 		this.x += s;
 		this.y += s;
 		this.z += s;
@@ -104,7 +104,7 @@ class Vector3 {
 		return this;
 	}
 
-	addVectors(a, b) {
+	addVectors(a: Vector3, b: Vector3) {
 		this.x = a.x + b.x;
 		this.y = a.y + b.y;
 		this.z = a.z + b.z;
@@ -112,7 +112,7 @@ class Vector3 {
 		return this;
 	}
 
-	addScaledVector(v, s) {
+	addScaledVector(v: Vector3, s: number) {
 		this.x += v.x * s;
 		this.y += v.y * s;
 		this.z += v.z * s;
@@ -120,7 +120,7 @@ class Vector3 {
 		return this;
 	}
 
-	sub(v, w?) {
+	sub(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn('THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.');
 			return this.subVectors(v, w);
@@ -133,7 +133,7 @@ class Vector3 {
 		return this;
 	}
 
-	subScalar(s) {
+	subScalar(s: number) {
 		this.x -= s;
 		this.y -= s;
 		this.z -= s;
@@ -141,7 +141,7 @@ class Vector3 {
 		return this;
 	}
 
-	subVectors(a, b) {
+	subVectors(a: Vector3, b: Vector3) {
 		this.x = a.x - b.x;
 		this.y = a.y - b.y;
 		this.z = a.z - b.z;
@@ -149,7 +149,7 @@ class Vector3 {
 		return this;
 	}
 
-	multiply(v, w) {
+	multiply(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn('THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead.');
 			return this.multiplyVectors(v, w);
@@ -162,7 +162,7 @@ class Vector3 {
 		return this;
 	}
 
-	multiplyScalar(scalar) {
+	multiplyScalar(scalar: number) {
 		this.x *= scalar;
 		this.y *= scalar;
 		this.z *= scalar;
@@ -170,7 +170,7 @@ class Vector3 {
 		return this;
 	}
 
-	multiplyVectors(a, b) {
+	multiplyVectors(a: Vector3, b: Vector3) {
 		this.x = a.x * b.x;
 		this.y = a.y * b.y;
 		this.z = a.z * b.z;
@@ -178,7 +178,7 @@ class Vector3 {
 		return this;
 	}
 
-	applyEuler(euler) {
+	applyEuler(euler: Euler) {
 		if (!(euler && euler.isEuler)) {
 			console.error('THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order.');
 		}
@@ -190,7 +190,7 @@ class Vector3 {
 		return this.applyQuaternion(_quaternion.setFromAxisAngle(axis, angle));
 	}
 
-	applyMatrix3(m) {
+	applyMatrix3(m: Matrix3) {
 		const x = this.x; const y = this.y; const z = this.z;
 		const e = m.elements;
 
@@ -205,7 +205,7 @@ class Vector3 {
 		return this.applyMatrix3(m).normalize();
 	}
 
-	applyMatrix4(m) {
+	applyMatrix4(m: Matrix4) {
 		const x = this.x; const y = this.y; const z = this.z;
 		const e = m.elements;
 
@@ -218,7 +218,7 @@ class Vector3 {
 		return this;
 	}
 
-	applyQuaternion(q) {
+	applyQuaternion(q: Quaternion) {
 		const x = this.x; const y = this.y; const z = this.z;
 		const qx = q.x; const qy = q.y; const qz = q.z; const qw = q.w;
 
@@ -238,15 +238,15 @@ class Vector3 {
 		return this;
 	}
 
-	project(camera) {
+	project(camera: Camera) {
 		return this.applyMatrix4(camera.matrixWorldInverse).applyMatrix4(camera.projectionMatrix);
 	}
 
-	unproject(camera) {
+	unproject(camera: Camera) {
 		return this.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorld);
 	}
 
-	transformDirection(m) {
+	transformDirection(m: Matrix4) {
 		// input: THREE.Matrix4 affine matrix
 		// vector interpreted as a direction
 
@@ -260,7 +260,7 @@ class Vector3 {
 		return this.normalize();
 	}
 
-	divide(v) {
+	divide(v: Vector3) {
 		this.x /= v.x;
 		this.y /= v.y;
 		this.z /= v.z;
@@ -268,11 +268,11 @@ class Vector3 {
 		return this;
 	}
 
-	divideScalar(scalar) {
+	divideScalar(scalar: number) {
 		return this.multiplyScalar(1 / scalar);
 	}
 
-	min(v) {
+	min(v: Vector3) {
 		this.x = Math.min(this.x, v.x);
 		this.y = Math.min(this.y, v.y);
 		this.z = Math.min(this.z, v.z);
@@ -280,7 +280,7 @@ class Vector3 {
 		return this;
 	}
 
-	max(v) {
+	max(v: Vector3) {
 		this.x = Math.max(this.x, v.x);
 		this.y = Math.max(this.y, v.y);
 		this.z = Math.max(this.z, v.z);
@@ -288,7 +288,7 @@ class Vector3 {
 		return this;
 	}
 
-	clamp(min, max) {
+	clamp(min: Vector3, max: Vector3) {
 		// assumes min < max, componentwise
 
 		this.x = Math.max(min.x, Math.min(max.x, this.x));
@@ -298,7 +298,7 @@ class Vector3 {
 		return this;
 	}
 
-	clampScalar(minVal, maxVal) {
+	clampScalar(minVal: number, maxVal: number) {
 		this.x = Math.max(minVal, Math.min(maxVal, this.x));
 		this.y = Math.max(minVal, Math.min(maxVal, this.y));
 		this.z = Math.max(minVal, Math.min(maxVal, this.z));
@@ -306,7 +306,7 @@ class Vector3 {
 		return this;
 	}
 
-	clampLength(min, max) {
+	clampLength(min: number, max: number) {
 		const length = this.length();
 
 		return this.divideScalar(length || 1).multiplyScalar(Math.max(min, Math.min(max, length)));
@@ -352,7 +352,7 @@ class Vector3 {
 		return this;
 	}
 
-	dot(v) {
+	dot(v: Vector3) {
 		return this.x * v.x + this.y * v.y + this.z * v.z;
 	}
 
@@ -374,11 +374,11 @@ class Vector3 {
 		return this.divideScalar(this.length() || 1);
 	}
 
-	setLength(length) {
+	setLength(length: number) {
 		return this.normalize().multiplyScalar(length);
 	}
 
-	lerp(v, alpha) {
+	lerp(v: Vector3, alpha) {
 		this.x += (v.x - this.x) * alpha;
 		this.y += (v.y - this.y) * alpha;
 		this.z += (v.z - this.z) * alpha;
@@ -386,7 +386,7 @@ class Vector3 {
 		return this;
 	}
 
-	lerpVectors(v1, v2, alpha) {
+	lerpVectors(v1: Vector3, v2: Vector3, alpha) {
 		this.x = v1.x + (v2.x - v1.x) * alpha;
 		this.y = v1.y + (v2.y - v1.y) * alpha;
 		this.z = v1.z + (v2.z - v1.z) * alpha;
@@ -394,7 +394,7 @@ class Vector3 {
 		return this;
 	}
 
-	cross(v, w?) {
+	cross(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn('THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead.');
 			return this.crossVectors(v, w);
@@ -403,7 +403,7 @@ class Vector3 {
 		return this.crossVectors(this, v);
 	}
 
-	crossVectors(a, b) {
+	crossVectors(a: Vector3, b: Vector3) {
 		const ax = a.x; const ay = a.y; const az = a.z;
 		const bx = b.x; const by = b.y; const bz = b.z;
 
@@ -414,7 +414,7 @@ class Vector3 {
 		return this;
 	}
 
-	projectOnVector(v) {
+	projectOnVector(v: Vector3) {
 		const denominator = v.lengthSq();
 
 		if (denominator === 0) return this.set(0, 0, 0);
@@ -424,20 +424,20 @@ class Vector3 {
 		return this.copy(v).multiplyScalar(scalar);
 	}
 
-	projectOnPlane(planeNormal) {
+	projectOnPlane(planeNormal: Vector3) {
 		_vector.copy(this).projectOnVector(planeNormal);
 
 		return this.sub(_vector);
 	}
 
-	reflect(normal) {
+	reflect(normal: Vector3) {
 		// reflect incident vector off plane orthogonal to normal
 		// normal is assumed to have unit length
 
 		return this.sub(_vector.copy(normal).multiplyScalar(2 * this.dot(normal)));
 	}
 
-	angleTo(v) {
+	angleTo(v: Vector3) {
 		const denominator = Math.sqrt(this.lengthSq() * v.lengthSq());
 
 		if (denominator === 0) return Math.PI / 2;
@@ -449,25 +449,25 @@ class Vector3 {
 		return Math.acos(MathUtils.clamp(theta, - 1, 1));
 	}
 
-	distanceTo(v) {
+	distanceTo(v: Vector3) {
 		return Math.sqrt(this.distanceToSquared(v));
 	}
 
-	distanceToSquared(v) {
+	distanceToSquared(v: Vector3) {
 		const dx = this.x - v.x; const dy = this.y - v.y; const dz = this.z - v.z;
 
 		return dx * dx + dy * dy + dz * dz;
 	}
 
-	manhattanDistanceTo(v) {
+	manhattanDistanceTo(v: Vector3) {
 		return Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z);
 	}
 
-	setFromSpherical(s) {
+	setFromSpherical(s: Spherical) {
 		return this.setFromSphericalCoords(s.radius, s.phi, s.theta);
 	}
 
-	setFromSphericalCoords(radius, phi, theta) {
+	setFromSphericalCoords(radius: number, phi: number, theta: number) {
 		const sinPhiRadius = Math.sin(phi) * radius;
 
 		this.x = sinPhiRadius * Math.sin(theta);
@@ -477,7 +477,7 @@ class Vector3 {
 		return this;
 	}
 
-	setFromCylindrical(c) {
+	setFromCylindrical(c: Cylindrical) {
 		return this.setFromCylindricalCoords(c.radius, c.theta, c.y);
 	}
 
@@ -489,7 +489,7 @@ class Vector3 {
 		return this;
 	}
 
-	setFromMatrixPosition(m) {
+	setFromMatrixPosition(m: Matrix4) {
 		const e = m.elements;
 
 		this.x = e[12];
@@ -499,7 +499,7 @@ class Vector3 {
 		return this;
 	}
 
-	setFromMatrixScale(m) {
+	setFromMatrixScale(m: Matrix4) {
 		const sx = this.setFromMatrixColumn(m, 0).length();
 		const sy = this.setFromMatrixColumn(m, 1).length();
 		const sz = this.setFromMatrixColumn(m, 2).length();
@@ -511,11 +511,11 @@ class Vector3 {
 		return this;
 	}
 
-	setFromMatrixColumn(m, index) {
+	setFromMatrixColumn(m: Matrix4, index) {
 		return this.fromArray(m.elements, index * 4);
 	}
 
-	setFromMatrix3Column(m, index) {
+	setFromMatrix3Column(m: Matrix3, index) {
 		return this.fromArray(m.elements, index * 3);
 	}
 
@@ -523,7 +523,7 @@ class Vector3 {
 		return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
 	}
 
-	fromArray(array, offset = 0) {
+	fromArray(array: number[], offset = 0) {
 		this.x = array[offset];
 		this.y = array[offset + 1];
 		this.z = array[offset + 2];
@@ -531,7 +531,7 @@ class Vector3 {
 		return this;
 	}
 
-	toArray(array = [], offset = 0) {
+	toArray(array: number[] = [], offset = 0): number[] {
 		array[offset] = this.x;
 		array[offset + 1] = this.y;
 		array[offset + 2] = this.z;

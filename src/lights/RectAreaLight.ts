@@ -4,13 +4,15 @@ class RectAreaLight extends Light {
 	constructor( color, intensity, width = 10, height = 10 ) {
 		super( color, intensity );
 
+		this.isRectAreaLight = true;
+
 		this.type = 'RectAreaLight';
 
 		this.width = width;
 		this.height = height;
 	}
 
-	copy( source ) {
+	copy( source: RectAreaLight ) {
 		super.copy( source );
 
 		this.width = source.width;
@@ -28,7 +30,5 @@ class RectAreaLight extends Light {
 		return data;
 	}
 }
-
-RectAreaLight.prototype.isRectAreaLight = true;
 
 export { RectAreaLight };

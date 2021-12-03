@@ -1,14 +1,10 @@
 import { ShaderMaterial } from './ShaderMaterial';
 
 class RawShaderMaterial extends ShaderMaterial {
+	constructor( parameters ) {
+		super( parameters );
 
-	constructor(parameters) {
-		super(parameters);
-
-		Object.defineProperty(this, 'isRawShaderMaterial', {
-			value: true
-		});
-
+		this.isRawShaderMaterial = true;
 		this.type = 'RawShaderMaterial';
 	}
 }

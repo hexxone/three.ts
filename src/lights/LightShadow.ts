@@ -1,16 +1,11 @@
-import { Matrix4 } from '../math/Matrix4';
-import { Vector2 } from '../math/Vector2';
-import { Vector3 } from '../math/Vector3';
-import { Vector4 } from '../math/Vector4';
-import { Frustum } from '../math/Frustum';
+import { Frustum, Matrix4, Vector2, Vector3, Vector4, Camera } from '../';
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();
 const _lookTarget = /* @__PURE__*/ new Vector3();
 
 class LightShadow {
-
-	camera: any;
+	camera: Camera;
 	bias: number;
 	normalBias: number;
 	radius: number;
@@ -20,19 +15,24 @@ class LightShadow {
 	matrix: Matrix4;
 	autoUpdate: boolean;
 	needsUpdate: boolean;
+
 	_frustum: Frustum;
 	_frameExtents: Vector2;
 	_viewportCount: number;
 	_viewports: Vector4[];
 
-	constructor(camera) {
+	isDirectionalLightShadow: boolean;
+	isPointLightShadow: boolean;
+	isSpotLightShadow: boolean;
+
+	constructor( camera ) {
 		this.camera = camera;
 
 		this.bias = 0;
 		this.normalBias = 0;
 		this.radius = 1;
 
-		this.mapSize = new Vector2(512, 512);
+		this.mapSize = new Vector2( 512, 512 );
 
 		this.map = null;
 		this.mapPass = null;
@@ -42,13 +42,13 @@ class LightShadow {
 		this.needsUpdate = false;
 
 		this._frustum = new Frustum();
-		this._frameExtents = new Vector2(1, 1);
+		this._frameExtents = new Vector2( 1, 1 );
 
 		this._viewportCount = 1;
 
 		this._viewports = [
 
-			new Vector4(0, 0, 1, 1),
+			new Vector4( 0, 0, 1, 1 ),
 
 		];
 	}
@@ -61,19 +61,19 @@ class LightShadow {
 		return this._frustum;
 	}
 
-	updateMatrices(light) {
+	updateMatrices( light, viewportIndex? ) {
 		const shadowCamera = this.camera;
 		const shadowMatrix = this.matrix;
 
-		_lightPositionWorld.setFromMatrixPosition(light.matrixWorld);
-		shadowCamera.position.copy(_lightPositionWorld);
+		_lightPositionWorld.setFromMatrixPosition( light.matrixWorld );
+		shadowCamera.position.copy( _lightPositionWorld );
 
-		_lookTarget.setFromMatrixPosition(light.target.matrixWorld);
-		shadowCamera.lookAt(_lookTarget);
+		_lookTarget.setFromMatrixPosition( light.target.matrixWorld );
+		shadowCamera.lookAt( _lookTarget );
 		shadowCamera.updateMatrixWorld();
 
-		_projScreenMatrix.multiplyMatrices(shadowCamera.projectionMatrix, shadowCamera.matrixWorldInverse);
-		this._frustum.setFromProjectionMatrix(_projScreenMatrix);
+		_projScreenMatrix.multiplyMatrices( shadowCamera.projectionMatrix, shadowCamera.matrixWorldInverse );
+		this._frustum.setFromProjectionMatrix( _projScreenMatrix );
 
 		shadowMatrix.set(
 			0.5, 0.0, 0.0, 0.5,
@@ -82,42 +82,42 @@ class LightShadow {
 			0.0, 0.0, 0.0, 1.0,
 		);
 
-		shadowMatrix.multiply(shadowCamera.projectionMatrix);
-		shadowMatrix.multiply(shadowCamera.matrixWorldInverse);
+		shadowMatrix.multiply( shadowCamera.projectionMatrix );
+		shadowMatrix.multiply( shadowCamera.matrixWorldInverse );
 	}
 
-	getViewport(viewportIndex) {
-		return this._viewports[viewportIndex];
+	getViewport( viewportIndex ) {
+		return this._viewports[ viewportIndex ];
 	}
 
 	getFrameExtents() {
 		return this._frameExtents;
 	}
 
-	copy(source) {
+	copy( source: LightShadow ) {
 		this.camera = source.camera.clone();
 
 		this.bias = source.bias;
 		this.radius = source.radius;
 
-		this.mapSize.copy(source.mapSize);
+		this.mapSize.copy( source.mapSize );
 
 		return this;
 	}
 
 	clone() {
-		return new LightShadow(null).copy(this);
+		return new LightShadow( null ).copy( this );
 	}
 
 	toJSON() {
 		const object = {} as any;
 
-		if (this.bias !== 0) object.bias = this.bias;
-		if (this.normalBias !== 0) object.normalBias = this.normalBias;
-		if (this.radius !== 1) object.radius = this.radius;
-		if (this.mapSize.x !== 512 || this.mapSize.y !== 512) object.mapSize = this.mapSize.toArray();
+		if ( this.bias !== 0 ) object.bias = this.bias;
+		if ( this.normalBias !== 0 ) object.normalBias = this.normalBias;
+		if ( this.radius !== 1 ) object.radius = this.radius;
+		if ( this.mapSize.x !== 512 || this.mapSize.y !== 512 ) object.mapSize = this.mapSize.toArray();
 
-		object.camera = this.camera.toJSON(false).object;
+		object.camera = this.camera.toJSON( false ).object;
 		delete object.camera.matrix;
 
 		return object;

@@ -1,12 +1,10 @@
-import { Box3 } from '../math/Box3';
-import { LineSegments } from '../objects/LineSegments';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { BufferAttribute } from '../core/BufferAttribute';
-import { BufferGeometry } from '../core/BufferGeometry';
+import { Box3, BufferAttribute, BufferGeometry, LineBasicMaterial, LineSegments } from '../';
 
 const _box = /* @__PURE__*/ new Box3();
 
 class BoxHelper extends LineSegments {
+	object: any;
+
 	constructor( object, color = 0xffff00 ) {
 		const indices = new Uint16Array( [0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7] );
 		const positions = new Float32Array( 8 * 3 );
@@ -25,7 +23,7 @@ class BoxHelper extends LineSegments {
 		this.update();
 	}
 
-	update( object ) {
+	update( object? ) {
 		if ( object !== undefined ) {
 			console.warn( 'THREE.BoxHelper: .update() has no longer arguments.' );
 		}
@@ -79,8 +77,8 @@ class BoxHelper extends LineSegments {
 		return this;
 	}
 
-	copy( source ) {
-		LineSegments.prototype.copy.call( this, source );
+	copy( source: BoxHelper ) {
+		super.copy( source );
 
 		this.object = source.object;
 

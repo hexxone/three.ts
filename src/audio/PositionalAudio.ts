@@ -1,6 +1,5 @@
-import { Vector3 } from '../math/Vector3';
-import { Quaternion } from '../math/Quaternion';
-import { Audio } from './Audio';
+import { Vector3, Quaternion } from '../';
+import { Audio } from './';
 
 const _position = /* @__PURE__*/ new Vector3();
 const _quaternion = /* @__PURE__*/ new Quaternion();
@@ -8,6 +7,8 @@ const _scale = /* @__PURE__*/ new Vector3();
 const _orientation = /* @__PURE__*/ new Vector3();
 
 class PositionalAudio extends Audio {
+	panner: any;
+
 	constructor( listener ) {
 		super( listener );
 

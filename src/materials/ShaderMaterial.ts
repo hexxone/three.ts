@@ -1,36 +1,52 @@
 import { Material } from './Material';
-import { cloneUniforms } from '../renderers/shaders/UniformsUtils';
+import { cloneUniforms } from '../';
 
 import default_vertex from '../renderers/shaders/ShaderChunk/default_vertex.glsl';
 import default_fragment from '../renderers/shaders/ShaderChunk/default_fragment.glsl';
 
 /**
- * parameters = {
- *  defines: { "label" : "value" },
- *  uniforms: { "parameter1": { value: 1.0 }, "parameter2": { value2: 2 } },
- *
- *  fragmentShader: <string>,
- *  vertexShader: <string>,
- *
- *  wireframe: <boolean>,
- *  wireframeLinewidth: <float>,
- *
- *  lights: <bool>,
- *
- *  skinning: <bool>,
- *  morphTargets: <bool>,
- *  morphNormals: <bool>
- * }
+ * @public
  */
+type ShaderMaterialParams = {
+	defines?: { [name: string]: any };
+	uniforms?: { [name: string]: any };
 
-class ShaderMaterial extends Material {
+	name?: string;
+	blending?: number;
+	side?: number;
 
+	fog?: boolean;
+	depthTest?: boolean;
+	depthWrite?: boolean;
+	transparent?: boolean;
+
+	fragmentShader?: string;
+	vertexShader?: string;
+
+	wireframe?: boolean;
+	wireframeLinewidth?: number;
+
+	lights?: boolean;
+
+	skinning?: boolean;
+	morphTargets?: boolean;
+	morphNormals?: boolean;
+}
+
+/**
+ * @public
+ */
+class ShaderMaterial extends Material implements ShaderMaterialParams {
+	isRawShaderMaterial: boolean;
+
+	/** @public */
 	defines: any;
+	/** @public */
 	uniforms: any;
+
 	vertexShader: string;
 	fragmentShader: string;
 	lights: boolean;
-	clipping: boolean;
 	extensions: {
 		derivatives: boolean; // set to use derivatives
 		fragDepth: boolean; // set to use fragment depth values
@@ -39,15 +55,12 @@ class ShaderMaterial extends Material {
 	};
 	defaultAttributeValues: { color: number[]; uv: number[]; uv2: number[]; };
 	index0AttributeName: any;
-	uniformsNeedUpdate: boolean;
 	glslVersion: any;
 
-	constructor(parameters) {
+	constructor( parameters?: ShaderMaterialParams ) {
 		super();
 
-		Object.defineProperty(this, 'isShaderMaterial', {
-			value: true
-		});
+		this.isShaderMaterial = true;
 
 		this.type = 'ShaderMaterial';
 
@@ -90,24 +103,24 @@ class ShaderMaterial extends Material {
 
 		this.glslVersion = null;
 
-		if (parameters !== undefined) {
-			if (parameters.attributes !== undefined) {
-				console.error('THREE.ShaderMaterial: attributes should now be defined in THREE.BufferGeometry instead.');
-			}
-
-			this.setValues(parameters);
+		if ( parameters !== undefined ) {
+			this.setValues( parameters );
 		}
 	}
 
-	copy(source) {
-		Material.prototype.copy.call(this, source);
+	clone() {
+		return new ShaderMaterial().copy( this );
+	}
+
+	copy( source: ShaderMaterial ) {
+		super.copy( source );
 
 		this.fragmentShader = source.fragmentShader;
 		this.vertexShader = source.vertexShader;
 
-		this.uniforms = cloneUniforms(source.uniforms);
+		this.uniforms = cloneUniforms( source.uniforms );
 
-		this.defines = Object.assign({}, source.defines);
+		this.defines = Object.assign( {}, source.defines );
 
 		this.wireframe = source.wireframe;
 		this.wireframeLinewidth = source.wireframeLinewidth;
@@ -120,60 +133,60 @@ class ShaderMaterial extends Material {
 		this.morphTargets = source.morphTargets;
 		this.morphNormals = source.morphNormals;
 
-		this.extensions = Object.assign({}, source.extensions);
+		this.extensions = Object.assign( {}, source.extensions );
 
 		this.glslVersion = source.glslVersion;
 
 		return this;
 	}
 
-	toJSON(meta) {
-		const data = Material.prototype.toJSON.call(this, meta);
+	toJSON( meta ) {
+		const data = super.toJSON( meta );
 
 		data.glslVersion = this.glslVersion;
 		data.uniforms = {};
 
-		for (const name in this.uniforms) {
-			const uniform = this.uniforms[name];
+		for ( const name in this.uniforms ) {
+			const uniform = this.uniforms[ name ];
 			const value = uniform.value;
 
-			if (value && value.isTexture) {
-				data.uniforms[name] = {
+			if ( value && value.isTexture ) {
+				data.uniforms[ name ] = {
 					type: 't',
-					value: value.toJSON(meta).uuid,
+					value: value.toJSON( meta ).uuid,
 				};
-			} else if (value && value.isColor) {
-				data.uniforms[name] = {
+			} else if ( value && value.isColor ) {
+				data.uniforms[ name ] = {
 					type: 'c',
 					value: value.getHex(),
 				};
-			} else if (value && value.isVector2) {
-				data.uniforms[name] = {
+			} else if ( value && value.isVector2 ) {
+				data.uniforms[ name ] = {
 					type: 'v2',
 					value: value.toArray(),
 				};
-			} else if (value && value.isVector3) {
-				data.uniforms[name] = {
+			} else if ( value && value.isVector3 ) {
+				data.uniforms[ name ] = {
 					type: 'v3',
 					value: value.toArray(),
 				};
-			} else if (value && value.isVector4) {
-				data.uniforms[name] = {
+			} else if ( value && value.isVector4 ) {
+				data.uniforms[ name ] = {
 					type: 'v4',
 					value: value.toArray(),
 				};
-			} else if (value && value.isMatrix3) {
-				data.uniforms[name] = {
+			} else if ( value && value.isMatrix3 ) {
+				data.uniforms[ name ] = {
 					type: 'm3',
 					value: value.toArray(),
 				};
-			} else if (value && value.isMatrix4) {
-				data.uniforms[name] = {
+			} else if ( value && value.isMatrix4 ) {
+				data.uniforms[ name ] = {
 					type: 'm4',
 					value: value.toArray(),
 				};
 			} else {
-				data.uniforms[name] = {
+				data.uniforms[ name ] = {
 					value: value,
 				};
 
@@ -181,21 +194,21 @@ class ShaderMaterial extends Material {
 			}
 		}
 
-		if (Object.keys(this.defines).length > 0) data.defines = this.defines;
+		if ( Object.keys( this.defines ).length > 0 ) data.defines = this.defines;
 
 		data.vertexShader = this.vertexShader;
 		data.fragmentShader = this.fragmentShader;
 
 		const extensions = {};
 
-		for (const key in this.extensions) {
-			if (this.extensions[key] === true) extensions[key] = true;
+		for ( const key in this.extensions ) {
+			if ( this.extensions[ key ] === true ) extensions[ key ] = true;
 		}
 
-		if (Object.keys(extensions).length > 0) data.extensions = extensions;
+		if ( Object.keys( extensions ).length > 0 ) data.extensions = extensions;
 
 		return data;
 	}
 }
 
-export { ShaderMaterial };
+export { ShaderMaterial, ShaderMaterialParams };

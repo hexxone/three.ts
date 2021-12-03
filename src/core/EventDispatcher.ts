@@ -2,10 +2,21 @@
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-class EventDispatcher {
-	_listeners = {};
+export interface EventObject {
+	target?: EventDispatcher;
+	type: string;
+}
 
-	addEventListener( type, listener ) {
+const EventCallback = function( event: EventObject ): void { };
+
+class EventDispatcher {
+	_listeners: {
+		[name: string]: ( typeof EventCallback[] ),
+	};
+
+	isWebGLRenderTarget: boolean;
+
+	addEventListener( type: string, listener: ( typeof EventCallback ) ) {
 		if ( this._listeners === undefined ) this._listeners = {};
 
 		const listeners = this._listeners;
@@ -19,7 +30,7 @@ class EventDispatcher {
 		}
 	}
 
-	hasEventListener( type, listener ) {
+	hasEventListener( type: string, listener: ( typeof EventCallback ) ) {
 		if ( this._listeners === undefined ) return false;
 
 		const listeners = this._listeners;
@@ -27,7 +38,7 @@ class EventDispatcher {
 		return listeners[ type ] !== undefined && listeners[ type ].indexOf( listener ) !== - 1;
 	}
 
-	removeEventListener( type, listener ) {
+	removeEventListener( type: string, listener: ( typeof EventCallback ) ) {
 		if ( this._listeners === undefined ) return;
 
 		const listeners = this._listeners;
@@ -42,7 +53,7 @@ class EventDispatcher {
 		}
 	}
 
-	dispatchEvent( event ) {
+	dispatchEvent( event: EventObject ) {
 		if ( this._listeners === undefined ) return;
 
 		const listeners = this._listeners;
@@ -60,6 +71,5 @@ class EventDispatcher {
 		}
 	}
 }
-
 
 export { EventDispatcher };

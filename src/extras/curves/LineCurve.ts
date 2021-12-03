@@ -1,14 +1,19 @@
-import { Vector2 } from '../../math/Vector2';
-import { Curve } from '../core/Curve';
+import { Curve, Vector2 } from '../../';
 
 class LineCurve extends Curve {
+	v1: Vector2;
+	v2: Vector2;
+
 	constructor( v1 = new Vector2(), v2 = new Vector2() ) {
 		super();
 
+		this.isLineCurve = true;
 		this.type = 'LineCurve';
 
 		this.v1 = v1;
 		this.v2 = v2;
+
+		this.isLineCurve = true;
 	}
 
 	getPoint( t, optionalTarget = new Vector2() ) {
@@ -37,7 +42,7 @@ class LineCurve extends Curve {
 		return tangent;
 	}
 
-	copy( source ) {
+	copy( source: LineCurve ) {
 		super.copy( source );
 
 		this.v1.copy( source.v1 );
@@ -64,7 +69,5 @@ class LineCurve extends Curve {
 		return this;
 	}
 }
-
-LineCurve.prototype.isLineCurve = true;
 
 export { LineCurve };

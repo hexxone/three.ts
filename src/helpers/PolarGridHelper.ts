@@ -1,11 +1,7 @@
-import { LineSegments } from '../objects/LineSegments';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Color } from '../math/Color';
+import { BufferGeometry, Color, Float32BufferAttribute, LineBasicMaterial, LineSegments } from '../';
 
 class PolarGridHelper extends LineSegments {
-	constructor( radius = 10, radials = 16, circles = 8, divisions = 64, color1 = 0x444444, color2 = 0x888888 ) {
+	constructor( radius = 10, radials = 16, circles = 8, divisions = 64, color1 = 0x444444 as any, color2 = 0x888888 as any ) {
 		color1 = new Color( color1 );
 		color2 = new Color( color2 );
 

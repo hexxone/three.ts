@@ -1,17 +1,18 @@
+import { Matrix4, PerspectiveCamera, Vector2, Vector3, Vector4 } from '../';
 import { LightShadow } from './LightShadow';
-import { PerspectiveCamera } from '../cameras/PerspectiveCamera';
-import { Matrix4 } from '../math/Matrix4';
-import { Vector2 } from '../math/Vector2';
-import { Vector3 } from '../math/Vector3';
-import { Vector4 } from '../math/Vector4';
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();
 const _lookTarget = /* @__PURE__*/ new Vector3();
 
 class PointLightShadow extends LightShadow {
+	_cubeDirections: Vector3[];
+	_cubeUps: Vector3[];
+
 	constructor() {
 		super( new PerspectiveCamera( 90, 1, 0.5, 500 ) );
+
+		this.isPointLightShadow = true;
 
 		this._frameExtents = new Vector2( 4, 2 );
 
@@ -75,7 +76,5 @@ class PointLightShadow extends LightShadow {
 		this._frustum.setFromProjectionMatrix( _projScreenMatrix );
 	}
 }
-
-PointLightShadow.prototype.isPointLightShadow = true;
 
 export { PointLightShadow };

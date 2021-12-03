@@ -1,13 +1,11 @@
 class Vector2 {
-
 	x: any;
 	y: any;
+	isVector2 = true;
 
 	constructor(x = 0, y = 0) {
 		this.x = x;
 		this.y = y;
-
-		Object.defineProperty(this, 'isVector2', true);
 	}
 
 	get width() {
@@ -74,7 +72,7 @@ class Vector2 {
 		return new Vector2(this.x, this.y);
 	}
 
-	copy(v) {
+	copy(v: Vector2) {
 		this.x = v.x;
 		this.y = v.y;
 
@@ -313,14 +311,14 @@ class Vector2 {
 		return ((v.x === this.x) && (v.y === this.y));
 	}
 
-	fromArray(array, offset = 0) {
+	fromArray(array: number[], offset = 0) {
 		this.x = array[offset];
 		this.y = array[offset + 1];
 
 		return this;
 	}
 
-	toArray(array = [], offset = 0) {
+	toArray(array: number[] = [], offset = 0): number[] {
 		array[offset] = this.x;
 		array[offset + 1] = this.y;
 

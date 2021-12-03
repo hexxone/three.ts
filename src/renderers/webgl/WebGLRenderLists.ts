@@ -1,107 +1,127 @@
-function painterSortStable( a, b ) {
-	if ( a.groupOrder !== b.groupOrder ) {
+import { Object3D, BufferGeometry, Material } from '../../';
+import { WebGLProperties } from './WebGLProperties';
+
+function painterSortStable(a, b) {
+	if (a.groupOrder !== b.groupOrder) {
 		return a.groupOrder - b.groupOrder;
-	} else if ( a.renderOrder !== b.renderOrder ) {
+	} else if (a.renderOrder !== b.renderOrder) {
 		return a.renderOrder - b.renderOrder;
-	} else if ( a.program !== b.program ) {
+	} else if (a.program !== b.program) {
 		return a.program.id - b.program.id;
-	} else if ( a.material.id !== b.material.id ) {
+	} else if (a.material.id !== b.material.id) {
 		return a.material.id - b.material.id;
-	} else if ( a.z !== b.z ) {
+	} else if (a.z !== b.z) {
 		return a.z - b.z;
 	} else {
 		return a.id - b.id;
 	}
 }
 
-function reversePainterSortStable( a, b ) {
-	if ( a.groupOrder !== b.groupOrder ) {
+function reversePainterSortStable(a, b) {
+	if (a.groupOrder !== b.groupOrder) {
 		return a.groupOrder - b.groupOrder;
-	} else if ( a.renderOrder !== b.renderOrder ) {
+	} else if (a.renderOrder !== b.renderOrder) {
 		return a.renderOrder - b.renderOrder;
-	} else if ( a.z !== b.z ) {
+	} else if (a.z !== b.z) {
 		return b.z - a.z;
 	} else {
 		return a.id - b.id;
 	}
 }
 
+export interface RenderItem {
+	id: number;
+	object: Object3D;
+	geometry: BufferGeometry;
+	material: Material;
+	program: any;
+	groupOrder: number;
+	renderOrder: number;
+	z: number;
+	group: any;
+}
 
-function WebGLRenderList( properties ) {
-	const renderItems = [];
-	let renderItemsIndex = 0;
 
-	const opaque = [];
-	const transparent = [];
+class WebGLRenderList {
+	_properties: WebGLProperties;
 
-	const defaultProgram = { id: - 1 };
+	renderItems: RenderItem[] = [];
+	renderItemsIndex = 0;
 
-	function init() {
-		renderItemsIndex = 0;
+	opaque: RenderItem[] = [];
+	transparent: RenderItem[] = [];
 
-		opaque.length = 0;
-		transparent.length = 0;
+	defaultProgram = { id: - 1 };
+
+	constructor(properties: WebGLProperties) {
+		this._properties = properties;
 	}
 
-	function getNextRenderItem( object, geometry, material, groupOrder, z, group ) {
-		let renderItem = renderItems[ renderItemsIndex ];
-		const materialProperties = properties.get( material );
+	init() {
+		this.renderItemsIndex = 0;
+		this.opaque.length = 0;
+		this.transparent.length = 0;
+	}
 
-		if ( renderItem === undefined ) {
+	getNextRenderItem(object: Object3D, geometry: BufferGeometry, material: Material, groupOrder, z, group): RenderItem {
+		let renderItem = this.renderItems[this.renderItemsIndex];
+		const materialProperties = this._properties.get(material);
+
+		if (renderItem === undefined) {
 			renderItem = {
 				id: object.id,
 				object: object,
 				geometry: geometry,
 				material: material,
-				program: materialProperties.program || defaultProgram,
+				program: materialProperties.program || this.defaultProgram,
 				groupOrder: groupOrder,
 				renderOrder: object.renderOrder,
 				z: z,
 				group: group,
 			};
 
-			renderItems[ renderItemsIndex ] = renderItem;
+			this.renderItems[this.renderItemsIndex] = renderItem;
 		} else {
 			renderItem.id = object.id;
 			renderItem.object = object;
 			renderItem.geometry = geometry;
 			renderItem.material = material;
-			renderItem.program = materialProperties.program || defaultProgram;
+			renderItem.program = materialProperties.program || this.defaultProgram;
 			renderItem.groupOrder = groupOrder;
 			renderItem.renderOrder = object.renderOrder;
 			renderItem.z = z;
 			renderItem.group = group;
 		}
 
-		renderItemsIndex ++;
+		this.renderItemsIndex++;
 
 		return renderItem;
 	}
 
-	function push( object, geometry, material, groupOrder, z, group ) {
-		const renderItem = getNextRenderItem( object, geometry, material, groupOrder, z, group );
+	push(object: Object3D, geometry: BufferGeometry, material: Material, groupOrder, z, group) {
+		const renderItem = this.getNextRenderItem(object, geometry, material, groupOrder, z, group);
 
-		( material.transparent === true ? transparent : opaque ).push( renderItem );
+		(material.transparent === true ? this.transparent : this.opaque).push(renderItem);
 	}
 
-	function unshift( object, geometry, material, groupOrder, z, group ) {
-		const renderItem = getNextRenderItem( object, geometry, material, groupOrder, z, group );
+	unshift(object: Object3D, geometry: BufferGeometry, material: Material, groupOrder, z, group) {
+		const renderItem = this.getNextRenderItem(object, geometry, material, groupOrder, z, group);
 
-		( material.transparent === true ? transparent : opaque ).unshift( renderItem );
+		(material.transparent === true ? this.transparent : this.opaque).unshift(renderItem);
 	}
 
-	function sort( customOpaqueSort, customTransparentSort ) {
-		if ( opaque.length > 1 ) opaque.sort( customOpaqueSort || painterSortStable );
-		if ( transparent.length > 1 ) transparent.sort( customTransparentSort || reversePainterSortStable );
+	sort(customOpaqueSort, customTransparentSort) {
+		if (this.opaque.length > 1) this.opaque.sort(customOpaqueSort || painterSortStable);
+		if (this.transparent.length > 1) this.transparent.sort(customTransparentSort || reversePainterSortStable);
 	}
 
-	function finish() {
+	finish() {
 		// Clear references from inactive renderItems in the list
 
-		for ( let i = renderItemsIndex, il = renderItems.length; i < il; i ++ ) {
-			const renderItem = renderItems[ i ];
+		for (let i = this.renderItemsIndex, il = this.renderItems.length; i < il; i++) {
+			const renderItem = this.renderItems[i];
 
-			if ( renderItem.id === null ) break;
+			if (renderItem.id === null) break;
 
 			renderItem.id = null;
 			renderItem.object = null;
@@ -111,50 +131,38 @@ function WebGLRenderList( properties ) {
 			renderItem.group = null;
 		}
 	}
-
-	return {
-
-		opaque: opaque,
-		transparent: transparent,
-
-		init: init,
-		push: push,
-		unshift: unshift,
-		finish: finish,
-
-		sort: sort,
-	};
 }
 
-function WebGLRenderLists( properties ) {
-	let lists = new WeakMap();
+class WebGLRenderLists {
+	_properties: WebGLProperties;
 
-	function get( scene, renderCallDepth ) {
-		let list;
+	lists = new WeakMap<Object3D, WebGLRenderList[]>();
 
-		if ( lists.has( scene ) === false ) {
-			list = new WebGLRenderList( properties );
-			lists.set( scene, [list] );
+	constructor(properties: WebGLProperties) {
+		this._properties = properties;
+	}
+
+	get(scene: Object3D, renderCallDepth: number): WebGLRenderList {
+		let list: WebGLRenderList;
+
+		if (this.lists.has(scene) === false) {
+			list = new WebGLRenderList(this._properties);
+			this.lists.set(scene, [list]);
 		} else {
-			if ( renderCallDepth >= lists.get( scene ).length ) {
-				list = new WebGLRenderList( properties );
-				lists.get( scene ).push( list );
+			if (renderCallDepth >= this.lists.get(scene).length) {
+				list = new WebGLRenderList(this._properties);
+				this.lists.get(scene).push(list);
 			} else {
-				list = lists.get( scene )[ renderCallDepth ];
+				list = this.lists.get(scene)[renderCallDepth];
 			}
 		}
 
 		return list;
 	}
 
-	function dispose() {
-		lists = new WeakMap();
+	dispose() {
+		this.lists = new WeakMap();
 	}
-
-	return {
-		get: get,
-		dispose: dispose,
-	};
 }
 
 

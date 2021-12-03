@@ -1,35 +1,47 @@
-function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
-	const isWebGL2 = capabilities.isWebGL2;
+import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from './';
 
-	let mode;
+class WebGLIndexedBufferRenderer {
+	gl: GLESRenderingContext;
+	extensions: WebGLExtensions;
+	info: WebGLInfo;
+	capabilities: WebGLCapabilities;
 
-	function setMode( value ) {
-		mode = value;
+	mode;
+	type;
+	bytesPerElement;
+
+	constructor( gl: GLESRenderingContext, extensions: WebGLExtensions, info: WebGLInfo, capabilities: WebGLCapabilities ) {
+		this.gl = gl;
+		this.extensions = extensions;
+		this.info = info;
+		this.capabilities = capabilities;
 	}
 
-	let type; let bytesPerElement;
-
-	function setIndex( value ) {
-		type = value.type;
-		bytesPerElement = value.bytesPerElement;
+	setMode( value ) {
+		this.mode = value;
 	}
 
-	function render( start, count ) {
-		gl.drawElements( mode, count, type, start * bytesPerElement );
-
-		info.update( count, mode, 1 );
+	setIndex( value ) {
+		this.type = value.type;
+		this.bytesPerElement = value.bytesPerElement;
 	}
 
-	function renderInstances( start, count, primcount ) {
+	render( start, count ) {
+		this.gl.drawElements( this.mode, count, this.type, start * this.bytesPerElement );
+
+		this.info.update( count, this.mode, 1 );
+	}
+
+	renderInstances( start, count, primcount ) {
 		if ( primcount === 0 ) return;
 
 		let extension; let methodName;
 
-		if ( isWebGL2 ) {
-			extension = gl;
+		if ( this.capabilities.isWebGL2 ) {
+			extension = this.gl;
 			methodName = 'drawElementsInstanced';
 		} else {
-			extension = extensions.get( 'ANGLE_instanced_arrays' );
+			extension = this.extensions.get( 'ANGLE_instanced_arrays' );
 			methodName = 'drawElementsInstancedANGLE';
 
 			if ( extension === null ) {
@@ -38,17 +50,10 @@ function WebGLIndexedBufferRenderer( gl, extensions, info, capabilities ) {
 			}
 		}
 
-		extension[ methodName ]( mode, count, type, start * bytesPerElement, primcount );
+		extension[ methodName ]( this.mode, count, this.type, start * this.bytesPerElement, primcount );
 
-		info.update( count, mode, primcount );
+		this.info.update( count, this.mode, primcount );
 	}
-
-	//
-
-	this.setMode = setMode;
-	this.setIndex = setIndex;
-	this.render = render;
-	this.renderInstances = renderInstances;
 }
 
 

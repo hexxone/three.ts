@@ -1,8 +1,9 @@
+import { Euler, Matrix3, Quaternion } from '.';
 import { Vector3 } from './Vector3';
 
 class Matrix4 {
-
 	elements: number[];
+	isMatrix4 = true;
 
 	constructor(...args) {
 		this.elements = [
@@ -15,8 +16,6 @@ class Matrix4 {
 		if (args.length > 0) {
 			console.error('THREE.Matrix4: the constructor no longer reads arguments. use .set() instead.');
 		}
-
-		Object.defineProperty(this, 'isMatrix4', { value: true });
 	}
 
 	set(n11, n12, n13, n14, n21, n22, n23, n24, n31, n32, n33, n34, n41, n42, n43, n44) {
@@ -47,7 +46,7 @@ class Matrix4 {
 		return new Matrix4().fromArray(this.elements);
 	}
 
-	copy(m) {
+	copy(m: Matrix4) {
 		const te = this.elements;
 		const me = m.elements;
 
@@ -59,8 +58,9 @@ class Matrix4 {
 		return this;
 	}
 
-	copyPosition(m) {
-		const te = this.elements; const me = m.elements;
+	copyPosition(m: Matrix4) {
+		const te = this.elements;
+		const me = m.elements;
 
 		te[12] = me[12];
 		te[13] = me[13];
@@ -69,7 +69,7 @@ class Matrix4 {
 		return this;
 	}
 
-	setFromMatrix3(m) {
+	setFromMatrix3(m: Matrix3) {
 		const me = m.elements;
 
 		this.set(
@@ -103,7 +103,7 @@ class Matrix4 {
 		return this;
 	}
 
-	extractRotation(m) {
+	extractRotation(m: Matrix4) {
 		// this method does not support reflection matrices
 
 		const te = this.elements;
@@ -136,7 +136,7 @@ class Matrix4 {
 		return this;
 	}
 
-	makeRotationFromEuler(euler) {
+	makeRotationFromEuler(euler: Euler) {
 		if (!(euler && euler.isEuler)) {
 			console.error('THREE.Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order.');
 		}
@@ -248,11 +248,11 @@ class Matrix4 {
 		return this;
 	}
 
-	makeRotationFromQuaternion(q) {
+	makeRotationFromQuaternion(q: Quaternion) {
 		return this.compose(_zero, q, _one);
 	}
 
-	lookAt(eye, target, up) {
+	lookAt(eye: Vector3, target: Vector3, up) {
 		const te = this.elements;
 
 		_z.subVectors(eye, target);
@@ -289,20 +289,15 @@ class Matrix4 {
 		return this;
 	}
 
-	multiply(m, n?) {
-		if (n !== undefined) {
-			console.warn('THREE.Matrix4: .multiply() now only accepts one argument. Use .multiplyMatrices( a, b ) instead.');
-			return this.multiplyMatrices(m, n);
-		}
-
+	multiply(m: Matrix4) {
 		return this.multiplyMatrices(this, m);
 	}
 
-	premultiply(m) {
+	premultiply(m: Matrix4) {
 		return this.multiplyMatrices(m, this);
 	}
 
-	multiplyMatrices(a, b) {
+	multiplyMatrices(a: Matrix4, b: Matrix4) {
 		const ae = a.elements;
 		const be = b.elements;
 		const te = this.elements;
@@ -600,7 +595,7 @@ class Matrix4 {
 		return this;
 	}
 
-	compose(position, quaternion, scale) {
+	compose(position: Vector3, quaternion: Quaternion, scale: Vector3) {
 		const te = this.elements;
 
 		const x = quaternion._x; const y = quaternion._y; const z = quaternion._z; const w = quaternion._w;
@@ -634,7 +629,7 @@ class Matrix4 {
 		return this;
 	}
 
-	decompose(position, quaternion, scale) {
+	decompose(position: Vector3, quaternion: Quaternion, scale: Vector3) {
 		const te = this.elements;
 
 		let sx = _v1.set(te[0], te[1], te[2]).length();
@@ -736,7 +731,7 @@ class Matrix4 {
 		return this;
 	}
 
-	toArray(array = [], offset = 0) {
+	toArray(array = [], offset = 0): number[] {
 		const te = this.elements;
 
 		array[offset] = te[0];

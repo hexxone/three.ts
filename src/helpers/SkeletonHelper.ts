@@ -1,18 +1,14 @@
-import { LineSegments } from '../objects/LineSegments';
-import { Matrix4 } from '../math/Matrix4';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { Color } from '../math/Color';
-import { Vector3 } from '../math/Vector3';
-import { BufferGeometry } from '../core/BufferGeometry';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { Object3D, BufferGeometry, Color, Float32BufferAttribute, LineBasicMaterial, LineSegments, Matrix4, Vector3 } from '../';
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _boneMatrix = /* @__PURE__*/ new Matrix4();
 const _matrixWorldInv = /* @__PURE__*/ new Matrix4();
 
-
 class SkeletonHelper extends LineSegments {
-	constructor( object ) {
+	root: any;
+	bones: any[];
+
+	constructor( object: Object3D ) {
 		const bones = getBoneList( object );
 
 		const geometry = new BufferGeometry();
@@ -41,8 +37,9 @@ class SkeletonHelper extends LineSegments {
 
 		super( geometry, material );
 
-		this.type = 'SkeletonHelper';
 		this.isSkeletonHelper = true;
+
+		this.type = 'SkeletonHelper';
 
 		this.root = object;
 		this.bones = bones;
@@ -82,7 +79,7 @@ class SkeletonHelper extends LineSegments {
 }
 
 
-function getBoneList( object ) {
+function getBoneList( object: Object3D ) {
 	const boneList = [];
 
 	if ( object && object.isBone ) {
@@ -90,7 +87,7 @@ function getBoneList( object ) {
 	}
 
 	for ( let i = 0; i < object.children.length; i ++ ) {
-		boneList.push.apply( boneList, getBoneList( object.children[ i ] ) );
+		boneList.push( ...getBoneList( object.children[ i ] ) );
 	}
 
 	return boneList;

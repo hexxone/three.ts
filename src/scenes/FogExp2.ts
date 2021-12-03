@@ -1,23 +1,23 @@
-import { Color } from '../math/Color';
+import { Color } from '../';
 
 class FogExp2 {
-
 	name: string;
 	color: Color;
 	density: number;
+	isFogExp2 = true;
 
-	constructor(color, density) {
+	constructor( color, density ) {
 		this.name = '';
 
-		this.color = new Color(color);
-		this.density = (density !== undefined) ? density : 0.00025;
+		this.color = new Color( color );
+		this.density = ( density !== undefined ) ? density : 0.00025;
 	}
 
 	clone() {
-		return new FogExp2(this.color, this.density);
+		return new FogExp2( this.color, this.density );
 	}
 
-	toJSON( /* meta */) {
+	toJSON( /* meta */ ) {
 		return {
 			type: 'FogExp2',
 			color: this.color.getHex(),
@@ -25,7 +25,5 @@ class FogExp2 {
 		};
 	}
 }
-
-FogExp2.prototype.isFogExp2 = true;
 
 export { FogExp2 };

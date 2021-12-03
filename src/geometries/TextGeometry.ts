@@ -15,11 +15,10 @@
  * }
  */
 
-import { BufferGeometry } from '../core/BufferGeometry';
-import { ExtrudeGeometry } from './ExtrudeGeometry';
+import { BufferGeometry, ExtrudeGeometry } from '../';
 
 class TextGeometry extends ExtrudeGeometry {
-	constructor( text, parameters = {} ) {
+	constructor( text, parameters = {} as any ) {
 		const font = parameters.font;
 
 		if ( ! ( font && font.isFont ) ) {

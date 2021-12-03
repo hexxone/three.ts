@@ -1,10 +1,10 @@
 import { Light } from './Light';
 
 export class AmbientLight extends Light {
-	constructor(color, intensity) {
-		super(color, intensity);
+	constructor( color, intensity ) {
+		super( color, intensity );
 
-		Object.defineProperty(this, 'isAmbientLight', { value: true });
+		this.isAmbientLight = true;
 
 		this.type = 'AmbientLight';
 	}

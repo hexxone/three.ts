@@ -1,8 +1,6 @@
-import { Curve } from '../core/Curve';
-import { Vector2 } from '../../math/Vector2';
+import { Curve, Vector2 } from '../../';
 
 class EllipseCurve extends Curve {
-	type: string;
 	aX: number;
 	aY: number;
 	xRadius: number;
@@ -11,11 +9,11 @@ class EllipseCurve extends Curve {
 	aEndAngle: number;
 	aClockwise: boolean;
 	aRotation: number;
-	isEllipseCurve: boolean;
 
 	constructor( aX = 0, aY = 0, xRadius = 1, yRadius = 1, aStartAngle = 0, aEndAngle = Math.PI * 2, aClockwise = false, aRotation = 0 ) {
 		super();
 
+		this.isEllipseCurve = true;
 		this.type = 'EllipseCurve';
 
 		this.aX = aX;
@@ -78,7 +76,7 @@ class EllipseCurve extends Curve {
 		return point.set( x, y );
 	}
 
-	copy( source ) {
+	copy( source: EllipseCurve ) {
 		super.copy( source );
 
 		this.aX = source.aX;
@@ -135,7 +133,5 @@ class EllipseCurve extends Curve {
 		return this;
 	}
 }
-
-EllipseCurve.prototype.isEllipseCurve = true;
 
 export { EllipseCurve };

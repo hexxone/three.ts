@@ -1,27 +1,41 @@
 import { RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_10x10_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGB_ETC1_Format, RGB_ETC2_Format, RGBA_ETC2_EAC_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT5_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT1_Format, RGB_S3TC_DXT1_Format, DepthFormat, DepthStencilFormat, LuminanceAlphaFormat, LuminanceFormat, RedFormat, RGBAFormat, RGBFormat, AlphaFormat, RedIntegerFormat, RGFormat, RGIntegerFormat, RGBIntegerFormat, RGBAIntegerFormat, HalfFloatType, FloatType, UnsignedIntType, IntType, UnsignedShortType, ShortType, ByteType, UnsignedInt248Type, UnsignedShort565Type, UnsignedShort5551Type, UnsignedShort4444Type, UnsignedByteType, SRGB8_ALPHA8_ASTC_4x4_Format, SRGB8_ALPHA8_ASTC_5x4_Format, SRGB8_ALPHA8_ASTC_5x5_Format, SRGB8_ALPHA8_ASTC_6x5_Format, SRGB8_ALPHA8_ASTC_6x6_Format, SRGB8_ALPHA8_ASTC_8x5_Format, SRGB8_ALPHA8_ASTC_8x6_Format, SRGB8_ALPHA8_ASTC_8x8_Format, SRGB8_ALPHA8_ASTC_10x5_Format, SRGB8_ALPHA8_ASTC_10x6_Format, SRGB8_ALPHA8_ASTC_10x8_Format, SRGB8_ALPHA8_ASTC_10x10_Format, SRGB8_ALPHA8_ASTC_12x10_Format, SRGB8_ALPHA8_ASTC_12x12_Format, RGBA_BPTC_Format } from '../../constants';
+import { WebGLCapabilities } from './WebGLCapabilities';
+import { WebGLExtensions } from './WebGLExtensions';
 
-function WebGLUtils( gl, extensions, capabilities ) {
-	const isWebGL2 = capabilities.isWebGL2;
+class WebGLUtils {
+	_gl: GLESRenderingContext;
+	_extensions: WebGLExtensions;
+	_capabilities: WebGLCapabilities;
 
-	function convert( p ) {
+	public isWebGL2: any;
+
+	constructor( gl: GLESRenderingContext, extensions: WebGLExtensions, capabilities: WebGLCapabilities ) {
+		this._gl = gl;
+		this._extensions = extensions;
+		this._capabilities = capabilities;
+
+		this.isWebGL2 = capabilities.isWebGL2;
+	}
+
+	public convert( p: number ) {
 		let extension;
 
-		if ( p === UnsignedByteType ) return gl.UNSIGNED_BYTE;
-		if ( p === UnsignedShort4444Type ) return gl.UNSIGNED_SHORT_4_4_4_4;
-		if ( p === UnsignedShort5551Type ) return gl.UNSIGNED_SHORT_5_5_5_1;
-		if ( p === UnsignedShort565Type ) return gl.UNSIGNED_SHORT_5_6_5;
+		if ( p === UnsignedByteType ) return this._gl.UNSIGNED_BYTE;
+		if ( p === UnsignedShort4444Type ) return this._gl.UNSIGNED_SHORT_4_4_4_4;
+		if ( p === UnsignedShort5551Type ) return this._gl.UNSIGNED_SHORT_5_5_5_1;
+		if ( p === UnsignedShort565Type ) return this._gl.UNSIGNED_SHORT_5_6_5;
 
-		if ( p === ByteType ) return gl.BYTE;
-		if ( p === ShortType ) return gl.SHORT;
-		if ( p === UnsignedShortType ) return gl.UNSIGNED_SHORT;
-		if ( p === IntType ) return gl.INT;
-		if ( p === UnsignedIntType ) return gl.UNSIGNED_INT;
-		if ( p === FloatType ) return gl.FLOAT;
+		if ( p === ByteType ) return this._gl.BYTE;
+		if ( p === ShortType ) return this._gl.SHORT;
+		if ( p === UnsignedShortType ) return this._gl.UNSIGNED_SHORT;
+		if ( p === IntType ) return this._gl.INT;
+		if ( p === UnsignedIntType ) return this._gl.UNSIGNED_INT;
+		if ( p === FloatType ) return this._gl.FLOAT;
 
 		if ( p === HalfFloatType ) {
-			if ( isWebGL2 ) return gl.HALF_FLOAT;
+			if ( this.isWebGL2 ) return this._gl.HALF_FLOAT;
 
-			extension = extensions.get( 'OES_texture_half_float' );
+			extension = this._extensions.get( 'OES_texture_half_float' );
 
 			if ( extension !== null ) {
 				return extension.HALF_FLOAT_OES;
@@ -30,26 +44,26 @@ function WebGLUtils( gl, extensions, capabilities ) {
 			}
 		}
 
-		if ( p === AlphaFormat ) return gl.ALPHA;
-		if ( p === RGBFormat ) return gl.RGB;
-		if ( p === RGBAFormat ) return gl.RGBA;
-		if ( p === LuminanceFormat ) return gl.LUMINANCE;
-		if ( p === LuminanceAlphaFormat ) return gl.LUMINANCE_ALPHA;
-		if ( p === DepthFormat ) return gl.DEPTH_COMPONENT;
-		if ( p === DepthStencilFormat ) return gl.DEPTH_STENCIL;
-		if ( p === RedFormat ) return gl.RED;
+		if ( p === AlphaFormat ) return this._gl.ALPHA;
+		if ( p === RGBFormat ) return this._gl.RGB;
+		if ( p === RGBAFormat ) return this._gl.RGBA;
+		if ( p === LuminanceFormat ) return this._gl.LUMINANCE;
+		if ( p === LuminanceAlphaFormat ) return this._gl.LUMINANCE_ALPHA;
+		if ( p === DepthFormat ) return this._gl.DEPTH_COMPONENT;
+		if ( p === DepthStencilFormat ) return this._gl.DEPTH_STENCIL;
+		if ( p === RedFormat ) return this._gl.RED;
 
 		// WebGL2 formats.
 
-		if ( p === RedIntegerFormat ) return gl.RED_INTEGER;
-		if ( p === RGFormat ) return gl.RG;
-		if ( p === RGIntegerFormat ) return gl.RG_INTEGER;
-		if ( p === RGBIntegerFormat ) return gl.RGB_INTEGER;
-		if ( p === RGBAIntegerFormat ) return gl.RGBA_INTEGER;
+		if ( p === RedIntegerFormat ) return this._gl.RED_INTEGER;
+		if ( p === RGFormat ) return this._gl.RG;
+		if ( p === RGIntegerFormat ) return this._gl.RG_INTEGER;
+		if ( p === RGBIntegerFormat ) return this._gl.RGB_INTEGER;
+		if ( p === RGBAIntegerFormat ) return this._gl.RGBA_INTEGER;
 
 		if ( p === RGB_S3TC_DXT1_Format || p === RGBA_S3TC_DXT1_Format ||
 			p === RGBA_S3TC_DXT3_Format || p === RGBA_S3TC_DXT5_Format ) {
-			extension = extensions.get( 'WEBGL_compressed_texture_s3tc' );
+			extension = this._extensions.get( 'WEBGL_compressed_texture_s3tc' );
 
 			if ( extension !== null ) {
 				if ( p === RGB_S3TC_DXT1_Format ) return extension.COMPRESSED_RGB_S3TC_DXT1_EXT;
@@ -63,7 +77,7 @@ function WebGLUtils( gl, extensions, capabilities ) {
 
 		if ( p === RGB_PVRTC_4BPPV1_Format || p === RGB_PVRTC_2BPPV1_Format ||
 			p === RGBA_PVRTC_4BPPV1_Format || p === RGBA_PVRTC_2BPPV1_Format ) {
-			extension = extensions.get( 'WEBGL_compressed_texture_pvrtc' );
+			extension = this._extensions.get( 'WEBGL_compressed_texture_pvrtc' );
 
 			if ( extension !== null ) {
 				if ( p === RGB_PVRTC_4BPPV1_Format ) return extension.COMPRESSED_RGB_PVRTC_4BPPV1_IMG;
@@ -76,7 +90,7 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		}
 
 		if ( p === RGB_ETC1_Format ) {
-			extension = extensions.get( 'WEBGL_compressed_texture_etc1' );
+			extension = this._extensions.get( 'WEBGL_compressed_texture_etc1' );
 
 			if ( extension !== null ) {
 				return extension.COMPRESSED_RGB_ETC1_WEBGL;
@@ -86,7 +100,7 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		}
 
 		if ( p === RGB_ETC2_Format || p === RGBA_ETC2_EAC_Format ) {
-			extension = extensions.get( 'WEBGL_compressed_texture_etc' );
+			extension = this._extensions.get( 'WEBGL_compressed_texture_etc' );
 
 			if ( extension !== null ) {
 				if ( p === RGB_ETC2_Format ) return extension.COMPRESSED_RGB8_ETC2;
@@ -104,10 +118,10 @@ function WebGLUtils( gl, extensions, capabilities ) {
 			p === SRGB8_ALPHA8_ASTC_8x6_Format || p === SRGB8_ALPHA8_ASTC_8x8_Format || p === SRGB8_ALPHA8_ASTC_10x5_Format ||
 			p === SRGB8_ALPHA8_ASTC_10x6_Format || p === SRGB8_ALPHA8_ASTC_10x8_Format || p === SRGB8_ALPHA8_ASTC_10x10_Format ||
 			p === SRGB8_ALPHA8_ASTC_12x10_Format || p === SRGB8_ALPHA8_ASTC_12x12_Format ) {
-			extension = extensions.get( 'WEBGL_compressed_texture_astc' );
+			extension = this._extensions.get( 'WEBGL_compressed_texture_astc' );
 
 			if ( extension !== null ) {
-				// TODO Complete?
+				// Complete?
 
 				return p;
 			} else {
@@ -116,10 +130,10 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		}
 
 		if ( p === RGBA_BPTC_Format ) {
-			extension = extensions.get( 'EXT_texture_compression_bptc' );
+			extension = this._extensions.get( 'EXT_texture_compression_bptc' );
 
 			if ( extension !== null ) {
-				// TODO Complete?
+				// Complete?
 
 				return p;
 			} else {
@@ -128,9 +142,9 @@ function WebGLUtils( gl, extensions, capabilities ) {
 		}
 
 		if ( p === UnsignedInt248Type ) {
-			if ( isWebGL2 ) return gl.UNSIGNED_INT_24_8;
+			if ( this.isWebGL2 ) return this._gl.UNSIGNED_INT_24_8;
 
-			extension = extensions.get( 'WEBGL_depth_texture' );
+			extension = this._extensions.get( 'WEBGL_depth_texture' );
 
 			if ( extension !== null ) {
 				return extension.UNSIGNED_INT_24_8_WEBGL;
@@ -139,9 +153,6 @@ function WebGLUtils( gl, extensions, capabilities ) {
 			}
 		}
 	}
-
-	return { convert: convert };
 }
-
 
 export { WebGLUtils };

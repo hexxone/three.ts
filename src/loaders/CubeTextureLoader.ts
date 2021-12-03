@@ -1,5 +1,5 @@
 import { ImageLoader } from './ImageLoader';
-import { CubeTexture } from '../textures/CubeTexture';
+import { CubeTexture } from '../';
 import { Loader } from './Loader';
 
 class CubeTextureLoader extends Loader {

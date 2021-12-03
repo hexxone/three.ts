@@ -1,17 +1,15 @@
-import { Curve } from '../core/Curve';
-import { quadraticBezier } from '../core/Interpolations';
-import { Vector2 } from '../../math/Vector2';
+import { Curve, quadraticBezier, Vector2 } from '../../';
 
 class QuadraticBezierCurve extends Curve {
 	v0: Vector2;
 	v1: Vector2;
 	v2: Vector2;
 
-	isQuadraticBezierCurve = true;
 
 	constructor( v0 = new Vector2(), v1 = new Vector2(), v2 = new Vector2() ) {
 		super();
 
+		this.isQuadraticBezierCurve = true;
 		this.type = 'QuadraticBezierCurve';
 
 		this.v0 = v0;
@@ -32,7 +30,7 @@ class QuadraticBezierCurve extends Curve {
 		return point;
 	}
 
-	copy( source ) {
+	copy( source: QuadraticBezierCurve ) {
 		super.copy( source );
 
 		this.v0.copy( source.v0 );

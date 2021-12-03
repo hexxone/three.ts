@@ -1,11 +1,16 @@
-import { KeyframeTrack } from '../KeyframeTrack';
+import { KeyframeTrack } from '../';
 
 /**
  * A Track of keyframe values that represent color.
  */
-class ColorKeyframeTrack extends KeyframeTrack { }
+class ColorKeyframeTrack extends KeyframeTrack {
+	constructor( name, times, values, interpol ) {
+		super( name, times, values, interpol );
 
-ColorKeyframeTrack.prototype.ValueTypeName = 'color';
+		this.ValueTypeName = 'color';
+	}
+}
+
 // ValueBufferType is inherited
 // DefaultInterpolation is inherited
 

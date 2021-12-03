@@ -1,12 +1,9 @@
-import { Line } from '../objects/Line';
-import { Mesh } from '../objects/Mesh';
-import { LineBasicMaterial } from '../materials/LineBasicMaterial';
-import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
-import { Float32BufferAttribute } from '../core/BufferAttribute';
-import { BufferGeometry } from '../core/BufferGeometry';
-import { FrontSide, BackSide } from '../constants';
+import { BackSide, BufferGeometry, Float32BufferAttribute, FrontSide, Line, LineBasicMaterial, Mesh, MeshBasicMaterial } from '../';
 
 class PlaneHelper extends Line {
+	plane: any;
+	size: number;
+
 	constructor( plane, size = 1, hex = 0xffff00 ) {
 		const color = hex;
 

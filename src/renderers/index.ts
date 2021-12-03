@@ -1,8 +1,7 @@
 
 export * from './shaders';
 
-// @todo ?
-// export * from './webgl';
+export * from './webgl';
 
 export * from './webxr';
 

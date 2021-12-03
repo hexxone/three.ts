@@ -1,11 +1,17 @@
-import { Matrix4 } from '../math/Matrix4';
-import { MathUtils } from '../math/MathUtils';
+import { MathUtils, Matrix4 } from '../';
 import { PerspectiveCamera } from './PerspectiveCamera';
 
 const _eyeRight = new Matrix4();
 const _eyeLeft = new Matrix4();
 
 class StereoCamera {
+	type: string;
+	aspect: number;
+	eyeSep: number;
+	cameraL: PerspectiveCamera;
+	cameraR: PerspectiveCamera;
+	_cache: { focus: any; fov: any; aspect: any; near: any; far: any; zoom: any; eyeSep: any; };
+
 	constructor() {
 		this.type = 'StereoCamera';
 

@@ -1,6 +1,6 @@
 class Matrix3 {
-
 	elements: number[];
+	isMatrix3 = true;
 
 	constructor(...args) {
 		this.elements = [
@@ -12,8 +12,6 @@ class Matrix3 {
 		if (args.length > 0) {
 			console.error('THREE.Matrix3: the constructor no longer reads arguments. use .set() instead.');
 		}
-
-		Object.defineProperty(this, 'isMatrix3', { value: true });
 	}
 
 	set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {
@@ -38,7 +36,7 @@ class Matrix3 {
 		return this;
 	}
 
-	copy(m) {
+	copy(m: Matrix3) {
 		const te = this.elements;
 		const me = m.elements;
 
@@ -71,15 +69,15 @@ class Matrix3 {
 		return this;
 	}
 
-	multiply(m) {
+	multiply(m: Matrix3) {
 		return this.multiplyMatrices(this, m);
 	}
 
-	premultiply(m) {
+	premultiply(m: Matrix3) {
 		return this.multiplyMatrices(m, this);
 	}
 
-	multiplyMatrices(a, b) {
+	multiplyMatrices(a: Matrix3, b: Matrix3) {
 		const ae = a.elements;
 		const be = b.elements;
 		const te = this.elements;
@@ -252,7 +250,7 @@ class Matrix3 {
 		return true;
 	}
 
-	fromArray(array, offset = 0) {
+	fromArray(array: number[], offset = 0) {
 		for (let i = 0; i < 9; i++) {
 			this.elements[i] = array[i + offset];
 		}
@@ -260,7 +258,7 @@ class Matrix3 {
 		return this;
 	}
 
-	toArray(array = [], offset = 0) {
+	toArray(array: number[] = [], offset = 0): number[] {
 		const te = this.elements;
 
 		array[offset] = te[0];

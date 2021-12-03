@@ -1,5 +1,4 @@
-import { InterpolateDiscrete } from '../../constants';
-import { KeyframeTrack } from '../KeyframeTrack';
+import { InterpolateDiscrete, KeyframeTrack } from '../../';
 
 /**
  * A Track of Boolean keyframe values.
@@ -7,7 +6,7 @@ import { KeyframeTrack } from '../KeyframeTrack';
 class BooleanKeyframeTrack extends KeyframeTrack { }
 
 BooleanKeyframeTrack.prototype.ValueTypeName = 'bool';
-BooleanKeyframeTrack.prototype.ValueBufferType = Array;
+BooleanKeyframeTrack.prototype.ValueBufferType = Array as any;
 BooleanKeyframeTrack.prototype.DefaultInterpolation = InterpolateDiscrete;
 BooleanKeyframeTrack.prototype.InterpolantFactoryMethodLinear = undefined;
 BooleanKeyframeTrack.prototype.InterpolantFactoryMethodSmooth = undefined;

@@ -30,205 +30,207 @@ const _colorKeywords = {
 const _hslA = { h: 0, s: 0, l: 0 };
 const _hslB = { h: 0, s: 0, l: 0 };
 
-function hue2rgb(p, q, t) {
-	if (t < 0) t += 1;
-	if (t > 1) t -= 1;
-	if (t < 1 / 6) return p + (q - p) * 6 * t;
-	if (t < 1 / 2) return q;
-	if (t < 2 / 3) return p + (q - p) * 6 * (2 / 3 - t);
+function hue2rgb( p, q, t ) {
+	if ( t < 0 ) t += 1;
+	if ( t > 1 ) t -= 1;
+	if ( t < 1 / 6 ) return p + ( q - p ) * 6 * t;
+	if ( t < 1 / 2 ) return q;
+	if ( t < 2 / 3 ) return p + ( q - p ) * 6 * ( 2 / 3 - t );
 	return p;
 }
 
-function sRGBToLinear(c) {
-	return (c < 0.04045) ? c * 0.0773993808 : Math.pow(c * 0.9478672986 + 0.0521327014, 2.4);
+function sRGBToLinear( c ) {
+	return ( c < 0.04045 ) ? c * 0.0773993808 : Math.pow( c * 0.9478672986 + 0.0521327014, 2.4 );
 }
 
-function linearToSRGB(c) {
-	return (c < 0.0031308) ? c * 12.92 : 1.055 * (Math.pow(c, 0.41666)) - 0.055;
+function linearToSRGB( c ) {
+	return ( c < 0.0031308 ) ? c * 12.92 : 1.055 * ( Math.pow( c, 0.41666 ) ) - 0.055;
 }
 
 class Color {
-	r: any;
-	g: any;
-	b: any;
+	static NAMES = _colorKeywords;
 
-	static NAMES: { aliceblue: number; antiquewhite: number; aqua: number; aquamarine: number; azure: number; beige: number; bisque: number; black: number; blanchedalmond: number; blue: number; blueviolet: number; brown: number; burlywood: number; cadetblue: number; chartreuse: number; chocolate: number; coral: number; cornflowerblue: number; cornsilk: number; crimson: number; cyan: number; darkblue: number; darkcyan: number; darkgoldenrod: number; darkgray: number; darkgreen: number; darkgrey: number; darkkhaki: number; darkmagenta: number; darkolivegreen: number; darkorange: number; darkorchid: number; darkred: number; darksalmon: number; darkseagreen: number; darkslateblue: number; darkslategray: number; darkslategrey: number; darkturquoise: number; darkviolet: number; deeppink: number; deepskyblue: number; dimgray: number; dimgrey: number; dodgerblue: number; firebrick: number; floralwhite: number; forestgreen: number; fuchsia: number; gainsboro: number; ghostwhite: number; gold: number; goldenrod: number; gray: number; green: number; greenyellow: number; grey: number; honeydew: number; hotpink: number; indianred: number; indigo: number; ivory: number; khaki: number; lavender: number; lavenderblush: number; lawngreen: number; lemonchiffon: number; lightblue: number; lightcoral: number; lightcyan: number; lightgoldenrodyellow: number; lightgray: number; lightgreen: number; lightgrey: number; lightpink: number; lightsalmon: number; lightseagreen: number; lightskyblue: number; lightslategray: number; lightslategrey: number; lightsteelblue: number; lightyellow: number; lime: number; limegreen: number; linen: number; magenta: number; maroon: number; mediumaquamarine: number; mediumblue: number; mediumorchid: number; mediumpurple: number; mediumseagreen: number; mediumslateblue: number; mediumspringgreen: number; mediumturquoise: number; mediumvioletred: number; midnightblue: number; mintcream: number; mistyrose: number; moccasin: number; navajowhite: number; navy: number; oldlace: number; olive: number; olivedrab: number; orange: number; orangered: number; orchid: number; palegoldenrod: number; palegreen: number; paleturquoise: number; palevioletred: number; papayawhip: number; peachpuff: number; peru: number; pink: number; plum: number; powderblue: number; purple: number; rebeccapurple: number; red: number; rosybrown: number; royalblue: number; saddlebrown: number; salmon: number; sandybrown: number; seagreen: number; seashell: number; sienna: number; silver: number; skyblue: number; slateblue: number; slategray: number; slategrey: number; snow: number; springgreen: number; steelblue: number; tan: number; teal: number; thistle: number; tomato: number; turquoise: number; violet: number; wheat: number; white: number; whitesmoke: number; yellow: number; yellowgreen: number; };
-	isColor: boolean;
+	r = 1;
+	g = 1;
+	b = 1;
 
-	constructor(r, g?, b?) {
-		if (g === undefined && b === undefined) {
+	isColor = true;
+
+	constructor( r?, g?, b? ) {
+		if ( g === undefined && b === undefined ) {
 			// r is THREE.Color, hex or string
-			return this.set(r);
+			return this.set( r );
 		}
 
-		return this.setRGB(r, g, b);
+		return this.setRGB( r, g, b );
 	}
 
-	set(value) {
-		if (value && value.isColor) {
-			this.copy(value);
-		} else if (typeof value === 'number') {
-			this.setHex(value);
-		} else if (typeof value === 'string') {
-			this.setStyle(value);
+	set( value ) {
+		if ( value && value.isColor ) {
+			this.copy( value );
+		} else if ( typeof value === 'number' ) {
+			this.setHex( value );
+		} else if ( typeof value === 'string' ) {
+			this.setStyle( value );
 		}
+
 		return this;
 	}
 
-	setScalar(scalar) {
+	setScalar( scalar ) {
 		this.r = scalar;
 		this.g = scalar;
 		this.b = scalar;
 		return this;
 	}
 
-	setHex(hex) {
-		hex = Math.floor(hex);
-		this.r = (hex >> 16 & 255) / 255;
-		this.g = (hex >> 8 & 255) / 255;
-		this.b = (hex & 255) / 255;
+	setHex( hex ) {
+		hex = Math.floor( hex );
+		this.r = ( hex >> 16 & 255 ) / 255;
+		this.g = ( hex >> 8 & 255 ) / 255;
+		this.b = ( hex & 255 ) / 255;
 		return this;
 	}
 
-	setRGB(r, g, b) {
+	setRGB( r, g, b ) {
 		this.r = r;
 		this.g = g;
 		this.b = b;
 		return this;
 	}
 
-	setHSL(h, s, l) {
+	setHSL( h, s, l ) {
 		// h,s,l ranges are in 0.0 - 1.0
-		h = MathUtils.euclideanModulo(h, 1);
-		s = MathUtils.clamp(s, 0, 1);
-		l = MathUtils.clamp(l, 0, 1);
+		h = MathUtils.euclideanModulo( h, 1 );
+		s = MathUtils.clamp( s, 0, 1 );
+		l = MathUtils.clamp( l, 0, 1 );
 
-		if (s === 0) {
+		if ( s === 0 ) {
 			this.r = this.g = this.b = l;
 		} else {
-			const p = l <= 0.5 ? l * (1 + s) : l + s - (l * s);
-			const q = (2 * l) - p;
+			const p = l <= 0.5 ? l * ( 1 + s ) : l + s - ( l * s );
+			const q = ( 2 * l ) - p;
 
-			this.r = hue2rgb(q, p, h + 1 / 3);
-			this.g = hue2rgb(q, p, h);
-			this.b = hue2rgb(q, p, h - 1 / 3);
+			this.r = hue2rgb( q, p, h + 1 / 3 );
+			this.g = hue2rgb( q, p, h );
+			this.b = hue2rgb( q, p, h - 1 / 3 );
 		}
 
 		return this;
 	}
 
-	setStyle(style) {
-		function handleAlpha(string) {
-			if (string === undefined) return;
+	setStyle( style ) {
+		function handleAlpha( string ) {
+			if ( string === undefined ) return;
 
-			if (parseFloat(string) < 1) {
-				console.warn('THREE.Color: Alpha component of ' + style + ' will be ignored.');
+			if ( parseFloat( string ) < 1 ) {
+				console.warn( 'THREE.Color: Alpha component of ' + style + ' will be ignored.' );
 			}
 		}
 
 		let m;
 
-		if (m = /^((?:rgb|hsl)a?)\(([^\)]*)\)/.exec(style)) {
+		if ( m = /^((?:rgb|hsl)a?)\(([^\)]*)\)/.exec( style ) ) {
 			// rgb / hsl
 
 			let color;
-			const name = m[1];
-			const components = m[2];
+			const name = m[ 1 ];
+			const components = m[ 2 ];
 
-			switch (name) {
-				case 'rgb':
-				case 'rgba':
+			switch ( name ) {
+			case 'rgb':
+			case 'rgba':
 
-					if (color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
-						// rgb(255,0,0) rgba(255,0,0,0.5)
-						this.r = Math.min(255, parseInt(color[1], 10)) / 255;
-						this.g = Math.min(255, parseInt(color[2], 10)) / 255;
-						this.b = Math.min(255, parseInt(color[3], 10)) / 255;
+				if ( color = /^\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
+					// rgb(255,0,0) rgba(255,0,0,0.5)
+					this.r = Math.min( 255, parseInt( color[ 1 ], 10 ) ) / 255;
+					this.g = Math.min( 255, parseInt( color[ 2 ], 10 ) ) / 255;
+					this.b = Math.min( 255, parseInt( color[ 3 ], 10 ) ) / 255;
 
-						handleAlpha(color[4]);
+					handleAlpha( color[ 4 ] );
 
-						return this;
-					}
+					return this;
+				}
 
-					if (color = /^\s*(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
-						// rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
-						this.r = Math.min(100, parseInt(color[1], 10)) / 100;
-						this.g = Math.min(100, parseInt(color[2], 10)) / 100;
-						this.b = Math.min(100, parseInt(color[3], 10)) / 100;
+				if ( color = /^\s*(\d+)\%\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
+					// rgb(100%,0%,0%) rgba(100%,0%,0%,0.5)
+					this.r = Math.min( 100, parseInt( color[ 1 ], 10 ) ) / 100;
+					this.g = Math.min( 100, parseInt( color[ 2 ], 10 ) ) / 100;
+					this.b = Math.min( 100, parseInt( color[ 3 ], 10 ) ) / 100;
 
-						handleAlpha(color[4]);
+					handleAlpha( color[ 4 ] );
 
-						return this;
-					}
+					return this;
+				}
 
-					break;
+				break;
 
-				case 'hsl':
-				case 'hsla':
+			case 'hsl':
+			case 'hsla':
 
-					if (color = /^\s*(\d*\.?\d+)\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec(components)) {
-						// hsl(120,50%,50%) hsla(120,50%,50%,0.5)
-						const h = parseFloat(color[1]) / 360;
-						const s = parseInt(color[2], 10) / 100;
-						const l = parseInt(color[3], 10) / 100;
+				if ( color = /^\s*(\d*\.?\d+)\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(?:,\s*(\d*\.?\d+)\s*)?$/.exec( components ) ) {
+					// hsl(120,50%,50%) hsla(120,50%,50%,0.5)
+					const h = parseFloat( color[ 1 ] ) / 360;
+					const s = parseInt( color[ 2 ], 10 ) / 100;
+					const l = parseInt( color[ 3 ], 10 ) / 100;
 
-						handleAlpha(color[4]);
+					handleAlpha( color[ 4 ] );
 
-						return this.setHSL(h, s, l);
-					}
+					return this.setHSL( h, s, l );
+				}
 
-					break;
+				break;
 			}
-		} else if (m = /^\#([A-Fa-f\d]+)$/.exec(style)) {
+		} else if ( m = /^\#([A-Fa-f\d]+)$/.exec( style ) ) {
 			// hex color
 
-			const hex = m[1];
+			const hex = m[ 1 ];
 			const size = hex.length;
 
-			if (size === 3) {
+			if ( size === 3 ) {
 				// #ff0
-				this.r = parseInt(hex.charAt(0) + hex.charAt(0), 16) / 255;
-				this.g = parseInt(hex.charAt(1) + hex.charAt(1), 16) / 255;
-				this.b = parseInt(hex.charAt(2) + hex.charAt(2), 16) / 255;
+				this.r = parseInt( hex.charAt( 0 ) + hex.charAt( 0 ), 16 ) / 255;
+				this.g = parseInt( hex.charAt( 1 ) + hex.charAt( 1 ), 16 ) / 255;
+				this.b = parseInt( hex.charAt( 2 ) + hex.charAt( 2 ), 16 ) / 255;
 
 				return this;
-			} else if (size === 6) {
+			} else if ( size === 6 ) {
 				// #ff0000
-				this.r = parseInt(hex.charAt(0) + hex.charAt(1), 16) / 255;
-				this.g = parseInt(hex.charAt(2) + hex.charAt(3), 16) / 255;
-				this.b = parseInt(hex.charAt(4) + hex.charAt(5), 16) / 255;
+				this.r = parseInt( hex.charAt( 0 ) + hex.charAt( 1 ), 16 ) / 255;
+				this.g = parseInt( hex.charAt( 2 ) + hex.charAt( 3 ), 16 ) / 255;
+				this.b = parseInt( hex.charAt( 4 ) + hex.charAt( 5 ), 16 ) / 255;
 
 				return this;
 			}
 		}
 
-		if (style && style.length > 0) {
-			return this.setColorName(style);
+		if ( style && style.length > 0 ) {
+			return this.setColorName( style );
 		}
 
 		return this;
 	}
 
-	setColorName(style) {
+	setColorName( style ) {
 		// color keywords
-		const hex = _colorKeywords[style];
+		const hex = _colorKeywords[ style ];
 
-		if (hex !== undefined) {
+		if ( hex !== undefined ) {
 			// red
-			this.setHex(hex);
+			this.setHex( hex );
 		} else {
 			// unknown color
-			console.warn('THREE.Color: Unknown color ' + style);
+			console.warn( 'THREE.Color: Unknown color ' + style );
 		}
 
 		return this;
 	}
 
 	clone() {
-		return new Color(this.r, this.g, this.b);
+		return new Color( this.r, this.g, this.b );
 	}
 
-	copy(color) {
+	copy( color: Color ) {
 		this.r = color.r;
 		this.g = color.g;
 		this.b = color.b;
@@ -236,100 +238,100 @@ class Color {
 		return this;
 	}
 
-	copyGammaToLinear(color, gammaFactor = 2.0) {
-		this.r = Math.pow(color.r, gammaFactor);
-		this.g = Math.pow(color.g, gammaFactor);
-		this.b = Math.pow(color.b, gammaFactor);
+	copyGammaToLinear( color, gammaFactor = 2.0 ) {
+		this.r = Math.pow( color.r, gammaFactor );
+		this.g = Math.pow( color.g, gammaFactor );
+		this.b = Math.pow( color.b, gammaFactor );
 
 		return this;
 	}
 
-	copyLinearToGamma(color, gammaFactor = 2.0) {
-		const safeInverse = (gammaFactor > 0) ? (1.0 / gammaFactor) : 1.0;
+	copyLinearToGamma( color, gammaFactor = 2.0 ) {
+		const safeInverse = ( gammaFactor > 0 ) ? ( 1.0 / gammaFactor ) : 1.0;
 
-		this.r = Math.pow(color.r, safeInverse);
-		this.g = Math.pow(color.g, safeInverse);
-		this.b = Math.pow(color.b, safeInverse);
-
-		return this;
-	}
-
-	convertGammaToLinear(gammaFactor) {
-		this.copyGammaToLinear(this, gammaFactor);
+		this.r = Math.pow( color.r, safeInverse );
+		this.g = Math.pow( color.g, safeInverse );
+		this.b = Math.pow( color.b, safeInverse );
 
 		return this;
 	}
 
-	convertLinearToGamma(gammaFactor) {
-		this.copyLinearToGamma(this, gammaFactor);
+	convertGammaToLinear( gammaFactor ) {
+		this.copyGammaToLinear( this, gammaFactor );
 
 		return this;
 	}
 
-	copySRGBToLinear(color) {
-		this.r = sRGBToLinear(color.r);
-		this.g = sRGBToLinear(color.g);
-		this.b = sRGBToLinear(color.b);
+	convertLinearToGamma( gammaFactor ) {
+		this.copyLinearToGamma( this, gammaFactor );
 
 		return this;
 	}
 
-	copyLinearToSRGB(color) {
-		this.r = linearToSRGB(color.r);
-		this.g = linearToSRGB(color.g);
-		this.b = linearToSRGB(color.b);
+	copySRGBToLinear( color ) {
+		this.r = sRGBToLinear( color.r );
+		this.g = sRGBToLinear( color.g );
+		this.b = sRGBToLinear( color.b );
+
+		return this;
+	}
+
+	copyLinearToSRGB( color ) {
+		this.r = linearToSRGB( color.r );
+		this.g = linearToSRGB( color.g );
+		this.b = linearToSRGB( color.b );
 
 		return this;
 	}
 
 	convertSRGBToLinear() {
-		this.copySRGBToLinear(this);
+		this.copySRGBToLinear( this );
 
 		return this;
 	}
 
 	convertLinearToSRGB() {
-		this.copyLinearToSRGB(this);
+		this.copyLinearToSRGB( this );
 
 		return this;
 	}
 
 	getHex() {
-		return (this.r * 255) << 16 ^ (this.g * 255) << 8 ^ (this.b * 255) << 0;
+		return ( this.r * 255 ) << 16 ^ ( this.g * 255 ) << 8 ^ ( this.b * 255 ) << 0;
 	}
 
 	getHexString() {
-		return ('000000' + this.getHex().toString(16)).slice(- 6);
+		return ( '000000' + this.getHex().toString( 16 ) ).slice( - 6 );
 	}
 
-	getHSL(target) {
+	getHSL( target ) {
 		// h,s,l ranges are in 0.0 - 1.0
 
-		if (target === undefined) {
-			console.warn('THREE.Color: .getHSL() target is now required');
+		if ( target === undefined ) {
+			console.warn( 'THREE.Color: .getHSL() target is now required' );
 			target = { h: 0, s: 0, l: 0 };
 		}
 
 		const r = this.r; const g = this.g; const b = this.b;
 
-		const max = Math.max(r, g, b);
-		const min = Math.min(r, g, b);
+		const max = Math.max( r, g, b );
+		const min = Math.min( r, g, b );
 
 		let hue; let saturation;
-		const lightness = (min + max) / 2.0;
+		const lightness = ( min + max ) / 2.0;
 
-		if (min === max) {
+		if ( min === max ) {
 			hue = 0;
 			saturation = 0;
 		} else {
 			const delta = max - min;
 
-			saturation = lightness <= 0.5 ? delta / (max + min) : delta / (2 - max - min);
+			saturation = lightness <= 0.5 ? delta / ( max + min ) : delta / ( 2 - max - min );
 
-			switch (max) {
-				case r: hue = (g - b) / delta + (g < b ? 6 : 0); break;
-				case g: hue = (b - r) / delta + 2; break;
-				case b: hue = (r - g) / delta + 4; break;
+			switch ( max ) {
+			case r: hue = ( g - b ) / delta + ( g < b ? 6 : 0 ); break;
+			case g: hue = ( b - r ) / delta + 2; break;
+			case b: hue = ( r - g ) / delta + 4; break;
 			}
 
 			hue /= 6;
@@ -343,20 +345,20 @@ class Color {
 	}
 
 	getStyle() {
-		return 'rgb(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ')';
+		return 'rgb(' + ( ( this.r * 255 ) | 0 ) + ',' + ( ( this.g * 255 ) | 0 ) + ',' + ( ( this.b * 255 ) | 0 ) + ')';
 	}
 
-	offsetHSL(h, s, l) {
-		this.getHSL(_hslA);
+	offsetHSL( h, s, l ) {
+		this.getHSL( _hslA );
 
 		_hslA.h += h; _hslA.s += s; _hslA.l += l;
 
-		this.setHSL(_hslA.h, _hslA.s, _hslA.l);
+		this.setHSL( _hslA.h, _hslA.s, _hslA.l );
 
 		return this;
 	}
 
-	add(color) {
+	add( color ) {
 		this.r += color.r;
 		this.g += color.g;
 		this.b += color.b;
@@ -364,7 +366,7 @@ class Color {
 		return this;
 	}
 
-	addColors(color1, color2) {
+	addColors( color1, color2 ) {
 		this.r = color1.r + color2.r;
 		this.g = color1.g + color2.g;
 		this.b = color1.b + color2.b;
@@ -372,7 +374,7 @@ class Color {
 		return this;
 	}
 
-	addScalar(s) {
+	addScalar( s ) {
 		this.r += s;
 		this.g += s;
 		this.b += s;
@@ -380,15 +382,15 @@ class Color {
 		return this;
 	}
 
-	sub(color) {
-		this.r = Math.max(0, this.r - color.r);
-		this.g = Math.max(0, this.g - color.g);
-		this.b = Math.max(0, this.b - color.b);
+	sub( color ) {
+		this.r = Math.max( 0, this.r - color.r );
+		this.g = Math.max( 0, this.g - color.g );
+		this.b = Math.max( 0, this.b - color.b );
 
 		return this;
 	}
 
-	multiply(color) {
+	multiply( color ) {
 		this.r *= color.r;
 		this.g *= color.g;
 		this.b *= color.b;
@@ -396,7 +398,7 @@ class Color {
 		return this;
 	}
 
-	multiplyScalar(s) {
+	multiplyScalar( s ) {
 		this.r *= s;
 		this.g *= s;
 		this.b *= s;
@@ -404,61 +406,61 @@ class Color {
 		return this;
 	}
 
-	lerp(color, alpha) {
-		this.r += (color.r - this.r) * alpha;
-		this.g += (color.g - this.g) * alpha;
-		this.b += (color.b - this.b) * alpha;
+	lerp( color, alpha ) {
+		this.r += ( color.r - this.r ) * alpha;
+		this.g += ( color.g - this.g ) * alpha;
+		this.b += ( color.b - this.b ) * alpha;
 
 		return this;
 	}
 
-	lerpColors(color1, color2, alpha) {
-		this.r = color1.r + (color2.r - color1.r) * alpha;
-		this.g = color1.g + (color2.g - color1.g) * alpha;
-		this.b = color1.b + (color2.b - color1.b) * alpha;
+	lerpColors( color1, color2, alpha ) {
+		this.r = color1.r + ( color2.r - color1.r ) * alpha;
+		this.g = color1.g + ( color2.g - color1.g ) * alpha;
+		this.b = color1.b + ( color2.b - color1.b ) * alpha;
 
 		return this;
 	}
 
-	lerpHSL(color, alpha) {
-		this.getHSL(_hslA);
-		color.getHSL(_hslB);
+	lerpHSL( color, alpha ) {
+		this.getHSL( _hslA );
+		color.getHSL( _hslB );
 
-		const h = MathUtils.lerp(_hslA.h, _hslB.h, alpha);
-		const s = MathUtils.lerp(_hslA.s, _hslB.s, alpha);
-		const l = MathUtils.lerp(_hslA.l, _hslB.l, alpha);
+		const h = MathUtils.lerp( _hslA.h, _hslB.h, alpha );
+		const s = MathUtils.lerp( _hslA.s, _hslB.s, alpha );
+		const l = MathUtils.lerp( _hslA.l, _hslB.l, alpha );
 
-		this.setHSL(h, s, l);
-
-		return this;
-	}
-
-	equals(c) {
-		return (c.r === this.r) && (c.g === this.g) && (c.b === this.b);
-	}
-
-	fromArray(array, offset = 0) {
-		this.r = array[offset];
-		this.g = array[offset + 1];
-		this.b = array[offset + 2];
+		this.setHSL( h, s, l );
 
 		return this;
 	}
 
-	toArray(array = [], offset = 0) {
-		array[offset] = this.r;
-		array[offset + 1] = this.g;
-		array[offset + 2] = this.b;
+	equals( c ) {
+		return ( c.r === this.r ) && ( c.g === this.g ) && ( c.b === this.b );
+	}
+
+	fromArray( array, offset = 0 ) {
+		this.r = array[ offset ];
+		this.g = array[ offset + 1 ];
+		this.b = array[ offset + 2 ];
+
+		return this;
+	}
+
+	toArray( array = [], offset = 0 ) {
+		array[ offset ] = this.r;
+		array[ offset + 1 ] = this.g;
+		array[ offset + 2 ] = this.b;
 
 		return array;
 	}
 
-	fromBufferAttribute(attribute, index) {
-		this.r = attribute.getX(index);
-		this.g = attribute.getY(index);
-		this.b = attribute.getZ(index);
+	fromBufferAttribute( attribute, index ) {
+		this.r = attribute.getX( index );
+		this.g = attribute.getY( index );
+		this.b = attribute.getZ( index );
 
-		if (attribute.normalized === true) {
+		if ( attribute.normalized === true ) {
 			// assuming Uint8Array
 
 			this.r /= 255;
@@ -473,12 +475,5 @@ class Color {
 		return this.getHex();
 	}
 }
-
-Color.NAMES = _colorKeywords;
-
-Color.prototype.isColor = true;
-Color.prototype.r = 1;
-Color.prototype.g = 1;
-Color.prototype.b = 1;
 
 export { Color };

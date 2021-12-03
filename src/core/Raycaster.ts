@@ -1,41 +1,43 @@
-import { Ray } from '../math/Ray';
+import { Object3D } from '.';
+import { Camera, Mesh, Vector3, Ray } from '../';
 import { Layers } from './Layers';
 
-function ascSort(a, b) {
+function ascSort( a, b ) {
 	return a.distance - b.distance;
 }
 
-function intersectObject(object, raycaster, intersects, recursive) {
-	if (object.layers.test(raycaster.layers)) {
-		object.raycast(raycaster, intersects);
+function intersectObject( object: Object3D, raycaster: Raycaster, intersects, recursive: boolean ) {
+	if ( object.layers.test( raycaster.layers ) ) {
+		object.raycast( raycaster, intersects );
 	}
 
-	if (recursive === true) {
+	if ( recursive === true ) {
 		const children = object.children;
 
-		for (let i = 0, l = children.length; i < l; i++) {
-			intersectObject(children[i], raycaster, intersects, true);
+		for ( let i = 0, l = children.length; i < l; i ++ ) {
+			intersectObject( children[ i ], raycaster, intersects, true );
 		}
 	}
 }
 
 class Raycaster {
-
 	ray: Ray;
 	near: number;
 	far: number;
-	camera: any;
+
+	camera: Camera;
 	layers: Layers;
+
 	params: {
-		Mesh: {};
+		Mesh: Mesh;
 		Line: { threshold: number; };
 		LOD: {};
 		Points: { threshold: number; };
 		Sprite: {};
 	};
 
-	constructor(origin, direction, near = 0, far = Infinity) {
-		this.ray = new Ray(origin, direction);
+	constructor( origin: Vector3, direction, near = 0, far = Infinity ) {
+		this.ray = new Ray( origin, direction );
 		// direction is assumed to be normalized (for accurate distance calculations)
 
 		this.near = near;
@@ -44,7 +46,7 @@ class Raycaster {
 		this.layers = new Layers();
 
 		this.params = {
-			Mesh: {},
+			Mesh: new Mesh(),
 			Line: { threshold: 1 },
 			LOD: {},
 			Points: { threshold: 1 },
@@ -53,44 +55,43 @@ class Raycaster {
 	}
 
 
-	set(origin, direction) {
+	set( origin: Vector3, direction ) {
 		// direction is assumed to be normalized (for accurate distance calculations)
 
-		this.ray.set(origin, direction);
+		this.ray.set( origin, direction );
 	}
 
-	setFromCamera(coords, camera) {
-		if (camera && camera.isPerspectiveCamera) {
-			this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
-			this.ray.direction.set(coords.x, coords.y, 0.5).unproject(camera).sub(this.ray.origin).normalize();
+	setFromCamera( coords: Vector3, camera: Camera ) {
+		if ( camera && camera.isPerspectiveCamera ) {
+			this.ray.origin.setFromMatrixPosition( camera.matrixWorld );
+			this.ray.direction.set( coords.x, coords.y, 0.5 ).unproject( camera ).sub( this.ray.origin ).normalize();
 			this.camera = camera;
-		} else if (camera && camera.isOrthographicCamera) {
-			this.ray.origin.set(coords.x, coords.y, (camera.near + camera.far) / (camera.near - camera.far)).unproject(camera); // set origin in plane of camera
-			this.ray.direction.set(0, 0, - 1).transformDirection(camera.matrixWorld);
+		} else if ( camera && camera.isOrthographicCamera ) {
+			this.ray.origin.set( coords.x, coords.y, ( camera.near + camera.far ) / ( camera.near - camera.far ) ).unproject( camera ); // set origin in plane of camera
+			this.ray.direction.set( 0, 0, - 1 ).transformDirection( camera.matrixWorld );
 			this.camera = camera;
 		} else {
-			console.error('THREE.Raycaster: Unsupported camera type: ' + camera.type);
+			console.error( 'THREE.Raycaster: Unsupported camera type: ' + camera.type );
 		}
 	}
 
-	intersectObject(object, recursive = false, intersects = []) {
-		intersectObject(object, this, intersects, recursive);
+	intersectObject( object: Object3D, recursive = false, intersects = [] ) {
+		intersectObject( object, this, intersects, recursive );
 
-		intersects.sort(ascSort);
+		intersects.sort( ascSort );
 
 		return intersects;
 	}
 
-	intersectObjects(objects, recursive = false, intersects = []) {
-		for (let i = 0, l = objects.length; i < l; i++) {
-			intersectObject(objects[i], this, intersects, recursive);
+	intersectObjects( objects: Object3D[], recursive = false, intersects = [] ) {
+		for ( let i = 0, l = objects.length; i < l; i ++ ) {
+			intersectObject( objects[ i ], this, intersects, recursive );
 		}
 
-		intersects.sort(ascSort);
+		intersects.sort( ascSort );
 
 		return intersects;
 	}
-
 }
 
 export { Raycaster };

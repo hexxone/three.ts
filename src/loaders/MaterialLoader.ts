@@ -1,12 +1,7 @@
-import { Color } from '../math/Color';
-import { Vector2 } from '../math/Vector2';
-import { Vector3 } from '../math/Vector3';
-import { Vector4 } from '../math/Vector4';
-import { Matrix3 } from '../math/Matrix3';
-import { Matrix4 } from '../math/Matrix4';
+import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4 } from '../';
 import { FileLoader } from './FileLoader';
 import { Loader } from './Loader';
-import * as Materials from '../materials/index';
+import * as Materials from '../materials/';
 
 class MaterialLoader extends Loader {
 	textures: {};

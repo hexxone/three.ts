@@ -1,4 +1,4 @@
-import { Color } from '../';
+import { Color } from "../";
 
 class Fog {
 	name: string;
@@ -7,22 +7,22 @@ class Fog {
 	far: any;
 	isFog = true;
 
-	constructor( color: Color, near: number, far: number ) {
-		this.name = '';
+	constructor(color: Color, near: number, far: number) {
+		this.name = "";
 
-		this.color = new Color( color );
+		this.color = new Color(color);
 
-		this.near = ( near !== undefined ) ? near : 1;
-		this.far = ( far !== undefined ) ? far : 1000;
+		this.near = near !== undefined ? near : 1;
+		this.far = far !== undefined ? far : 1000;
 	}
 
 	clone() {
-		return new Fog( this.color, this.near, this.far );
+		return new Fog(this.color, this.near, this.far);
 	}
 
-	toJSON( /* meta */ ) {
+	toJSON(/* meta */) {
 		return {
-			type: 'Fog',
+			type: "Fog",
 			color: this.color.getHex(),
 			near: this.near,
 			far: this.far,

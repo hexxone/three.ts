@@ -1,6 +1,14 @@
-import { Color, Light, LightProbe, Matrix4, UniformsLib, Vector2, Vector3 } from '../../';
-import { WebGLCapabilities } from './WebGLCapabilities';
-import { WebGLExtensions } from './WebGLExtensions';
+import {
+	Color,
+	Light,
+	LightProbe,
+	Matrix4,
+	UniformsLib,
+	Vector2,
+	Vector3,
+} from "../../";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
 
 type GLUniform = {
 	direction?: Vector3;
@@ -14,7 +22,7 @@ type GLUniform = {
 	groundColor?: Color;
 	halfWidth?: Vector3;
 	halfHeight?: Vector3;
-}
+};
 
 class UniformsCache {
 	lights: { [key: string]: GLUniform };
@@ -26,14 +34,14 @@ class UniformsCache {
 
 		let uniforms: GLUniform;
 		switch (light.type) {
-			case 'DirectionalLight':
+			case "DirectionalLight":
 				uniforms = {
 					direction: new Vector3(),
 					color: new Color(0, 0, 0),
 				};
 				break;
 
-			case 'SpotLight':
+			case "SpotLight":
 				uniforms = {
 					position: new Vector3(),
 					direction: new Vector3(),
@@ -45,7 +53,7 @@ class UniformsCache {
 				};
 				break;
 
-			case 'PointLight':
+			case "PointLight":
 				uniforms = {
 					position: new Vector3(),
 					color: new Color(0, 0, 0),
@@ -54,7 +62,7 @@ class UniformsCache {
 				};
 				break;
 
-			case 'HemisphereLight':
+			case "HemisphereLight":
 				uniforms = {
 					direction: new Vector3(),
 					skyColor: new Color(0, 0, 0),
@@ -62,7 +70,7 @@ class UniformsCache {
 				};
 				break;
 
-			case 'RectAreaLight':
+			case "RectAreaLight":
 				uniforms = {
 					color: new Color(0, 0, 0),
 					position: new Vector3(),
@@ -85,7 +93,7 @@ type GLShadowUniform = {
 	shadowMapSize: Vector2;
 	shadowCameraNear?: number;
 	shadowCameraFar?: number;
-}
+};
 
 class ShadowUniformsCache {
 	lights: { [key: string]: GLShadowUniform };
@@ -97,7 +105,7 @@ class ShadowUniformsCache {
 
 		let uniforms: GLShadowUniform;
 		switch (light.type) {
-			case 'DirectionalLight':
+			case "DirectionalLight":
 				uniforms = {
 					shadowBias: 0,
 					shadowNormalBias: 0,
@@ -106,7 +114,7 @@ class ShadowUniformsCache {
 				};
 				break;
 
-			case 'SpotLight':
+			case "SpotLight":
 				uniforms = {
 					shadowBias: 0,
 					shadowNormalBias: 0,
@@ -115,7 +123,7 @@ class ShadowUniformsCache {
 				};
 				break;
 
-			case 'PointLight':
+			case "PointLight":
 				uniforms = {
 					shadowBias: 0,
 					shadowNormalBias: 0,
@@ -134,7 +142,6 @@ class ShadowUniformsCache {
 	}
 }
 
-
 let nextVersion = 0;
 
 function shadowCastingLightsFirst(lightA, lightB) {
@@ -150,19 +157,18 @@ class WebGLLights {
 	shadowCache = new ShadowUniformsCache();
 
 	state = {
-
 		version: 0,
 
 		hash: {
-			directionalLength: - 1,
-			pointLength: - 1,
-			spotLength: - 1,
-			rectAreaLength: - 1,
-			hemiLength: - 1,
+			directionalLength: -1,
+			pointLength: -1,
+			spotLength: -1,
+			rectAreaLength: -1,
+			hemiLength: -1,
 
-			numDirectionalShadows: - 1,
-			numPointShadows: - 1,
-			numSpotShadows: - 1,
+			numDirectionalShadows: -1,
+			numPointShadows: -1,
+			numSpotShadows: -1,
 		},
 
 		ambient: [],
@@ -183,13 +189,11 @@ class WebGLLights {
 		pointShadowMap: [],
 		pointShadowMatrix: [],
 		hemi: [],
-
 	};
 
 	vector3 = new Vector3();
 	matrix4 = new Matrix4();
 	matrix42 = new Matrix4();
-
 
 	constructor(extensions: WebGLExtensions, capabilities: WebGLCapabilities) {
 		this._extensions = extensions;
@@ -200,9 +204,10 @@ class WebGLLights {
 		}
 	}
 
-
 	setup(lights: Light[]) {
-		let r = 0; let g = 0; let b = 0;
+		let r = 0;
+		let g = 0;
+		let b = 0;
 
 		for (let i = 0; i < 9; i++) this.state.probe[i].set(0, 0, 0);
 
@@ -225,7 +230,8 @@ class WebGLLights {
 			const intensity = light.intensity;
 			const distance = light.distance;
 
-			const shadowMap = (light.shadow && light.shadow.map) ? light.shadow.map.texture : null;
+			const shadowMap =
+				light.shadow && light.shadow.map ? light.shadow.map.texture : null;
 
 			if (light.isAmbientLight) {
 				r += color.r * intensity;
@@ -233,7 +239,10 @@ class WebGLLights {
 				b += color.b * intensity;
 			} else if (light.isLightProbe) {
 				for (let j = 0; j < 9; j++) {
-					this.state.probe[j].addScaledVector((light as LightProbe).sh.coefficients[j], intensity);
+					this.state.probe[j].addScaledVector(
+						(light as LightProbe).sh.coefficients[j],
+						intensity
+					);
 				}
 			} else if (light.isDirectionalLight) {
 				const uniforms = this.cache.get(light);
@@ -252,7 +261,8 @@ class WebGLLights {
 
 					this.state.directionalShadow[directionalLength] = shadowUniforms;
 					this.state.directionalShadowMap[directionalLength] = shadowMap;
-					this.state.directionalShadowMatrix[directionalLength] = light.shadow.matrix;
+					this.state.directionalShadowMatrix[directionalLength] =
+						light.shadow.matrix;
 
 					numDirectionalShadows++;
 				}
@@ -357,14 +367,18 @@ class WebGLLights {
 			} else {
 				// WebGL 1
 
-				if (this._extensions.has('OES_texture_float_linear') === true) {
+				if (this._extensions.has("OES_texture_float_linear") === true) {
 					this.state.rectAreaLTC1 = UniformsLib.LTC_FLOAT_1;
 					this.state.rectAreaLTC2 = UniformsLib.LTC_FLOAT_2;
-				} else if (this._extensions.has('OES_texture_half_float_linear') === true) {
+				} else if (
+					this._extensions.has("OES_texture_half_float_linear") === true
+				) {
 					this.state.rectAreaLTC1 = UniformsLib.LTC_HALF_1;
 					this.state.rectAreaLTC2 = UniformsLib.LTC_HALF_2;
 				} else {
-					console.error('THREE.WebGLRenderer: Unable to use RectAreaLight. Missing WebGL extensions.');
+					console.error(
+						"THREE.WebGLRenderer: Unable to use RectAreaLight. Missing WebGL extensions."
+					);
 				}
 			}
 		}
@@ -375,14 +389,16 @@ class WebGLLights {
 
 		const hash = this.state.hash;
 
-		if (hash.directionalLength !== directionalLength ||
+		if (
+			hash.directionalLength !== directionalLength ||
 			hash.pointLength !== pointLength ||
 			hash.spotLength !== spotLength ||
 			hash.rectAreaLength !== rectAreaLength ||
 			hash.hemiLength !== hemiLength ||
 			hash.numDirectionalShadows !== numDirectionalShadows ||
 			hash.numPointShadows !== numPointShadows ||
-			hash.numSpotShadows !== numSpotShadows) {
+			hash.numSpotShadows !== numSpotShadows
+		) {
 			this.state.directional.length = directionalLength;
 			this.state.spot.length = spotLength;
 			this.state.rectArea.length = rectAreaLength;
@@ -484,6 +500,5 @@ class WebGLLights {
 		}
 	}
 }
-
 
 export { WebGLLights };

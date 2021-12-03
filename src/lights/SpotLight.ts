@@ -1,18 +1,25 @@
-import { Light } from './Light';
-import { SpotLightShadow } from './SpotLightShadow';
-import { Object3D, DefaultUp } from '../';
+import { Light } from "./Light";
+import { SpotLightShadow } from "./SpotLightShadow";
+import { Object3D, DefaultUp } from "../";
 
 class SpotLight extends Light {
 	target: Object3D;
 
-	constructor( color, intensity, distance = 0, angle = Math.PI / 3, penumbra = 0, decay = 1 ) {
-		super( color, intensity );
+	constructor(
+		color,
+		intensity,
+		distance = 0,
+		angle = Math.PI / 3,
+		penumbra = 0,
+		decay = 1
+	) {
+		super(color, intensity);
 
 		this.isSpotLight = true;
 
-		this.type = 'SpotLight';
+		this.type = "SpotLight";
 
-		this.position.copy( DefaultUp );
+		this.position.copy(DefaultUp);
 		this.updateMatrix();
 
 		this.target = new Object3D();
@@ -31,14 +38,14 @@ class SpotLight extends Light {
 		return this.intensity * Math.PI;
 	}
 
-	set power( power ) {
+	set power(power) {
 		// intensity = power per solid angle.
 		// ref: equation (17) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
 		this.intensity = power / Math.PI;
 	}
 
-	copy( source: SpotLight ) {
-		super.copy( source );
+	copy(source: SpotLight) {
+		super.copy(source);
 
 		this.distance = source.distance;
 		this.angle = source.angle;

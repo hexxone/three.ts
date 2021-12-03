@@ -1,6 +1,15 @@
-import { NeverDepth, AlwaysDepth, LessDepth, LessEqualDepth, EqualDepth, GreaterEqualDepth, GreaterDepth, NotEqualDepth, Vector4 } from '../..';
-import { WebGLState } from './WebGLState';
-
+import {
+	NeverDepth,
+	AlwaysDepth,
+	LessDepth,
+	LessEqualDepth,
+	EqualDepth,
+	GreaterEqualDepth,
+	GreaterDepth,
+	NotEqualDepth,
+	Vector4,
+} from "../..";
+import { WebGLState } from "./WebGLState";
 
 export class StencilBuffer {
 	_gl: GLESRenderingContext;
@@ -17,33 +26,35 @@ export class StencilBuffer {
 	currentStencilZPass = null;
 	currentStencilClear: number;
 
-	constructor( gl: GLESRenderingContext, state: WebGLState ) {
+	constructor(gl: GLESRenderingContext, state: WebGLState) {
 		this._gl = gl;
 		this._state = state;
 	}
 
-	setTest( stencilTest ) {
-		if ( ! this.locked ) {
-			if ( stencilTest ) {
-				this._state.enable( this._gl.STENCIL_TEST );
+	setTest(stencilTest) {
+		if (!this.locked) {
+			if (stencilTest) {
+				this._state.enable(this._gl.STENCIL_TEST);
 			} else {
-				this._state.disable( this._gl.STENCIL_TEST );
+				this._state.disable(this._gl.STENCIL_TEST);
 			}
 		}
 	}
 
-	setMask( stencilMask ) {
-		if ( this.currentStencilMask !== stencilMask && ! this.locked ) {
-			this._gl.stencilMask( stencilMask );
+	setMask(stencilMask) {
+		if (this.currentStencilMask !== stencilMask && !this.locked) {
+			this._gl.stencilMask(stencilMask);
 			this.currentStencilMask = stencilMask;
 		}
 	}
 
-	setFunc( stencilFunc, stencilRef, stencilMask ) {
-		if ( this.currentStencilFunc !== stencilFunc ||
+	setFunc(stencilFunc, stencilRef, stencilMask) {
+		if (
+			this.currentStencilFunc !== stencilFunc ||
 			this.currentStencilRef !== stencilRef ||
-			this.currentStencilFuncMask !== stencilMask ) {
-			this._gl.stencilFunc( stencilFunc, stencilRef, stencilMask );
+			this.currentStencilFuncMask !== stencilMask
+		) {
+			this._gl.stencilFunc(stencilFunc, stencilRef, stencilMask);
 
 			this.currentStencilFunc = stencilFunc;
 			this.currentStencilRef = stencilRef;
@@ -51,11 +62,13 @@ export class StencilBuffer {
 		}
 	}
 
-	setOp( stencilFail, stencilZFail, stencilZPass ) {
-		if ( this.currentStencilFail !== stencilFail ||
+	setOp(stencilFail, stencilZFail, stencilZPass) {
+		if (
+			this.currentStencilFail !== stencilFail ||
 			this.currentStencilZFail !== stencilZFail ||
-			this.currentStencilZPass !== stencilZPass ) {
-			this._gl.stencilOp( stencilFail, stencilZFail, stencilZPass );
+			this.currentStencilZPass !== stencilZPass
+		) {
+			this._gl.stencilOp(stencilFail, stencilZFail, stencilZPass);
 
 			this.currentStencilFail = stencilFail;
 			this.currentStencilZFail = stencilZFail;
@@ -63,13 +76,13 @@ export class StencilBuffer {
 		}
 	}
 
-	setLocked( lock ) {
+	setLocked(lock) {
 		this.locked = lock;
 	}
 
-	setClear( stencil: number ) {
-		if ( this.currentStencilClear !== stencil ) {
-			this._gl.clearStencil( stencil );
+	setClear(stencil: number) {
+		if (this.currentStencilClear !== stencil) {
+			this._gl.clearStencil(stencil);
 			this.currentStencilClear = stencil;
 		}
 	}
@@ -88,7 +101,6 @@ export class StencilBuffer {
 	}
 }
 
-
 export class DepthBuffer {
 	_gl: GLESRenderingContext;
 	_state: WebGLState;
@@ -99,80 +111,80 @@ export class DepthBuffer {
 	currentDepthFunc = null;
 	currentDepthClear = null;
 
-	constructor( gl: GLESRenderingContext, state: WebGLState ) {
+	constructor(gl: GLESRenderingContext, state: WebGLState) {
 		this._gl = gl;
 		this._state = state;
 	}
 
-	setTest( depthTest ) {
-		if ( depthTest ) {
-			this._state.enable( this._gl.DEPTH_TEST );
+	setTest(depthTest) {
+		if (depthTest) {
+			this._state.enable(this._gl.DEPTH_TEST);
 		} else {
-			this._state.disable( this._gl.DEPTH_TEST );
+			this._state.disable(this._gl.DEPTH_TEST);
 		}
 	}
 
-	setMask( depthMask ) {
-		if ( this.currentDepthMask !== depthMask && ! this.locked ) {
-			this._gl.depthMask( depthMask );
+	setMask(depthMask) {
+		if (this.currentDepthMask !== depthMask && !this.locked) {
+			this._gl.depthMask(depthMask);
 			this.currentDepthMask = depthMask;
 		}
 	}
 
-	setFunc( depthFunc ) {
-		if ( this.currentDepthFunc !== depthFunc ) {
-			if ( depthFunc ) {
-				switch ( depthFunc ) {
-				case NeverDepth:
-					this._gl.depthFunc( this._gl.NEVER );
-					break;
+	setFunc(depthFunc) {
+		if (this.currentDepthFunc !== depthFunc) {
+			if (depthFunc) {
+				switch (depthFunc) {
+					case NeverDepth:
+						this._gl.depthFunc(this._gl.NEVER);
+						break;
 
-				case AlwaysDepth:
-					this._gl.depthFunc( this._gl.ALWAYS );
-					break;
+					case AlwaysDepth:
+						this._gl.depthFunc(this._gl.ALWAYS);
+						break;
 
-				case LessDepth:
-					this._gl.depthFunc( this._gl.LESS );
-					break;
+					case LessDepth:
+						this._gl.depthFunc(this._gl.LESS);
+						break;
 
-				case LessEqualDepth:
-					this._gl.depthFunc( this._gl.LEQUAL );
-					break;
+					case LessEqualDepth:
+						this._gl.depthFunc(this._gl.LEQUAL);
+						break;
 
-				case EqualDepth:
-					this._gl.depthFunc( this._gl.EQUAL );
-					break;
+					case EqualDepth:
+						this._gl.depthFunc(this._gl.EQUAL);
+						break;
 
-				case GreaterEqualDepth:
-					this._gl.depthFunc( this._gl.GEQUAL );
-					break;
+					case GreaterEqualDepth:
+						this._gl.depthFunc(this._gl.GEQUAL);
+						break;
 
-				case GreaterDepth:
-					this._gl.depthFunc( this._gl.GREATER );
-					break;
+					case GreaterDepth:
+						this._gl.depthFunc(this._gl.GREATER);
+						break;
 
-				case NotEqualDepth:
-					this._gl.depthFunc( this._gl.NOTEQUAL );
-					break;
+					case NotEqualDepth:
+						this._gl.depthFunc(this._gl.NOTEQUAL);
+						break;
 
-				default:
-					this._gl.depthFunc( this._gl.LEQUAL );
+					default:
+						this._gl.depthFunc(this._gl.LEQUAL);
 				}
 			} else {
-				this._gl.depthFunc( this._gl.LEQUAL );
+				this._gl.depthFunc(this._gl.LEQUAL);
 			}
 
 			this.currentDepthFunc = depthFunc;
 		}
 	}
 
-	setLocked( lock ) {
+	setLocked(lock) {
 		this.locked = lock;
 	}
 
-	setClear( depth: number ) {
-		if ( this.currentDepthClear !== depth ) {
-			this._gl.clearDepth( depth );
+	setClear(depth: number) {
+		if (this.currentDepthClear !== depth) {
+			this._gl.clearDepth(depth);
 			this.currentDepthClear = depth;
 		}
 	}
@@ -186,7 +198,6 @@ export class DepthBuffer {
 	}
 }
 
-
 export class ColorBuffer {
 	_gl: GLESRenderingContext;
 
@@ -194,33 +205,41 @@ export class ColorBuffer {
 
 	color = new Vector4();
 	currentColorMask: boolean;
-	currentColorClear = new Vector4( 0, 0, 0, 0 );
+	currentColorClear = new Vector4(0, 0, 0, 0);
 
-	constructor( gl: GLESRenderingContext ) {
+	constructor(gl: GLESRenderingContext) {
 		this._gl = gl;
 	}
 
-	setMask( colorMask: boolean ) {
-		if ( this.currentColorMask !== colorMask && ! this.locked ) {
-			this._gl.colorMask( colorMask, colorMask, colorMask, colorMask );
+	setMask(colorMask: boolean) {
+		if (this.currentColorMask !== colorMask && !this.locked) {
+			this._gl.colorMask(colorMask, colorMask, colorMask, colorMask);
 			this.currentColorMask = colorMask;
 		}
 	}
 
-	setLocked( lock: boolean ) {
+	setLocked(lock: boolean) {
 		this.locked = lock;
 	}
 
-	setClear( r: number, g: number, b: number, a: number, premultipliedAlpha?: boolean ) {
-		if ( premultipliedAlpha === true ) {
-			r *= a; g *= a; b *= a;
+	setClear(
+		r: number,
+		g: number,
+		b: number,
+		a: number,
+		premultipliedAlpha?: boolean
+	) {
+		if (premultipliedAlpha === true) {
+			r *= a;
+			g *= a;
+			b *= a;
 		}
 
-		this.color.set( r, g, b, a );
+		this.color.set(r, g, b, a);
 
-		if ( this.currentColorClear.equals( this.color ) === false ) {
-			this._gl.clearColor( r, g, b, a );
-			this.currentColorClear.copy( this.color );
+		if (this.currentColorClear.equals(this.color) === false) {
+			this._gl.clearColor(r, g, b, a);
+			this.currentColorClear.copy(this.color);
 		}
 	}
 
@@ -228,6 +247,6 @@ export class ColorBuffer {
 		this.locked = false;
 
 		this.currentColorMask = null;
-		this.currentColorClear.set( - 1, 0, 0, 0 ); // set to invalid state
+		this.currentColorClear.set(-1, 0, 0, 0); // set to invalid state
 	}
 }

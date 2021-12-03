@@ -1,16 +1,15 @@
-import { BufferGeometry } from './BufferGeometry';
-
+import { BufferGeometry } from "./BufferGeometry";
 
 class InstancedBufferGeometry extends BufferGeometry {
 	instanceCount = Infinity;
 
 	constructor() {
 		super();
-		this.type = 'InstancedBufferGeometry';
+		this.type = "InstancedBufferGeometry";
 	}
 
-	copy( source ) {
-		super.copy( source );
+	copy(source) {
+		super.copy(source);
 
 		this.instanceCount = source.instanceCount;
 
@@ -18,7 +17,7 @@ class InstancedBufferGeometry extends BufferGeometry {
 	}
 
 	clone() {
-		return new InstancedBufferGeometry().copy( this );
+		return new InstancedBufferGeometry().copy(this);
 	}
 
 	toJSON() {

@@ -1,24 +1,23 @@
-
 class WebGLProperties {
 	properties = new WeakMap();
 
-	get( object: any ) {
-		let map = this.properties.get( object );
+	get(object: any) {
+		let map = this.properties.get(object);
 
-		if ( map === undefined ) {
+		if (map === undefined) {
 			map = {};
-			this.properties.set( object, map );
+			this.properties.set(object, map);
 		}
 
 		return map;
 	}
 
-	remove( object ) {
-		this.properties.delete( object );
+	remove(object) {
+		this.properties.delete(object);
 	}
 
-	update( object, key, value ) {
-		this.properties.get( object )[ key ] = value;
+	update(object, key, value) {
+		this.properties.get(object)[key] = value;
 	}
 
 	dispose() {

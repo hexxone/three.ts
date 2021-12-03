@@ -1,5 +1,5 @@
-import { Material } from './Material';
-import { Color, MaterialParameters } from '../';
+import { Material } from "./Material";
+import { Color } from "../";
 
 /**
  * parameters = {
@@ -15,14 +15,17 @@ import { Color, MaterialParameters } from '../';
  * }
  */
 
+/**
+ * @public
+ */
 class PointsMaterial extends Material {
-	constructor( parameters?: MaterialParameters ) {
+	constructor() {
 		super();
 
 		this.isPointsMaterial = true;
-		this.type = 'PointsMaterial';
+		this.type = "PointsMaterial";
 
-		this.color = new Color( 0xffffff );
+		this.color = new Color(0xffffff);
 
 		this.map = null;
 
@@ -32,14 +35,12 @@ class PointsMaterial extends Material {
 		this.sizeAttenuation = true;
 
 		this.morphTargets = false;
-
-		this.setValues( parameters );
 	}
 
-	copy( source: PointsMaterial ) {
-		super.copy( source );
+	copy(source: PointsMaterial) {
+		super.copy(source);
 
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.map = source.map;
 

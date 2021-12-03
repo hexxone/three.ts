@@ -1,40 +1,51 @@
-import { BufferAttribute, BufferGeometry, Float32BufferAttribute, LineBasicMaterial, LineSegments } from '../';
+import {
+	BufferAttribute,
+	BufferGeometry,
+	Float32BufferAttribute,
+	LineBasicMaterial,
+	LineSegments,
+} from "../";
 
 class Box3Helper extends LineSegments {
 	box: any;
 
-	constructor( box, color = 0xffff00 ) {
-		const indices = new Uint16Array( [0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7] );
+	constructor(box, color = 0xffff00) {
+		const indices = new Uint16Array([
+			0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7,
+		]);
 
-		const positions = [1, 1, 1, - 1, 1, 1, - 1, - 1, 1, 1, - 1, 1, 1, 1, - 1, - 1, 1, - 1, - 1, - 1, - 1, 1, - 1, - 1];
+		const positions = [
+			1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, 1, 1, -1, -1, 1, -1, -1, -1, -1,
+			1, -1, -1,
+		];
 
 		const geometry = new BufferGeometry();
 
-		geometry.setIndex( new BufferAttribute( indices, 1 ) );
+		geometry.setIndex(new BufferAttribute(indices, 1));
 
-		geometry.setAttribute( 'position', new Float32BufferAttribute( positions, 3 ) );
+		geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
 
-		super( geometry, new LineBasicMaterial( { color: color, toneMapped: false } ) );
+		super(geometry, new LineBasicMaterial({ color: color, toneMapped: false }));
 
 		this.box = box;
 
-		this.type = 'Box3Helper';
+		this.type = "Box3Helper";
 
 		this.geometry.computeBoundingSphere();
 	}
 
-	updateMatrixWorld( force ) {
+	updateMatrixWorld(force) {
 		const box = this.box;
 
-		if ( box.isEmpty() ) return;
+		if (box.isEmpty()) return;
 
-		box.getCenter( this.position );
+		box.getCenter(this.position);
 
-		box.getSize( this.scale );
+		box.getSize(this.scale);
 
-		this.scale.multiplyScalar( 0.5 );
+		this.scale.multiplyScalar(0.5);
 
-		super.updateMatrixWorld( force );
+		super.updateMatrixWorld(force);
 	}
 }
 

@@ -1,15 +1,15 @@
-import { Camera, Object3D } from '../..';
-import { WebGLCapabilities } from './WebGLCapabilities';
-import { WebGLExtensions } from './WebGLExtensions';
-import { WebGLLights } from './WebGLLights';
+import { Camera, Object3D } from "../..";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLLights } from "./WebGLLights";
 
 class WebGLRenderState {
 	lights: WebGLLights;
 	lightsArray = [];
 	shadowsArray = [];
 
-	constructor( extensions: WebGLExtensions, capabilities: WebGLCapabilities ) {
-		this.lights = new WebGLLights( extensions, capabilities );
+	constructor(extensions: WebGLExtensions, capabilities: WebGLCapabilities) {
+		this.lights = new WebGLLights(extensions, capabilities);
 	}
 
 	init() {
@@ -17,20 +17,20 @@ class WebGLRenderState {
 		this.shadowsArray.length = 0;
 	}
 
-	pushLight( light ) {
-		this.lightsArray.push( light );
+	pushLight(light) {
+		this.lightsArray.push(light);
 	}
 
-	pushShadow( shadowLight ) {
-		this.shadowsArray.push( shadowLight );
+	pushShadow(shadowLight) {
+		this.shadowsArray.push(shadowLight);
 	}
 
 	setupLights() {
-		this.lights.setup( this.lightsArray );
+		this.lights.setup(this.lightsArray);
 	}
 
-	setupLightsView( camera: Camera ) {
-		this.lights.setupView( this.lightsArray, camera );
+	setupLightsView(camera: Camera) {
+		this.lights.setupView(this.lightsArray, camera);
 	}
 }
 
@@ -40,23 +40,26 @@ class WebGLRenderStates {
 
 	renderStates = new WeakMap<Object3D, WebGLRenderState[]>();
 
-	constructor( extensions: WebGLExtensions, capabilities: WebGLCapabilities ) {
+	constructor(extensions: WebGLExtensions, capabilities: WebGLCapabilities) {
 		this._extensions = extensions;
 		this._capabilities = capabilities;
 	}
 
-	get( scene: Object3D, renderCallDepth = 0 ): WebGLRenderState {
+	get(scene: Object3D, renderCallDepth = 0): WebGLRenderState {
 		let renderState;
 
-		if ( this.renderStates.has( scene ) === false ) {
-			renderState = new WebGLRenderState( this._extensions, this._capabilities );
-			this.renderStates.set( scene, [renderState] );
+		if (this.renderStates.has(scene) === false) {
+			renderState = new WebGLRenderState(this._extensions, this._capabilities);
+			this.renderStates.set(scene, [renderState]);
 		} else {
-			if ( renderCallDepth >= this.renderStates.get( scene ).length ) {
-				renderState = new WebGLRenderState( this._extensions, this._capabilities );
-				this.renderStates.get( scene ).push( renderState );
+			if (renderCallDepth >= this.renderStates.get(scene).length) {
+				renderState = new WebGLRenderState(
+					this._extensions,
+					this._capabilities
+				);
+				this.renderStates.get(scene).push(renderState);
 			} else {
-				renderState = this.renderStates.get( scene )[ renderCallDepth ];
+				renderState = this.renderStates.get(scene)[renderCallDepth];
 			}
 		}
 
@@ -67,6 +70,5 @@ class WebGLRenderStates {
 		this.renderStates = new WeakMap();
 	}
 }
-
 
 export { WebGLRenderState, WebGLRenderStates };

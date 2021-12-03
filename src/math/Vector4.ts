@@ -73,11 +73,20 @@ class Vector4 {
 
 	setComponent(index, value) {
 		switch (index) {
-			case 0: this.x = value; break;
-			case 1: this.y = value; break;
-			case 2: this.z = value; break;
-			case 3: this.w = value; break;
-			default: throw new Error('index is out of range: ' + index);
+			case 0:
+				this.x = value;
+				break;
+			case 1:
+				this.y = value;
+				break;
+			case 2:
+				this.z = value;
+				break;
+			case 3:
+				this.w = value;
+				break;
+			default:
+				throw new Error("index is out of range: " + index);
 		}
 
 		return this;
@@ -85,11 +94,16 @@ class Vector4 {
 
 	getComponent(index) {
 		switch (index) {
-			case 0: return this.x;
-			case 1: return this.y;
-			case 2: return this.z;
-			case 3: return this.w;
-			default: throw new Error('index is out of range: ' + index);
+			case 0:
+				return this.x;
+			case 1:
+				return this.y;
+			case 2:
+				return this.z;
+			case 3:
+				return this.w;
+			default:
+				throw new Error("index is out of range: " + index);
 		}
 	}
 
@@ -101,14 +115,16 @@ class Vector4 {
 		this.x = v.x;
 		this.y = v.y;
 		this.z = v.z;
-		this.w = (v.w !== undefined) ? v.w : 1;
+		this.w = v.w !== undefined ? v.w : 1;
 
 		return this;
 	}
 
 	add(v, w) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector4: .add() now only accepts one argument. Use .addVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector4: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
+			);
 			return this.addVectors(v, w);
 		}
 
@@ -149,7 +165,9 @@ class Vector4 {
 
 	sub(v, w) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector4: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector4: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
+			);
 			return this.subVectors(v, w);
 		}
 
@@ -198,7 +216,10 @@ class Vector4 {
 	}
 
 	applyMatrix4(m) {
-		const x = this.x; const y = this.y; const z = this.z; const w = this.w;
+		const x = this.x;
+		const y = this.y;
+		const z = this.z;
+		const w = this.w;
 		const e = m.elements;
 
 		this.x = e[0] * x + e[4] * y + e[8] * z + e[12] * w;
@@ -240,27 +261,40 @@ class Vector4 {
 
 		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
-		let angle; let x; let y; let z; // variables for result
-		const epsilon = 0.01;		// margin to allow for rounding errors
-		const epsilon2 = 0.1;		// margin to distinguish between 0 and 180 degrees
+		let angle;
+		let x;
+		let y;
+		let z; // variables for result
+		const epsilon = 0.01; // margin to allow for rounding errors
+		const epsilon2 = 0.1; // margin to distinguish between 0 and 180 degrees
 
 		const te = m.elements;
 
-		const m11 = te[0]; const m12 = te[4]; const m13 = te[8];
-		const m21 = te[1]; const m22 = te[5]; const m23 = te[9];
-		const m31 = te[2]; const m32 = te[6]; const m33 = te[10];
+		const m11 = te[0];
+		const m12 = te[4];
+		const m13 = te[8];
+		const m21 = te[1];
+		const m22 = te[5];
+		const m23 = te[9];
+		const m31 = te[2];
+		const m32 = te[6];
+		const m33 = te[10];
 
-		if ((Math.abs(m12 - m21) < epsilon) &&
-			(Math.abs(m13 - m31) < epsilon) &&
-			(Math.abs(m23 - m32) < epsilon)) {
+		if (
+			Math.abs(m12 - m21) < epsilon &&
+			Math.abs(m13 - m31) < epsilon &&
+			Math.abs(m23 - m32) < epsilon
+		) {
 			// singularity found
 			// first check for identity matrix which must have +1 for all terms
 			// in leading diagonal and zero in other terms
 
-			if ((Math.abs(m12 + m21) < epsilon2) &&
-				(Math.abs(m13 + m31) < epsilon2) &&
-				(Math.abs(m23 + m32) < epsilon2) &&
-				(Math.abs(m11 + m22 + m33 - 3) < epsilon2)) {
+			if (
+				Math.abs(m12 + m21) < epsilon2 &&
+				Math.abs(m13 + m31) < epsilon2 &&
+				Math.abs(m23 + m32) < epsilon2 &&
+				Math.abs(m11 + m22 + m33 - 3) < epsilon2
+			) {
 				// this singularity is identity matrix so angle = 0
 
 				this.set(1, 0, 0, 0);
@@ -279,7 +313,7 @@ class Vector4 {
 			const xz = (m13 + m31) / 4;
 			const yz = (m23 + m32) / 4;
 
-			if ((xx > yy) && (xx > zz)) {
+			if (xx > yy && xx > zz) {
 				// m11 is the largest diagonal term
 
 				if (xx < epsilon) {
@@ -324,9 +358,11 @@ class Vector4 {
 
 		// as we have reached here there are no singularities so we can handle normally
 
-		let s = Math.sqrt((m32 - m23) * (m32 - m23) +
-			(m13 - m31) * (m13 - m31) +
-			(m21 - m12) * (m21 - m12)); // used to normalize
+		let s = Math.sqrt(
+			(m32 - m23) * (m32 - m23) +
+				(m13 - m31) * (m13 - m31) +
+				(m21 - m12) * (m21 - m12)
+		); // used to normalize
 
 		if (Math.abs(s) < 0.001) s = 1;
 
@@ -382,7 +418,9 @@ class Vector4 {
 	clampLength(min, max) {
 		const length = this.length();
 
-		return this.divideScalar(length || 1).multiplyScalar(Math.max(min, Math.min(max, length)));
+		return this.divideScalar(length || 1).multiplyScalar(
+			Math.max(min, Math.min(max, length))
+		);
 	}
 
 	floor() {
@@ -413,19 +451,19 @@ class Vector4 {
 	}
 
 	roundToZero() {
-		this.x = (this.x < 0) ? Math.ceil(this.x) : Math.floor(this.x);
-		this.y = (this.y < 0) ? Math.ceil(this.y) : Math.floor(this.y);
-		this.z = (this.z < 0) ? Math.ceil(this.z) : Math.floor(this.z);
-		this.w = (this.w < 0) ? Math.ceil(this.w) : Math.floor(this.w);
+		this.x = this.x < 0 ? Math.ceil(this.x) : Math.floor(this.x);
+		this.y = this.y < 0 ? Math.ceil(this.y) : Math.floor(this.y);
+		this.z = this.z < 0 ? Math.ceil(this.z) : Math.floor(this.z);
+		this.w = this.w < 0 ? Math.ceil(this.w) : Math.floor(this.w);
 
 		return this;
 	}
 
 	negate() {
-		this.x = - this.x;
-		this.y = - this.y;
-		this.z = - this.z;
-		this.w = - this.w;
+		this.x = -this.x;
+		this.y = -this.y;
+		this.z = -this.z;
+		this.w = -this.w;
 
 		return this;
 	}
@@ -435,15 +473,21 @@ class Vector4 {
 	}
 
 	lengthSq() {
-		return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+		return (
+			this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w
+		);
 	}
 
 	length() {
-		return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+		return Math.sqrt(
+			this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w
+		);
 	}
 
 	manhattanLength() {
-		return Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w);
+		return (
+			Math.abs(this.x) + Math.abs(this.y) + Math.abs(this.z) + Math.abs(this.w)
+		);
 	}
 
 	normalize() {
@@ -473,7 +517,7 @@ class Vector4 {
 	}
 
 	equals(v) {
-		return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z) && (v.w === this.w));
+		return v.x === this.x && v.y === this.y && v.z === this.z && v.w === this.w;
 	}
 
 	fromArray(array: number[], offset = 0) {
@@ -496,7 +540,9 @@ class Vector4 {
 
 	fromBufferAttribute(attribute, index, offset?) {
 		if (offset !== undefined) {
-			console.warn('THREE.Vector4: offset has been removed from .fromBufferAttribute().');
+			console.warn(
+				"THREE.Vector4: offset has been removed from .fromBufferAttribute()."
+			);
 		}
 
 		this.x = attribute.getX(index);

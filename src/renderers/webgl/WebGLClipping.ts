@@ -1,5 +1,5 @@
-import { Camera, Material, Matrix3, Plane } from '../../';
-import { WebGLProperties } from './WebGLProperties';
+import { Camera, Material, Matrix3, Plane } from "../../";
+import { WebGLProperties } from "./WebGLProperties";
 
 class WebGLClipping {
 	_properties: WebGLProperties;
@@ -17,11 +17,11 @@ class WebGLClipping {
 	numPlanes = 0;
 	numIntersection = 0;
 
-	constructor( properties: WebGLProperties ) {
+	constructor(properties: WebGLProperties) {
 		this._properties = properties;
 	}
 
-	init( planes: Plane[], enableLocalClipping: boolean, camera: Camera ): boolean {
+	init(planes: Plane[], enableLocalClipping: boolean, camera: Camera): boolean {
 		const enabled =
 			planes.length !== 0 ||
 			enableLocalClipping ||
@@ -32,7 +32,7 @@ class WebGLClipping {
 
 		this.localClippingEnabled = enableLocalClipping;
 
-		this.globalState = this.projectPlanes( planes, camera, 0 );
+		this.globalState = this.projectPlanes(planes, camera, 0);
 		this.numGlobalPlanes = planes.length;
 
 		return enabled;
@@ -40,7 +40,7 @@ class WebGLClipping {
 
 	beginShadows() {
 		this.renderingShadows = true;
-		this.projectPlanes( null );
+		this.projectPlanes(null);
 	}
 
 	endShadows() {
@@ -48,20 +48,25 @@ class WebGLClipping {
 		this.resetGlobalState();
 	}
 
-	setState( material: Material, camera: Camera, useCache: boolean ) {
+	setState(material: Material, camera: Camera, useCache: boolean) {
 		const planes = material.clippingPlanes;
 		const clipIntersection = material.clipIntersection;
 		const clipShadows = material.clipShadows;
 
-		const materialProperties = this._properties.get( material );
+		const materialProperties = this._properties.get(material);
 
-		if ( ! this.localClippingEnabled || planes === null || planes.length === 0 || this.renderingShadows && ! clipShadows ) {
+		if (
+			!this.localClippingEnabled ||
+			planes === null ||
+			planes.length === 0 ||
+			(this.renderingShadows && !clipShadows)
+		) {
 			// there's no local clipping
 
-			if ( this.renderingShadows ) {
+			if (this.renderingShadows) {
 				// there's no global clipping
 
-				this.projectPlanes( null );
+				this.projectPlanes(null);
 			} else {
 				this.resetGlobalState();
 			}
@@ -73,10 +78,10 @@ class WebGLClipping {
 
 			this.uniform.value = dstArray; // ensure unique state
 
-			dstArray = this.projectPlanes( planes, camera, lGlobal, useCache );
+			dstArray = this.projectPlanes(planes, camera, lGlobal, useCache);
 
-			for ( let i = 0; i !== lGlobal; ++ i ) {
-				dstArray[ i ] = this.globalState[ i ];
+			for (let i = 0; i !== lGlobal; ++i) {
+				dstArray[i] = this.globalState[i];
 			}
 
 			materialProperties.clippingState = dstArray;
@@ -86,7 +91,7 @@ class WebGLClipping {
 	}
 
 	resetGlobalState() {
-		if ( this.uniform.value !== this.globalState ) {
+		if (this.uniform.value !== this.globalState) {
 			this.uniform.value = this.globalState;
 			this.uniform.needsUpdate = this.numGlobalPlanes > 0;
 		}
@@ -95,28 +100,30 @@ class WebGLClipping {
 		this.numIntersection = 0;
 	}
 
-	projectPlanes( planes: Plane[], camera?, dstOffset?, skipTransform? ) {
+	projectPlanes(planes: Plane[], camera?, dstOffset?, skipTransform?) {
 		const nPlanes = planes !== null ? planes.length : 0;
 		let dstArray = null;
 
-		if ( nPlanes !== 0 ) {
+		if (nPlanes !== 0) {
 			dstArray = this.uniform.value;
 
-			if ( skipTransform !== true || dstArray === null ) {
+			if (skipTransform !== true || dstArray === null) {
 				const flatSize = dstOffset + nPlanes * 4;
 				const viewMatrix = camera.matrixWorldInverse;
 
-				this.viewNormalMatrix.getNormalMatrix( viewMatrix );
+				this.viewNormalMatrix.getNormalMatrix(viewMatrix);
 
-				if ( dstArray === null || dstArray.length < flatSize ) {
-					dstArray = new Float32Array( flatSize );
+				if (dstArray === null || dstArray.length < flatSize) {
+					dstArray = new Float32Array(flatSize);
 				}
 
-				for ( let i = 0, i4 = dstOffset; i !== nPlanes; ++ i, i4 += 4 ) {
-					this.plane.copy( planes[ i ] ).applyMatrix4( viewMatrix, this.viewNormalMatrix );
+				for (let i = 0, i4 = dstOffset; i !== nPlanes; ++i, i4 += 4) {
+					this.plane
+						.copy(planes[i])
+						.applyMatrix4(viewMatrix, this.viewNormalMatrix);
 
-					this.plane.normal.toArray( dstArray, i4 );
-					dstArray[ i4 + 3 ] = this.plane.constant;
+					this.plane.normal.toArray(dstArray, i4);
+					dstArray[i4 + 3] = this.plane.constant;
 				}
 			}
 

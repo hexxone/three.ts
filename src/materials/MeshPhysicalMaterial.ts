@@ -1,4 +1,4 @@
-import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from '../';
+import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "../";
 
 /**
  * parameters = {
@@ -46,16 +46,16 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 	specularTintMap: Texture;
 	_transmission: number;
 
-	constructor(parameters) {
-		super(parameters);
+	constructor() {
+		super();
 
 		this.defines = {
-			'STANDARD': '',
-			'PHYSICAL': '',
+			STANDARD: "",
+			PHYSICAL: "",
 		};
 
 		this.isMeshPhysicalMaterial = true;
-		this.type = 'MeshPhysicalMaterial';
+		this.type = "MeshPhysicalMaterial";
 
 		this.clearcoatMap = null;
 		this.clearcoatRoughness = 0.0;
@@ -65,9 +65,9 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 
 		this.ior = 1.5;
 
-		Object.defineProperty(this, 'reflectivity', {
+		Object.defineProperty(this, "reflectivity", {
 			get: function () {
-				return (MathUtils.clamp(2.5 * (this.ior - 1) / (this.ior + 1), 0, 1));
+				return MathUtils.clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
 			},
 			set: function (reflectivity) {
 				this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
@@ -92,10 +92,7 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 		this._sheen = 0.0;
 		this._clearcoat = 0;
 		this._transmission = 0;
-
-		this.setValues(parameters);
 	}
-
 
 	get transmission() {
 		return this._transmission;
@@ -113,8 +110,8 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 		super.copy(source); // todo use super.copy everywhere instead protofype.copy.call
 
 		this.defines = {
-			'STANDARD': '',
-			'PHYSICAL': '',
+			STANDARD: "",
+			PHYSICAL: "",
 		};
 
 		this.clearcoat = source.clearcoat;

@@ -1,16 +1,46 @@
-import { Texture } from './Texture';
-import { NearestFilter, UnsignedShortType, UnsignedInt248Type, DepthFormat, DepthStencilFormat } from '../';
+import { Texture } from "./Texture";
+import {
+	NearestFilter,
+	UnsignedShortType,
+	UnsignedInt248Type,
+	DepthFormat,
+	DepthStencilFormat,
+} from "../";
 
 class DepthTexture extends Texture {
-	constructor( width, height, type, mapping, wrapS, wrapT, magFilter, minFilter, anisotropy, format ) {
+	constructor(
+		width,
+		height,
+		type,
+		mapping,
+		wrapS,
+		wrapT,
+		magFilter,
+		minFilter,
+		anisotropy,
+		format
+	) {
 		format = format !== undefined ? format : DepthFormat;
-		if ( format !== DepthFormat && format !== DepthStencilFormat ) {
-			throw new Error( 'DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat' );
+		if (format !== DepthFormat && format !== DepthStencilFormat) {
+			throw new Error(
+				"DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat"
+			);
 		}
 
-		if ( type === undefined && format === DepthFormat ) type = UnsignedShortType;
-		if ( type === undefined && format === DepthStencilFormat ) type = UnsignedInt248Type;
-		super( null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
+		if (type === undefined && format === DepthFormat) type = UnsignedShortType;
+		if (type === undefined && format === DepthStencilFormat)
+			type = UnsignedInt248Type;
+		super(
+			null,
+			mapping,
+			wrapS,
+			wrapT,
+			magFilter,
+			minFilter,
+			format,
+			type,
+			anisotropy
+		);
 
 		this.isDepthTexture = true;
 

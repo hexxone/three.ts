@@ -1,3 +1,2 @@
-
-export * from './WebXRController';
-export * from './WebXRManager';
+export * from "./WebXRController";
+export * from "./WebXRManager";

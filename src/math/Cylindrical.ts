@@ -7,7 +7,7 @@ class Cylindrical {
 	theta: number;
 	y: number;
 
-	constructor( radius = 1, theta = 0, y = 0 ) {
+	constructor(radius = 1, theta = 0, y = 0) {
 		this.radius = radius; // distance from the origin to a point in the x-z plane
 		this.theta = theta; // counterclockwise angle in the x-z plane measured in radians from the positive z-axis
 		this.y = y; // height above the x-z plane
@@ -15,7 +15,7 @@ class Cylindrical {
 		return this;
 	}
 
-	set( radius, theta, y ) {
+	set(radius, theta, y) {
 		this.radius = radius;
 		this.theta = theta;
 		this.y = y;
@@ -23,7 +23,7 @@ class Cylindrical {
 		return this;
 	}
 
-	copy( other: Cylindrical ) {
+	copy(other: Cylindrical) {
 		this.radius = other.radius;
 		this.theta = other.theta;
 		this.y = other.y;
@@ -31,20 +31,20 @@ class Cylindrical {
 		return this;
 	}
 
-	setFromVector3( v ) {
-		return this.setFromCartesianCoords( v.x, v.y, v.z );
+	setFromVector3(v) {
+		return this.setFromCartesianCoords(v.x, v.y, v.z);
 	}
 
-	setFromCartesianCoords( x, y, z ) {
-		this.radius = Math.sqrt( x * x + z * z );
-		this.theta = Math.atan2( x, z );
+	setFromCartesianCoords(x, y, z) {
+		this.radius = Math.sqrt(x * x + z * z);
+		this.theta = Math.atan2(x, z);
 		this.y = y;
 
 		return this;
 	}
 
 	clone() {
-		return new Cylindrical().copy( this );
+		return new Cylindrical().copy(this);
 	}
 }
 

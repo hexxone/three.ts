@@ -1,5 +1,5 @@
-import { Vector3, Quaternion } from '../';
-import { Audio } from './';
+import { Vector3, Quaternion } from "../";
+import { Audio } from "./";
 
 const _position = /* @__PURE__*/ new Vector3();
 const _quaternion = /* @__PURE__*/ new Quaternion();
@@ -9,12 +9,12 @@ const _orientation = /* @__PURE__*/ new Vector3();
 class PositionalAudio extends Audio {
 	panner: any;
 
-	constructor( listener ) {
-		super( listener );
+	constructor(listener) {
+		super(listener);
 
 		this.panner = this.context.createPanner();
-		this.panner.panningModel = 'HRTF';
-		this.panner.connect( this.gain );
+		this.panner.panningModel = "HRTF";
+		this.panner.connect(this.gain);
 	}
 
 	getOutput() {
@@ -25,7 +25,7 @@ class PositionalAudio extends Audio {
 		return this.panner.refDistance;
 	}
 
-	setRefDistance( value ) {
+	setRefDistance(value) {
 		this.panner.refDistance = value;
 
 		return this;
@@ -35,7 +35,7 @@ class PositionalAudio extends Audio {
 		return this.panner.rolloffFactor;
 	}
 
-	setRolloffFactor( value ) {
+	setRolloffFactor(value) {
 		this.panner.rolloffFactor = value;
 
 		return this;
@@ -45,7 +45,7 @@ class PositionalAudio extends Audio {
 		return this.panner.distanceModel;
 	}
 
-	setDistanceModel( value ) {
+	setDistanceModel(value) {
 		this.panner.distanceModel = value;
 
 		return this;
@@ -55,13 +55,13 @@ class PositionalAudio extends Audio {
 		return this.panner.maxDistance;
 	}
 
-	setMaxDistance( value ) {
+	setMaxDistance(value) {
 		this.panner.maxDistance = value;
 
 		return this;
 	}
 
-	setDirectionalCone( coneInnerAngle, coneOuterAngle, coneOuterGain ) {
+	setDirectionalCone(coneInnerAngle, coneOuterAngle, coneOuterGain) {
 		this.panner.coneInnerAngle = coneInnerAngle;
 		this.panner.coneOuterAngle = coneOuterAngle;
 		this.panner.coneOuterGain = coneOuterGain;
@@ -69,31 +69,31 @@ class PositionalAudio extends Audio {
 		return this;
 	}
 
-	updateMatrixWorld( force ) {
-		super.updateMatrixWorld( force );
+	updateMatrixWorld(force) {
+		super.updateMatrixWorld(force);
 
-		if ( this.hasPlaybackControl === true && this.isPlaying === false ) return;
+		if (this.hasPlaybackControl === true && this.isPlaying === false) return;
 
-		this.matrixWorld.decompose( _position, _quaternion, _scale );
+		this.matrixWorld.decompose(_position, _quaternion, _scale);
 
-		_orientation.set( 0, 0, 1 ).applyQuaternion( _quaternion );
+		_orientation.set(0, 0, 1).applyQuaternion(_quaternion);
 
 		const panner = this.panner;
 
-		if ( panner.positionX ) {
+		if (panner.positionX) {
 			// code path for Chrome and Firefox (see #14393)
 
 			const endTime = this.context.currentTime + this.listener.timeDelta;
 
-			panner.positionX.linearRampToValueAtTime( _position.x, endTime );
-			panner.positionY.linearRampToValueAtTime( _position.y, endTime );
-			panner.positionZ.linearRampToValueAtTime( _position.z, endTime );
-			panner.orientationX.linearRampToValueAtTime( _orientation.x, endTime );
-			panner.orientationY.linearRampToValueAtTime( _orientation.y, endTime );
-			panner.orientationZ.linearRampToValueAtTime( _orientation.z, endTime );
+			panner.positionX.linearRampToValueAtTime(_position.x, endTime);
+			panner.positionY.linearRampToValueAtTime(_position.y, endTime);
+			panner.positionZ.linearRampToValueAtTime(_position.z, endTime);
+			panner.orientationX.linearRampToValueAtTime(_orientation.x, endTime);
+			panner.orientationY.linearRampToValueAtTime(_orientation.y, endTime);
+			panner.orientationZ.linearRampToValueAtTime(_orientation.z, endTime);
 		} else {
-			panner.setPosition( _position.x, _position.y, _position.z );
-			panner.setOrientation( _orientation.x, _orientation.y, _orientation.z );
+			panner.setPosition(_position.x, _position.y, _position.z);
+			panner.setOrientation(_orientation.x, _orientation.y, _orientation.z);
 		}
 	}
 }

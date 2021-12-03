@@ -1,5 +1,5 @@
-import { Material } from './Material';
-import { Color } from '../';
+import { Material } from "./Material";
+import { Color } from "../";
 
 /**
  * parameters = {
@@ -8,22 +8,20 @@ import { Color } from '../';
  */
 
 class ShadowMaterial extends Material {
-	constructor( parameters ) {
+	constructor() {
 		super();
 
 		this.isShadowMaterial = true;
-		this.type = 'ShadowMaterial';
+		this.type = "ShadowMaterial";
 
-		this.color = new Color( 0x000000 );
+		this.color = new Color(0x000000);
 		this.transparent = true;
-
-		this.setValues( parameters );
 	}
 
-	copy( source: ShadowMaterial ) {
-		super.copy( source );
+	copy(source: ShadowMaterial) {
+		super.copy(source);
 
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		return this;
 	}

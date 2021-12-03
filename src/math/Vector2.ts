@@ -52,9 +52,14 @@ class Vector2 {
 
 	setComponent(index, value) {
 		switch (index) {
-			case 0: this.x = value; break;
-			case 1: this.y = value; break;
-			default: throw new Error('index is out of range: ' + index);
+			case 0:
+				this.x = value;
+				break;
+			case 1:
+				this.y = value;
+				break;
+			default:
+				throw new Error("index is out of range: " + index);
 		}
 
 		return this;
@@ -62,9 +67,12 @@ class Vector2 {
 
 	getComponent(index) {
 		switch (index) {
-			case 0: return this.x;
-			case 1: return this.y;
-			default: throw new Error('index is out of range: ' + index);
+			case 0:
+				return this.x;
+			case 1:
+				return this.y;
+			default:
+				throw new Error("index is out of range: " + index);
 		}
 	}
 
@@ -81,7 +89,9 @@ class Vector2 {
 
 	add(v, w?) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector2: .add() now only accepts one argument. Use .addVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector2: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
+			);
 			return this.addVectors(v, w);
 		}
 
@@ -114,7 +124,9 @@ class Vector2 {
 
 	sub(v, w?) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector2: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector2: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
+			);
 			return this.subVectors(v, w);
 		}
 
@@ -164,7 +176,8 @@ class Vector2 {
 	}
 
 	applyMatrix3(m) {
-		const x = this.x; const y = this.y;
+		const x = this.x;
+		const y = this.y;
 		const e = m.elements;
 
 		this.x = e[0] * x + e[3] * y + e[6];
@@ -206,7 +219,9 @@ class Vector2 {
 	clampLength(min, max) {
 		const length = this.length();
 
-		return this.divideScalar(length || 1).multiplyScalar(Math.max(min, Math.min(max, length)));
+		return this.divideScalar(length || 1).multiplyScalar(
+			Math.max(min, Math.min(max, length))
+		);
 	}
 
 	floor() {
@@ -231,15 +246,15 @@ class Vector2 {
 	}
 
 	roundToZero() {
-		this.x = (this.x < 0) ? Math.ceil(this.x) : Math.floor(this.x);
-		this.y = (this.y < 0) ? Math.ceil(this.y) : Math.floor(this.y);
+		this.x = this.x < 0 ? Math.ceil(this.x) : Math.floor(this.x);
+		this.y = this.y < 0 ? Math.ceil(this.y) : Math.floor(this.y);
 
 		return this;
 	}
 
 	negate() {
-		this.x = - this.x;
-		this.y = - this.y;
+		this.x = -this.x;
+		this.y = -this.y;
 
 		return this;
 	}
@@ -271,7 +286,7 @@ class Vector2 {
 	angle() {
 		// computes the angle in radians with respect to the positive x-axis
 
-		const angle = Math.atan2(- this.y, - this.x) + Math.PI;
+		const angle = Math.atan2(-this.y, -this.x) + Math.PI;
 
 		return angle;
 	}
@@ -281,7 +296,8 @@ class Vector2 {
 	}
 
 	distanceToSquared(v) {
-		const dx = this.x - v.x; const dy = this.y - v.y;
+		const dx = this.x - v.x;
+		const dy = this.y - v.y;
 		return dx * dx + dy * dy;
 	}
 
@@ -308,7 +324,7 @@ class Vector2 {
 	}
 
 	equals(v) {
-		return ((v.x === this.x) && (v.y === this.y));
+		return v.x === this.x && v.y === this.y;
 	}
 
 	fromArray(array: number[], offset = 0) {
@@ -327,7 +343,9 @@ class Vector2 {
 
 	fromBufferAttribute(attribute, index, offset?) {
 		if (offset !== undefined) {
-			console.warn('THREE.Vector2: offset has been removed from .fromBufferAttribute().');
+			console.warn(
+				"THREE.Vector2: offset has been removed from .fromBufferAttribute()."
+			);
 		}
 
 		this.x = attribute.getX(index);
@@ -337,7 +355,8 @@ class Vector2 {
 	}
 
 	rotateAround(center, angle) {
-		const c = Math.cos(angle); const s = Math.sin(angle);
+		const c = Math.cos(angle);
+		const s = Math.sin(angle);
 
 		const x = this.x - center.x;
 		const y = this.y - center.y;

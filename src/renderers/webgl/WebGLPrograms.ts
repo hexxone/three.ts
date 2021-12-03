@@ -1,10 +1,35 @@
 import {
-	BackSide, DoubleSide, CubeUVRefractionMapping, CubeUVReflectionMapping, LinearEncoding, ObjectSpaceNormalMap, TangentSpaceNormalMap, NoToneMapping, ShaderLib,
-	UniformsUtils, WebGLBindingStates, WebGLCapabilities, WebGLCubeMaps, WebGLExtensions, WebGLRenderer, WebGLClipping, Object3D, FogExp2, InstancedMesh,
-	MeshDepthMaterial, Scene, ShadowMaterial, Material, MeshStandardMaterial, MeshPhysicalMaterial, ShaderMaterial, Texture, WebGLRenderTarget,
-} from '../../';
-import { WebGLProgram } from './WebGLProgram';
-import { WebGLLights } from './WebGLLights';
+	BackSide,
+	DoubleSide,
+	CubeUVRefractionMapping,
+	CubeUVReflectionMapping,
+	LinearEncoding,
+	ObjectSpaceNormalMap,
+	TangentSpaceNormalMap,
+	NoToneMapping,
+	ShaderLib,
+	UniformsUtils,
+	WebGLBindingStates,
+	WebGLCapabilities,
+	WebGLCubeMaps,
+	WebGLExtensions,
+	WebGLRenderer,
+	WebGLClipping,
+	Object3D,
+	FogExp2,
+	InstancedMesh,
+	MeshDepthMaterial,
+	Scene,
+	ShadowMaterial,
+	Material,
+	MeshStandardMaterial,
+	MeshPhysicalMaterial,
+	ShaderMaterial,
+	Texture,
+	WebGLRenderTarget,
+} from "../../";
+import { WebGLProgram } from "./WebGLProgram";
+import { WebGLLights } from "./WebGLLights";
 
 /**
  * @public
@@ -52,7 +77,8 @@ export type WebGlProgramsParameters = {
 	sheen: boolean;
 	transmissionMap: boolean;
 	combine: any;
-	vertexTangents: boolean; vertexColors: boolean;
+	vertexTangents: boolean;
+	vertexColors: boolean;
 	vertexUvs: boolean;
 	uvsVertexOnly: boolean;
 	fog: boolean;
@@ -98,14 +124,13 @@ export type WebGlProgramsParameters = {
 	rendererExtensionShaderTextureLod: any;
 	customProgramCacheKey: string;
 	uniforms: any;
-}
-
+};
 
 class WebGLPrograms {
 	_renderer: WebGLRenderer;
 	_cubemaps: WebGLCubeMaps;
 	_extensions: WebGLExtensions;
-	_capabilities: WebGLCapabilities;;
+	_capabilities: WebGLCapabilities;
 	_bindingStates: WebGLBindingStates;
 	_clipping: WebGLClipping;
 
@@ -118,7 +143,14 @@ class WebGLPrograms {
 	vertexTextures: any;
 	precision: any;
 
-	constructor(renderer: WebGLRenderer, cubemaps: WebGLCubeMaps, extensions: WebGLExtensions, capabilities: WebGLCapabilities, bindingStates: WebGLBindingStates, clipping: WebGLClipping) {
+	constructor(
+		renderer: WebGLRenderer,
+		cubemaps: WebGLCubeMaps,
+		extensions: WebGLExtensions,
+		capabilities: WebGLCapabilities,
+		bindingStates: WebGLBindingStates,
+		clipping: WebGLClipping
+	) {
 		this._renderer = renderer;
 		this._cubemaps = cubemaps;
 		this._extensions = extensions;
@@ -138,36 +170,96 @@ class WebGLPrograms {
 	}
 
 	shaderIDs = {
-		'MeshDepthMaterial': 'depth',
-		'MeshDistanceMaterial': 'distanceRGBA',
-		'MeshNormalMaterial': 'normal',
-		'MeshBasicMaterial': 'basic',
-		'MeshLambertMaterial': 'lambert',
-		'MeshPhongMaterial': 'phong',
-		'MeshToonMaterial': 'toon',
-		'MeshStandardMaterial': 'physical',
-		'MeshPhysicalMaterial': 'physical',
-		'MeshMatcapMaterial': 'matcap',
-		'LineBasicMaterial': 'basic',
-		'LineDashedMaterial': 'dashed',
-		'PointsMaterial': 'points',
-		'ShadowMaterial': 'shadow',
-		'SpriteMaterial': 'sprite',
+		MeshDepthMaterial: "depth",
+		MeshDistanceMaterial: "distanceRGBA",
+		MeshNormalMaterial: "normal",
+		MeshBasicMaterial: "basic",
+		MeshLambertMaterial: "lambert",
+		MeshPhongMaterial: "phong",
+		MeshToonMaterial: "toon",
+		MeshStandardMaterial: "physical",
+		MeshPhysicalMaterial: "physical",
+		MeshMatcapMaterial: "matcap",
+		LineBasicMaterial: "basic",
+		LineDashedMaterial: "dashed",
+		PointsMaterial: "points",
+		ShadowMaterial: "shadow",
+		SpriteMaterial: "sprite",
 	};
 
 	parameterNames = [
-		'precision', 'isWebGL2', 'supportsVertexTextures', 'outputEncoding', 'instancing', 'instancingColor', 'map',
-		'mapEncoding', 'matcap', 'matcapEncoding', 'envMap', 'envMapMode', 'envMapEncoding', 'envMapCubeUV', 'lightMap',
-		'lightMapEncoding', 'aoMap', 'emissiveMap', 'emissiveMapEncoding', 'bumpMap', 'normalMap', 'objectSpaceNormalMap',
-		'tangentSpaceNormalMap', 'clearcoatMap', 'clearcoatRoughnessMap', 'clearcoatNormalMap', 'displacementMap',
-		'specularMap', 'roughnessMap', 'metalnessMap', 'gradientMap', 'alphaMap', 'combine',
-		'vertexColors', 'vertexTangents', 'vertexUvs', 'uvsVertexOnly', 'fog', 'useFog', 'fogExp2', 'flatShading',
-		'sizeAttenuation', 'logarithmicDepthBuffer', 'skinning', 'maxBones', 'useVertexTexture', 'morphTargets',
-		'morphNormals', 'maxMorphTargets', 'maxMorphNormals', 'premultipliedAlpha', 'numDirLights', 'numPointLights',
-		'numSpotLights', 'numHemiLights', 'numRectAreaLights', 'numDirLightShadows', 'numPointLightShadows',
-		'numSpotLightShadows', 'shadowMapEnabled', 'shadowMapType', 'toneMapping', 'physicallyCorrectLights',
-		'alphaTest', 'doubleSided', 'flipSided', 'numClippingPlanes', 'numClipIntersection', 'depthPacking', 'dithering',
-		'sheen', 'transmissionMap',
+		"precision",
+		"isWebGL2",
+		"supportsVertexTextures",
+		"outputEncoding",
+		"instancing",
+		"instancingColor",
+		"map",
+		"mapEncoding",
+		"matcap",
+		"matcapEncoding",
+		"envMap",
+		"envMapMode",
+		"envMapEncoding",
+		"envMapCubeUV",
+		"lightMap",
+		"lightMapEncoding",
+		"aoMap",
+		"emissiveMap",
+		"emissiveMapEncoding",
+		"bumpMap",
+		"normalMap",
+		"objectSpaceNormalMap",
+		"tangentSpaceNormalMap",
+		"clearcoatMap",
+		"clearcoatRoughnessMap",
+		"clearcoatNormalMap",
+		"displacementMap",
+		"specularMap",
+		"roughnessMap",
+		"metalnessMap",
+		"gradientMap",
+		"alphaMap",
+		"combine",
+		"vertexColors",
+		"vertexTangents",
+		"vertexUvs",
+		"uvsVertexOnly",
+		"fog",
+		"useFog",
+		"fogExp2",
+		"flatShading",
+		"sizeAttenuation",
+		"logarithmicDepthBuffer",
+		"skinning",
+		"maxBones",
+		"useVertexTexture",
+		"morphTargets",
+		"morphNormals",
+		"maxMorphTargets",
+		"maxMorphNormals",
+		"premultipliedAlpha",
+		"numDirLights",
+		"numPointLights",
+		"numSpotLights",
+		"numHemiLights",
+		"numRectAreaLights",
+		"numDirLightShadows",
+		"numPointLightShadows",
+		"numSpotLightShadows",
+		"shadowMapEnabled",
+		"shadowMapType",
+		"toneMapping",
+		"physicallyCorrectLights",
+		"alphaTest",
+		"doubleSided",
+		"flipSided",
+		"numClippingPlanes",
+		"numClipIntersection",
+		"depthPacking",
+		"dithering",
+		"sheen",
+		"transmissionMap",
 	];
 
 	getMaxBones(object: Object3D) {
@@ -190,7 +282,13 @@ class WebGLPrograms {
 			const maxBones = Math.min(nVertexMatrices, bones.length);
 
 			if (maxBones < bones.length) {
-				console.warn('THREE.WebGLRenderer: Skeleton has ' + bones.length + ' bones. This GPU supports ' + maxBones + '.');
+				console.warn(
+					"THREE.WebGLRenderer: Skeleton has " +
+						bones.length +
+						" bones. This GPU supports " +
+						maxBones +
+						"."
+				);
 				return 0;
 			}
 
@@ -204,7 +302,9 @@ class WebGLPrograms {
 		if (map && map.isTexture) {
 			encoding = map.encoding;
 		} else if (map && map instanceof WebGLRenderTarget) {
-			console.warn('THREE.WebGLPrograms.getTextureEncodingFromMap: don\'t use render targets as textures. Use their .texture property instead.');
+			console.warn(
+				"THREE.WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead."
+			);
 			encoding = map.texture.encoding;
 		} else {
 			encoding = LinearEncoding;
@@ -213,9 +313,17 @@ class WebGLPrograms {
 		return encoding;
 	}
 
-	getParameters(material: Material, lights: WebGLLights['state'], shadows: ShadowMaterial[], scene: Scene, object: Object3D): WebGlProgramsParameters {
+	getParameters(
+		material: Material,
+		lights: WebGLLights["state"],
+		shadows: ShadowMaterial[],
+		scene: Scene,
+		object: Object3D
+	): WebGlProgramsParameters {
 		const fog = scene.fog;
-		const environment = material.isMeshStandardMaterial ? scene.environment : null;
+		const environment = material.isMeshStandardMaterial
+			? scene.environment
+			: null;
 
 		const envMap = this._cubemaps.get(material.envMap || environment);
 
@@ -233,7 +341,13 @@ class WebGLPrograms {
 			this.precision = this._capabilities.getMaxPrecision(material.precision);
 
 			if (this.precision !== material.precision) {
-				console.warn('THREE.WebGLProgram.getParameters:', material.precision, 'not supported, using', this.precision, 'instead.');
+				console.warn(
+					"THREE.WebGLProgram.getParameters:",
+					material.precision,
+					"not supported, using",
+					this.precision,
+					"instead."
+				);
 			}
 		}
 
@@ -257,7 +371,6 @@ class WebGLPrograms {
 		 * @public
 		 */
 		return {
-
 			isWebGL2: this.isWebGL2,
 
 			shaderID: shaderID,
@@ -276,7 +389,10 @@ class WebGLPrograms {
 			instancingColor: objInstanced && object.instanceColor !== null,
 
 			supportsVertexTextures: this.vertexTextures,
-			outputEncoding: (currentRenderTarget !== null) ? this.getTextureEncodingFromMap(currentRenderTarget.texture) : this._renderer.outputEncoding,
+			outputEncoding:
+				currentRenderTarget !== null
+					? this.getTextureEncodingFromMap(currentRenderTarget.texture)
+					: this._renderer.outputEncoding,
 			map: !!material.map,
 			mapEncoding: this.getTextureEncodingFromMap(material.map),
 			matcap: !!material.matcap,
@@ -284,7 +400,10 @@ class WebGLPrograms {
 			envMap: !!envMap,
 			envMapMode: envMap && envMap.mapping,
 			envMapEncoding: this.getTextureEncodingFromMap(envMap),
-			envMapCubeUV: (!!envMap) && ((envMap.mapping === CubeUVReflectionMapping) || (envMap.mapping === CubeUVRefractionMapping)),
+			envMapCubeUV:
+				!!envMap &&
+				(envMap.mapping === CubeUVReflectionMapping ||
+					envMap.mapping === CubeUVRefractionMapping),
 			lightMap: !!material.lightMap,
 			lightMapEncoding: this.getTextureEncodingFromMap(material.lightMap),
 			aoMap: !!material.aoMap,
@@ -311,17 +430,41 @@ class WebGLPrograms {
 
 			combine: material.combine,
 
-			vertexTangents: (material.normalMap && meshStdMaterial.vertexTangents),
+			vertexTangents: material.normalMap && meshStdMaterial.vertexTangents,
 			vertexColors: material.vertexColors,
 
-			vertexUvs: !!material.map || !!material.bumpMap || !!material.normalMap || !!material.specularMap || !!material.alphaMap || !!material.emissiveMap || !!material.roughnessMap || !!material.metalnessMap || !!material.clearcoatMap || !!material.clearcoatRoughnessMap || !!material.clearcoatNormalMap || !!material.displacementMap || !!meshPhysMaterial.
-				transmissionMap,
+			vertexUvs:
+				!!material.map ||
+				!!material.bumpMap ||
+				!!material.normalMap ||
+				!!material.specularMap ||
+				!!material.alphaMap ||
+				!!material.emissiveMap ||
+				!!material.roughnessMap ||
+				!!material.metalnessMap ||
+				!!material.clearcoatMap ||
+				!!material.clearcoatRoughnessMap ||
+				!!material.clearcoatNormalMap ||
+				!!material.displacementMap ||
+				!!meshPhysMaterial.transmissionMap,
 
-			uvsVertexOnly: !(!!material.map || !!material.bumpMap || !!material.normalMap || !!material.specularMap || !!material.alphaMap || !!material.emissiveMap || !!material.roughnessMap || !!material.metalnessMap || !!material.clearcoatNormalMap || !!meshPhysMaterial.transmissionMap) && !!material.displacementMap,
+			uvsVertexOnly:
+				!(
+					!!material.map ||
+					!!material.bumpMap ||
+					!!material.normalMap ||
+					!!material.specularMap ||
+					!!material.alphaMap ||
+					!!material.emissiveMap ||
+					!!material.roughnessMap ||
+					!!material.metalnessMap ||
+					!!material.clearcoatNormalMap ||
+					!!meshPhysMaterial.transmissionMap
+				) && !!material.displacementMap,
 
 			fog: !!fog,
 			useFog: material.fog,
-			fogExp2: (fog && fog instanceof FogExp2),
+			fogExp2: fog && fog instanceof FogExp2,
 
 			flatShading: !!material.flatShading,
 
@@ -355,7 +498,9 @@ class WebGLPrograms {
 			shadowMapEnabled: this._renderer.shadowMap.enabled && shadows.length > 0,
 			shadowMapType: this._renderer.shadowMap.type,
 
-			toneMapping: material.toneMapped ? this._renderer.toneMapping : NoToneMapping,
+			toneMapping: material.toneMapped
+				? this._renderer.toneMapping
+				: NoToneMapping,
 			physicallyCorrectLights: this._renderer.physicallyCorrectLights,
 
 			premultipliedAlpha: material.premultipliedAlpha,
@@ -364,18 +509,26 @@ class WebGLPrograms {
 			doubleSided: material.side === DoubleSide,
 			flipSided: material.side === BackSide,
 
-			depthPacking: (material instanceof MeshDepthMaterial) ? material.depthPacking : false,
+			depthPacking:
+				material instanceof MeshDepthMaterial ? material.depthPacking : false,
 
 			index0AttributeName: shaderMaterial.index0AttributeName,
 
-			extensionDerivatives: shaderMaterial.extensions && shaderMaterial.extensions.derivatives,
-			extensionFragDepth: shaderMaterial.extensions && shaderMaterial.extensions.fragDepth,
-			extensionDrawBuffers: shaderMaterial.extensions && shaderMaterial.extensions.drawBuffers,
-			extensionShaderTextureLOD: shaderMaterial.extensions && shaderMaterial.extensions.shaderTextureLOD,
+			extensionDerivatives:
+				shaderMaterial.extensions && shaderMaterial.extensions.derivatives,
+			extensionFragDepth:
+				shaderMaterial.extensions && shaderMaterial.extensions.fragDepth,
+			extensionDrawBuffers:
+				shaderMaterial.extensions && shaderMaterial.extensions.drawBuffers,
+			extensionShaderTextureLOD:
+				shaderMaterial.extensions && shaderMaterial.extensions.shaderTextureLOD,
 
-			rendererExtensionFragDepth: this.isWebGL2 || this._extensions.has('EXT_frag_depth'),
-			rendererExtensionDrawBuffers: this.isWebGL2 || this._extensions.has('WEBGL_draw_buffers'),
-			rendererExtensionShaderTextureLod: this.isWebGL2 || this._extensions.has('EXT_shader_texture_lod'),
+			rendererExtensionFragDepth:
+				this.isWebGL2 || this._extensions.has("EXT_frag_depth"),
+			rendererExtensionDrawBuffers:
+				this.isWebGL2 || this._extensions.has("WEBGL_draw_buffers"),
+			rendererExtensionShaderTextureLod:
+				this.isWebGL2 || this._extensions.has("EXT_shader_texture_lod"),
 
 			customProgramCacheKey: material.customProgramCacheKey(),
 
@@ -401,9 +554,7 @@ class WebGLPrograms {
 		}
 
 		if (parameters.isRawShaderMaterial === false) {
-			for (let i = 0;
-				i < this.parameterNames.length;
-				i++) {
+			for (let i = 0; i < this.parameterNames.length; i++) {
 				array.push(parameters[this.parameterNames[i]]);
 			}
 
@@ -434,9 +585,7 @@ class WebGLPrograms {
 		let program;
 
 		// Check if code has been already compiled
-		for (let p = 0, pl = this.programs.length;
-			p < pl;
-			p++) {
+		for (let p = 0, pl = this.programs.length; p < pl; p++) {
 			const preexistingProgram = this.programs[p];
 
 			if (preexistingProgram.cacheKey === cacheKey) {
@@ -448,7 +597,12 @@ class WebGLPrograms {
 		}
 
 		if (program === undefined) {
-			program = new WebGLProgram(this._renderer, cacheKey, parameters, this._bindingStates);
+			program = new WebGLProgram(
+				this._renderer,
+				cacheKey,
+				parameters,
+				this._bindingStates
+			);
 			this.programs.push(program);
 		}
 
@@ -467,6 +621,5 @@ class WebGLPrograms {
 		}
 	}
 }
-
 
 export { WebGLPrograms };

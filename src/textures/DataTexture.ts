@@ -1,11 +1,35 @@
-import { Texture } from './Texture';
-import { NearestFilter } from '../';
+import { Texture } from "./Texture";
+import { NearestFilter } from "../";
 
 class DataTexture extends Texture {
 	isDataTexture: boolean;
 
-	constructor( data?, width?, height?, format?, type?, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, anisotropy?, encoding? ) {
-		super( null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding );
+	constructor(
+		data?,
+		width?,
+		height?,
+		format?,
+		type?,
+		mapping?,
+		wrapS?,
+		wrapT?,
+		magFilter?,
+		minFilter?,
+		anisotropy?,
+		encoding?
+	) {
+		super(
+			null,
+			mapping,
+			wrapS,
+			wrapT,
+			magFilter,
+			minFilter,
+			format,
+			type,
+			anisotropy,
+			encoding
+		);
 
 		this.isDataTexture = true;
 

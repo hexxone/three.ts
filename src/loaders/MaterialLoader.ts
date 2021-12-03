@@ -1,7 +1,7 @@
-import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4 } from '../';
-import { FileLoader } from './FileLoader';
-import { Loader } from './Loader';
-import * as Materials from '../materials/';
+import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4 } from "../";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
+import * as Materials from "../materials/";
 
 class MaterialLoader extends Loader {
 	textures: {};
@@ -18,19 +18,24 @@ class MaterialLoader extends Loader {
 		loader.setPath(scope.path);
 		loader.setRequestHeader(scope.requestHeader);
 		loader.setWithCredentials(scope.withCredentials);
-		loader.load(url, function (text) {
-			try {
-				onLoad(scope.parse(JSON.parse(text)));
-			} catch (e) {
-				if (onError) {
-					onError(e);
-				} else {
-					console.error(e);
-				}
+		loader.load(
+			url,
+			function (text) {
+				try {
+					onLoad(scope.parse(JSON.parse(text)));
+				} catch (e) {
+					if (onError) {
+						onError(e);
+					} else {
+						console.error(e);
+					}
 
-				scope.manager.itemError(url);
-			}
-		}, onProgress, onError);
+					scope.manager.itemError(url);
+				}
+			},
+			onProgress,
+			onError
+		);
 	}
 
 	parse(json) {
@@ -38,7 +43,7 @@ class MaterialLoader extends Loader {
 
 		function getTexture(name) {
 			if (textures[name] === undefined) {
-				console.warn('THREE.MaterialLoader: Undefined texture', name);
+				console.warn("THREE.MaterialLoader: Undefined texture", name);
 			}
 
 			return textures[name];
@@ -48,15 +53,20 @@ class MaterialLoader extends Loader {
 
 		if (json.uuid !== undefined) material.uuid = json.uuid;
 		if (json.name !== undefined) material.name = json.name;
-		if (json.color !== undefined && material.color !== undefined) material.color.setHex(json.color);
+		if (json.color !== undefined && material.color !== undefined)
+			material.color.setHex(json.color);
 		if (json.roughness !== undefined) material.roughness = json.roughness;
 		if (json.metalness !== undefined) material.metalness = json.metalness;
-		if (json.sheen !== undefined) material.sheen = new Color(0).setHex(json.sheen);
-		if (json.emissive !== undefined && material.emissive !== undefined) material.emissive.setHex(json.emissive);
-		if (json.specular !== undefined && material.specular !== undefined) material.specular.setHex(json.specular);
+		if (json.sheen !== undefined)
+			material.sheen = new Color(0).setHex(json.sheen);
+		if (json.emissive !== undefined && material.emissive !== undefined)
+			material.emissive.setHex(json.emissive);
+		if (json.specular !== undefined && material.specular !== undefined)
+			material.specular.setHex(json.specular);
 		if (json.shininess !== undefined) material.shininess = json.shininess;
 		if (json.clearcoat !== undefined) material.clearcoat = json.clearcoat;
-		if (json.clearcoatRoughness !== undefined) material.clearcoatRoughness = json.clearcoatRoughness;
+		if (json.clearcoatRoughness !== undefined)
+			material.clearcoatRoughness = json.clearcoatRoughness;
 		if (json.fog !== undefined) material.fog = json.fog;
 		if (json.flatShading !== undefined) material.flatShading = json.flatShading;
 		if (json.blending !== undefined) material.blending = json.blending;
@@ -69,19 +79,27 @@ class MaterialLoader extends Loader {
 		if (json.depthWrite !== undefined) material.depthWrite = json.depthWrite;
 		if (json.colorWrite !== undefined) material.colorWrite = json.colorWrite;
 
-		if (json.stencilWrite !== undefined) material.stencilWrite = json.stencilWrite;
-		if (json.stencilWriteMask !== undefined) material.stencilWriteMask = json.stencilWriteMask;
+		if (json.stencilWrite !== undefined)
+			material.stencilWrite = json.stencilWrite;
+		if (json.stencilWriteMask !== undefined)
+			material.stencilWriteMask = json.stencilWriteMask;
 		if (json.stencilFunc !== undefined) material.stencilFunc = json.stencilFunc;
 		if (json.stencilRef !== undefined) material.stencilRef = json.stencilRef;
-		if (json.stencilFuncMask !== undefined) material.stencilFuncMask = json.stencilFuncMask;
+		if (json.stencilFuncMask !== undefined)
+			material.stencilFuncMask = json.stencilFuncMask;
 		if (json.stencilFail !== undefined) material.stencilFail = json.stencilFail;
-		if (json.stencilZFail !== undefined) material.stencilZFail = json.stencilZFail;
-		if (json.stencilZPass !== undefined) material.stencilZPass = json.stencilZPass;
+		if (json.stencilZFail !== undefined)
+			material.stencilZFail = json.stencilZFail;
+		if (json.stencilZPass !== undefined)
+			material.stencilZPass = json.stencilZPass;
 
 		if (json.wireframe !== undefined) material.wireframe = json.wireframe;
-		if (json.wireframeLinewidth !== undefined) material.wireframeLinewidth = json.wireframeLinewidth;
-		if (json.wireframeLinecap !== undefined) material.wireframeLinecap = json.wireframeLinecap;
-		if (json.wireframeLinejoin !== undefined) material.wireframeLinejoin = json.wireframeLinejoin;
+		if (json.wireframeLinewidth !== undefined)
+			material.wireframeLinewidth = json.wireframeLinewidth;
+		if (json.wireframeLinecap !== undefined)
+			material.wireframeLinecap = json.wireframeLinecap;
+		if (json.wireframeLinejoin !== undefined)
+			material.wireframeLinejoin = json.wireframeLinejoin;
 
 		if (json.rotation !== undefined) material.rotation = json.rotation;
 
@@ -90,16 +108,22 @@ class MaterialLoader extends Loader {
 		if (json.gapSize !== undefined) material.gapSize = json.gapSize;
 		if (json.scale !== undefined) material.scale = json.scale;
 
-		if (json.polygonOffset !== undefined) material.polygonOffset = json.polygonOffset;
-		if (json.polygonOffsetFactor !== undefined) material.polygonOffsetFactor = json.polygonOffsetFactor;
-		if (json.polygonOffsetUnits !== undefined) material.polygonOffsetUnits = json.polygonOffsetUnits;
+		if (json.polygonOffset !== undefined)
+			material.polygonOffset = json.polygonOffset;
+		if (json.polygonOffsetFactor !== undefined)
+			material.polygonOffsetFactor = json.polygonOffsetFactor;
+		if (json.polygonOffsetUnits !== undefined)
+			material.polygonOffsetUnits = json.polygonOffsetUnits;
 
 		if (json.skinning !== undefined) material.skinning = json.skinning;
-		if (json.morphTargets !== undefined) material.morphTargets = json.morphTargets;
-		if (json.morphNormals !== undefined) material.morphNormals = json.morphNormals;
+		if (json.morphTargets !== undefined)
+			material.morphTargets = json.morphTargets;
+		if (json.morphNormals !== undefined)
+			material.morphNormals = json.morphNormals;
 		if (json.dithering !== undefined) material.dithering = json.dithering;
 
-		if (json.vertexTangents !== undefined) material.vertexTangents = json.vertexTangents;
+		if (json.vertexTangents !== undefined)
+			material.vertexTangents = json.vertexTangents;
 
 		if (json.visible !== undefined) material.visible = json.visible;
 
@@ -108,8 +132,8 @@ class MaterialLoader extends Loader {
 		if (json.userData !== undefined) material.userData = json.userData;
 
 		if (json.vertexColors !== undefined) {
-			if (typeof json.vertexColors === 'number') {
-				material.vertexColors = (json.vertexColors > 0) ? true : false;
+			if (typeof json.vertexColors === "number") {
+				material.vertexColors = json.vertexColors > 0 ? true : false;
 			} else {
 				material.vertexColors = json.vertexColors;
 			}
@@ -124,32 +148,44 @@ class MaterialLoader extends Loader {
 				material.uniforms[name] = {};
 
 				switch (uniform.type) {
-					case 't':
+					case "t":
 						material.uniforms[name].value = getTexture(uniform.value);
 						break;
 
-					case 'c':
-						material.uniforms[name].value = new Color(0, 0, 0).setHex(uniform.value);
+					case "c":
+						material.uniforms[name].value = new Color(0, 0, 0).setHex(
+							uniform.value
+						);
 						break;
 
-					case 'v2':
-						material.uniforms[name].value = new Vector2().fromArray(uniform.value);
+					case "v2":
+						material.uniforms[name].value = new Vector2().fromArray(
+							uniform.value
+						);
 						break;
 
-					case 'v3':
-						material.uniforms[name].value = new Vector3().fromArray(uniform.value);
+					case "v3":
+						material.uniforms[name].value = new Vector3().fromArray(
+							uniform.value
+						);
 						break;
 
-					case 'v4':
-						material.uniforms[name].value = new Vector4().fromArray(uniform.value);
+					case "v4":
+						material.uniforms[name].value = new Vector4().fromArray(
+							uniform.value
+						);
 						break;
 
-					case 'm3':
-						material.uniforms[name].value = new Matrix3().fromArray(uniform.value);
+					case "m3":
+						material.uniforms[name].value = new Matrix3().fromArray(
+							uniform.value
+						);
 						break;
 
-					case 'm4':
-						material.uniforms[name].value = new Matrix4().fromArray(uniform.value);
+					case "m4":
+						material.uniforms[name].value = new Matrix4().fromArray(
+							uniform.value
+						);
 						break;
 
 					default:
@@ -159,8 +195,10 @@ class MaterialLoader extends Loader {
 		}
 
 		if (json.defines !== undefined) material.defines = json.defines;
-		if (json.vertexShader !== undefined) material.vertexShader = json.vertexShader;
-		if (json.fragmentShader !== undefined) material.fragmentShader = json.fragmentShader;
+		if (json.vertexShader !== undefined)
+			material.vertexShader = json.vertexShader;
+		if (json.fragmentShader !== undefined)
+			material.fragmentShader = json.fragmentShader;
 
 		if (json.extensions !== undefined) {
 			for (const key in json.extensions) {
@@ -175,20 +213,24 @@ class MaterialLoader extends Loader {
 		// for PointsMaterial
 
 		if (json.size !== undefined) material.size = json.size;
-		if (json.sizeAttenuation !== undefined) material.sizeAttenuation = json.sizeAttenuation;
+		if (json.sizeAttenuation !== undefined)
+			material.sizeAttenuation = json.sizeAttenuation;
 
 		// maps
 
 		if (json.map !== undefined) material.map = getTexture(json.map);
 		if (json.matcap !== undefined) material.matcap = getTexture(json.matcap);
 
-		if (json.alphaMap !== undefined) material.alphaMap = getTexture(json.alphaMap);
+		if (json.alphaMap !== undefined)
+			material.alphaMap = getTexture(json.alphaMap);
 
 		if (json.bumpMap !== undefined) material.bumpMap = getTexture(json.bumpMap);
 		if (json.bumpScale !== undefined) material.bumpScale = json.bumpScale;
 
-		if (json.normalMap !== undefined) material.normalMap = getTexture(json.normalMap);
-		if (json.normalMapType !== undefined) material.normalMapType = json.normalMapType;
+		if (json.normalMap !== undefined)
+			material.normalMap = getTexture(json.normalMap);
+		if (json.normalMapType !== undefined)
+			material.normalMapType = json.normalMapType;
 		if (json.normalScale !== undefined) {
 			let normalScale = json.normalScale;
 
@@ -201,39 +243,62 @@ class MaterialLoader extends Loader {
 			material.normalScale = new Vector2().fromArray(normalScale);
 		}
 
-		if (json.displacementMap !== undefined) material.displacementMap = getTexture(json.displacementMap);
-		if (json.displacementScale !== undefined) material.displacementScale = json.displacementScale;
-		if (json.displacementBias !== undefined) material.displacementBias = json.displacementBias;
+		if (json.displacementMap !== undefined)
+			material.displacementMap = getTexture(json.displacementMap);
+		if (json.displacementScale !== undefined)
+			material.displacementScale = json.displacementScale;
+		if (json.displacementBias !== undefined)
+			material.displacementBias = json.displacementBias;
 
-		if (json.roughnessMap !== undefined) material.roughnessMap = getTexture(json.roughnessMap);
-		if (json.metalnessMap !== undefined) material.metalnessMap = getTexture(json.metalnessMap);
+		if (json.roughnessMap !== undefined)
+			material.roughnessMap = getTexture(json.roughnessMap);
+		if (json.metalnessMap !== undefined)
+			material.metalnessMap = getTexture(json.metalnessMap);
 
-		if (json.emissiveMap !== undefined) material.emissiveMap = getTexture(json.emissiveMap);
-		if (json.emissiveIntensity !== undefined) material.emissiveIntensity = json.emissiveIntensity;
+		if (json.emissiveMap !== undefined)
+			material.emissiveMap = getTexture(json.emissiveMap);
+		if (json.emissiveIntensity !== undefined)
+			material.emissiveIntensity = json.emissiveIntensity;
 
-		if (json.specularMap !== undefined) material.specularMap = getTexture(json.specularMap);
+		if (json.specularMap !== undefined)
+			material.specularMap = getTexture(json.specularMap);
 
 		if (json.envMap !== undefined) material.envMap = getTexture(json.envMap);
-		if (json.envMapIntensity !== undefined) material.envMapIntensity = json.envMapIntensity;
+		if (json.envMapIntensity !== undefined)
+			material.envMapIntensity = json.envMapIntensity;
 
-		if (json.reflectivity !== undefined) material.reflectivity = json.reflectivity;
-		if (json.refractionRatio !== undefined) material.refractionRatio = json.refractionRatio;
+		if (json.reflectivity !== undefined)
+			material.reflectivity = json.reflectivity;
+		if (json.refractionRatio !== undefined)
+			material.refractionRatio = json.refractionRatio;
 
-		if (json.lightMap !== undefined) material.lightMap = getTexture(json.lightMap);
-		if (json.lightMapIntensity !== undefined) material.lightMapIntensity = json.lightMapIntensity;
+		if (json.lightMap !== undefined)
+			material.lightMap = getTexture(json.lightMap);
+		if (json.lightMapIntensity !== undefined)
+			material.lightMapIntensity = json.lightMapIntensity;
 
 		if (json.aoMap !== undefined) material.aoMap = getTexture(json.aoMap);
-		if (json.aoMapIntensity !== undefined) material.aoMapIntensity = json.aoMapIntensity;
+		if (json.aoMapIntensity !== undefined)
+			material.aoMapIntensity = json.aoMapIntensity;
 
-		if (json.gradientMap !== undefined) material.gradientMap = getTexture(json.gradientMap);
+		if (json.gradientMap !== undefined)
+			material.gradientMap = getTexture(json.gradientMap);
 
-		if (json.clearcoatMap !== undefined) material.clearcoatMap = getTexture(json.clearcoatMap);
-		if (json.clearcoatRoughnessMap !== undefined) material.clearcoatRoughnessMap = getTexture(json.clearcoatRoughnessMap);
-		if (json.clearcoatNormalMap !== undefined) material.clearcoatNormalMap = getTexture(json.clearcoatNormalMap);
-		if (json.clearcoatNormalScale !== undefined) material.clearcoatNormalScale = new Vector2().fromArray(json.clearcoatNormalScale);
+		if (json.clearcoatMap !== undefined)
+			material.clearcoatMap = getTexture(json.clearcoatMap);
+		if (json.clearcoatRoughnessMap !== undefined)
+			material.clearcoatRoughnessMap = getTexture(json.clearcoatRoughnessMap);
+		if (json.clearcoatNormalMap !== undefined)
+			material.clearcoatNormalMap = getTexture(json.clearcoatNormalMap);
+		if (json.clearcoatNormalScale !== undefined)
+			material.clearcoatNormalScale = new Vector2().fromArray(
+				json.clearcoatNormalScale
+			);
 
-		if (json.transmission !== undefined) material.transmission = json.transmission;
-		if (json.transmissionMap !== undefined) material.transmissionMap = getTexture(json.transmissionMap);
+		if (json.transmission !== undefined)
+			material.transmission = json.transmission;
+		if (json.transmissionMap !== undefined)
+			material.transmissionMap = getTexture(json.transmissionMap);
 
 		return material;
 	}

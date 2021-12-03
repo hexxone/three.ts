@@ -1,6 +1,15 @@
-
-import { Euler, Material, MathUtils, Matrix3, Matrix4, Quaternion, Skeleton, Vector3, EventObject } from '../';
-import { BufferGeometry, EventDispatcher, Layers, Raycaster } from '.';
+import {
+	Euler,
+	Material,
+	MathUtils,
+	Matrix3,
+	Matrix4,
+	Quaternion,
+	Skeleton,
+	Vector3,
+	EventObject,
+} from "../";
+import { BufferGeometry, EventDispatcher, Layers, Raycaster } from ".";
 
 let _object3DId = 0;
 
@@ -17,8 +26,8 @@ const _xAxis = new Vector3(1, 0, 0);
 const _yAxis = new Vector3(0, 1, 0);
 const _zAxis = new Vector3(0, 0, 1);
 
-const _addedEvent = { type: 'added' } as EventObject;
-const _removedEvent = { type: 'removed' } as EventObject;
+const _addedEvent = { type: "added" } as EventObject;
+const _removedEvent = { type: "removed" } as EventObject;
 
 export const DefaultMatrixAutoUpdate = true;
 export const DefaultUp = new Vector3(0, 1, 0);
@@ -90,14 +99,14 @@ export class Object3D extends EventDispatcher {
 	constructor() {
 		super();
 
-		Object.defineProperty(this, 'id', { value: _object3DId++ });
+		Object.defineProperty(this, "id", { value: _object3DId++ });
 
 		this.uuid = MathUtils.generateUUID();
 
 		this.matrixAutoUpdate = DefaultMatrixAutoUpdate;
 
-		this.name = '';
-		this.type = 'Object3D';
+		this.name = "";
+		this.type = "Object3D";
 
 		this.parent = null;
 		this.children = [];
@@ -123,11 +132,11 @@ export class Object3D extends EventDispatcher {
 		this.rotation.setFromQuaternion(this.quaternion, null, false);
 	}
 
-	onBeforeRender(...args) { }
+	onBeforeRender(...args) {}
 
-	onAfterRender(...args) { }
+	onAfterRender(...args) {}
 
-	update(...args) { }
+	update(...args) {}
 
 	applyMatrix4(matrix: Matrix4) {
 		if (this.matrixAutoUpdate) this.updateMatrix();
@@ -273,7 +282,10 @@ export class Object3D extends EventDispatcher {
 		}
 
 		if (object === this) {
-			console.error('THREE.Object3D.add: object can\'t be added as a child of itself.', object);
+			console.error(
+				"THREE.Object3D.add: object can't be added as a child of itself.",
+				object
+			);
 			return this;
 		}
 
@@ -287,7 +299,10 @@ export class Object3D extends EventDispatcher {
 
 			object.dispatchEvent(_addedEvent);
 		} else {
-			console.error('THREE.Object3D.add: object not an instance of THREE.Object3D.', object);
+			console.error(
+				"THREE.Object3D.add: object not an instance of THREE.Object3D.",
+				object
+			);
 		}
 
 		return this;
@@ -306,7 +321,7 @@ export class Object3D extends EventDispatcher {
 
 		const index = this.children.indexOf(object);
 
-		if (index !== - 1) {
+		if (index !== -1) {
 			object.parent = null;
 			this.children.splice(index, 1);
 
@@ -353,11 +368,11 @@ export class Object3D extends EventDispatcher {
 	}
 
 	getObjectById(id) {
-		return this.getObjectByProperty('id', id);
+		return this.getObjectByProperty("id", id);
 	}
 
 	getObjectByName(name) {
-		return this.getObjectByProperty('name', name);
+		return this.getObjectByProperty("name", name);
 	}
 
 	getObjectByProperty(name, value) {
@@ -499,7 +514,7 @@ export class Object3D extends EventDispatcher {
 
 	toJSON(meta) {
 		// meta is a string when called from JSON.stringify
-		const isRootObject = (meta === undefined || typeof meta === 'string');
+		const isRootObject = meta === undefined || typeof meta === "string";
 
 		const output = {} as any;
 
@@ -520,8 +535,8 @@ export class Object3D extends EventDispatcher {
 
 			output.metadata = {
 				version: 4.5,
-				type: 'Object',
-				generator: 'Object3D.toJSON',
+				type: "Object",
+				generator: "Object3D.toJSON",
 			};
 		}
 
@@ -532,13 +547,13 @@ export class Object3D extends EventDispatcher {
 		object.uuid = this.uuid;
 		object.type = this.type;
 
-		if (this.name !== '') object.name = this.name;
+		if (this.name !== "") object.name = this.name;
 		if (this.castShadow === true) object.castShadow = true;
 		if (this.receiveShadow === true) object.receiveShadow = true;
 		if (this.visible === false) object.visible = false;
 		if (this.frustumCulled === false) object.frustumCulled = false;
 		if (this.renderOrder !== 0) object.renderOrder = this.renderOrder;
-		if (JSON.stringify(this.userData) !== '{}') object.userData = this.userData;
+		if (JSON.stringify(this.userData) !== "{}") object.userData = this.userData;
 
 		object.layers = this.layers.mask;
 		object.matrix = this.matrix.toArray();
@@ -548,7 +563,7 @@ export class Object3D extends EventDispatcher {
 		// object specific properties
 
 		if (this.isInstancedMesh) {
-			object.type = 'InstancedMesh';
+			object.type = "InstancedMesh";
 			object.count = this.count;
 			object.instanceMatrix = this.instanceMatrix.toJSON();
 		}
@@ -666,7 +681,6 @@ export class Object3D extends EventDispatcher {
 			return values;
 		}
 	}
-
 
 	clone(recursive?) {
 		return new Object3D().copy(this, recursive);

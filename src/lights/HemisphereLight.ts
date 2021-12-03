@@ -1,22 +1,22 @@
-import { Color, DefaultUp, Light } from '../';
+import { Color, DefaultUp, Light } from "../";
 
 class HemisphereLight extends Light {
-	constructor( skyColor, groundColor, intensity ) {
-		super( skyColor, intensity );
+	constructor(skyColor, groundColor, intensity) {
+		super(skyColor, intensity);
 
 		this.isHemisphereLight = true;
-		this.type = 'HemisphereLight';
+		this.type = "HemisphereLight";
 
-		this.position.copy( DefaultUp );
+		this.position.copy(DefaultUp);
 		this.updateMatrix();
 
-		this.groundColor = new Color( groundColor );
+		this.groundColor = new Color(groundColor);
 	}
 
-	copy( source: HemisphereLight ) {
-		super.copy( source );
+	copy(source: HemisphereLight) {
+		super.copy(source);
 
-		this.groundColor.copy( source.groundColor );
+		this.groundColor.copy(source.groundColor);
 
 		return this;
 	}

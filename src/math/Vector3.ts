@@ -1,7 +1,7 @@
-import { Camera, Cylindrical, Matrix3, Matrix4, Spherical } from '../';
-import { Euler } from './Euler';
-import { MathUtils } from './MathUtils';
-import { Quaternion } from './Quaternion';
+import { Camera, Cylindrical, Matrix3, Matrix4, Spherical } from "../";
+import { Euler } from "./Euler";
+import { MathUtils } from "./MathUtils";
+import { Quaternion } from "./Quaternion";
 
 class Vector3 {
 	x: number;
@@ -53,10 +53,17 @@ class Vector3 {
 
 	setComponent(index: number, value: number) {
 		switch (index) {
-			case 0: this.x = value; break;
-			case 1: this.y = value; break;
-			case 2: this.z = value; break;
-			default: throw new Error('index is out of range: ' + index);
+			case 0:
+				this.x = value;
+				break;
+			case 1:
+				this.y = value;
+				break;
+			case 2:
+				this.z = value;
+				break;
+			default:
+				throw new Error("index is out of range: " + index);
 		}
 
 		return this;
@@ -64,10 +71,14 @@ class Vector3 {
 
 	getComponent(index: number) {
 		switch (index) {
-			case 0: return this.x;
-			case 1: return this.y;
-			case 2: return this.z;
-			default: throw new Error('index is out of range: ' + index);
+			case 0:
+				return this.x;
+			case 1:
+				return this.y;
+			case 2:
+				return this.z;
+			default:
+				throw new Error("index is out of range: " + index);
 		}
 	}
 
@@ -85,7 +96,9 @@ class Vector3 {
 
 	add(v: Vector3, w?) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
+			);
 			return this.addVectors(v, w);
 		}
 
@@ -122,7 +135,9 @@ class Vector3 {
 
 	sub(v: Vector3, w?) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
+			);
 			return this.subVectors(v, w);
 		}
 
@@ -151,7 +166,9 @@ class Vector3 {
 
 	multiply(v: Vector3, w?) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead."
+			);
 			return this.multiplyVectors(v, w);
 		}
 
@@ -180,7 +197,9 @@ class Vector3 {
 
 	applyEuler(euler: Euler) {
 		if (!(euler && euler.isEuler)) {
-			console.error('THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order.');
+			console.error(
+				"THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order."
+			);
 		}
 
 		return this.applyQuaternion(_quaternion.setFromEuler(euler));
@@ -191,7 +210,9 @@ class Vector3 {
 	}
 
 	applyMatrix3(m: Matrix3) {
-		const x = this.x; const y = this.y; const z = this.z;
+		const x = this.x;
+		const y = this.y;
+		const z = this.z;
 		const e = m.elements;
 
 		this.x = e[0] * x + e[3] * y + e[6] * z;
@@ -206,7 +227,9 @@ class Vector3 {
 	}
 
 	applyMatrix4(m: Matrix4) {
-		const x = this.x; const y = this.y; const z = this.z;
+		const x = this.x;
+		const y = this.y;
+		const z = this.z;
 		const e = m.elements;
 
 		const w = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
@@ -219,38 +242,49 @@ class Vector3 {
 	}
 
 	applyQuaternion(q: Quaternion) {
-		const x = this.x; const y = this.y; const z = this.z;
-		const qx = q.x; const qy = q.y; const qz = q.z; const qw = q.w;
+		const x = this.x;
+		const y = this.y;
+		const z = this.z;
+		const qx = q.x;
+		const qy = q.y;
+		const qz = q.z;
+		const qw = q.w;
 
 		// calculate quat * vector
 
 		const ix = qw * x + qy * z - qz * y;
 		const iy = qw * y + qz * x - qx * z;
 		const iz = qw * z + qx * y - qy * x;
-		const iw = - qx * x - qy * y - qz * z;
+		const iw = -qx * x - qy * y - qz * z;
 
 		// calculate result * inverse quat
 
-		this.x = ix * qw + iw * - qx + iy * - qz - iz * - qy;
-		this.y = iy * qw + iw * - qy + iz * - qx - ix * - qz;
-		this.z = iz * qw + iw * - qz + ix * - qy - iy * - qx;
+		this.x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+		this.y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+		this.z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 
 		return this;
 	}
 
 	project(camera: Camera) {
-		return this.applyMatrix4(camera.matrixWorldInverse).applyMatrix4(camera.projectionMatrix);
+		return this.applyMatrix4(camera.matrixWorldInverse).applyMatrix4(
+			camera.projectionMatrix
+		);
 	}
 
 	unproject(camera: Camera) {
-		return this.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(camera.matrixWorld);
+		return this.applyMatrix4(camera.projectionMatrixInverse).applyMatrix4(
+			camera.matrixWorld
+		);
 	}
 
 	transformDirection(m: Matrix4) {
 		// input: THREE.Matrix4 affine matrix
 		// vector interpreted as a direction
 
-		const x = this.x; const y = this.y; const z = this.z;
+		const x = this.x;
+		const y = this.y;
+		const z = this.z;
 		const e = m.elements;
 
 		this.x = e[0] * x + e[4] * y + e[8] * z;
@@ -309,7 +343,9 @@ class Vector3 {
 	clampLength(min: number, max: number) {
 		const length = this.length();
 
-		return this.divideScalar(length || 1).multiplyScalar(Math.max(min, Math.min(max, length)));
+		return this.divideScalar(length || 1).multiplyScalar(
+			Math.max(min, Math.min(max, length))
+		);
 	}
 
 	floor() {
@@ -337,17 +373,17 @@ class Vector3 {
 	}
 
 	roundToZero() {
-		this.x = (this.x < 0) ? Math.ceil(this.x) : Math.floor(this.x);
-		this.y = (this.y < 0) ? Math.ceil(this.y) : Math.floor(this.y);
-		this.z = (this.z < 0) ? Math.ceil(this.z) : Math.floor(this.z);
+		this.x = this.x < 0 ? Math.ceil(this.x) : Math.floor(this.x);
+		this.y = this.y < 0 ? Math.ceil(this.y) : Math.floor(this.y);
+		this.z = this.z < 0 ? Math.ceil(this.z) : Math.floor(this.z);
 
 		return this;
 	}
 
 	negate() {
-		this.x = - this.x;
-		this.y = - this.y;
-		this.z = - this.z;
+		this.x = -this.x;
+		this.y = -this.y;
+		this.z = -this.z;
 
 		return this;
 	}
@@ -396,7 +432,9 @@ class Vector3 {
 
 	cross(v: Vector3, w?) {
 		if (w !== undefined) {
-			console.warn('THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead.');
+			console.warn(
+				"THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead."
+			);
 			return this.crossVectors(v, w);
 		}
 
@@ -404,8 +442,12 @@ class Vector3 {
 	}
 
 	crossVectors(a: Vector3, b: Vector3) {
-		const ax = a.x; const ay = a.y; const az = a.z;
-		const bx = b.x; const by = b.y; const bz = b.z;
+		const ax = a.x;
+		const ay = a.y;
+		const az = a.z;
+		const bx = b.x;
+		const by = b.y;
+		const bz = b.z;
 
 		this.x = ay * bz - az * by;
 		this.y = az * bx - ax * bz;
@@ -446,7 +488,7 @@ class Vector3 {
 
 		// clamp, to handle numerical problems
 
-		return Math.acos(MathUtils.clamp(theta, - 1, 1));
+		return Math.acos(MathUtils.clamp(theta, -1, 1));
 	}
 
 	distanceTo(v: Vector3) {
@@ -454,13 +496,17 @@ class Vector3 {
 	}
 
 	distanceToSquared(v: Vector3) {
-		const dx = this.x - v.x; const dy = this.y - v.y; const dz = this.z - v.z;
+		const dx = this.x - v.x;
+		const dy = this.y - v.y;
+		const dz = this.z - v.z;
 
 		return dx * dx + dy * dy + dz * dz;
 	}
 
 	manhattanDistanceTo(v: Vector3) {
-		return Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z);
+		return (
+			Math.abs(this.x - v.x) + Math.abs(this.y - v.y) + Math.abs(this.z - v.z)
+		);
 	}
 
 	setFromSpherical(s: Spherical) {
@@ -520,7 +566,7 @@ class Vector3 {
 	}
 
 	equals(v) {
-		return ((v.x === this.x) && (v.y === this.y) && (v.z === this.z));
+		return v.x === this.x && v.y === this.y && v.z === this.z;
 	}
 
 	fromArray(array: number[], offset = 0) {
@@ -541,7 +587,9 @@ class Vector3 {
 
 	fromBufferAttribute(attribute, index, offset?) {
 		if (offset !== undefined) {
-			console.warn('THREE.Vector3: offset has been removed from .fromBufferAttribute().');
+			console.warn(
+				"THREE.Vector3: offset has been removed from .fromBufferAttribute()."
+			);
 		}
 
 		this.x = attribute.getX(index);

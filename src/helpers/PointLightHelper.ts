@@ -1,27 +1,30 @@
-import { Mesh, MeshBasicMaterial, SphereGeometry } from '../';
+import { Mesh, MeshBasicMaterial, SphereGeometry } from "../";
 
 class PointLightHelper extends Mesh {
 	light: any;
 	color: any;
 
-	constructor( light, sphereSize, color ) {
-		const geometry = new SphereGeometry( sphereSize, 4, 2 );
-		const material = new MeshBasicMaterial( { wireframe: true, fog: false, toneMapped: false } );
+	constructor(light, sphereSize, color) {
+		const geometry = new SphereGeometry(sphereSize, 4, 2);
+		const material = new MeshBasicMaterial({
+			wireframe: true,
+			fog: false,
+			toneMapped: false,
+		});
 
-		super( geometry, material );
+		super(geometry, material);
 
 		this.light = light;
 		this.light.updateMatrixWorld();
 
 		this.color = color;
 
-		this.type = 'PointLightHelper';
+		this.type = "PointLightHelper";
 
 		this.matrix = this.light.matrixWorld;
 		this.matrixAutoUpdate = false;
 
 		this.update();
-
 
 		/*
 	// TODO: delete this comment?
@@ -53,10 +56,10 @@ class PointLightHelper extends Mesh {
 	}
 
 	update() {
-		if ( this.color !== undefined ) {
-			this.material.color.set( this.color );
+		if (this.color !== undefined) {
+			this.material.color.set(this.color);
 		} else {
-			this.material.color.copy( this.light.color );
+			this.material.color.copy(this.light.color);
 		}
 
 		/*
@@ -75,6 +78,5 @@ class PointLightHelper extends Mesh {
 		*/
 	}
 }
-
 
 export { PointLightHelper };

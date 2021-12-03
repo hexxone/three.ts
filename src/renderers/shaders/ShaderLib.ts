@@ -1,6 +1,6 @@
-import { ShaderChunk } from './ShaderChunk';
-import { mergeUniforms } from './UniformsUtils';
-import { Color, Matrix3, UniformsLib, Vector2, Vector3 } from '../../';
+import { ShaderChunk } from "./ShaderChunk";
+import { mergeUniforms } from "./UniformsUtils";
+import { Color, Matrix3, UniformsLib, Vector2, Vector3 } from "../../";
 
 /**
  * @public
@@ -30,9 +30,7 @@ const stdUnisMerged = mergeUniforms([
  * @public
  */
 const ShaderLib = {
-
 	basic: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.specularmap,
@@ -44,11 +42,9 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.meshbasic_vert,
 		fragmentShader: ShaderChunk.meshbasic_frag,
-
 	},
 
 	lambert: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.specularmap,
@@ -65,11 +61,9 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.meshlambert_vert,
 		fragmentShader: ShaderChunk.meshlambert_frag,
-
 	},
 
 	phong: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.specularmap,
@@ -91,20 +85,16 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.meshphong_vert,
 		fragmentShader: ShaderChunk.meshphong_frag,
-
 	},
 
 	standard: {
-
 		uniforms: stdUnisMerged,
 
 		vertexShader: ShaderChunk.meshphysical_vert,
 		fragmentShader: ShaderChunk.meshphysical_frag,
-
 	},
 
 	toon: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.aomap,
@@ -123,11 +113,9 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.meshtoon_vert,
 		fragmentShader: ShaderChunk.meshtoon_frag,
-
 	},
 
 	matcap: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.bumpmap,
@@ -141,23 +129,16 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.meshmatcap_vert,
 		fragmentShader: ShaderChunk.meshmatcap_frag,
-
 	},
 
 	points: {
-
-		uniforms: mergeUniforms([
-			UniformsLib.points,
-			UniformsLib.fog,
-		]),
+		uniforms: mergeUniforms([UniformsLib.points, UniformsLib.fog]),
 
 		vertexShader: ShaderChunk.points_vert,
 		fragmentShader: ShaderChunk.points_frag,
-
 	},
 
 	dashed: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.fog,
@@ -170,23 +151,16 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.linedashed_vert,
 		fragmentShader: ShaderChunk.linedashed_frag,
-
 	},
 
 	depth: {
-
-		uniforms: mergeUniforms([
-			UniformsLib.common,
-			UniformsLib.displacementmap,
-		]),
+		uniforms: mergeUniforms([UniformsLib.common, UniformsLib.displacementmap]),
 
 		vertexShader: ShaderChunk.depth_vert,
 		fragmentShader: ShaderChunk.depth_frag,
-
 	},
 
 	normal: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.bumpmap,
@@ -199,23 +173,16 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.normal_vert,
 		fragmentShader: ShaderChunk.normal_frag,
-
 	},
 
 	sprite: {
-
-		uniforms: mergeUniforms([
-			UniformsLib.sprite,
-			UniformsLib.fog,
-		]),
+		uniforms: mergeUniforms([UniformsLib.sprite, UniformsLib.fog]),
 
 		vertexShader: ShaderChunk.sprite_vert,
 		fragmentShader: ShaderChunk.sprite_frag,
-
 	},
 
 	background: {
-
 		uniforms: {
 			uvTransform: { value: new Matrix3() },
 			t2D: { value: null },
@@ -223,14 +190,12 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.background_vert,
 		fragmentShader: ShaderChunk.background_frag,
-
 	},
 	/* -------------------------------------------------------------------------
 	//	Cube map shader
 	 ------------------------------------------------------------------------- */
 
 	cube: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.envmap,
 			{
@@ -240,22 +205,18 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.cube_vert,
 		fragmentShader: ShaderChunk.cube_frag,
-
 	},
 
 	equirect: {
-
 		uniforms: {
 			tEquirect: { value: null },
 		},
 
 		vertexShader: ShaderChunk.equirect_vert,
 		fragmentShader: ShaderChunk.equirect_frag,
-
 	},
 
 	distanceRGBA: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.common,
 			UniformsLib.displacementmap,
@@ -268,11 +229,9 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.distanceRGBA_vert,
 		fragmentShader: ShaderChunk.distanceRGBA_frag,
-
 	},
 
 	shadow: {
-
 		uniforms: mergeUniforms([
 			UniformsLib.lights,
 			UniformsLib.fog,
@@ -284,11 +243,9 @@ const ShaderLib = {
 
 		vertexShader: ShaderChunk.shadow_vert,
 		fragmentShader: ShaderChunk.shadow_frag,
-
 	},
 
 	physical: {
-
 		uniforms: mergeUniforms([
 			stdUnisMerged,
 			{
@@ -308,6 +265,5 @@ const ShaderLib = {
 		fragmentShader: ShaderChunk.meshphysical_frag,
 	},
 };
-
 
 export { ShaderLib };

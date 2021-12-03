@@ -1,5 +1,5 @@
-import { Material } from './Material';
-import { MultiplyOperation, Color } from '../';
+import { Material } from "./Material";
+import { MultiplyOperation, Color } from "../";
 
 /**
  * parameters = {
@@ -34,14 +34,14 @@ import { MultiplyOperation, Color } from '../';
  */
 
 class MeshBasicMaterial extends Material {
-	constructor( parameters? ) {
+	constructor() {
 		super();
 
 		this.isMeshBasicMaterial = true;
 
-		this.type = 'MeshBasicMaterial';
+		this.type = "MeshBasicMaterial";
 
-		this.color = new Color( 0xffffff ); // emissive
+		this.color = new Color(0xffffff); // emissive
 
 		this.map = null;
 
@@ -62,19 +62,17 @@ class MeshBasicMaterial extends Material {
 
 		this.wireframe = false;
 		this.wireframeLinewidth = 1;
-		this.wireframeLinecap = 'round';
-		this.wireframeLinejoin = 'round';
+		this.wireframeLinecap = "round";
+		this.wireframeLinejoin = "round";
 
 		this.skinning = false;
 		this.morphTargets = false;
-
-		this.setValues( parameters );
 	}
 
-	copy( source: MeshBasicMaterial ) {
-		super.copy( source );
+	copy(source: MeshBasicMaterial) {
+		super.copy(source);
 
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.map = source.map;
 

@@ -1,4 +1,4 @@
-import { Object3D } from '../';
+import { Object3D } from "../";
 
 class Group extends Object3D {
 	constructor() {
@@ -6,7 +6,7 @@ class Group extends Object3D {
 
 		this.isGroup = true;
 
-		this.type = 'Group';
+		this.type = "Group";
 	}
 }
 

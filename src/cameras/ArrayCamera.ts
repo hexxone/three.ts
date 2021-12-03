@@ -1,9 +1,9 @@
-import { PerspectiveCamera } from './';
+import { PerspectiveCamera } from "./";
 
 class ArrayCamera extends PerspectiveCamera {
 	cameras: any;
 
-	constructor( array = [] ) {
+	constructor(array = []) {
 		super();
 
 		this.isArrayCamera = true;

@@ -5,8 +5,8 @@ class Clock {
 	elapsedTime: number;
 	running: boolean;
 
-	constructor( autoStart? ) {
-		this.autoStart = ( autoStart !== undefined ) ? autoStart : true;
+	constructor(autoStart?) {
+		this.autoStart = autoStart !== undefined ? autoStart : true;
 
 		this.startTime = 0;
 		this.oldTime = 0;
@@ -37,15 +37,15 @@ class Clock {
 	getDelta() {
 		let diff = 0;
 
-		if ( this.autoStart && ! this.running ) {
+		if (this.autoStart && !this.running) {
 			this.start();
 			return 0;
 		}
 
-		if ( this.running ) {
+		if (this.running) {
 			const newTime = now();
 
-			diff = ( newTime - this.oldTime ) / 1000;
+			diff = (newTime - this.oldTime) / 1000;
 			this.oldTime = newTime;
 
 			this.elapsedTime += diff;
@@ -56,7 +56,7 @@ class Clock {
 }
 
 function now() {
-	return ( typeof performance === 'undefined' ? Date : performance ).now(); // see #10732
+	return (typeof performance === "undefined" ? Date : performance).now(); // see #10732
 }
 
 export { Clock };

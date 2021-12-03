@@ -1,5 +1,5 @@
-import { Color, Object3D } from '../';
-import { LightShadow } from './LightShadow';
+import { Color, Object3D } from "../";
+import { LightShadow } from "./LightShadow";
 
 class Light extends Object3D {
 	color: Color;
@@ -24,39 +24,40 @@ class Light extends Object3D {
 	isHemisphereLight: boolean;
 	isHemisphereLightProbe: boolean;
 
-	constructor( color, intensity = 1 ) {
+	constructor(color, intensity = 1) {
 		super();
 
 		this.isLight = true;
-		this.type = 'Light';
+		this.type = "Light";
 
-		this.color = new Color( color );
+		this.color = new Color(color);
 		this.intensity = intensity;
 	}
 
-	copy( source: Light ) {
-		super.copy( source );
+	copy(source: Light) {
+		super.copy(source);
 
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 		this.intensity = source.intensity;
 
 		return this;
 	}
 
-	toJSON( meta ) {
-		const data = super.toJSON( meta );
+	toJSON(meta) {
+		const data = super.toJSON(meta);
 
 		data.object.color = this.color.getHex();
 		data.object.intensity = this.intensity;
 
-		if ( this.groundColor !== undefined ) data.object.groundColor = this.groundColor.getHex();
+		if (this.groundColor !== undefined)
+			data.object.groundColor = this.groundColor.getHex();
 
-		if ( this.distance !== undefined ) data.object.distance = this.distance;
-		if ( this.angle !== undefined ) data.object.angle = this.angle;
-		if ( this.decay !== undefined ) data.object.decay = this.decay;
-		if ( this.penumbra !== undefined ) data.object.penumbra = this.penumbra;
+		if (this.distance !== undefined) data.object.distance = this.distance;
+		if (this.angle !== undefined) data.object.angle = this.angle;
+		if (this.decay !== undefined) data.object.decay = this.decay;
+		if (this.penumbra !== undefined) data.object.penumbra = this.penumbra;
 
-		if ( this.shadow !== undefined ) data.object.shadow = this.shadow.toJSON();
+		if (this.shadow !== undefined) data.object.shadow = this.shadow.toJSON();
 
 		return data;
 	}

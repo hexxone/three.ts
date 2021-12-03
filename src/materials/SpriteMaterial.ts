@@ -1,5 +1,5 @@
-import { Material } from './Material';
-import { Color } from '../';
+import { Material } from "./Material";
+import { Color } from "../";
 
 /**
  * parameters = {
@@ -12,14 +12,14 @@ import { Color } from '../';
  */
 
 class SpriteMaterial extends Material {
-	constructor( parameters? ) {
+	constructor() {
 		super();
 
 		this.isSpriteMaterial = true;
 
-		this.type = 'SpriteMaterial';
+		this.type = "SpriteMaterial";
 
-		this.color = new Color( 0xffffff );
+		this.color = new Color(0xffffff);
 
 		this.map = null;
 
@@ -30,14 +30,12 @@ class SpriteMaterial extends Material {
 		this.sizeAttenuation = true;
 
 		this.transparent = true;
-
-		this.setValues( parameters );
 	}
 
-	copy( source: SpriteMaterial ) {
-		super.copy( source );
+	copy(source: SpriteMaterial) {
+		super.copy(source);
 
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.map = source.map;
 

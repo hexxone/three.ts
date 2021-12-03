@@ -1,9 +1,29 @@
-import { RGBFormat, LinearFilter } from '../';
-import { Texture } from './Texture';
+import { RGBFormat, LinearFilter } from "../";
+import { Texture } from "./Texture";
 
 class VideoTexture extends Texture {
-	constructor( video, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, format?, type?, anisotropy? ) {
-		super( video, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy );
+	constructor(
+		video,
+		mapping?,
+		wrapS?,
+		wrapT?,
+		magFilter?,
+		minFilter?,
+		format?,
+		type?,
+		anisotropy?
+	) {
+		super(
+			video,
+			mapping,
+			wrapS,
+			wrapT,
+			magFilter,
+			minFilter,
+			format,
+			type,
+			anisotropy
+		);
 
 		this.isVideoTexture = true;
 
@@ -18,23 +38,26 @@ class VideoTexture extends Texture {
 
 		function updateVideo() {
 			scope.needsUpdate = true;
-			video.requestVideoFrameCallback( updateVideo );
+			video.requestVideoFrameCallback(updateVideo);
 		}
 
-		if ( typeof video[ 'requestVideoFrameCallback' ] !== 'undefined' ) {
-			video.requestVideoFrameCallback( updateVideo );
+		if (typeof video["requestVideoFrameCallback"] !== "undefined") {
+			video.requestVideoFrameCallback(updateVideo);
 		}
 	}
 
 	clone() {
-		return new VideoTexture( this.image ).copy( this );
+		return new VideoTexture(this.image).copy(this);
 	}
 
 	update() {
 		const video = this.image;
-		const hasVideoFrameCallback = 'requestVideoFrameCallback' in video;
+		const hasVideoFrameCallback = "requestVideoFrameCallback" in video;
 
-		if ( hasVideoFrameCallback === false && video.readyState >= video.HAVE_CURRENT_DATA ) {
+		if (
+			hasVideoFrameCallback === false &&
+			video.readyState >= video.HAVE_CURRENT_DATA
+		) {
 			this.needsUpdate = true;
 		}
 	}

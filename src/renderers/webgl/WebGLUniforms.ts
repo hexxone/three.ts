@@ -43,7 +43,12 @@
  *
  */
 
-import { CubeTexture, DataTexture2DArray, DataTexture3D, Texture } from '../../';
+import {
+	CubeTexture,
+	DataTexture2DArray,
+	DataTexture3D,
+	Texture,
+} from "../../";
 
 const emptyTexture = new Texture();
 const emptyTexture2dArray = new DataTexture2DArray();
@@ -195,7 +200,12 @@ function setValueV4f(gl: GLESRenderingContext, v) {
 	const cache = this.cache;
 
 	if (v.x !== undefined) {
-		if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z || cache[3] !== v.w) {
+		if (
+			cache[0] !== v.x ||
+			cache[1] !== v.y ||
+			cache[2] !== v.z ||
+			cache[3] !== v.w
+		) {
 			gl.uniform4f(this.addr, v.x, v.y, v.z, v.w);
 
 			cache[0] = v.x;
@@ -385,21 +395,37 @@ function setValueV1ui(gl: GLESRenderingContext, v) {
 
 function getSingularSetter(type: number) {
 	switch (type) {
-		case 0x1406: return setValueV1f; // FLOAT
-		case 0x8b50: return setValueV2f; // _VEC2
-		case 0x8b51: return setValueV3f; // _VEC3
-		case 0x8b52: return setValueV4f; // _VEC4
+		case 0x1406:
+			return setValueV1f; // FLOAT
+		case 0x8b50:
+			return setValueV2f; // _VEC2
+		case 0x8b51:
+			return setValueV3f; // _VEC3
+		case 0x8b52:
+			return setValueV4f; // _VEC4
 
-		case 0x8b5a: return setValueM2; // _MAT2
-		case 0x8b5b: return setValueM3; // _MAT3
-		case 0x8b5c: return setValueM4; // _MAT4
+		case 0x8b5a:
+			return setValueM2; // _MAT2
+		case 0x8b5b:
+			return setValueM3; // _MAT3
+		case 0x8b5c:
+			return setValueM4; // _MAT4
 
-		case 0x1404: case 0x8b56: return setValueV1i; // INT, BOOL
-		case 0x8b53: case 0x8b57: return setValueV2i; // _VEC2
-		case 0x8b54: case 0x8b58: return setValueV3i; // _VEC3
-		case 0x8b55: case 0x8b59: return setValueV4i; // _VEC4
+		case 0x1404:
+		case 0x8b56:
+			return setValueV1i; // INT, BOOL
+		case 0x8b53:
+		case 0x8b57:
+			return setValueV2i; // _VEC2
+		case 0x8b54:
+		case 0x8b58:
+			return setValueV3i; // _VEC3
+		case 0x8b55:
+		case 0x8b59:
+			return setValueV4i; // _VEC4
 
-		case 0x1405: return setValueV1ui; // UINT
+		case 0x1405:
+			return setValueV1ui; // UINT
 
 		case 0x8b5e: // SAMPLER_2D
 		case 0x8d66: // SAMPLER_EXTERNAL_OES
@@ -448,7 +474,6 @@ function setValueV3iArray(gl, v) {
 function setValueV4iArray(gl, v) {
 	gl.uniform4iv(this.addr, v);
 }
-
 
 // Array of vectors (flat or from THREE classes)
 
@@ -520,19 +545,34 @@ function setValueT6Array(gl, v, textures) {
 
 function getPureArraySetter(type) {
 	switch (type) {
-		case 0x1406: return setValueV1fArray; // FLOAT
-		case 0x8b50: return setValueV2fArray; // _VEC2
-		case 0x8b51: return setValueV3fArray; // _VEC3
-		case 0x8b52: return setValueV4fArray; // _VEC4
+		case 0x1406:
+			return setValueV1fArray; // FLOAT
+		case 0x8b50:
+			return setValueV2fArray; // _VEC2
+		case 0x8b51:
+			return setValueV3fArray; // _VEC3
+		case 0x8b52:
+			return setValueV4fArray; // _VEC4
 
-		case 0x8b5a: return setValueM2Array; // _MAT2
-		case 0x8b5b: return setValueM3Array; // _MAT3
-		case 0x8b5c: return setValueM4Array; // _MAT4
+		case 0x8b5a:
+			return setValueM2Array; // _MAT2
+		case 0x8b5b:
+			return setValueM3Array; // _MAT3
+		case 0x8b5c:
+			return setValueM4Array; // _MAT4
 
-		case 0x1404: case 0x8b56: return setValueV1iArray; // INT, BOOL
-		case 0x8b53: case 0x8b57: return setValueV2iArray; // _VEC2
-		case 0x8b54: case 0x8b58: return setValueV3iArray; // _VEC3
-		case 0x8b55: case 0x8b59: return setValueV4iArray; // _VEC4
+		case 0x1404:
+		case 0x8b56:
+			return setValueV1iArray; // INT, BOOL
+		case 0x8b53:
+		case 0x8b57:
+			return setValueV2iArray; // _VEC2
+		case 0x8b54:
+		case 0x8b58:
+			return setValueV3iArray; // _VEC3
+		case 0x8b55:
+		case 0x8b59:
+			return setValueV4iArray; // _VEC4
 
 		case 0x8b5e: // SAMPLER_2D
 		case 0x8d66: // SAMPLER_EXTERNAL_OES
@@ -556,7 +596,6 @@ interface IUniform {
 
 	setValue: (gl: GLESRenderingContext, v: any, textures: any) => void;
 }
-
 
 class SingleUniform implements IUniform {
 	id: any;
@@ -649,7 +688,11 @@ function addUniform(container: WebGLUniforms, uniformObject: IUniform) {
 	container.map[uniformObject.id] = uniformObject;
 }
 
-function parseUniform(activeInfo: GLESActiveInfo, addr: GLESUniformLocation, container: WebGLUniforms) {
+function parseUniform(
+	activeInfo: GLESActiveInfo,
+	addr: GLESUniformLocation,
+	container: WebGLUniforms
+) {
 	const path = activeInfo.name;
 	const pathLength = path.length;
 
@@ -661,17 +704,23 @@ function parseUniform(activeInfo: GLESActiveInfo, addr: GLESUniformLocation, con
 		const matchEnd = RePathPart.lastIndex;
 
 		let id = match[1] as any;
-		const idIsIndex = match[2] === ']';
+		const idIsIndex = match[2] === "]";
 		const subscript = match[3];
 
 		if (idIsIndex) id = id | 0; // convert to integer
 
-		if (subscript === undefined || subscript === '[' && matchEnd + 2 === pathLength) {
+		if (
+			subscript === undefined ||
+			(subscript === "[" && matchEnd + 2 === pathLength)
+		) {
 			// bare name or "pure" bottom-level array "[0]" suffix
 
-			addUniform(container, subscript === undefined ?
-				new SingleUniform(id, activeInfo, addr) :
-				new PureArrayUniform(id, activeInfo, addr));
+			addUniform(
+				container,
+				subscript === undefined
+					? new SingleUniform(id, activeInfo, addr)
+					: new PureArrayUniform(id, activeInfo, addr)
+			);
 
 			break;
 		} else {
@@ -707,7 +756,12 @@ class WebGLUniforms {
 		}
 	}
 
-	setValue(gl: GLESRenderingContext, name: any, value: any, textures?: any): void {
+	setValue(
+		gl: GLESRenderingContext,
+		name: any,
+		value: any,
+		textures?: any
+	): void {
 		const u = this.map[name];
 
 		if (u !== undefined) u.setValue(gl, value, textures);
@@ -719,7 +773,12 @@ class WebGLUniforms {
 		if (v !== undefined) this.setValue(gl, name, v);
 	}
 
-	static upload(gl: GLESRenderingContext, seq: any, values: any, textures?: any): void {
+	static upload(
+		gl: GLESRenderingContext,
+		seq: any,
+		values: any,
+		textures?: any
+	): void {
 		for (let i = 0, n = seq.length; i !== n; ++i) {
 			const u = seq[i];
 			const v = values[u.id];

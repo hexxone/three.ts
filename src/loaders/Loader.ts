@@ -1,5 +1,5 @@
-import { LoadingManager } from '.';
-import { DefaultLoadingManager } from './LoadingManager';
+import { LoadingManager } from ".";
+import { DefaultLoadingManager } from "./LoadingManager";
 
 class Loader {
 	manager: LoadingManager;
@@ -9,13 +9,13 @@ class Loader {
 	resourcePath: string;
 	requestHeader: {};
 
-	constructor( manager?: LoadingManager ) {
-		this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
+	constructor(manager?: LoadingManager) {
+		this.manager = manager !== undefined ? manager : DefaultLoadingManager;
 
-		this.crossOrigin = 'anonymous';
+		this.crossOrigin = "anonymous";
 		this.withCredentials = false;
-		this.path = '';
-		this.resourcePath = '';
+		this.path = "";
+		this.resourcePath = "";
 		this.requestHeader = {};
 	}
 
@@ -27,44 +27,44 @@ class Loader {
 	 * @param onError
 	 * @public
 	 */
-	load( url: string, onLoad?, onProgress?, onError? ) {
-		const e = 'Loader.load not implemented!';
-		console.error( e );
-		onError( e );
+	load(url: string, onLoad?, onProgress?, onError?) {
+		const e = "Loader.load not implemented!";
+		console.error(e);
+		onError(e);
 		throw e;
 	}
 
-	loadAsync( url, onProgress? ) {
+	loadAsync(url, onProgress?) {
 		const scope = this;
 
-		return new Promise( function( resolve, reject ) {
-			scope.load( url, resolve, onProgress, reject );
-		} );
+		return new Promise(function (resolve, reject) {
+			scope.load(url, resolve, onProgress, reject);
+		});
 	}
 
-	parse( data, bool? ): any { }
+	parse(data, bool?): any {}
 
-	setCrossOrigin( crossOrigin ) {
+	setCrossOrigin(crossOrigin) {
 		this.crossOrigin = crossOrigin;
 		return this;
 	}
 
-	setWithCredentials( value ) {
+	setWithCredentials(value) {
 		this.withCredentials = value;
 		return this;
 	}
 
-	setPath( path ) {
+	setPath(path) {
 		this.path = path;
 		return this;
 	}
 
-	setResourcePath( resourcePath ) {
+	setResourcePath(resourcePath) {
 		this.resourcePath = resourcePath;
 		return this;
 	}
 
-	setRequestHeader( requestHeader ) {
+	setRequestHeader(requestHeader) {
 		this.requestHeader = requestHeader;
 		return this;
 	}

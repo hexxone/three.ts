@@ -1,8 +1,32 @@
-import { Texture } from './Texture';
+import { Texture } from "./Texture";
 
 class CompressedTexture extends Texture {
-	constructor( mipmaps?, width?, height?, format?, type?, mapping?, wrapS?, wrapT?, magFilter?, minFilter?, anisotropy?, encoding? ) {
-		super( null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding );
+	constructor(
+		mipmaps?,
+		width?,
+		height?,
+		format?,
+		type?,
+		mapping?,
+		wrapS?,
+		wrapT?,
+		magFilter?,
+		minFilter?,
+		anisotropy?,
+		encoding?
+	) {
+		super(
+			null,
+			mapping,
+			wrapS,
+			wrapT,
+			magFilter,
+			minFilter,
+			format,
+			type,
+			anisotropy,
+			encoding
+		);
 
 		this.isCompressedTexture = true;
 		this.image = { width: width, height: height };

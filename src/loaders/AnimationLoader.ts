@@ -1,46 +1,50 @@
-import { AnimationClip } from '../';
-import { FileLoader } from './FileLoader';
-import { Loader } from './Loader';
+import { AnimationClip } from "../";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
 
 class AnimationLoader extends Loader {
-	constructor( manager ) {
-		super( manager );
+	constructor(manager) {
+		super(manager);
 	}
 
-	load( url, onLoad, onProgress, onError ) {
+	load(url, onLoad, onProgress, onError) {
 		const scope = this;
 
-		const loader = new FileLoader( this.manager );
-		loader.setPath( this.path );
-		loader.setRequestHeader( this.requestHeader );
-		loader.setWithCredentials( this.withCredentials );
-		loader.load( url, function( text ) {
-			try {
-				onLoad( scope.parse( JSON.parse( text ) ) );
-			} catch ( e ) {
-				if ( onError ) {
-					onError( e );
-				} else {
-					console.error( e );
-				}
+		const loader = new FileLoader(this.manager);
+		loader.setPath(this.path);
+		loader.setRequestHeader(this.requestHeader);
+		loader.setWithCredentials(this.withCredentials);
+		loader.load(
+			url,
+			function (text) {
+				try {
+					onLoad(scope.parse(JSON.parse(text)));
+				} catch (e) {
+					if (onError) {
+						onError(e);
+					} else {
+						console.error(e);
+					}
 
-				scope.manager.itemError( url );
-			}
-		}, onProgress, onError );
+					scope.manager.itemError(url);
+				}
+			},
+			onProgress,
+			onError
+		);
 	}
 
-	parse( json ) {
+	parse(json) {
 		const animations = [];
 
-		for ( let i = 0; i < json.length; i ++ ) {
-			const clip = AnimationClip.parse( json[ i ] );
+		for (let i = 0; i < json.length; i++) {
+			const clip = AnimationClip.parse(json[i]);
 
-			animations.push( clip );
+			animations.push(clip);
 		}
 
 		return animations;
 	}
 }
-
 
 export { AnimationLoader };

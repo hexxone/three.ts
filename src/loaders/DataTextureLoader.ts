@@ -1,6 +1,11 @@
-import { LinearFilter, LinearMipmapLinearFilter, ClampToEdgeWrapping, DataTexture } from '../';
-import { FileLoader } from './FileLoader';
-import { Loader } from './Loader';
+import {
+	LinearFilter,
+	LinearMipmapLinearFilter,
+	ClampToEdgeWrapping,
+	DataTexture,
+} from "../";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
 
 /**
  * Abstract Base class to load generic binary textures formats (rgbe, hdr, ...)
@@ -8,80 +13,86 @@ import { Loader } from './Loader';
  * Sub classes have to implement the parse() method which will be used in load().
  */
 
-function DataTextureLoader( manager ) {
-	Loader.call( this, manager );
+function DataTextureLoader(manager) {
+	Loader.call(this, manager);
 }
 
-DataTextureLoader.prototype = Object.assign( Object.create( Loader.prototype ), {
-
+DataTextureLoader.prototype = Object.assign(Object.create(Loader.prototype), {
 	constructor: DataTextureLoader,
 
-	load: function( url, onLoad, onProgress, onError ) {
+	load: function (url, onLoad, onProgress, onError) {
 		const scope = this;
 
 		const texture = new DataTexture();
 
-		const loader = new FileLoader( this.manager );
-		loader.setResponseType( 'arraybuffer' );
-		loader.setRequestHeader( this.requestHeader );
-		loader.setPath( this.path );
-		loader.setWithCredentials( scope.withCredentials );
-		loader.load( url, function( buffer ) {
-			const texData = scope.parse( buffer );
+		const loader = new FileLoader(this.manager);
+		loader.setResponseType("arraybuffer");
+		loader.setRequestHeader(this.requestHeader);
+		loader.setPath(this.path);
+		loader.setWithCredentials(scope.withCredentials);
+		loader.load(
+			url,
+			function (buffer) {
+				const texData = scope.parse(buffer);
 
-			if ( ! texData ) return;
+				if (!texData) return;
 
-			if ( texData.image !== undefined ) {
-				texture.image = texData.image;
-			} else if ( texData.data !== undefined ) {
-				texture.image.width = texData.width;
-				texture.image.height = texData.height;
-				texture.image.data = texData.data;
-			}
+				if (texData.image !== undefined) {
+					texture.image = texData.image;
+				} else if (texData.data !== undefined) {
+					texture.image.width = texData.width;
+					texture.image.height = texData.height;
+					texture.image.data = texData.data;
+				}
 
-			texture.wrapS = texData.wrapS !== undefined ? texData.wrapS : ClampToEdgeWrapping;
-			texture.wrapT = texData.wrapT !== undefined ? texData.wrapT : ClampToEdgeWrapping;
+				texture.wrapS =
+					texData.wrapS !== undefined ? texData.wrapS : ClampToEdgeWrapping;
+				texture.wrapT =
+					texData.wrapT !== undefined ? texData.wrapT : ClampToEdgeWrapping;
 
-			texture.magFilter = texData.magFilter !== undefined ? texData.magFilter : LinearFilter;
-			texture.minFilter = texData.minFilter !== undefined ? texData.minFilter : LinearFilter;
+				texture.magFilter =
+					texData.magFilter !== undefined ? texData.magFilter : LinearFilter;
+				texture.minFilter =
+					texData.minFilter !== undefined ? texData.minFilter : LinearFilter;
 
-			texture.anisotropy = texData.anisotropy !== undefined ? texData.anisotropy : 1;
+				texture.anisotropy =
+					texData.anisotropy !== undefined ? texData.anisotropy : 1;
 
-			if ( texData.encoding !== undefined ) {
-				texture.encoding = texData.encoding;
-			}
+				if (texData.encoding !== undefined) {
+					texture.encoding = texData.encoding;
+				}
 
-			if ( texData.flipY !== undefined ) {
-				texture.flipY = texData.flipY;
-			}
+				if (texData.flipY !== undefined) {
+					texture.flipY = texData.flipY;
+				}
 
-			if ( texData.format !== undefined ) {
-				texture.format = texData.format;
-			}
+				if (texData.format !== undefined) {
+					texture.format = texData.format;
+				}
 
-			if ( texData.type !== undefined ) {
-				texture.type = texData.type;
-			}
+				if (texData.type !== undefined) {
+					texture.type = texData.type;
+				}
 
-			if ( texData.mipmaps !== undefined ) {
-				texture.mipmaps = texData.mipmaps;
-				texture.minFilter = LinearMipmapLinearFilter; // presumably...
-			}
+				if (texData.mipmaps !== undefined) {
+					texture.mipmaps = texData.mipmaps;
+					texture.minFilter = LinearMipmapLinearFilter; // presumably...
+				}
 
-			if ( texData.mipmapCount === 1 ) {
-				texture.minFilter = LinearFilter;
-			}
+				if (texData.mipmapCount === 1) {
+					texture.minFilter = LinearFilter;
+				}
 
-			texture.needsUpdate = true;
+				texture.needsUpdate = true;
 
-			if ( onLoad ) onLoad( texture, texData );
-		}, onProgress, onError );
-
+				if (onLoad) onLoad(texture, texData);
+			},
+			onProgress,
+			onError
+		);
 
 		return texture;
 	},
-
-} );
-
+});
 
 export { DataTextureLoader };

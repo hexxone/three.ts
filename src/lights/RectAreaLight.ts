@@ -1,19 +1,19 @@
-import { Light } from './Light';
+import { Light } from "./Light";
 
 class RectAreaLight extends Light {
-	constructor( color, intensity, width = 10, height = 10 ) {
-		super( color, intensity );
+	constructor(color, intensity, width = 10, height = 10) {
+		super(color, intensity);
 
 		this.isRectAreaLight = true;
 
-		this.type = 'RectAreaLight';
+		this.type = "RectAreaLight";
 
 		this.width = width;
 		this.height = height;
 	}
 
-	copy( source: RectAreaLight ) {
-		super.copy( source );
+	copy(source: RectAreaLight) {
+		super.copy(source);
 
 		this.width = source.width;
 		this.height = source.height;
@@ -21,8 +21,8 @@ class RectAreaLight extends Light {
 		return this;
 	}
 
-	toJSON( meta ) {
-		const data = super.toJSON( meta );
+	toJSON(meta) {
+		const data = super.toJSON(meta);
 
 		data.object.width = this.width;
 		data.object.height = this.height;

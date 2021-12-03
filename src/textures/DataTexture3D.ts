@@ -1,10 +1,10 @@
-import { Texture } from './Texture';
-import { ClampToEdgeWrapping, NearestFilter } from '../';
+import { Texture } from "./Texture";
+import { ClampToEdgeWrapping, NearestFilter } from "../";
 
 class DataTexture3D extends Texture {
 	wrapR: number;
 
-	constructor( data = null, width = 1, height = 1, depth = 1 ) {
+	constructor(data = null, width = 1, height = 1, depth = 1) {
 		// We're going to add .setXXX() methods for setting properties later.
 		// Users can still set in DataTexture3D directly.
 		//
@@ -12,7 +12,7 @@ class DataTexture3D extends Texture {
 		// 	texture.anisotropy = 16;
 		//
 		// See #14839
-		super( null );
+		super(null);
 
 		this.isDataTexture3D = true;
 

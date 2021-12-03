@@ -1,9 +1,8 @@
-import { Material, Object3D } from '../../';
-
+import { Material, Object3D } from "../../";
 
 // @todo
 class ImmediateRenderObject extends Object3D {
-	render: ( ...args ) => void;
+	render: (...args) => void;
 
 	hasPositions: boolean;
 	hasNormals: boolean;
@@ -14,11 +13,11 @@ class ImmediateRenderObject extends Object3D {
 	colorArray: any;
 	uvArray: any;
 
-	constructor( material: Material ) {
+	constructor(material: Material) {
 		super();
 
 		this.material = material;
-		this.render = function( /* renderCallback */ ) { };
+		this.render = function (/* renderCallback */) {};
 
 		this.hasPositions = false;
 		this.hasNormals = false;

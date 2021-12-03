@@ -1,5 +1,5 @@
-import { Material } from './Material';
-import { Color } from '../';
+import { Material } from "./Material";
+import { Color } from "../";
 
 /**
  * parameters = {
@@ -16,28 +16,25 @@ class LineBasicMaterial extends Material {
 	linecap: string;
 	linejoin: string;
 
-	constructor( parameters? ) {
+	constructor() {
 		super();
 
 		this.isLineBasicMaterial = true;
-		this.type = 'LineBasicMaterial';
+		this.type = "LineBasicMaterial";
 
-		this.color = new Color( 0xffffff );
+		this.color = new Color(0xffffff);
 
 		this.linewidth = 1;
-		this.linecap = 'round';
-		this.linejoin = 'round';
+		this.linecap = "round";
+		this.linejoin = "round";
 
 		this.morphTargets = false;
-
-		this.setValues( parameters );
 	}
 
+	copy(source: LineBasicMaterial) {
+		super.copy(source);
 
-	copy( source: LineBasicMaterial ) {
-		super.copy( source );
-
-		this.color.copy( source.color );
+		this.color.copy(source.color);
 
 		this.linewidth = source.linewidth;
 		this.linecap = source.linecap;

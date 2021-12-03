@@ -1,5 +1,5 @@
-import { Material } from './Material';
-import { Vector3 } from '../';
+import { Material } from "./Material";
+import { Vector3 } from "../";
 
 /**
  * parameters = {
@@ -27,11 +27,11 @@ class MeshDistanceMaterial extends Material {
 	nearDistance: number;
 	farDistance: number;
 
-	constructor( parameters ) {
+	constructor() {
 		super();
 
 		this.isMeshDistanceMaterial = true;
-		this.type = 'MeshDistanceMaterial';
+		this.type = "MeshDistanceMaterial";
 
 		this.referencePosition = new Vector3();
 		this.nearDistance = 1;
@@ -49,14 +49,12 @@ class MeshDistanceMaterial extends Material {
 		this.displacementBias = 0;
 
 		this.fog = false;
-
-		this.setValues( parameters );
 	}
 
-	copy( source: MeshDistanceMaterial ) {
-		super.copy( source );
+	copy(source: MeshDistanceMaterial) {
+		super.copy(source);
 
-		this.referencePosition.copy( source.referencePosition );
+		this.referencePosition.copy(source.referencePosition);
 		this.nearDistance = source.nearDistance;
 		this.farDistance = source.farDistance;
 

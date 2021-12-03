@@ -1,5 +1,5 @@
-import { Object3D, BufferGeometry, Material } from '../../';
-import { WebGLProperties } from './WebGLProperties';
+import { Object3D, BufferGeometry, Material } from "../../";
+import { WebGLProperties } from "./WebGLProperties";
 
 function painterSortStable(a, b) {
 	if (a.groupOrder !== b.groupOrder) {
@@ -41,7 +41,6 @@ export interface RenderItem {
 	group: any;
 }
 
-
 class WebGLRenderList {
 	_properties: WebGLProperties;
 
@@ -51,7 +50,7 @@ class WebGLRenderList {
 	opaque: RenderItem[] = [];
 	transparent: RenderItem[] = [];
 
-	defaultProgram = { id: - 1 };
+	defaultProgram = { id: -1 };
 
 	constructor(properties: WebGLProperties) {
 		this._properties = properties;
@@ -63,7 +62,14 @@ class WebGLRenderList {
 		this.transparent.length = 0;
 	}
 
-	getNextRenderItem(object: Object3D, geometry: BufferGeometry, material: Material, groupOrder, z, group): RenderItem {
+	getNextRenderItem(
+		object: Object3D,
+		geometry: BufferGeometry,
+		material: Material,
+		groupOrder,
+		z,
+		group
+	): RenderItem {
 		let renderItem = this.renderItems[this.renderItemsIndex];
 		const materialProperties = this._properties.get(material);
 
@@ -98,27 +104,65 @@ class WebGLRenderList {
 		return renderItem;
 	}
 
-	push(object: Object3D, geometry: BufferGeometry, material: Material, groupOrder, z, group) {
-		const renderItem = this.getNextRenderItem(object, geometry, material, groupOrder, z, group);
+	push(
+		object: Object3D,
+		geometry: BufferGeometry,
+		material: Material,
+		groupOrder,
+		z,
+		group
+	) {
+		const renderItem = this.getNextRenderItem(
+			object,
+			geometry,
+			material,
+			groupOrder,
+			z,
+			group
+		);
 
-		(material.transparent === true ? this.transparent : this.opaque).push(renderItem);
+		(material.transparent === true ? this.transparent : this.opaque).push(
+			renderItem
+		);
 	}
 
-	unshift(object: Object3D, geometry: BufferGeometry, material: Material, groupOrder, z, group) {
-		const renderItem = this.getNextRenderItem(object, geometry, material, groupOrder, z, group);
+	unshift(
+		object: Object3D,
+		geometry: BufferGeometry,
+		material: Material,
+		groupOrder,
+		z,
+		group
+	) {
+		const renderItem = this.getNextRenderItem(
+			object,
+			geometry,
+			material,
+			groupOrder,
+			z,
+			group
+		);
 
-		(material.transparent === true ? this.transparent : this.opaque).unshift(renderItem);
+		(material.transparent === true ? this.transparent : this.opaque).unshift(
+			renderItem
+		);
 	}
 
 	sort(customOpaqueSort, customTransparentSort) {
-		if (this.opaque.length > 1) this.opaque.sort(customOpaqueSort || painterSortStable);
-		if (this.transparent.length > 1) this.transparent.sort(customTransparentSort || reversePainterSortStable);
+		if (this.opaque.length > 1)
+			this.opaque.sort(customOpaqueSort || painterSortStable);
+		if (this.transparent.length > 1)
+			this.transparent.sort(customTransparentSort || reversePainterSortStable);
 	}
 
 	finish() {
 		// Clear references from inactive renderItems in the list
 
-		for (let i = this.renderItemsIndex, il = this.renderItems.length; i < il; i++) {
+		for (
+			let i = this.renderItemsIndex, il = this.renderItems.length;
+			i < il;
+			i++
+		) {
 			const renderItem = this.renderItems[i];
 
 			if (renderItem.id === null) break;
@@ -164,6 +208,5 @@ class WebGLRenderLists {
 		this.lists = new WeakMap();
 	}
 }
-
 
 export { WebGLRenderLists, WebGLRenderList };

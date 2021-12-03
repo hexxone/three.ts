@@ -48,20 +48,7 @@ class WebGLShadowMap {
 
 	shadowSide = { 0: BackSide, 1: FrontSide, 2: DoubleSide };
 
-	shadowMaterialVertical = new ShaderMaterial({
-		defines: {
-			SAMPLE_RATE: 2.0 / 8.0,
-			HALF_SAMPLE_RATE: 1.0 / 8.0,
-		},
-		uniforms: {
-			shadow_pass: { value: null },
-			resolution: { value: new Vector2() },
-			radius: { value: 4.0 },
-		},
-		vertexShader: vsm_vert,
-		fragmentShader: vsm_frag,
-	});
-
+	shadowMaterialVertical: ShaderMaterial;
 	shadowMaterialHorizontal: ShaderMaterial;
 
 	fullScreenMesh: Mesh;
@@ -78,6 +65,19 @@ class WebGLShadowMap {
 		this._renderer = _renderer;
 		this._objects = _objects;
 		this._maxTextureSize = maxTextureSize;
+
+		this.shadowMaterialVertical = new ShaderMaterial();
+		this.shadowMaterialVertical.defines = {
+			SAMPLE_RATE: 2.0 / 8.0,
+			HALF_SAMPLE_RATE: 1.0 / 8.0,
+		};
+		this.shadowMaterialVertical.uniforms = {
+			shadow_pass: { value: null },
+			resolution: { value: new Vector2() },
+			radius: { value: 4.0 },
+		};
+		this.shadowMaterialVertical.vertexShader = vsm_vert;
+		this.shadowMaterialVertical.fragmentShader = vsm_frag;
 
 		this.shadowMaterialHorizontal =
 			this.shadowMaterialVertical.clone() as ShaderMaterial;
@@ -285,12 +285,10 @@ class WebGLShadowMap {
 		let material = this._depthMaterials[index];
 
 		if (material === undefined) {
-			material = new MeshDepthMaterial({
-				depthPacking: RGBADepthPacking,
-
-				morphTargets: useMorphing,
-				skinning: useSkinning,
-			});
+			material = new MeshDepthMaterial();
+			material.depthPacking = RGBADepthPacking;
+			material.morphTargets = useMorphing;
+			material.skinning = useSkinning;
 
 			this._depthMaterials[index] = material;
 		}
@@ -305,10 +303,9 @@ class WebGLShadowMap {
 		let material = this._distanceMaterials[index];
 
 		if (material === undefined) {
-			material = new MeshDistanceMaterial({
-				morphTargets: useMorphing,
-				skinning: useSkinning,
-			});
+			material = new MeshDistanceMaterial();
+			material.morphTargets = useMorphing;
+			material.skinning = useSkinning;
 
 			this._distanceMaterials[index] = material;
 		}

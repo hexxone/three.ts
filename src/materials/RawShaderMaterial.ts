@@ -1,8 +1,8 @@
 import { ShaderMaterial } from "./ShaderMaterial";
 
 class RawShaderMaterial extends ShaderMaterial {
-	constructor(parameters) {
-		super(parameters);
+	constructor() {
+		super();
 
 		this.isRawShaderMaterial = true;
 		this.type = "RawShaderMaterial";

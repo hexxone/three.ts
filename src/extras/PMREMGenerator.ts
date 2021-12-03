@@ -56,11 +56,11 @@ const ENCODINGS = {
 	[GammaEncoding]: 6,
 };
 
-const backgroundMaterial = new MeshBasicMaterial({
-	side: BackSide,
-	depthWrite: false,
-	depthTest: false,
-});
+const backgroundMaterial = new MeshBasicMaterial();
+backgroundMaterial.side = BackSide;
+backgroundMaterial.depthWrite = false;
+backgroundMaterial.depthTest = false;
+
 const backgroundBox = new Mesh(new BoxBufferGeometry(), backgroundMaterial);
 
 const _flatCamera = /* @__PURE__*/ new OrthographicCamera();
@@ -609,26 +609,22 @@ function _setViewport(target, x, y, width, height) {
 function _getBlurShader(maxSamples) {
 	const weights = new Float32Array(maxSamples);
 	const poleAxis = new Vector3(0, 1, 0);
-	const shaderMaterial = new RawShaderMaterial({
-		name: "SphericalGaussianBlur",
-
-		defines: { n: maxSamples },
-
-		uniforms: {
-			envMap: { value: null },
-			samples: { value: 1 },
-			weights: { value: weights },
-			latitudinal: { value: false },
-			dTheta: { value: 0 },
-			mipInt: { value: 0 },
-			poleAxis: { value: poleAxis },
-			inputEncoding: { value: ENCODINGS[LinearEncoding] },
-			outputEncoding: { value: ENCODINGS[LinearEncoding] },
-		},
-
-		vertexShader: _getCommonVertexShader(),
-
-		fragmentShader: /* glsl */ `
+	const shaderMaterial = new RawShaderMaterial();
+	shaderMaterial.name = "SphericalGaussianBlur";
+	shaderMaterial.defines = { n: maxSamples };
+	shaderMaterial.uniforms = {
+		envMap: { value: null },
+		samples: { value: 1 },
+		weights: { value: weights },
+		latitudinal: { value: false },
+		dTheta: { value: 0 },
+		mipInt: { value: 0 },
+		poleAxis: { value: poleAxis },
+		inputEncoding: { value: ENCODINGS[LinearEncoding] },
+		outputEncoding: { value: ENCODINGS[LinearEncoding] },
+	};
+	shaderMaterial.vertexShader = _getCommonVertexShader();
+	shaderMaterial.fragmentShader = /* glsl */ `
 
 			precision mediump float;
 			precision mediump int;
@@ -692,31 +688,30 @@ function _getBlurShader(maxSamples) {
 				gl_FragColor = linearToOutputTexel( gl_FragColor );
 
 			}
-		`,
+		`;
 
-		blending: NoBlending,
-		depthTest: false,
-		depthWrite: false,
-	});
+	shaderMaterial.blending = NoBlending;
+	shaderMaterial.depthTest = false;
+	shaderMaterial.depthWrite = false;
 
 	return shaderMaterial;
 }
 
 function _getEquirectShader() {
 	const texelSize = new Vector2(1, 1);
-	const shaderMaterial = new RawShaderMaterial({
-		name: "EquirectangularToCubeUV",
+	const shaderMaterial = new RawShaderMaterial();
+	shaderMaterial.name = "EquirectangularToCubeUV";
 
-		uniforms: {
-			envMap: { value: null },
-			texelSize: { value: texelSize },
-			inputEncoding: { value: ENCODINGS[LinearEncoding] },
-			outputEncoding: { value: ENCODINGS[LinearEncoding] },
-		},
+	shaderMaterial.uniforms = {
+		envMap: { value: null },
+		texelSize: { value: texelSize },
+		inputEncoding: { value: ENCODINGS[LinearEncoding] },
+		outputEncoding: { value: ENCODINGS[LinearEncoding] },
+	};
 
-		vertexShader: _getCommonVertexShader(),
+	shaderMaterial.vertexShader = _getCommonVertexShader();
 
-		fragmentShader: /* glsl */ `
+	shaderMaterial.fragmentShader = /* glsl */ `
 
 			precision mediump float;
 			precision mediump int;
@@ -754,29 +749,28 @@ function _getEquirectShader() {
 				gl_FragColor = linearToOutputTexel( gl_FragColor );
 
 			}
-		`,
+		`;
 
-		blending: NoBlending,
-		depthTest: false,
-		depthWrite: false,
-	});
+	shaderMaterial.blending = NoBlending;
+	shaderMaterial.depthTest = false;
+	shaderMaterial.depthWrite = false;
 
 	return shaderMaterial;
 }
 
 function _getCubemapShader() {
-	const shaderMaterial = new RawShaderMaterial({
-		name: "CubemapToCubeUV",
+	const shaderMaterial = new RawShaderMaterial();
+	shaderMaterial.name = "CubemapToCubeUV";
 
-		uniforms: {
-			envMap: { value: null },
-			inputEncoding: { value: ENCODINGS[LinearEncoding] },
-			outputEncoding: { value: ENCODINGS[LinearEncoding] },
-		},
+	shaderMaterial.uniforms = {
+		envMap: { value: null },
+		inputEncoding: { value: ENCODINGS[LinearEncoding] },
+		outputEncoding: { value: ENCODINGS[LinearEncoding] },
+	};
 
-		vertexShader: _getCommonVertexShader(),
+	shaderMaterial.vertexShader = _getCommonVertexShader();
 
-		fragmentShader: /* glsl */ `
+	shaderMaterial.fragmentShader = /* glsl */ `
 
 			precision mediump float;
 			precision mediump int;
@@ -794,12 +788,11 @@ function _getCubemapShader() {
 				gl_FragColor = linearToOutputTexel( gl_FragColor );
 
 			}
-		`,
+		`;
 
-		blending: NoBlending,
-		depthTest: false,
-		depthWrite: false,
-	});
+	shaderMaterial.blending = NoBlending;
+	shaderMaterial.depthTest = false;
+	shaderMaterial.depthWrite = false;
 
 	return shaderMaterial;
 }

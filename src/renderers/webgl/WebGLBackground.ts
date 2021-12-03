@@ -96,19 +96,17 @@ class WebGLBackground {
 				background.mapping === CubeUVReflectionMapping)
 		) {
 			if (this.boxMesh === undefined) {
-				this.boxMesh = new Mesh(
-					new BoxGeometry(1, 1, 1),
-					new ShaderMaterial({
-						name: "BackgroundCubeMaterial",
-						uniforms: cloneUniforms(ShaderLib.cube.uniforms),
-						vertexShader: ShaderLib.cube.vertexShader,
-						fragmentShader: ShaderLib.cube.fragmentShader,
-						side: BackSide,
-						depthTest: false,
-						depthWrite: false,
-						fog: false,
-					})
-				);
+				const boxMat = new ShaderMaterial();
+				boxMat.name = "BackgroundCubeMaterial";
+				boxMat.uniforms = cloneUniforms(ShaderLib.cube.uniforms);
+				boxMat.vertexShader = ShaderLib.cube.vertexShader;
+				boxMat.fragmentShader = ShaderLib.cube.fragmentShader;
+				boxMat.side = BackSide;
+				boxMat.depthTest = false;
+				boxMat.depthWrite = false;
+				boxMat.fog = false;
+
+				this.boxMesh = new Mesh(new BoxGeometry(1, 1, 1), boxMat);
 
 				(this.boxMesh.geometry as BoxGeometry).deleteAttribute("normal");
 				(this.boxMesh.geometry as BoxGeometry).deleteAttribute("uv");
@@ -163,19 +161,17 @@ class WebGLBackground {
 			);
 		} else if (background && background.isTexture) {
 			if (this.planeMesh === undefined) {
-				this.planeMesh = new Mesh(
-					new PlaneGeometry(2, 2),
-					new ShaderMaterial({
-						name: "BackgroundMaterial",
-						uniforms: cloneUniforms(ShaderLib.background.uniforms),
-						vertexShader: ShaderLib.background.vertexShader,
-						fragmentShader: ShaderLib.background.fragmentShader,
-						side: FrontSide,
-						depthTest: false,
-						depthWrite: false,
-						fog: false,
-					})
-				);
+				const shaderMat = new ShaderMaterial();
+				shaderMat.name = "BackgroundMaterial";
+				shaderMat.uniforms = cloneUniforms(ShaderLib.background.uniforms);
+				shaderMat.vertexShader = ShaderLib.background.vertexShader;
+				shaderMat.fragmentShader = ShaderLib.background.fragmentShader;
+				shaderMat.side = FrontSide;
+				shaderMat.depthTest = false;
+				shaderMat.depthWrite = false;
+				shaderMat.fog = false;
+
+				this.planeMesh = new Mesh(new PlaneGeometry(2, 2), shaderMat);
 
 				(this.planeMesh.geometry as PlaneGeometry).deleteAttribute("normal");
 

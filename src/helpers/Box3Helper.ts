@@ -1,6 +1,7 @@
 import {
 	BufferAttribute,
 	BufferGeometry,
+	Color,
 	Float32BufferAttribute,
 	LineBasicMaterial,
 	LineSegments,
@@ -20,12 +21,14 @@ class Box3Helper extends LineSegments {
 		];
 
 		const geometry = new BufferGeometry();
-
 		geometry.setIndex(new BufferAttribute(indices, 1));
-
 		geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
 
-		super(geometry, new LineBasicMaterial({ color: color, toneMapped: false }));
+		const material = new LineBasicMaterial();
+		material.color = new Color(color);
+		material.toneMapped = false;
+
+		super(geometry, material);
 
 		this.box = box;
 

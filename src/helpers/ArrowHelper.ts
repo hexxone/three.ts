@@ -1,5 +1,6 @@
 import {
 	BufferGeometry,
+	Color,
 	CylinderGeometry,
 	Float32BufferAttribute,
 	Line,
@@ -44,16 +45,19 @@ class ArrowHelper extends Object3D {
 
 		this.position.copy(origin);
 
-		this.line = new Line(
-			_lineGeometry,
-			new LineBasicMaterial({ color: color, toneMapped: false })
-		);
+		const lineMat = new LineBasicMaterial();
+		lineMat.color = new Color(color);
+		lineMat.toneMapped = false;
+		this.line = new Line(_lineGeometry, lineMat);
 		this.line.matrixAutoUpdate = false;
 		this.add(this.line);
 
+		const coneMat = new MeshBasicMaterial();
+		coneMat.color = new Color(color);
+		coneMat.toneMapped = false;
 		this.cone = new Mesh(
 			_coneGeometry,
-			new MeshBasicMaterial({ color: color, toneMapped: false })
+			coneMat
 		);
 		this.cone.matrixAutoUpdate = false;
 		this.add(this.cone);

@@ -4,34 +4,6 @@ import { cloneUniforms } from "../";
 import default_vertex from "../renderers/shaders/ShaderChunk/default_vertex.glsl";
 import default_fragment from "../renderers/shaders/ShaderChunk/default_fragment.glsl";
 
-/**
- * @public
- */
-type ShaderMaterialParams = {
-	defines?: { [name: string]: any };
-	uniforms?: { [name: string]: any };
-
-	name?: string;
-	blending?: number;
-	side?: number;
-
-	fog?: boolean;
-	depthTest?: boolean;
-	depthWrite?: boolean;
-	transparent?: boolean;
-
-	fragmentShader?: string;
-	vertexShader?: string;
-
-	wireframe?: boolean;
-	wireframeLinewidth?: number;
-
-	lights?: boolean;
-
-	skinning?: boolean;
-	morphTargets?: boolean;
-	morphNormals?: boolean;
-};
 
 /**
  * @public
@@ -207,4 +179,4 @@ class ShaderMaterial extends Material {
 	}
 }
 
-export { ShaderMaterial, ShaderMaterialParams };
+export { ShaderMaterial };

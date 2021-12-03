@@ -6,11 +6,10 @@ class PointLightHelper extends Mesh {
 
 	constructor(light, sphereSize, color) {
 		const geometry = new SphereGeometry(sphereSize, 4, 2);
-		const material = new MeshBasicMaterial({
-			wireframe: true,
-			fog: false,
-			toneMapped: false,
-		});
+		const material = new MeshBasicMaterial();
+		material.wireframe = true;
+		material.fog = false;
+		material.toneMapped = false;
 
 		super(geometry, material);
 

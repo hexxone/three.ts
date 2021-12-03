@@ -71,15 +71,13 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 
 		const geometry = new BoxGeometry(5, 5, 5);
 
-		const material = new ShaderMaterial({
-			name: "CubemapFromEquirect",
-
-			uniforms: cloneUniforms(shader.uniforms),
-			vertexShader: shader.vertexShader,
-			fragmentShader: shader.fragmentShader,
-			side: BackSide,
-			blending: NoBlending,
-		});
+		const material = new ShaderMaterial();
+		material.name = "CubemapFromEquirect";
+		material.uniforms = cloneUniforms(shader.uniforms);
+		material.vertexShader = shader.vertexShader;
+		material.fragmentShader = shader.fragmentShader;
+		material.side = BackSide;
+		material.blending = NoBlending;
 
 		material.uniforms.tEquirect.value = texture;
 

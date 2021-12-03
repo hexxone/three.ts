@@ -47,7 +47,9 @@ class SpotLightHelper extends Object3D {
 
 		geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
 
-		const material = new LineBasicMaterial({ fog: false, toneMapped: false });
+		const material = new LineBasicMaterial();
+		material.fog = false;
+		material.toneMapped = false;
 
 		this.cone = new LineSegments(geometry, material);
 		this.add(this.cone);

@@ -1,7 +1,7 @@
-import { InstancedMesh, Object3D } from '../../';
-import { WebGLAttributes } from './WebGLAttributes';
-import { WebGLGeometries } from './WebGLGeometries';
-import { WebGLInfo } from './WebGLInfo';
+import { InstancedMesh, Object3D } from "../../";
+import { WebGLAttributes } from "./WebGLAttributes";
+import { WebGLGeometries } from "./WebGLGeometries";
+import { WebGLInfo } from "./WebGLInfo";
 
 class WebGLObjects {
 	_gl: GLESRenderingContext;
@@ -11,36 +11,44 @@ class WebGLObjects {
 
 	updateMap = new WeakMap();
 
-	constructor( gl: GLESRenderingContext, geometries: WebGLGeometries, attributes: WebGLAttributes, info: WebGLInfo ) {
+	constructor(
+		gl: GLESRenderingContext,
+		geometries: WebGLGeometries,
+		attributes: WebGLAttributes,
+		info: WebGLInfo
+	) {
 		this._gl = gl;
 		this._geometries = geometries;
 		this._attributes = attributes;
 		this._info = info;
 	}
 
-	update( object: Object3D ) {
+	update(object: Object3D) {
 		const frame = this._info.render.frame;
 
 		const geometry = object.geometry;
-		const buffergeometry = this._geometries.get( object, geometry );
+		const buffergeometry = this._geometries.get(object, geometry);
 
 		// Update once per frame
 
-		if ( this.updateMap.get( buffergeometry ) !== frame ) {
-			this._geometries.update( buffergeometry );
+		if (this.updateMap.get(buffergeometry) !== frame) {
+			this._geometries.update(buffergeometry);
 
-			this.updateMap.set( buffergeometry, frame );
+			this.updateMap.set(buffergeometry, frame);
 		}
 
-		if ( object instanceof InstancedMesh ) {
-			if ( object.hasEventListener( 'dispose', this.onInstancedMeshDispose ) === false ) {
-				object.addEventListener( 'dispose', this.onInstancedMeshDispose );
+		if (object instanceof InstancedMesh) {
+			if (
+				object.hasEventListener("dispose", this.onInstancedMeshDispose) ===
+				false
+			) {
+				object.addEventListener("dispose", this.onInstancedMeshDispose);
 			}
 
-			this._attributes.update( object.instanceMatrix, this._gl.ARRAY_BUFFER );
+			this._attributes.update(object.instanceMatrix, this._gl.ARRAY_BUFFER);
 
-			if ( object.instanceColor !== null ) {
-				this._attributes.update( object.instanceColor, this._gl.ARRAY_BUFFER );
+			if (object.instanceColor !== null) {
+				this._attributes.update(object.instanceColor, this._gl.ARRAY_BUFFER);
 			}
 		}
 
@@ -51,16 +59,16 @@ class WebGLObjects {
 		this.updateMap = new WeakMap();
 	}
 
-	onInstancedMeshDispose( event ) {
+	onInstancedMeshDispose(event) {
 		const instancedMesh = event.target;
 
-		instancedMesh.removeEventListener( 'dispose', this.onInstancedMeshDispose );
+		instancedMesh.removeEventListener("dispose", this.onInstancedMeshDispose);
 
-		this._attributes.remove( instancedMesh.instanceMatrix );
+		this._attributes.remove(instancedMesh.instanceMatrix);
 
-		if ( instancedMesh.instanceColor !== null ) this._attributes.remove( instancedMesh.instanceColor );
+		if (instancedMesh.instanceColor !== null)
+			this._attributes.remove(instancedMesh.instanceColor);
 	}
 }
-
 
 export { WebGLObjects };

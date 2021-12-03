@@ -1,19 +1,21 @@
 import {
 	BackSide,
 	BufferGeometry,
+	Color,
 	Float32BufferAttribute,
 	FrontSide,
 	Line,
 	LineBasicMaterial,
 	Mesh,
 	MeshBasicMaterial,
+	Plane
 } from "../";
 
 class PlaneHelper extends Line {
-	plane: any;
+	plane: Plane;
 	size: number;
 
-	constructor(plane, size = 1, hex = 0xffff00) {
+	constructor(plane: Plane, size = 1, hex = 0xffff00) {
 		const color = hex;
 
 		const positions = [
@@ -25,7 +27,11 @@ class PlaneHelper extends Line {
 		geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
 		geometry.computeBoundingSphere();
 
-		super(geometry, new LineBasicMaterial({ color: color, toneMapped: false }));
+		const material = new LineBasicMaterial();
+		material.color = new Color(color);
+		material.toneMapped = false;
+
+		super(geometry, material);
 
 		this.type = "PlaneHelper";
 
@@ -44,18 +50,14 @@ class PlaneHelper extends Line {
 		);
 		geometry2.computeBoundingSphere();
 
-		this.add(
-			new Mesh(
-				geometry2,
-				new MeshBasicMaterial({
-					color: color,
-					opacity: 0.2,
-					transparent: true,
-					depthWrite: false,
-					toneMapped: false,
-				})
-			)
-		);
+		const meshBasic = new MeshBasicMaterial();
+		meshBasic.color = new Color(color);
+		meshBasic.opacity = 0.2;
+		meshBasic.transparent = true;
+		meshBasic.depthWrite = false;
+		meshBasic.toneMapped = false;
+
+		this.add(new Mesh(geometry2));
 	}
 
 	updateMatrixWorld(force) {

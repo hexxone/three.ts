@@ -100,30 +100,6 @@ class ShapeGeometry extends BufferGeometry {
 			}
 		}
 	}
-
-	toJSON() {
-		const data = super.toJSON();
-
-		const shapes = this.parameters.shapes;
-
-		return toJSON(shapes, data);
-	}
-}
-
-function toJSON(shapes, data) {
-	data.shapes = [];
-
-	if (Array.isArray(shapes)) {
-		for (let i = 0, l = shapes.length; i < l; i++) {
-			const shape = shapes[i];
-
-			data.shapes.push(shape.uuid);
-		}
-	} else {
-		data.shapes.push(shapes.uuid);
-	}
-
-	return data;
 }
 
 export { ShapeGeometry, ShapeGeometry as ShapeBufferGeometry };

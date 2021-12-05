@@ -636,10 +636,6 @@ class Color {
 
 		return this;
 	}
-
-	toJSON() {
-		return this.getHex();
-	}
 }
 
 export { Color };

@@ -50,17 +50,6 @@ class CubicBezierCurve extends Curve {
 		return this;
 	}
 
-	toJSON() {
-		const data = super.toJSON();
-
-		data.v0 = this.v0.toArray();
-		data.v1 = this.v1.toArray();
-		data.v2 = this.v2.toArray();
-		data.v3 = this.v3.toArray();
-
-		return data;
-	}
-
 	fromJSON(json) {
 		super.fromJSON(json);
 

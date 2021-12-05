@@ -19,16 +19,6 @@ class InstancedBufferGeometry extends BufferGeometry {
 	clone() {
 		return new InstancedBufferGeometry().copy(this);
 	}
-
-	toJSON() {
-		const data = super.toJSON() as any;
-
-		data.instanceCount = this.instanceCount;
-
-		data.isInstancedBufferGeometry = true;
-
-		return data;
-	}
 }
 
 export { InstancedBufferGeometry };

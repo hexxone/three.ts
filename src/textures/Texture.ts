@@ -170,99 +170,10 @@ class Texture extends EventDispatcher {
 		return this;
 	}
 
-	toJSON(meta) {
-		const isRootObject = meta === undefined || typeof meta === "string";
-
-		if (!isRootObject && meta.textures[this.uuid] !== undefined) {
-			return meta.textures[this.uuid];
-		}
-
-		const output = {
-			metadata: {
-				version: 4.5,
-				type: "Texture",
-				generator: "Texture.toJSON",
-			},
-
-			uuid: this.uuid,
-			name: this.name,
-
-			mapping: this.mapping,
-
-			repeat: [this.repeat.x, this.repeat.y],
-			offset: [this.offset.x, this.offset.y],
-			center: [this.center.x, this.center.y],
-			rotation: this.rotation,
-
-			wrap: [this.wrapS, this.wrapT],
-
-			format: this.format,
-			type: this.type,
-			encoding: this.encoding,
-
-			minFilter: this.minFilter,
-			magFilter: this.magFilter,
-			anisotropy: this.anisotropy,
-
-			flipY: this.flipY,
-
-			premultiplyAlpha: this.premultiplyAlpha,
-			unpackAlignment: this.unpackAlignment,
-
-			image: null,
-		};
-
-		if (this.image !== undefined) {
-			// TODO: Move to THREE.Image
-
-			const image = this.image;
-
-			if (image.uuid === undefined) {
-				image.uuid = MathUtils.generateUUID(); // UGH
-			}
-
-			if (!isRootObject && meta.images[image.uuid] === undefined) {
-				let url;
-
-				if (Array.isArray(image)) {
-					// process array of images e.g. CubeTexture
-
-					url = [];
-
-					for (let i = 0, l = image.length; i < l; i++) {
-						// check cube texture with data textures
-
-						if (image[i].isDataTexture) {
-							url.push(serializeImage(image[i].image));
-						} else {
-							url.push(serializeImage(image[i]));
-						}
-					}
-				} else {
-					// process single image
-
-					url = serializeImage(image);
-				}
-
-				meta.images[image.uuid] = {
-					uuid: image.uuid,
-					url: url,
-				};
-			}
-
-			output.image = image.uuid;
-		}
-
-		if (!isRootObject) {
-			meta.textures[this.uuid] = output;
-		}
-
-		return output;
-	}
-
 	dispose() {
 		this.dispatchEvent({ type: "dispose" });
 	}
+
 	dispatchEvent(arg0: { type: string }) {
 		throw new Error("Method not implemented.");
 	}

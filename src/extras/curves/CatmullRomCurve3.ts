@@ -177,23 +177,6 @@ class CatmullRomCurve3 extends Curve {
 		return this;
 	}
 
-	toJSON() {
-		const data = super.toJSON();
-
-		data.points = [];
-
-		for (let i = 0, l = this.points.length; i < l; i++) {
-			const point = this.points[i];
-			data.points.push(point.toArray());
-		}
-
-		data.closed = this.closed;
-		data.curveType = this.curveType;
-		data.tension = this.tension;
-
-		return data;
-	}
-
 	fromJSON(json) {
 		super.fromJSON(json);
 

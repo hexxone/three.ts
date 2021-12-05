@@ -163,33 +163,7 @@ class Skeleton {
 		this.init();
 
 		return this;
-	}
-
-	toJSON() {
-		const data = {
-			metadata: {
-				version: 4.5,
-				type: "Skeleton",
-				generator: "Skeleton.toJSON",
-			},
-			bones: [],
-			boneInverses: [],
-			uuid: this.uuid,
-		};
-
-		const bones = this.bones;
-		const boneInverses = this.boneInverses;
-
-		for (let i = 0, l = bones.length; i < l; i++) {
-			const bone = bones[i];
-			data.bones.push(bone.uuid);
-
-			const boneInverse = boneInverses[i];
-			data.boneInverses.push(boneInverse.toArray());
-		}
-
-		return data;
-	}
+	
 }
 
 export { Skeleton };

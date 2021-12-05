@@ -191,20 +191,6 @@ class CurvePath extends Curve {
 		return this;
 	}
 
-	toJSON() {
-		const data = super.toJSON();
-
-		data.autoClose = this.autoClose;
-		data.curves = [];
-
-		for (let i = 0, l = this.curves.length; i < l; i++) {
-			const curve = this.curves[i];
-			data.curves.push(curve.toJSON());
-		}
-
-		return data;
-	}
-
 	fromJSON(json) {
 		super.fromJSON(json);
 

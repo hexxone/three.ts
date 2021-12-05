@@ -51,15 +51,6 @@ class LineCurve extends Curve {
 		return this;
 	}
 
-	toJSON() {
-		const data = super.toJSON();
-
-		data.v1 = this.v1.toArray();
-		data.v2 = this.v2.toArray();
-
-		return data;
-	}
-
 	fromJSON(json) {
 		super.fromJSON(json);
 

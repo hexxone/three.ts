@@ -52,25 +52,6 @@ class AnimationClip {
 		return clip;
 	}
 
-	static toJSON(clip) {
-		const tracks = [];
-		const clipTracks = clip.tracks;
-
-		const json = {
-			name: clip.name,
-			duration: clip.duration,
-			tracks: tracks,
-			uuid: clip.uuid,
-			blendMode: clip.blendMode,
-		};
-
-		for (let i = 0, n = clipTracks.length; i !== n; ++i) {
-			tracks.push(KeyframeTrack.toJSON(clipTracks[i]));
-		}
-
-		return json;
-	}
-
 	static createFromMorphTargetSequence(name, morphTargetSequence, fps, noLoop) {
 		const numMorphTargets = morphTargetSequence.length;
 		const tracks = [];
@@ -343,10 +324,6 @@ class AnimationClip {
 		}
 
 		return new AnimationClip(this.name, this.duration, tracks, this.blendMode);
-	}
-
-	toJSON() {
-		return this.constructor["toJSON"](this);
 	}
 }
 

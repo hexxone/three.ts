@@ -144,14 +144,6 @@ class TubeGeometry extends BufferGeometry {
 			}
 		}
 	}
-
-	toJSON() {
-		const data = super.toJSON() as any;
-
-		data.path = this.parameters.path.toJSON();
-
-		return data;
-	}
 }
 
 export { TubeGeometry, TubeGeometry as TubeBufferGeometry };

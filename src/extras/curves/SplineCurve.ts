@@ -50,19 +50,6 @@ class SplineCurve extends Curve {
 		return this;
 	}
 
-	toJSON() {
-		const data = super.toJSON();
-
-		data.points = [];
-
-		for (let i = 0, l = this.points.length; i < l; i++) {
-			const point = this.points[i];
-			data.points.push(point.toArray());
-		}
-
-		return data;
-	}
-
 	fromJSON(json) {
 		super.fromJSON(json);
 

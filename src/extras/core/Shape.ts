@@ -46,20 +46,6 @@ class Shape extends Path {
 		return this;
 	}
 
-	toJSON() {
-		const data = super.toJSON();
-
-		data.uuid = this.uuid;
-		data.holes = [];
-
-		for (let i = 0, l = this.holes.length; i < l; i++) {
-			const hole = this.holes[i];
-			data.holes.push(hole.toJSON());
-		}
-
-		return data;
-	}
-
 	fromJSON(json) {
 		super.fromJSON(json);
 

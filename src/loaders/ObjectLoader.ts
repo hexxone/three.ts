@@ -32,6 +32,7 @@ import {
 	HemisphereLight,
 	ImageLoader,
 	InstancedMesh,
+	Light,
 	LightProbe,
 	Line,
 	LineLoop,
@@ -55,10 +56,10 @@ import {
 	SpotLight,
 	Sprite,
 	Texture,
+	Geometries,
+	Curves,
+	Camera,
 } from "../";
-
-import * as Geometries from "../geometries";
-import * as Curves from "../extras/curves";
 
 class ObjectLoader extends Loader {
 	constructor(manager) {
@@ -686,7 +687,7 @@ class ObjectLoader extends Loader {
 	}
 
 	parseObject(data, geometries?, materials?, animations?) {
-		let object;
+		let object: Object3D;
 
 		function getGeometry(name) {
 			if (geometries[name] === undefined) {
@@ -727,52 +728,52 @@ class ObjectLoader extends Loader {
 
 		switch (data.type) {
 			case "Scene":
-				object = new Scene();
+				var sc = (object = new Scene());
 
 				if (data.background !== undefined) {
 					if (Number.isInteger(data.background)) {
-						object.background = new Color(data.background);
+						sc.background = new Color(data.background);
 					}
 				}
 
 				if (data.fog !== undefined) {
 					if (data.fog.type === "Fog") {
-						object.fog = new Fog(data.fog.color, data.fog.near, data.fog.far);
+						sc.fog = new Fog(data.fog.color, data.fog.near, data.fog.far);
 					} else if (data.fog.type === "FogExp2") {
-						object.fog = new FogExp2(data.fog.color, data.fog.density);
+						sc.fog = new FogExp2(data.fog.color, data.fog.density);
 					}
 				}
 
 				break;
 
 			case "PerspectiveCamera":
-				object = new PerspectiveCamera(
+				var pc = (object = new PerspectiveCamera(
 					data.fov,
 					data.aspect,
 					data.near,
 					data.far
-				);
+				));
 
-				if (data.focus !== undefined) object.focus = data.focus;
-				if (data.zoom !== undefined) object.zoom = data.zoom;
-				if (data.filmGauge !== undefined) object.filmGauge = data.filmGauge;
-				if (data.filmOffset !== undefined) object.filmOffset = data.filmOffset;
-				if (data.view !== undefined) object.view = Object.assign({}, data.view);
+				if (data.focus !== undefined) pc.focus = data.focus;
+				if (data.zoom !== undefined) pc.zoom = data.zoom;
+				if (data.filmGauge !== undefined) pc.filmGauge = data.filmGauge;
+				if (data.filmOffset !== undefined) pc.filmOffset = data.filmOffset;
+				if (data.view !== undefined) pc.view = Object.assign({}, data.view);
 
 				break;
 
 			case "OrthographicCamera":
-				object = new OrthographicCamera(
+				var oc = (object = new OrthographicCamera(
 					data.left,
 					data.right,
 					data.top,
 					data.bottom,
 					data.near,
 					data.far
-				);
+				));
 
-				if (data.zoom !== undefined) object.zoom = data.zoom;
-				if (data.view !== undefined) object.view = Object.assign({}, data.view);
+				if (data.zoom !== undefined) oc.zoom = data.zoom;
+				if (data.view !== undefined) oc.view = Object.assign({}, data.view);
 
 				break;
 
@@ -952,15 +953,16 @@ class ObjectLoader extends Loader {
 			object.receiveShadow = data.receiveShadow;
 
 		if (data.shadow) {
-			if (data.shadow.bias !== undefined) object.shadow.bias = data.shadow.bias;
+			var li = object as Light;
+			if (data.shadow.bias !== undefined) li.shadow.bias = data.shadow.bias;
 			if (data.shadow.normalBias !== undefined)
-				object.shadow.normalBias = data.shadow.normalBias;
+				li.shadow.normalBias = data.shadow.normalBias;
 			if (data.shadow.radius !== undefined)
-				object.shadow.radius = data.shadow.radius;
+				li.shadow.radius = data.shadow.radius;
 			if (data.shadow.mapSize !== undefined)
-				object.shadow.mapSize.fromArray(data.shadow.mapSize);
+				li.shadow.mapSize.fromArray(data.shadow.mapSize);
 			if (data.shadow.camera !== undefined)
-				object.shadow.camera = this.parseObject(data.shadow.camera);
+				li.shadow.camera = this.parseObject(data.shadow.camera) as Camera;
 		}
 
 		if (data.visible !== undefined) object.visible = data.visible;
@@ -991,16 +993,17 @@ class ObjectLoader extends Loader {
 		}
 
 		if (data.type === "LOD") {
+			var lodo = object as LOD;
 			if (data.autoUpdate !== undefined) object.autoUpdate = data.autoUpdate;
 
 			const levels = data.levels;
 
 			for (let l = 0; l < levels.length; l++) {
 				const level = levels[l];
-				const child = object.getObjectByProperty("uuid", level.object);
+				const child = lodo.getObjectByProperty("uuid", level.object);
 
 				if (child !== undefined) {
-					object.addLevel(child, level.distance);
+					lodo.addLevel(child, level.distance);
 				}
 			}
 		}

@@ -21,20 +21,22 @@ export function cloneUniforms(src) {
 		dst[u] = {};
 
 		for (const p in src[u]) {
-			const property = src[u][p] as Material;
+			const property = src[u][p];
 
-			if (
-				property &&
-				(property instanceof Color ||
-					property instanceof Matrix3 ||
-					property instanceof Matrix4 ||
-					property instanceof Vector2 ||
-					property instanceof Vector3 ||
-					property instanceof Vector4 ||
-					property instanceof Texture ||
-					property instanceof Quaternion)
-			) {
-				dst[u][p] = property.clone();
+			if (property instanceof Color) {
+				dst[u][p] = (property as Color).clone();
+			} else if (property instanceof Matrix3) {
+				dst[u][p] = (property as Matrix3).clone();
+			} else if (property instanceof Matrix4) {
+				dst[u][p] = (property as Matrix4).clone();
+			} else if (property instanceof Vector2) {
+				dst[u][p] = (property as Vector2).clone();
+			} else if (property instanceof Vector3) {
+				dst[u][p] = (property as Vector3).clone();
+			} else if (property instanceof Vector4) {
+				dst[u][p] = (property as Vector4).clone();
+			} else if (property instanceof Quaternion) {
+				dst[u][p] = (property as Quaternion).clone();
 			} else if (Array.isArray(property)) {
 				dst[u][p] = property.slice();
 			} else {

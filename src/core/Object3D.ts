@@ -8,6 +8,7 @@ import {
 	Skeleton,
 	Vector3,
 	EventObject,
+	BufferAttribute,
 } from "../";
 import { BufferGeometry, EventDispatcher, Layers, Raycaster } from ".";
 
@@ -54,9 +55,9 @@ export class Object3D extends EventDispatcher {
 
 	matrix = new Matrix4();
 	matrixWorld = new Matrix4();
-	matrixAutoUpdate;
+	matrixAutoUpdate = DefaultMatrixAutoUpdate;
 	matrixWorldNeedsUpdate = false;
-	instanceMatrix: any;
+	instanceMatrix: BufferAttribute;
 
 	layers = new Layers();
 	visible = true;
@@ -69,16 +70,18 @@ export class Object3D extends EventDispatcher {
 	userData = {};
 	geometry: BufferGeometry;
 
-	count: any;
+	count: number;
 
-	bindMode: any;
-	bindMatrix: any;
+	bindMode: string;
+	bindMatrix: Matrix4;
 
 	skeleton: Skeleton;
 	material: Material;
 
-	morphTargetInfluences: any[];
-	morphTargetDictionary: {};
+	morphTargetInfluences: number[];
+	morphTargetDictionary: {
+		[name: string]: number;
+	};
 
 	isBone: boolean;
 	isCamera: boolean;
@@ -102,8 +105,6 @@ export class Object3D extends EventDispatcher {
 		Object.defineProperty(this, "id", { value: _object3DId++ });
 
 		this.uuid = MathUtils.generateUUID();
-
-		this.matrixAutoUpdate = DefaultMatrixAutoUpdate;
 
 		this.name = "";
 		this.type = "Object3D";

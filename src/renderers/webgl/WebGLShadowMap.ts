@@ -68,13 +68,13 @@ class WebGLShadowMap {
 
 		this.shadowMaterialVertical = new ShaderMaterial();
 		this.shadowMaterialVertical.defines = {
-			SAMPLE_RATE: 2.0 / 8.0,
-			HALF_SAMPLE_RATE: 1.0 / 8.0,
+			"SAMPLE_RATE": 2.0 / 8.0,
+			"HALF_SAMPLE_RATE": 1.0 / 8.0,
 		};
 		this.shadowMaterialVertical.uniforms = {
-			shadow_pass: { value: null },
-			resolution: { value: new Vector2() },
-			radius: { value: 4.0 },
+			"shadow_pass": { value: null },
+			"resolution": { value: new Vector2() },
+			"radius": { value: 4.0 },
 		};
 		this.shadowMaterialVertical.vertexShader = vsm_vert;
 		this.shadowMaterialVertical.fragmentShader = vsm_frag;

@@ -173,12 +173,15 @@ function linearToSRGB(c) {
 	return c < 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 0.41666) - 0.055;
 }
 
+/**
+ * @public
+ */
 class Color {
 	static NAMES = _colorKeywords;
 
-	r = 1;
-	g = 1;
-	b = 1;
+	public r = 1;
+	public g = 1;
+	public b = 1;
 
 	isColor = true;
 

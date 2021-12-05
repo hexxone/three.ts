@@ -9,8 +9,8 @@ import {
 import { Fog } from "./Fog";
 
 class Scene extends Object3D {
-	background: WebGLRenderTarget & Texture & Color;
-	environment: any;
+	background: WebGLRenderTarget | Texture | Color;
+	environment: Texture;
 	fog: Fog | FogExp2;
 	overrideMaterial: Material;
 

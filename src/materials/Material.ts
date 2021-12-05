@@ -12,6 +12,7 @@ import {
 	Plane,
 	SrcAlphaFactor,
 	Texture,
+	Vector2,
 } from "../";
 
 let materialId = 0;
@@ -118,46 +119,46 @@ class Material extends EventDispatcher {
 	version: number;
 	flatShading: boolean;
 	color: Color;
-	roughness: any;
-	metalness: any;
-	emissive: any;
+	roughness: number;
+	metalness: number;
+	emissive: Color;
 	emissiveIntensity: number;
-	specular: any;
-	shininess: any;
-	clearcoatRoughness: any;
-	clearcoatMap: any;
-	clearcoatRoughnessMap: any;
-	clearcoatNormalMap: any;
-	clearcoatNormalScale: any;
+	specular: Color;
+	shininess: number; // @todo or color?
+	clearcoatRoughness: number;
+	clearcoatMap: Texture;
+	clearcoatRoughnessMap: Texture;
+	clearcoatNormalMap: Texture;
+	clearcoatNormalScale: Vector2;
 
 	_sheen: any;
 	_clearcoat: any;
 
-	map: any;
-	matcap: any;
-	alphaMap: any;
-	lightMap: any;
+	map: Texture;
+	matcap: Texture;
+	alphaMap: Texture;
+	lightMap: Texture;
 	lightMapIntensity: any;
-	aoMap: any;
+	aoMap: Texture;
 	aoMapIntensity: any;
-	bumpMap: any;
+	bumpMap: Texture;
 	bumpScale: any;
-	normalMap: any;
+	normalMap: Texture;
 	normalMapType: any;
 	normalScale: any;
-	displacementMap: any;
+	displacementMap: Texture;
 	displacementScale: any;
 	displacementBias: any;
-	roughnessMap: any;
-	metalnessMap: any;
-	emissiveMap: any;
-	specularMap: any;
-	envMap: any;
+	roughnessMap: Texture;
+	metalnessMap: Texture;
+	emissiveMap: Texture;
+	specularMap: Texture;
+	envMap: Texture;
 	reflectivity: any;
 	refractionRatio: any;
 	combine: any;
 	envMapIntensity: any;
-	gradientMap: any;
+	gradientMap: Texture;
 	size: any;
 	sizeAttenuation: any;
 	rotation: number;

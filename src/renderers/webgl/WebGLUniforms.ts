@@ -43,11 +43,13 @@
  *
  */
 
+import { Color, Matrix3, Matrix4, Vector3, Vector4, WebGLTextures } from "src/we_utils/src";
 import {
 	CubeTexture,
 	DataTexture2DArray,
 	DataTexture3D,
 	Texture,
+	Vector2,
 } from "../../";
 
 const emptyTexture = new Texture();
@@ -107,7 +109,7 @@ function arraysEqual(a, b) {
 	return true;
 }
 
-function copyArray(a, b) {
+function copyArray(a: any[] | Float32Array | Int32Array, b: any[] | Float32Array | Int32Array) {
 	for (let i = 0, l = b.length; i < l; i++) {
 		a[i] = b[i];
 	}
@@ -168,7 +170,7 @@ function setValueV2f(gl: GLESRenderingContext, v) {
 	}
 }
 
-function setValueV3f(gl: GLESRenderingContext, v) {
+function setValueV3f(gl: GLESRenderingContext, v: Vector3 & Color & Float32Array) {
 	const cache = this.cache;
 
 	if (v.x !== undefined) {
@@ -196,7 +198,7 @@ function setValueV3f(gl: GLESRenderingContext, v) {
 	}
 }
 
-function setValueV4f(gl: GLESRenderingContext, v) {
+function setValueV4f(gl: GLESRenderingContext, v: Vector4 & Float32Array) {
 	const cache = this.cache;
 
 	if (v.x !== undefined) {
@@ -224,7 +226,7 @@ function setValueV4f(gl: GLESRenderingContext, v) {
 
 // Single matrix (from flat array or MatrixN)
 
-function setValueM2(gl: GLESRenderingContext, v) {
+function setValueM2(gl: GLESRenderingContext, v: Matrix4 & Float32Array) { // @todo M3 & M4 ok ?
 	const cache = this.cache;
 	const elements = v.elements;
 
@@ -245,7 +247,7 @@ function setValueM2(gl: GLESRenderingContext, v) {
 	}
 }
 
-function setValueM3(gl: GLESRenderingContext, v) {
+function setValueM3(gl: GLESRenderingContext, v: Matrix3 & Float32Array) {
 	const cache = this.cache;
 	const elements = v.elements;
 
@@ -266,7 +268,7 @@ function setValueM3(gl: GLESRenderingContext, v) {
 	}
 }
 
-function setValueM4(gl: GLESRenderingContext, v) {
+function setValueM4(gl: GLESRenderingContext, v: Matrix4 & Float32Array) {
 	const cache = this.cache;
 	const elements = v.elements;
 
@@ -289,7 +291,7 @@ function setValueM4(gl: GLESRenderingContext, v) {
 
 // Single texture (2D / Cube)
 
-function setValueT1(gl: GLESRenderingContext, v, textures) {
+function setValueT1(gl: GLESRenderingContext, v, textures: WebGLTextures) {
 	const cache = this.cache;
 	const unit = textures.allocateTextureUnit();
 
@@ -301,7 +303,7 @@ function setValueT1(gl: GLESRenderingContext, v, textures) {
 	textures.safeSetTexture2D(v || emptyTexture, unit);
 }
 
-function setValueT2DArray1(gl: GLESRenderingContext, v, textures) {
+function setValueT2DArray1(gl: GLESRenderingContext, v, textures: WebGLTextures) {
 	const cache = this.cache;
 	const unit = textures.allocateTextureUnit();
 
@@ -313,7 +315,7 @@ function setValueT2DArray1(gl: GLESRenderingContext, v, textures) {
 	textures.setTexture2DArray(v || emptyTexture2dArray, unit);
 }
 
-function setValueT3D1(gl: GLESRenderingContext, v, textures) {
+function setValueT3D1(gl: GLESRenderingContext, v, textures: WebGLTextures) {
 	const cache = this.cache;
 	const unit = textures.allocateTextureUnit();
 
@@ -325,7 +327,7 @@ function setValueT3D1(gl: GLESRenderingContext, v, textures) {
 	textures.setTexture3D(v || emptyTexture3d, unit);
 }
 
-function setValueT6(gl: GLESRenderingContext, v, textures) {
+function setValueT6(gl: GLESRenderingContext, v, textures: WebGLTextures) {
 	const cache = this.cache;
 	const unit = textures.allocateTextureUnit();
 
@@ -339,7 +341,7 @@ function setValueT6(gl: GLESRenderingContext, v, textures) {
 
 // Integer / Boolean vectors or arrays thereof (always flat arrays)
 
-function setValueV1i(gl: GLESRenderingContext, v) {
+function setValueV1i(gl: GLESRenderingContext, v: number) {
 	const cache = this.cache;
 
 	if (cache[0] === v) return;
@@ -349,7 +351,7 @@ function setValueV1i(gl: GLESRenderingContext, v) {
 	cache[0] = v;
 }
 
-function setValueV2i(gl: GLESRenderingContext, v) {
+function setValueV2i(gl: GLESRenderingContext, v: Int32Array) {
 	const cache = this.cache;
 
 	if (arraysEqual(cache, v)) return;
@@ -359,7 +361,7 @@ function setValueV2i(gl: GLESRenderingContext, v) {
 	copyArray(cache, v);
 }
 
-function setValueV3i(gl: GLESRenderingContext, v) {
+function setValueV3i(gl: GLESRenderingContext, v: Int32Array) {
 	const cache = this.cache;
 
 	if (arraysEqual(cache, v)) return;
@@ -369,7 +371,7 @@ function setValueV3i(gl: GLESRenderingContext, v) {
 	copyArray(cache, v);
 }
 
-function setValueV4i(gl: GLESRenderingContext, v) {
+function setValueV4i(gl: GLESRenderingContext, v: Int32Array) {
 	const cache = this.cache;
 
 	if (arraysEqual(cache, v)) return;
@@ -381,7 +383,7 @@ function setValueV4i(gl: GLESRenderingContext, v) {
 
 // uint
 
-function setValueV1ui(gl: GLESRenderingContext, v) {
+function setValueV1ui(gl: GLESRenderingContext, v: number) {
 	const cache = this.cache;
 
 	if (cache[0] === v) return;
@@ -454,42 +456,42 @@ function getSingularSetter(type: number) {
 }
 
 // Array of scalars
-function setValueV1fArray(gl, v) {
+function setValueV1fArray(gl: GLESRenderingContext, v) {
 	gl.uniform1fv(this.addr, v);
 }
 
 // Integer / Boolean vectors or arrays thereof (always flat arrays)
-function setValueV1iArray(gl, v) {
+function setValueV1iArray(gl: GLESRenderingContext, v) {
 	gl.uniform1iv(this.addr, v);
 }
 
-function setValueV2iArray(gl, v) {
+function setValueV2iArray(gl: GLESRenderingContext, v) {
 	gl.uniform2iv(this.addr, v);
 }
 
-function setValueV3iArray(gl, v) {
+function setValueV3iArray(gl: GLESRenderingContext, v) {
 	gl.uniform3iv(this.addr, v);
 }
 
-function setValueV4iArray(gl, v) {
+function setValueV4iArray(gl: GLESRenderingContext, v) {
 	gl.uniform4iv(this.addr, v);
 }
 
 // Array of vectors (flat or from THREE classes)
 
-function setValueV2fArray(gl, v) {
+function setValueV2fArray(gl: GLESRenderingContext, v) {
 	const data = flatten(v, this.size, 2);
 
 	gl.uniform2fv(this.addr, data);
 }
 
-function setValueV3fArray(gl, v) {
+function setValueV3fArray(gl: GLESRenderingContext, v) {
 	const data = flatten(v, this.size, 3);
 
 	gl.uniform3fv(this.addr, data);
 }
 
-function setValueV4fArray(gl, v) {
+function setValueV4fArray(gl: GLESRenderingContext, v) {
 	const data = flatten(v, this.size, 4);
 
 	gl.uniform4fv(this.addr, data);
@@ -497,19 +499,19 @@ function setValueV4fArray(gl, v) {
 
 // Array of matrices (flat or from THREE clases)
 
-function setValueM2Array(gl, v) {
+function setValueM2Array(gl: GLESRenderingContext, v) {
 	const data = flatten(v, this.size, 4);
 
 	gl.uniformMatrix2fv(this.addr, false, data);
 }
 
-function setValueM3Array(gl, v) {
+function setValueM3Array(gl: GLESRenderingContext, v) {
 	const data = flatten(v, this.size, 9);
 
 	gl.uniformMatrix3fv(this.addr, false, data);
 }
 
-function setValueM4Array(gl, v) {
+function setValueM4Array(gl: GLESRenderingContext, v) {
 	const data = flatten(v, this.size, 16);
 
 	gl.uniformMatrix4fv(this.addr, false, data);
@@ -517,7 +519,7 @@ function setValueM4Array(gl, v) {
 
 // Array of textures (2D / Cube)
 
-function setValueT1Array(gl, v, textures) {
+function setValueT1Array(gl: GLESRenderingContext, v, textures) {
 	const n = v.length;
 
 	const units = allocTexUnits(textures, n);
@@ -529,7 +531,7 @@ function setValueT1Array(gl, v, textures) {
 	}
 }
 
-function setValueT6Array(gl, v, textures) {
+function setValueT6Array(gl: GLESRenderingContext, v, textures) {
 	const n = v.length;
 
 	const units = allocTexUnits(textures, n);
@@ -594,7 +596,7 @@ function getPureArraySetter(type) {
 interface IUniform {
 	id: any;
 
-	setValue: (gl: GLESRenderingContext, v: any, textures: any) => void;
+	setValue: (gl: GLESRenderingContext, v: any, textures: WebGLTextures) => void;
 }
 
 class SingleUniform implements IUniform {
@@ -613,7 +615,7 @@ class SingleUniform implements IUniform {
 	}
 
 	/** virtual */
-	setValue: (gl: GLESRenderingContext, v: any, textures: any) => void;
+	setValue: (gl: GLESRenderingContext, v: any, textures: WebGLTextures) => void;
 }
 
 class PureArrayUniform implements IUniform {
@@ -648,7 +650,7 @@ class PureArrayUniform implements IUniform {
 class StructuredUniform implements IUniform {
 	id: any;
 
-	seq: any[];
+	seq: IUniform[];
 	map: {};
 
 	constructor(id) {
@@ -658,7 +660,7 @@ class StructuredUniform implements IUniform {
 		this.map = {};
 	}
 
-	setValue(gl: any, value: any, textures: any) {
+	setValue(gl: GLESRenderingContext, value: any, textures: WebGLTextures) {
 		const seq = this.seq;
 
 		for (let i = 0, n = seq.length; i !== n; ++i) {

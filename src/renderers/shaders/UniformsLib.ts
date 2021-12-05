@@ -2,8 +2,8 @@ import { Color, Matrix3, Vector2 } from "../../";
 
 /**
  * Uniforms library for shared webgl shaders
+ * @public
  */
-
 const UniformsLib = {
 	// what is this and where does it come from?
 	LTC_FLOAT_1: null,

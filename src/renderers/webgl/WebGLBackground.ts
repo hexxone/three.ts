@@ -1,3 +1,4 @@
+import { WebGLRenderTarget } from "src/we_utils/src";
 import {
 	CubeTexture,
 	BackSide,
@@ -14,6 +15,8 @@ import {
 	ShaderLib,
 	ShaderMaterial,
 	WebGLRenderer,
+	WebGLCubeRenderTarget,
+	Texture,
 } from "../../";
 
 import { WebGLCubeMaps } from "./WebGLCubeMaps";
@@ -54,13 +57,13 @@ class WebGLBackground {
 
 	render(
 		renderList: WebGLRenderList,
-		scene: Object3D | Scene,
+		scene: Object3D,
 		camera: Camera,
 		forceClear = false
 	) {
 		let background = scene.isScene ? (scene as Scene).background : null;
 
-		if (background && background.isTexture) {
+		if (background && background instanceof Texture) {
 			background = this._cubemaps.get(background);
 		}
 
@@ -76,7 +79,7 @@ class WebGLBackground {
 
 		if (background === null) {
 			this.setClear(this.clearColor, this.clearAlpha);
-		} else if (background && background.isColor) {
+		} else if (background && background instanceof Color) {
 			this.setClear(background, 1);
 			forceClear = true;
 		}
@@ -89,11 +92,8 @@ class WebGLBackground {
 			);
 		}
 
-		if (
-			background &&
-			(background.isCubeTexture ||
-				background.isWebGLCubeRenderTarget ||
-				background.mapping === CubeUVReflectionMapping)
+		if ( background && (background instanceof CubeTexture || background instanceof WebGLCubeRenderTarget ||
+				(background instanceof Texture && background.mapping === CubeUVReflectionMapping))
 		) {
 			if (this.boxMesh === undefined) {
 				const boxMat = new ShaderMaterial();
@@ -125,14 +125,12 @@ class WebGLBackground {
 				this._objects.update(this.boxMesh);
 			}
 
-			if (background.isWebGLCubeRenderTarget) {
+			if (background instanceof WebGLCubeRenderTarget) {
 				// TODO Deprecate
-
-				background = background.texture as any;
+				background = background.texture;
 			}
 
-			(this.boxMesh.material as ShaderMaterial).uniforms.envMap.value =
-				background;
+			(this.boxMesh.material as ShaderMaterial).uniforms.envMap.value = background;
 			(this.boxMesh.material as ShaderMaterial).uniforms.flipEnvMap.value =
 				background instanceof CubeTexture && background._needsFlipEnvMap
 					? -1
@@ -159,7 +157,7 @@ class WebGLBackground {
 				0,
 				null
 			);
-		} else if (background && background.isTexture) {
+		} else if (background && background instanceof Texture) {
 			if (this.planeMesh === undefined) {
 				const shaderMat = new ShaderMaterial();
 				shaderMat.name = "BackgroundMaterial";

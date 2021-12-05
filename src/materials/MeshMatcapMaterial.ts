@@ -32,7 +32,7 @@ import { Material } from "./Material";
  */
 
 class MeshMatcapMaterial extends Material {
-	defines: { MATCAP: string };
+	defines: { "MATCAP": string };
 
 	constructor() {
 		super();
@@ -65,13 +65,13 @@ class MeshMatcapMaterial extends Material {
 
 		this.flatShading = false;
 
-		this.defines = { MATCAP: "" };
+		this.defines = { "MATCAP": "" };
 	}
 
 	copy(source: MeshMatcapMaterial) {
 		super.copy(source);
 
-		this.defines = { MATCAP: "" };
+		this.defines = { "MATCAP": "" };
 
 		this.color.copy(source.color);
 

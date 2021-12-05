@@ -1,7 +1,6 @@
-import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4 } from "../";
+import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4, MaterialMap } from "../";
 import { FileLoader } from "./FileLoader";
 import { Loader } from "./Loader";
-import * as Materials from "../materials/";
 
 class MaterialLoader extends Loader {
 	textures: {};
@@ -49,7 +48,7 @@ class MaterialLoader extends Loader {
 			return textures[name];
 		}
 
-		const material = new Materials[json.type]();
+		const material = new MaterialMap[json.type]();
 
 		if (json.uuid !== undefined) material.uuid = json.uuid;
 		if (json.name !== undefined) material.name = json.name;

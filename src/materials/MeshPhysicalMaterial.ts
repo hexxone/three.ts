@@ -50,8 +50,8 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 		super();
 
 		this.defines = {
-			STANDARD: "",
-			PHYSICAL: "",
+			"STANDARD": "",
+			"PHYSICAL": "",
 		};
 
 		this.isMeshPhysicalMaterial = true;
@@ -110,8 +110,8 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 		super.copy(source); // todo use super.copy everywhere instead protofype.copy.call
 
 		this.defines = {
-			STANDARD: "",
-			PHYSICAL: "",
+			"STANDARD": "",
+			"PHYSICAL": "",
 		};
 
 		this.clearcoat = source.clearcoat;

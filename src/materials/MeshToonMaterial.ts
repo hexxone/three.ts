@@ -49,7 +49,7 @@ class MeshToonMaterial extends Material {
 		this.isMeshToonMaterial = true;
 		this.type = "MeshToonMaterial";
 
-		this.defines = { TOON: "" };
+		this.defines = { "TOON": "" };
 
 		this.color = new Color(0xffffff);
 

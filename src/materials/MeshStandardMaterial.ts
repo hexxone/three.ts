@@ -61,7 +61,7 @@ class MeshStandardMaterial extends Material {
 		super();
 
 		this.isMeshStandardMaterial = true;
-		this.defines = { STANDARD: "" };
+		this.defines = { "STANDARD": "" };
 
 		this.type = "MeshStandardMaterial";
 
@@ -120,7 +120,7 @@ class MeshStandardMaterial extends Material {
 	copy(source: MeshStandardMaterial) {
 		super.copy(source);
 
-		this.defines = { STANDARD: "" };
+		this.defines = { "STANDARD": "" };
 
 		this.color.copy(source.color);
 		this.roughness = source.roughness;

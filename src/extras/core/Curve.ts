@@ -58,7 +58,7 @@ class Curve {
 	//	- t [0 .. 1]
 
 	getPoint(u, optionalTarget?) {
-		console.warn("THREE.Curve: .getPoint() not implemented.");
+		console.warn("Curve: .getPoint() not implemented.");
 		return null;
 	}
 

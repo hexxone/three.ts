@@ -9,19 +9,20 @@ import {
 } from "../";
 
 class KeyframeTrack {
-	name: any;
-	times: any;
-	values: any;
+	name: string;
+	times: number[];
+	values: Float32Array;
 	ValueTypeName: string;
 	createInterpolant: any;
 
 	DefaultInterpolation = InterpolateLinear;
+
 	TimeBufferType = Float32Array;
 	ValueBufferType = Float32Array;
 
-	constructor(name, times, values, interpolation?) {
+	constructor(name: string, times: number[], values: number[], interpolation?: number) {
 		if (name === undefined)
-			throw new Error("THREE.KeyframeTrack: track name is undefined");
+			throw new Error("KeyframeTrack: track name is undefined");
 		if (times === undefined || times.length === 0)
 			throw new Error(
 				"THREE.KeyframeTrack: no keyframes in track named " + name
@@ -62,7 +63,7 @@ class KeyframeTrack {
 		);
 	}
 
-	setInterpolation(interpolation) {
+	setInterpolation(interpolation: number) {
 		let factoryMethod;
 
 		switch (interpolation) {
@@ -98,7 +99,7 @@ class KeyframeTrack {
 				}
 			}
 
-			console.warn("THREE.KeyframeTrack:", message);
+			console.warn("KeyframeTrack:", message);
 			return this;
 		}
 
@@ -107,7 +108,7 @@ class KeyframeTrack {
 		return this;
 	}
 
-	getInterpolation() {
+	getInterpolation(): number {
 		switch (this.createInterpolant) {
 			case this.InterpolantFactoryMethodDiscrete:
 				return InterpolateDiscrete;
@@ -120,12 +121,12 @@ class KeyframeTrack {
 		}
 	}
 
-	getValueSize() {
+	getValueSize(): number {
 		return this.values.length / this.times.length;
 	}
 
 	// move all keyframes either forwards or backwards in time
-	shift(timeOffset) {
+	shift(timeOffset: number) {
 		if (timeOffset !== 0.0) {
 			const times = this.times;
 
@@ -194,7 +195,7 @@ class KeyframeTrack {
 
 		const valueSize = this.getValueSize();
 		if (valueSize - Math.floor(valueSize) !== 0) {
-			console.error("THREE.KeyframeTrack: Invalid value size in track.", this);
+			console.error("KeyframeTrack: Invalid value size in track.", this);
 			valid = false;
 		}
 
@@ -204,7 +205,7 @@ class KeyframeTrack {
 		const nKeys = times.length;
 
 		if (nKeys === 0) {
-			console.error("THREE.KeyframeTrack: Track is empty.", this);
+			console.error("KeyframeTrack: Track is empty.", this);
 			valid = false;
 		}
 

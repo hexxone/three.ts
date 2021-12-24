@@ -66,7 +66,7 @@ class WebGLGeometries {
 	get(object: Object3D, geometry: BufferGeometry) {
 		if (this.geometries[geometry.id] === true) return geometry;
 
-		geometry.addEventListener("dispose", this.onGeometryDispose);
+		geometry.addEventListener("dispose", (e) => this.onGeometryDispose(e));
 
 		this.geometries[geometry.id] = true;
 

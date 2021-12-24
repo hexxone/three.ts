@@ -14,10 +14,6 @@ import { Color } from "../";
  *  morphTargets: <bool>
  * }
  */
-
-/**
- * @public
- */
 class PointsMaterial extends Material {
 	constructor() {
 		super();

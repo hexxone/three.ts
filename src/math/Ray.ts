@@ -50,11 +50,6 @@ class Ray {
 	}
 
 	closestPointToPoint(point: Vector3, target: Vector3) {
-		if (target === undefined) {
-			console.warn("THREE.Ray: .closestPointToPoint() target is now required");
-			target = new Vector3();
-		}
-
 		target.subVectors(point, this.origin);
 
 		const directionDistance = target.dot(this.direction);

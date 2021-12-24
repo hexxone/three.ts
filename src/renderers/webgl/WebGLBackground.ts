@@ -1,4 +1,3 @@
-import { WebGLRenderTarget } from "src/we_utils/src";
 import {
 	CubeTexture,
 	BackSide,

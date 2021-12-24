@@ -228,7 +228,7 @@ class CurvePath extends Curve {
 					this.curves.push(new EllipseCurve().fromJSON(curve));
 					break;
 				default:
-					console.warn("THREE.CurvePath: Unsupported curve type " + curve.type);
+					console.warn("CurvePath: Unsupported curve type " + curve.type);
 			}
 		}
 

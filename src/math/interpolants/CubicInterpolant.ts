@@ -24,7 +24,7 @@ class CubicInterpolant extends Interpolant {
 		endingEnd: number;
 	};
 
-	constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
+	constructor(parameterPositions: number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer) {
 		super(parameterPositions, sampleValues, sampleSize, resultBuffer);
 
 		this.DefaultSettings_ = {

@@ -39,7 +39,7 @@ export class Camera extends Object3D {
 
 	getWorldDirection(target) {
 		if (target === undefined) {
-			console.warn("THREE.Camera: .getWorldDirection() target is now required");
+			console.warn("Camera: .getWorldDirection() target is now required");
 			target = new Vector3();
 		}
 

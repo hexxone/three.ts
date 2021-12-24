@@ -290,7 +290,7 @@ class WebGLTextures {
 	onRenderTargetDispose(event) {
 		const renderTarget = event.target;
 
-		renderTarget.removeEventListener("dispose", this.onRenderTargetDispose);
+		renderTarget.removeEventListener("dispose", e => this.onRenderTargetDispose(e));
 
 		this.deallocateRenderTarget(renderTarget);
 
@@ -586,7 +586,7 @@ class WebGLTextures {
 		if (textureProperties.__webglInit === undefined) {
 			textureProperties.__webglInit = true;
 
-			texture.addEventListener("dispose", this.onTextureDispose);
+			texture.addEventListener("dispose", e => this.onTextureDispose(e));
 
 			textureProperties.__webglTexture = this._gl.createTexture();
 
@@ -1315,7 +1315,7 @@ class WebGLTextures {
 		const renderTargetProperties = this._properties.get(renderTarget);
 		const textureProperties = this._properties.get(texture);
 
-		renderTarget.addEventListener("dispose", this.onRenderTargetDispose);
+		renderTarget.addEventListener("dispose", e=> this.onRenderTargetDispose(e));
 
 		textureProperties.__webglTexture = this._gl.createTexture();
 

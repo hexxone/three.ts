@@ -1,5 +1,6 @@
 import { Vector3 } from "./Vector3";
 import { MathUtils } from "./MathUtils";
+import { Matrix4 } from "..";
 
 const _startP = /* @__PURE__*/ new Vector3();
 const _startEnd = /* @__PURE__*/ new Vector3();
@@ -13,7 +14,7 @@ class Line3 {
 		this.end = end;
 	}
 
-	set(start, end) {
+	set(start: Vector3, end: Vector3) {
 		this.start.copy(start);
 		this.end.copy(end);
 
@@ -27,21 +28,11 @@ class Line3 {
 		return this;
 	}
 
-	getCenter(target) {
-		if (target === undefined) {
-			console.warn("THREE.Line3: .getCenter() target is now required");
-			target = new Vector3();
-		}
-
+	getCenter(target: Vector3) {
 		return target.addVectors(this.start, this.end).multiplyScalar(0.5);
 	}
 
-	delta(target) {
-		if (target === undefined) {
-			console.warn("THREE.Line3: .delta() target is now required");
-			target = new Vector3();
-		}
-
+	delta(target: Vector3) {
 		return target.subVectors(this.end, this.start);
 	}
 
@@ -53,16 +44,11 @@ class Line3 {
 		return this.start.distanceTo(this.end);
 	}
 
-	at(t, target) {
-		if (target === undefined) {
-			console.warn("THREE.Line3: .at() target is now required");
-			target = new Vector3();
-		}
-
+	at(t: number, target: Vector3) {
 		return this.delta(target).multiplyScalar(t).add(this.start);
 	}
 
-	closestPointToPointParameter(point, clampToLine) {
+	closestPointToPointParameter(point: Vector3, clampToLine: boolean) {
 		_startP.subVectors(point, this.start);
 		_startEnd.subVectors(this.end, this.start);
 
@@ -78,27 +64,19 @@ class Line3 {
 		return t;
 	}
 
-	closestPointToPoint(point, clampToLine, target) {
+	closestPointToPoint(point: Vector3, clampToLine: boolean, target: Vector3) {
 		const t = this.closestPointToPointParameter(point, clampToLine);
-
-		if (target === undefined) {
-			console.warn(
-				"THREE.Line3: .closestPointToPoint() target is now required"
-			);
-			target = new Vector3();
-		}
-
 		return this.delta(target).multiplyScalar(t).add(this.start);
 	}
 
-	applyMatrix4(matrix) {
+	applyMatrix4(matrix: Matrix4) {
 		this.start.applyMatrix4(matrix);
 		this.end.applyMatrix4(matrix);
 
 		return this;
 	}
 
-	equals(line) {
+	equals(line: Line3) {
 		return line.start.equals(this.start) && line.end.equals(this.end);
 	}
 

@@ -43,13 +43,18 @@
  *
  */
 
-import { Color, Matrix3, Matrix4, Vector3, Vector4, WebGLTextures } from "src/we_utils/src";
 import {
 	CubeTexture,
 	DataTexture2DArray,
 	DataTexture3D,
 	Texture,
 	Vector2,
+	Color,
+	Matrix3,
+	Matrix4,
+	Vector3,
+	Vector4,
+	WebGLTextures,
 } from "../../";
 
 const emptyTexture = new Texture();
@@ -109,7 +114,10 @@ function arraysEqual(a, b) {
 	return true;
 }
 
-function copyArray(a: any[] | Float32Array | Int32Array, b: any[] | Float32Array | Int32Array) {
+function copyArray(
+	a: any[] | Float32Array | Int32Array,
+	b: any[] | Float32Array | Int32Array
+) {
 	for (let i = 0, l = b.length; i < l; i++) {
 		a[i] = b[i];
 	}
@@ -170,7 +178,10 @@ function setValueV2f(gl: GLESRenderingContext, v) {
 	}
 }
 
-function setValueV3f(gl: GLESRenderingContext, v: Vector3 & Color & Float32Array) {
+function setValueV3f(
+	gl: GLESRenderingContext,
+	v: Vector3 & Color & Float32Array
+) {
 	const cache = this.cache;
 
 	if (v.x !== undefined) {
@@ -226,7 +237,8 @@ function setValueV4f(gl: GLESRenderingContext, v: Vector4 & Float32Array) {
 
 // Single matrix (from flat array or MatrixN)
 
-function setValueM2(gl: GLESRenderingContext, v: Matrix4 & Float32Array) { // @todo M3 & M4 ok ?
+function setValueM2(gl: GLESRenderingContext, v: Matrix4 & Float32Array) {
+	// @todo M3 & M4 ok ?
 	const cache = this.cache;
 	const elements = v.elements;
 
@@ -303,7 +315,11 @@ function setValueT1(gl: GLESRenderingContext, v, textures: WebGLTextures) {
 	textures.safeSetTexture2D(v || emptyTexture, unit);
 }
 
-function setValueT2DArray1(gl: GLESRenderingContext, v, textures: WebGLTextures) {
+function setValueT2DArray1(
+	gl: GLESRenderingContext,
+	v,
+	textures: WebGLTextures
+) {
 	const cache = this.cache;
 	const unit = textures.allocateTextureUnit();
 

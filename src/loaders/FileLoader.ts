@@ -63,7 +63,7 @@ export class FileLoader extends Loader {
 					// Some browsers return HTTP Status 0 when using non-http protocol
 					// e.g. 'file://' or 'data://'. Handle as success.
 					if (response.status === 0) {
-						console.warn("THREE.FileLoader: HTTP Status 0 received.");
+						console.warn("FileLoader: HTTP Status 0 received.");
 					}
 
 					const callbacks = loading[url];

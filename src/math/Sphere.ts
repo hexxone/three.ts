@@ -1,10 +1,11 @@
+import { Matrix4, Plane } from "..";
 import { Box3 } from "./Box3";
 import { Vector3 } from "./Vector3";
 
 const _box = /* @__PURE__*/ new Box3();
 
 class Sphere {
-	center: any;
+	center: Vector3;
 	radius: number;
 
 	constructor(center = new Vector3(), radius = -1) {
@@ -12,14 +13,14 @@ class Sphere {
 		this.radius = radius;
 	}
 
-	set(center, radius) {
+	set(center: Vector3, radius: number) {
 		this.center.copy(center);
 		this.radius = radius;
 
 		return this;
 	}
 
-	setFromPoints(points, optionalCenter) {
+	setFromPoints(points: Vector3[], optionalCenter?: Vector3) {
 		const center = this.center;
 
 		if (optionalCenter !== undefined) {
@@ -57,15 +58,15 @@ class Sphere {
 		return this;
 	}
 
-	containsPoint(point) {
+	containsPoint(point: Vector3) {
 		return point.distanceToSquared(this.center) <= this.radius * this.radius;
 	}
 
-	distanceToPoint(point) {
+	distanceToPoint(point: Vector3) {
 		return point.distanceTo(this.center) - this.radius;
 	}
 
-	intersectsSphere(sphere) {
+	intersectsSphere(sphere: Sphere) {
 		const radiusSum = this.radius + sphere.radius;
 
 		return (
@@ -73,21 +74,16 @@ class Sphere {
 		);
 	}
 
-	intersectsBox(box) {
+	intersectsBox(box: Box3) {
 		return box.intersectsSphere(this);
 	}
 
-	intersectsPlane(plane) {
+	intersectsPlane(plane: Plane) {
 		return Math.abs(plane.distanceToPoint(this.center)) <= this.radius;
 	}
 
-	clampPoint(point, target) {
+	clampPoint(point: Vector3, target: Vector3) {
 		const deltaLengthSq = this.center.distanceToSquared(point);
-
-		if (target === undefined) {
-			console.warn("THREE.Sphere: .clampPoint() target is now required");
-			target = new Vector3();
-		}
 
 		target.copy(point);
 
@@ -99,11 +95,7 @@ class Sphere {
 		return target;
 	}
 
-	getBoundingBox(target) {
-		if (target === undefined) {
-			console.warn("THREE.Sphere: .getBoundingBox() target is now required");
-			target = new Box3();
-		}
+	getBoundingBox(target: Box3) {
 
 		if (this.isEmpty()) {
 			// Empty sphere produces empty bounding box
@@ -117,20 +109,20 @@ class Sphere {
 		return target;
 	}
 
-	applyMatrix4(matrix) {
+	applyMatrix4(matrix: Matrix4) {
 		this.center.applyMatrix4(matrix);
 		this.radius = this.radius * matrix.getMaxScaleOnAxis();
 
 		return this;
 	}
 
-	translate(offset) {
+	translate(offset: Vector3) {
 		this.center.add(offset);
 
 		return this;
 	}
 
-	equals(sphere) {
+	equals(sphere: Sphere) {
 		return sphere.center.equals(this.center) && sphere.radius === this.radius;
 	}
 

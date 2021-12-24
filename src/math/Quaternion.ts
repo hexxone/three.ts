@@ -1,7 +1,10 @@
-import { Matrix4, Vector3 } from "../";
+import { BufferAttribute, InterleavedBufferAttribute, Matrix4, Vector3 } from "../";
 import { Euler } from "../";
 import { MathUtils } from "./MathUtils";
 
+/**
+ * @public
+ */
 class Quaternion {
 	_x: number;
 	_y: number;
@@ -252,7 +255,7 @@ class Quaternion {
 		return this;
 	}
 
-	setFromAxisAngle(axis, angle) {
+	setFromAxisAngle(axis: Vector3, angle) {
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 
 		// assumes axis is normalized
@@ -566,7 +569,7 @@ class Quaternion {
 		return array;
 	}
 
-	fromBufferAttribute(attribute, index) {
+	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index) {
 		this._x = attribute.getX(index);
 		this._y = attribute.getY(index);
 		this._z = attribute.getZ(index);

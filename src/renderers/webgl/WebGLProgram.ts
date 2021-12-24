@@ -63,7 +63,7 @@ function getEncodingComponents(encoding) {
 		case LogLuvEncoding:
 			return ["LogLuv", "( value )"];
 		default:
-			console.warn("THREE.WebGLProgram: Unsupported encoding:", encoding);
+			console.warn("WebGLProgram: Unsupported encoding:", encoding);
 			return ["Linear", "( value )"];
 	}
 }
@@ -138,7 +138,7 @@ function getToneMappingFunction(functionName, toneMapping) {
 			break;
 
 		default:
-			console.warn("THREE.WebGLProgram: Unsupported toneMapping:", toneMapping);
+			console.warn("WebGLProgram: Unsupported toneMapping:", toneMapping);
 			toneMappingName = "Linear";
 	}
 
@@ -851,7 +851,7 @@ class WebGLProgram {
 					fragmentErrors
 				);
 			} else if (programLog !== "") {
-				console.warn("THREE.WebGLProgram: gl.getProgramInfoLog()", programLog);
+				console.warn("WebGLProgram: gl.getProgramInfoLog()", programLog);
 			} else if (vertexLog === "" || fragmentLog === "") {
 				haveDiagnostics = false;
 			}

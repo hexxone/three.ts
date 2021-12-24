@@ -23,20 +23,19 @@ class Interpolant {
 	_cachedIndex: number = 0;
 
 	parameterPositions: any;
-	resultBuffer: any;
-	sampleValues: any;
+	resultBuffer: Float32Array;
+	sampleValues: Float32Array | number[];
 	valueSize: any;
 
 	settings = null;
 	DefaultSettings_ = {};
 
-	constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
+	constructor(parameterPositions: number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer?: Float32Array) {
 		this.parameterPositions = parameterPositions;
 
-		this.resultBuffer =
-			resultBuffer !== undefined
-				? resultBuffer
-				: new sampleValues.constructor(sampleSize);
+		this.resultBuffer = resultBuffer !== undefined ? resultBuffer
+				: new (sampleValues.constructor as any)(sampleSize);
+
 		this.sampleValues = sampleValues;
 		this.valueSize = sampleSize;
 	}

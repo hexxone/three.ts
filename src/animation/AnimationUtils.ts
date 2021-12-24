@@ -1,4 +1,4 @@
-import { Quaternion, AdditiveAnimationBlendMode } from "../";
+import { AnimationClip, Quaternion, AdditiveAnimationBlendMode } from "../";
 
 const AnimationUtils = {
 	// same as Array.prototype.slice, but also works on typed arrays
@@ -15,14 +15,14 @@ const AnimationUtils = {
 	},
 
 	// converts an array to a specific type
-	convertArray: function (myArray, MyType, forceClone?) {
+	convertArray: function (myArray: any[], MyType: any, forceClone?: boolean): any[] & Float32Array {
 		if (
 			!myArray || // let 'undefined' and 'null' pass
 			(!forceClone && myArray.constructor === MyType)
 		)
-			return myArray;
+			return myArray as any;
 
-		if (typeof MyType.BYTES_PER_ELEMENT === "number") {
+		if (typeof MyType["BYTES_PER_ELEMENT"] === "number") {
 			return new MyType(myArray); // create typed array
 		}
 
@@ -118,7 +118,7 @@ const AnimationUtils = {
 		}
 	},
 
-	subclip: function (sourceClip, name, startFrame, endFrame, fps = 30) {
+	subclip: function (sourceClip: AnimationClip, name: string, startFrame: number, endFrame: number, fps = 30) {
 		const clip = sourceClip.clone();
 
 		clip.name = name;
@@ -129,8 +129,8 @@ const AnimationUtils = {
 			const track = clip.tracks[i];
 			const valueSize = track.getValueSize();
 
-			const times = [];
-			const values = [];
+			const times: number[] = [];
+			const values: number[] = [];
 
 			for (let j = 0; j < track.times.length; ++j) {
 				const frame = track.times[j] * fps;

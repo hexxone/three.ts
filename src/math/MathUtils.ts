@@ -1,3 +1,5 @@
+import { Quaternion } from "../";
+
 const _lut = [];
 
 for (let i = 0; i < 256; i++) {
@@ -148,7 +150,7 @@ const MathUtils = {
 		return Math.pow(2, Math.floor(Math.log(value) / Math.LN2));
 	},
 
-	setQuaternionFromProperEuler: function (q, a, b, c, order) {
+	setQuaternionFromProperEuler: function (q: Quaternion, a, b, c, order) {
 		// Intrinsic Proper Euler Angles - see https://en.wikipedia.org/wiki/Euler_angles
 
 		// rotations are applied to the axes in the order specified by 'order'

@@ -27,6 +27,17 @@ import {
 	ShaderMaterial,
 	Texture,
 	WebGLRenderTarget,
+	MeshDistanceMaterial,
+	LineBasicMaterial,
+	LineDashedMaterial,
+	MeshBasicMaterial,
+	MeshLambertMaterial,
+	MeshMatcapMaterial,
+	MeshNormalMaterial,
+	MeshPhongMaterial,
+	MeshToonMaterial,
+	PointsMaterial,
+	SpriteMaterial,
 } from "../../";
 import { WebGLProgram } from "./WebGLProgram";
 import { WebGLLights } from "./WebGLLights";
@@ -169,23 +180,6 @@ class WebGLPrograms {
 		this.precision = capabilities.precision;
 	}
 
-	shaderIDs = {
-		MeshDepthMaterial: "depth",
-		MeshDistanceMaterial: "distanceRGBA",
-		MeshNormalMaterial: "normal",
-		MeshBasicMaterial: "basic",
-		MeshLambertMaterial: "lambert",
-		MeshPhongMaterial: "phong",
-		MeshToonMaterial: "toon",
-		MeshStandardMaterial: "physical",
-		MeshPhysicalMaterial: "physical",
-		MeshMatcapMaterial: "matcap",
-		LineBasicMaterial: "basic",
-		LineDashedMaterial: "dashed",
-		PointsMaterial: "points",
-		ShadowMaterial: "shadow",
-		SpriteMaterial: "sprite",
-	};
 
 	parameterNames = [
 		"precision",
@@ -313,6 +307,40 @@ class WebGLPrograms {
 		return encoding;
 	}
 
+	getShader(material: Material): { uniforms: any; vertexShader: string; fragmentShader: string } {
+		if(material instanceof MeshDepthMaterial) {
+			return ShaderLib.depth;
+		} else if(material instanceof MeshDistanceMaterial) {
+			return ShaderLib.distanceRGBA;
+		}else if(material instanceof MeshNormalMaterial) {
+			return ShaderLib.normal;
+		}else if(material instanceof MeshBasicMaterial) {
+			return ShaderLib.basic;
+		}else if(material instanceof MeshLambertMaterial) {
+			return ShaderLib.lambert;
+		}else if(material instanceof MeshPhongMaterial) {
+			return ShaderLib.phong;
+		}else if(material instanceof MeshToonMaterial) {
+			return ShaderLib.toon;
+		}else if(material instanceof MeshStandardMaterial) {
+			return ShaderLib.physical;
+		}else if(material instanceof MeshPhysicalMaterial) {
+			return ShaderLib.physical;
+		}else if(material instanceof MeshMatcapMaterial) {
+			return ShaderLib.matcap;
+		} else if(material instanceof LineBasicMaterial) {
+			return ShaderLib.basic;
+		} else if(material instanceof LineDashedMaterial) {
+			return ShaderLib.dashed;
+		} else if(material instanceof PointsMaterial) {
+			return ShaderLib.points;
+		} else if(material instanceof ShadowMaterial) {
+			return ShaderLib.shadow;
+		} else if(material instanceof SpriteMaterial) {
+			return ShaderLib.sprite;
+		}
+	}
+
 	getParameters(
 		material: Material,
 		lights: WebGLLights["state"],
@@ -327,7 +355,6 @@ class WebGLPrograms {
 
 		const envMap = this._cubemaps.get(material.envMap || environment);
 
-		const shaderID = this.shaderIDs[material.type];
 		const shaderMaterial = material as ShaderMaterial;
 		const meshPhysMaterial = material as MeshPhysicalMaterial;
 		const meshStdMaterial = material as MeshStandardMaterial;
@@ -338,7 +365,7 @@ class WebGLPrograms {
 		const maxBones = object.isSkinnedMesh ? this.getMaxBones(object) : 0;
 
 		if (material.precision !== null) {
-			this.precision = this._capabilities.getMaxPrecision(material.precision);
+			this.precision = this._capabilities.getMaxPrecision(this._renderer.gl, material.precision);
 
 			if (this.precision !== material.precision) {
 				console.warn(
@@ -354,10 +381,10 @@ class WebGLPrograms {
 		let vertexShader;
 		let fragmentShader;
 
-		if (shaderID) {
-			const shader = ShaderLib[shaderID];
-			vertexShader = shader.vertexShader;
-			fragmentShader = shader.fragmentShader;
+		const shadr = this.getShader(material);
+		if (shadr) {
+			vertexShader = shadr.vertexShader;
+			fragmentShader = shadr.fragmentShader;
 		} else {
 			vertexShader = shaderMaterial.vertexShader;
 			fragmentShader = shaderMaterial.fragmentShader;
@@ -373,7 +400,7 @@ class WebGLPrograms {
 		return {
 			isWebGL2: this.isWebGL2,
 
-			shaderID: shaderID,
+			shaderID: shadr,
 			shaderName: material.type,
 
 			vertexShader: vertexShader,
@@ -568,12 +595,10 @@ class WebGLPrograms {
 	}
 
 	getUniforms(material: Material | ShaderMaterial): any {
-		const shaderID = this.shaderIDs[material.type];
 		let uniforms;
-
-		if (shaderID) {
-			const shader = ShaderLib[shaderID];
-			uniforms = UniformsUtils.clone(shader.uniforms);
+		const shadr = this.getShader(material);
+		if (shadr) {
+			uniforms = UniformsUtils.clone(shadr.uniforms);
 		} else {
 			uniforms = (material as ShaderMaterial).uniforms;
 		}

@@ -61,7 +61,7 @@ class WebGLCubeMaps {
 
 						this._renderer.setRenderTarget(currentRenderTarget);
 
-						texture.addEventListener("dispose", this._onTextureDispose);
+						texture.addEventListener("dispose", e => this._onTextureDispose(e));
 
 						return this._mapTextureMapping(
 							renderTarget.texture,

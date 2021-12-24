@@ -55,7 +55,7 @@ class WebGLCubeUVMaps {
 
 						this._renderer.setRenderTarget(currentRenderTarget);
 
-						texture.addEventListener("dispose", this.onTextureDispose);
+						texture.addEventListener("dispose", (e) => this.onTextureDispose(e));
 
 						return renderTarget.texture;
 					} else {

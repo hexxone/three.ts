@@ -1,3 +1,8 @@
+import { BufferAttribute, InterleavedBufferAttribute, Matrix3 } from "../";
+
+/**
+ * @public
+ */
 class Vector2 {
 	x: any;
 	y: any;
@@ -87,7 +92,7 @@ class Vector2 {
 		return this;
 	}
 
-	add(v, w?) {
+	add(v: Vector2, w?) {
 		if (w !== undefined) {
 			console.warn(
 				"THREE.Vector2: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
@@ -101,28 +106,28 @@ class Vector2 {
 		return this;
 	}
 
-	addScalar(s) {
+	addScalar(s: number) {
 		this.x += s;
 		this.y += s;
 
 		return this;
 	}
 
-	addVectors(a, b) {
+	addVectors(a: Vector2, b: Vector2) {
 		this.x = a.x + b.x;
 		this.y = a.y + b.y;
 
 		return this;
 	}
 
-	addScaledVector(v, s) {
+	addScaledVector(v: Vector2, s: number) {
 		this.x += v.x * s;
 		this.y += v.y * s;
 
 		return this;
 	}
 
-	sub(v, w?) {
+	sub(v: Vector2, w?) {
 		if (w !== undefined) {
 			console.warn(
 				"THREE.Vector2: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
@@ -136,46 +141,46 @@ class Vector2 {
 		return this;
 	}
 
-	subScalar(s) {
+	subScalar(s: number) {
 		this.x -= s;
 		this.y -= s;
 
 		return this;
 	}
 
-	subVectors(a, b) {
+	subVectors(a: Vector2, b: Vector2) {
 		this.x = a.x - b.x;
 		this.y = a.y - b.y;
 
 		return this;
 	}
 
-	multiply(v) {
+	multiply(v: Vector2) {
 		this.x *= v.x;
 		this.y *= v.y;
 
 		return this;
 	}
 
-	multiplyScalar(scalar) {
+	multiplyScalar(scalar: number) {
 		this.x *= scalar;
 		this.y *= scalar;
 
 		return this;
 	}
 
-	divide(v) {
+	divide(v: Vector2) {
 		this.x /= v.x;
 		this.y /= v.y;
 
 		return this;
 	}
 
-	divideScalar(scalar) {
+	divideScalar(scalar: number) {
 		return this.multiplyScalar(1 / scalar);
 	}
 
-	applyMatrix3(m) {
+	applyMatrix3(m: Matrix3) {
 		const x = this.x;
 		const y = this.y;
 		const e = m.elements;
@@ -186,21 +191,21 @@ class Vector2 {
 		return this;
 	}
 
-	min(v) {
+	min(v: Vector2) {
 		this.x = Math.min(this.x, v.x);
 		this.y = Math.min(this.y, v.y);
 
 		return this;
 	}
 
-	max(v) {
+	max(v: Vector2) {
 		this.x = Math.max(this.x, v.x);
 		this.y = Math.max(this.y, v.y);
 
 		return this;
 	}
 
-	clamp(min, max) {
+	clamp(min: Vector2, max: Vector2) {
 		// assumes min < max, componentwise
 
 		this.x = Math.max(min.x, Math.min(max.x, this.x));
@@ -209,14 +214,14 @@ class Vector2 {
 		return this;
 	}
 
-	clampScalar(minVal, maxVal) {
+	clampScalar(minVal: number, maxVal: number) {
 		this.x = Math.max(minVal, Math.min(maxVal, this.x));
 		this.y = Math.max(minVal, Math.min(maxVal, this.y));
 
 		return this;
 	}
 
-	clampLength(min, max) {
+	clampLength(min: number, max: number) {
 		const length = this.length();
 
 		return this.divideScalar(length || 1).multiplyScalar(
@@ -259,11 +264,11 @@ class Vector2 {
 		return this;
 	}
 
-	dot(v) {
+	dot(v: Vector2) {
 		return this.x * v.x + this.y * v.y;
 	}
 
-	cross(v) {
+	cross(v: Vector2) {
 		return this.x * v.y - this.y * v.x;
 	}
 
@@ -291,39 +296,39 @@ class Vector2 {
 		return angle;
 	}
 
-	distanceTo(v) {
+	distanceTo(v: Vector2) {
 		return Math.sqrt(this.distanceToSquared(v));
 	}
 
-	distanceToSquared(v) {
+	distanceToSquared(v: Vector2) {
 		const dx = this.x - v.x;
 		const dy = this.y - v.y;
 		return dx * dx + dy * dy;
 	}
 
-	manhattanDistanceTo(v) {
+	manhattanDistanceTo(v: Vector2) {
 		return Math.abs(this.x - v.x) + Math.abs(this.y - v.y);
 	}
 
-	setLength(length) {
+	setLength(length: number) {
 		return this.normalize().multiplyScalar(length);
 	}
 
-	lerp(v, alpha) {
+	lerp(v: Vector2, alpha: number) {
 		this.x += (v.x - this.x) * alpha;
 		this.y += (v.y - this.y) * alpha;
 
 		return this;
 	}
 
-	lerpVectors(v1, v2, alpha) {
+	lerpVectors(v1: Vector2, v2: Vector2, alpha) {
 		this.x = v1.x + (v2.x - v1.x) * alpha;
 		this.y = v1.y + (v2.y - v1.y) * alpha;
 
 		return this;
 	}
 
-	equals(v) {
+	equals(v: Vector2) {
 		return v.x === this.x && v.y === this.y;
 	}
 
@@ -341,20 +346,14 @@ class Vector2 {
 		return array;
 	}
 
-	fromBufferAttribute(attribute, index, offset?) {
-		if (offset !== undefined) {
-			console.warn(
-				"THREE.Vector2: offset has been removed from .fromBufferAttribute()."
-			);
-		}
-
+	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index: number) {
 		this.x = attribute.getX(index);
 		this.y = attribute.getY(index);
 
 		return this;
 	}
 
-	rotateAround(center, angle) {
+	rotateAround(center: Vector2, angle: number) {
 		const c = Math.cos(angle);
 		const s = Math.sin(angle);
 

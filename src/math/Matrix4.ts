@@ -1,6 +1,9 @@
 import { Euler, Matrix3, Quaternion } from ".";
 import { Vector3 } from "./Vector3";
 
+/**
+ * @public
+ */
 class Matrix4 {
 	elements: number[];
 	isMatrix4 = true;

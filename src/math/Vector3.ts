@@ -1,8 +1,11 @@
-import { Camera, Cylindrical, Matrix3, Matrix4, Spherical } from "../";
+import { Camera, Cylindrical, Matrix3, Matrix4, Spherical, BufferAttribute, InterleavedBufferAttribute } from "../";
 import { Euler } from "./Euler";
 import { MathUtils } from "./MathUtils";
 import { Quaternion } from "./Quaternion";
 
+/**
+ * @public
+ */
 class Vector3 {
 	x: number;
 	y: number;
@@ -205,7 +208,7 @@ class Vector3 {
 		return this.applyQuaternion(_quaternion.setFromEuler(euler));
 	}
 
-	applyAxisAngle(axis, angle) {
+	applyAxisAngle(axis: Vector3, angle) {
 		return this.applyQuaternion(_quaternion.setFromAxisAngle(axis, angle));
 	}
 
@@ -222,7 +225,7 @@ class Vector3 {
 		return this;
 	}
 
-	applyNormalMatrix(m) {
+	applyNormalMatrix(m: Matrix3) {
 		return this.applyMatrix3(m).normalize();
 	}
 
@@ -565,7 +568,7 @@ class Vector3 {
 		return this.fromArray(m.elements, index * 3);
 	}
 
-	equals(v) {
+	equals(v: Vector3) {
 		return v.x === this.x && v.y === this.y && v.z === this.z;
 	}
 
@@ -585,13 +588,7 @@ class Vector3 {
 		return array;
 	}
 
-	fromBufferAttribute(attribute, index, offset?) {
-		if (offset !== undefined) {
-			console.warn(
-				"THREE.Vector3: offset has been removed from .fromBufferAttribute()."
-			);
-		}
-
+	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index: number) {
 		this.x = attribute.getX(index);
 		this.y = attribute.getY(index);
 		this.z = attribute.getZ(index);

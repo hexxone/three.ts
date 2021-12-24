@@ -4,7 +4,7 @@ class Uniform {
 	constructor(...args) {
 		let value = args[0];
 		if (typeof value === "string") {
-			console.warn("THREE.Uniform: Type parameter is no longer needed.");
+			console.warn("Uniform: Type parameter is no longer needed.");
 			value = args[1];
 		}
 

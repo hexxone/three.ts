@@ -160,16 +160,16 @@ export class WebXRManager extends EventDispatcher {
 		this.session = value;
 
 		if (this.session !== null) {
-			this.session.addEventListener("select", this.onSessionEvent);
-			this.session.addEventListener("selectstart", this.onSessionEvent);
-			this.session.addEventListener("selectend", this.onSessionEvent);
-			this.session.addEventListener("squeeze", this.onSessionEvent);
-			this.session.addEventListener("squeezestart", this.onSessionEvent);
-			this.session.addEventListener("squeezeend", this.onSessionEvent);
-			this.session.addEventListener("end", this.onSessionEnd);
+			this.session.addEventListener("select", e => this.onSessionEvent(e));
+			this.session.addEventListener("selectstart", e => this.onSessionEvent(e));
+			this.session.addEventListener("selectend", e => this.onSessionEvent(e));
+			this.session.addEventListener("squeeze", e => this.onSessionEvent(e));
+			this.session.addEventListener("squeezestart", e => this.onSessionEvent(e));
+			this.session.addEventListener("squeezeend", e => this.onSessionEvent(e));
+			this.session.addEventListener("end", e =>  this.onSessionEnd());
 			this.session.addEventListener(
 				"inputsourceschange",
-				this.onInputSourcesChange
+				e => this.onInputSourcesChange(e)
 			);
 
 			const attributes = this._gl.getContextAttributes();

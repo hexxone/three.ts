@@ -1,3 +1,8 @@
+import { BufferAttribute, InterleavedBufferAttribute } from "..";
+
+/**
+ * @public
+ */
 class Vector4 {
 	x: number;
 	y: number;
@@ -538,7 +543,7 @@ class Vector4 {
 		return array;
 	}
 
-	fromBufferAttribute(attribute, index, offset?) {
+	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index, offset?) {
 		if (offset !== undefined) {
 			console.warn(
 				"THREE.Vector4: offset has been removed from .fromBufferAttribute()."

@@ -1,5 +1,4 @@
-import { Skeleton } from "src/we_utils/src";
-import { Mesh, Matrix4, Vector3, Vector4 } from "../";
+import { Mesh, Matrix4, Vector3, Vector4, Skeleton } from "../";
 
 const _basePosition = new Vector3();
 

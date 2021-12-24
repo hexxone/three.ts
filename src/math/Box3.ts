@@ -1,3 +1,12 @@
+import {
+	BufferAttribute,
+	InterleavedBufferAttribute,
+	Matrix4,
+	Object3D,
+	Plane,
+	Sphere,
+	Triangle,
+} from "..";
 import { Vector3 } from "./Vector3";
 
 class Box3 {
@@ -48,7 +57,9 @@ class Box3 {
 		return this;
 	}
 
-	setFromBufferAttribute(attribute) {
+	setFromBufferAttribute(
+		attribute: BufferAttribute | InterleavedBufferAttribute
+	) {
 		let minX = +Infinity;
 		let minY = +Infinity;
 		let minZ = +Infinity;
@@ -77,7 +88,7 @@ class Box3 {
 		return this;
 	}
 
-	setFromPoints(points) {
+	setFromPoints(points: Vector3[]) {
 		this.makeEmpty();
 
 		for (let i = 0, il = points.length; i < il; i++) {
@@ -96,7 +107,7 @@ class Box3 {
 		return this;
 	}
 
-	setFromObject(object) {
+	setFromObject(object: Object3D) {
 		this.makeEmpty();
 
 		return this.expandByObject(object);
@@ -130,50 +141,39 @@ class Box3 {
 		);
 	}
 
-	getCenter(target) {
-		if (target === undefined) {
-			console.warn("THREE.Box3: .getCenter() target is now required");
-			target = new Vector3();
-		}
-
+	getCenter(target: Vector3) {
 		return this.isEmpty()
 			? target.set(0, 0, 0)
 			: target.addVectors(this.min, this.max).multiplyScalar(0.5);
 	}
 
-	getSize(target) {
-		if (target === undefined) {
-			console.warn("THREE.Box3: .getSize() target is now required");
-			target = new Vector3();
-		}
-
+	getSize(target: Vector3) {
 		return this.isEmpty()
 			? target.set(0, 0, 0)
 			: target.subVectors(this.max, this.min);
 	}
 
-	expandByPoint(point) {
+	expandByPoint(point: Vector3) {
 		this.min.min(point);
 		this.max.max(point);
-
 		return this;
 	}
 
-	expandByVector(vector) {
+	expandByVector(vector: Vector3) {
 		this.min.sub(vector);
 		this.max.add(vector);
 
 		return this;
 	}
 
-	expandByScalar(scalar) {
+	expandByScalar(scalar: number) {
 		this.min.addScalar(-scalar);
 		this.max.addScalar(scalar);
 
 		return this;
 	}
 
-	expandByObject(object) {
+	expandByObject(object: Object3D) {
 		// Computes the world-axis-aligned bounding box of an object (including its children),
 		// accounting for both the object's, and children's, world transforms
 
@@ -201,7 +201,7 @@ class Box3 {
 		return this;
 	}
 
-	containsPoint(point) {
+	containsPoint(point: Vector3) {
 		return point.x < this.min.x ||
 			point.x > this.max.x ||
 			point.y < this.min.y ||
@@ -212,7 +212,7 @@ class Box3 {
 			: true;
 	}
 
-	containsBox(box) {
+	containsBox(box: Box3) {
 		return (
 			this.min.x <= box.min.x &&
 			box.max.x <= this.max.x &&
@@ -223,15 +223,9 @@ class Box3 {
 		);
 	}
 
-	getParameter(point, target) {
-		// This can potentially have a divide by zero if the box
-		// has a size dimension of 0.
-
-		if (target === undefined) {
-			console.warn("THREE.Box3: .getParameter() target is now required");
-			target = new Vector3();
-		}
-
+	// This can potentially have a divide by zero if the box
+	// has a size dimension of 0.
+	getParameter(point: Vector3, target: Vector3) {
 		return target.set(
 			(point.x - this.min.x) / (this.max.x - this.min.x),
 			(point.y - this.min.y) / (this.max.y - this.min.y),
@@ -239,7 +233,7 @@ class Box3 {
 		);
 	}
 
-	intersectsBox(box) {
+	intersectsBox(box: Box3) {
 		// using 6 splitting planes to rule out intersections.
 		return box.max.x < this.min.x ||
 			box.min.x > this.max.x ||
@@ -251,7 +245,7 @@ class Box3 {
 			: true;
 	}
 
-	intersectsSphere(sphere) {
+	intersectsSphere(sphere: Sphere) {
 		// Find the point on the AABB closest to the sphere center.
 		this.clampPoint(sphere.center, _vector);
 
@@ -261,7 +255,7 @@ class Box3 {
 		);
 	}
 
-	intersectsPlane(plane) {
+	intersectsPlane(plane: Plane) {
 		// We compute the minimum and maximum dot product values. If those values
 		// are on the same side (back or front) of the plane, then there is no intersection.
 
@@ -295,7 +289,7 @@ class Box3 {
 		return min <= -plane.constant && max >= -plane.constant;
 	}
 
-	intersectsTriangle(triangle) {
+	intersectsTriangle(triangle: Triangle) {
 		if (this.isEmpty()) {
 			return false;
 		}
@@ -364,27 +358,17 @@ class Box3 {
 		return satForAxes(axes, _v0, _v1, _v2, _extents);
 	}
 
-	clampPoint(point, target) {
-		if (target === undefined) {
-			console.warn("THREE.Box3: .clampPoint() target is now required");
-			target = new Vector3();
-		}
-
+	clampPoint(point: Vector3, target: Vector3) {
 		return target.copy(point).clamp(this.min, this.max);
 	}
 
-	distanceToPoint(point) {
+	distanceToPoint(point: Vector3) {
 		const clampedPoint = _vector.copy(point).clamp(this.min, this.max);
 
 		return clampedPoint.sub(point).length();
 	}
 
-	getBoundingSphere(target) {
-		if (target === undefined) {
-			console.error("THREE.Box3: .getBoundingSphere() target is now required");
-			// target = new Sphere(); // removed to avoid cyclic dependency
-		}
-
+	getBoundingSphere(target: Sphere) {
 		this.getCenter(target.center);
 
 		target.radius = this.getSize(_vector).length() * 0.5;
@@ -392,7 +376,7 @@ class Box3 {
 		return target;
 	}
 
-	intersect(box) {
+	intersect(box: Box3) {
 		this.min.max(box.min);
 		this.max.min(box.max);
 
@@ -402,14 +386,14 @@ class Box3 {
 		return this;
 	}
 
-	union(box) {
+	union(box: Box3) {
 		this.min.min(box.min);
 		this.max.max(box.max);
 
 		return this;
 	}
 
-	applyMatrix4(matrix) {
+	applyMatrix4(matrix: Matrix4) {
 		// transform of empty box is an empty box.
 		if (this.isEmpty()) return this;
 
@@ -428,14 +412,14 @@ class Box3 {
 		return this;
 	}
 
-	translate(offset) {
+	translate(offset: Vector3) {
 		this.min.add(offset);
 		this.max.add(offset);
 
 		return this;
 	}
 
-	equals(box) {
+	equals(box: Box3) {
 		return box.min.equals(this.min) && box.max.equals(this.max);
 	}
 }

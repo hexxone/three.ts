@@ -262,7 +262,7 @@ function serializeImage(image) {
 				type: image.data.constructor.name,
 			};
 		} else {
-			console.warn("THREE.Texture: Unable to serialize Texture.");
+			console.warn("Texture: Unable to serialize Texture.");
 			return {};
 		}
 	}

@@ -36,15 +36,7 @@ class BoxHelper extends LineSegments {
 		this.update();
 	}
 
-	update(object?) {
-		if (object !== undefined) {
-			console.warn("THREE.BoxHelper: .update() has no longer arguments.");
-		}
-
-		if (this.object !== undefined) {
-			_box.setFromObject(this.object);
-		}
-
+	update() {
 		if (_box.isEmpty()) return;
 
 		const min = _box.min;

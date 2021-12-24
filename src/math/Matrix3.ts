@@ -1,15 +1,13 @@
+
+/**
+ * @public
+ */
 class Matrix3 {
 	elements: number[];
 	isMatrix3 = true;
 
-	constructor(...args) {
+	constructor() {
 		this.elements = [1, 0, 0, 0, 1, 0, 0, 0, 1];
-
-		if (args.length > 0) {
-			console.error(
-				"THREE.Matrix3: the constructor no longer reads arguments. use .set() instead."
-			);
-		}
 	}
 
 	set(n11, n12, n13, n21, n22, n23, n31, n32, n33) {

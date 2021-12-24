@@ -1,4 +1,4 @@
-import { Matrix4, Sphere } from "../";
+import { Box3, Line, Line3, Matrix4, Sphere } from "../";
 import { Matrix3 } from "./Matrix3";
 import { Vector3 } from "./Vector3";
 
@@ -18,28 +18,28 @@ class Plane {
 		this.constant = constant;
 	}
 
-	set(normal, constant) {
+	set(normal: Vector3, constant: number) {
 		this.normal.copy(normal);
 		this.constant = constant;
 
 		return this;
 	}
 
-	setComponents(x, y, z, w) {
+	setComponents(x: number, y: number, z: number, w: number) {
 		this.normal.set(x, y, z);
 		this.constant = w;
 
 		return this;
 	}
 
-	setFromNormalAndCoplanarPoint(normal, point) {
+	setFromNormalAndCoplanarPoint(normal: Vector3, point: Vector3) {
 		this.normal.copy(normal);
 		this.constant = -point.dot(this.normal);
 
 		return this;
 	}
 
-	setFromCoplanarPoints(a, b, c) {
+	setFromCoplanarPoints(a: Vector3, b: Vector3, c: Vector3) {
 		const normal = _vector1
 			.subVectors(c, b)
 			.cross(_vector2.subVectors(a, b))
@@ -80,18 +80,18 @@ class Plane {
 		return this.normal.dot(point) + this.constant;
 	}
 
-	distanceToSphere(sphere) {
+	distanceToSphere(sphere: Sphere) {
 		return this.distanceToPoint(sphere.center) - sphere.radius;
 	}
 
-	projectPoint(point, target) {
+	projectPoint(point: Vector3, target: Vector3) {
 		return target
 			.copy(this.normal)
 			.multiplyScalar(-this.distanceToPoint(point))
 			.add(point);
 	}
 
-	intersectLine(line, target) {
+	intersectLine(line: Line3, target: Vector3) {
 		const direction = line.delta(_vector1);
 
 		const denominator = this.normal.dot(direction);
@@ -115,7 +115,7 @@ class Plane {
 		return target.copy(direction).multiplyScalar(t).add(line.start);
 	}
 
-	intersectsLine(line) {
+	intersectsLine(line: Line3) {
 		// Note: this tests if a line intersects the plane, not whether it (or its end-points) are coplanar with it.
 
 		const startSign = this.distanceToPoint(line.start);
@@ -124,7 +124,7 @@ class Plane {
 		return (startSign < 0 && endSign > 0) || (endSign < 0 && startSign > 0);
 	}
 
-	intersectsBox(box) {
+	intersectsBox(box: Box3) {
 		return box.intersectsPlane(this);
 	}
 
@@ -132,12 +132,7 @@ class Plane {
 		return sphere.intersectsPlane(this);
 	}
 
-	coplanarPoint(target) {
-		if (target === undefined) {
-			console.warn("THREE.Plane: .coplanarPoint() target is now required");
-			target = new Vector3();
-		}
-
+	coplanarPoint(target: Vector3) {
 		return target.copy(this.normal).multiplyScalar(-this.constant);
 	}
 

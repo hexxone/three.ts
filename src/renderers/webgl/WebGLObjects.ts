@@ -42,7 +42,7 @@ class WebGLObjects {
 				object.hasEventListener("dispose", this.onInstancedMeshDispose) ===
 				false
 			) {
-				object.addEventListener("dispose", this.onInstancedMeshDispose);
+				object.addEventListener("dispose", e => this.onInstancedMeshDispose(e));
 			}
 
 			this._attributes.update(object.instanceMatrix, this._gl.ARRAY_BUFFER);

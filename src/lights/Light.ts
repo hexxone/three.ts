@@ -42,6 +42,12 @@ class Light extends Object3D {
 
 		return this;
 	}
+
+	fromJSON(json) {
+		this.intensity = json.intensity; // TODO: Move this bit to Light.fromJSON();
+
+		return this;
+	}
 }
 
 export { Light };

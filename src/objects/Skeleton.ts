@@ -152,7 +152,7 @@ class Skeleton {
 			let bone = bones[uuid];
 
 			if (bone === undefined) {
-				console.warn("THREE.Skeleton: No bone found with UUID:", uuid);
+				console.warn("Skeleton: No bone found with UUID:", uuid);
 				bone = new Bone();
 			}
 
@@ -163,7 +163,7 @@ class Skeleton {
 		this.init();
 
 		return this;
-	
+	}
 }
 
 export { Skeleton };

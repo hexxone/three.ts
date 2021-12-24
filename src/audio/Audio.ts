@@ -97,12 +97,12 @@ class Audio extends Object3D {
 
 	play(delay = 0) {
 		if (this.isPlaying === true) {
-			console.warn("THREE.Audio: Audio is already playing.");
+			console.warn("Audio: Audio is already playing.");
 			return;
 		}
 
 		if (this.hasPlaybackControl === false) {
-			console.warn("THREE.Audio: this Audio has no playback control.");
+			console.warn("Audio: this Audio has no playback control.");
 			return;
 		}
 
@@ -128,7 +128,7 @@ class Audio extends Object3D {
 
 	pause() {
 		if (this.hasPlaybackControl === false) {
-			console.warn("THREE.Audio: this Audio has no playback control.");
+			console.warn("Audio: this Audio has no playback control.");
 			return;
 		}
 
@@ -157,7 +157,7 @@ class Audio extends Object3D {
 
 	stop() {
 		if (this.hasPlaybackControl === false) {
-			console.warn("THREE.Audio: this Audio has no playback control.");
+			console.warn("Audio: this Audio has no playback control.");
 			return;
 		}
 
@@ -254,7 +254,7 @@ class Audio extends Object3D {
 
 	setPlaybackRate(value) {
 		if (this.hasPlaybackControl === false) {
-			console.warn("THREE.Audio: this Audio has no playback control.");
+			console.warn("Audio: this Audio has no playback control.");
 			return;
 		}
 
@@ -281,7 +281,7 @@ class Audio extends Object3D {
 
 	getLoop() {
 		if (this.hasPlaybackControl === false) {
-			console.warn("THREE.Audio: this Audio has no playback control.");
+			console.warn("Audio: this Audio has no playback control.");
 			return false;
 		}
 
@@ -290,7 +290,7 @@ class Audio extends Object3D {
 
 	setLoop(value) {
 		if (this.hasPlaybackControl === false) {
-			console.warn("THREE.Audio: this Audio has no playback control.");
+			console.warn("Audio: this Audio has no playback control.");
 			return;
 		}
 

@@ -13,6 +13,8 @@ import {
 	SrcAlphaFactor,
 	Texture,
 	Vector2,
+	WebGlProgramsParameters,
+	WebGLRenderer
 } from "../";
 
 let materialId = 0;
@@ -106,7 +108,7 @@ class Material extends EventDispatcher {
 	clipShadows: boolean;
 	shadowSide: any;
 	colorWrite: boolean;
-	precision: any;
+	precision: string;
 	polygonOffset: boolean;
 	polygonOffsetFactor: number;
 	polygonOffsetUnits: number;
@@ -131,41 +133,41 @@ class Material extends EventDispatcher {
 	clearcoatNormalMap: Texture;
 	clearcoatNormalScale: Vector2;
 
-	_sheen: any;
-	_clearcoat: any;
+	_sheen: number;
+	_clearcoat: number;
 
 	map: Texture;
 	matcap: Texture;
 	alphaMap: Texture;
 	lightMap: Texture;
-	lightMapIntensity: any;
+	lightMapIntensity: number;
 	aoMap: Texture;
-	aoMapIntensity: any;
+	aoMapIntensity: number;
 	bumpMap: Texture;
-	bumpScale: any;
+	bumpScale: number;
 	normalMap: Texture;
-	normalMapType: any;
-	normalScale: any;
+	normalMapType: number;
+	normalScale: Vector2;
 	displacementMap: Texture;
-	displacementScale: any;
-	displacementBias: any;
+	displacementScale: number;
+	displacementBias: number;
 	roughnessMap: Texture;
 	metalnessMap: Texture;
 	emissiveMap: Texture;
 	specularMap: Texture;
 	envMap: Texture;
-	reflectivity: any;
-	refractionRatio: any;
-	combine: any;
-	envMapIntensity: any;
+	reflectivity: number;
+	refractionRatio: number;
+	combine: number;
+	envMapIntensity: number;
 	gradientMap: Texture;
-	size: any;
-	sizeAttenuation: any;
+	size: number;
+	sizeAttenuation: boolean;
 	rotation: number;
 	linewidth: number;
-	dashSize: any;
-	gapSize: any;
-	scale: any;
+	dashSize: number;
+	gapSize: number;
+	scale: number;
 	wireframe: boolean;
 	wireframeLinewidth: number;
 	wireframeLinecap: string;
@@ -294,7 +296,7 @@ class Material extends EventDispatcher {
 	}
 
 	/** function which runs before compilation */
-	onBeforeCompile(shaderobject, renderer) {}
+	onBeforeCompile(shaderobject: WebGlProgramsParameters, renderer: WebGLRenderer) {}
 
 	customProgramCacheKey() {
 		return this.onBeforeCompile.toString();

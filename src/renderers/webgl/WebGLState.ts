@@ -290,7 +290,7 @@ class WebGLState {
 							break;
 
 						default:
-							console.error("THREE.WebGLState: Invalid blending: ", blending);
+							console.error("WebGLState: Invalid blending: ", blending);
 							break;
 					}
 				} else {
@@ -317,7 +317,7 @@ class WebGLState {
 							break;
 
 						default:
-							console.error("THREE.WebGLState: Invalid blending: ", blending);
+							console.error("WebGLState: Invalid blending: ", blending);
 							break;
 					}
 				}
@@ -548,7 +548,7 @@ class WebGLState {
 		try {
 			this._gl.compressedTexImage2D.apply(this._gl, args);
 		} catch (error) {
-			console.error("THREE.WebGLState:", error);
+			console.error("WebGLState:", error);
 		}
 	}
 
@@ -556,7 +556,7 @@ class WebGLState {
 		try {
 			this._gl.texImage2D.apply(this._gl, args);
 		} catch (error) {
-			console.error("THREE.WebGLState:", error);
+			console.error("WebGLState:", error);
 		}
 	}
 
@@ -564,7 +564,7 @@ class WebGLState {
 		try {
 			this._gl.texImage3D.apply(this._gl, args);
 		} catch (error) {
-			console.error("THREE.WebGLState:", error);
+			console.error("WebGLState:", error);
 		}
 	}
 

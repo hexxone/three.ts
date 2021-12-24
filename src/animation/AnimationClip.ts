@@ -12,8 +12,8 @@ import {
 } from "../";
 
 class AnimationClip {
-	name: any;
-	tracks: any;
+	name: string;
+	tracks: NumberKeyframeTrack[];
 	duration: number;
 	blendMode: number;
 	uuid: string;
@@ -153,7 +153,7 @@ class AnimationClip {
 	// parse the animation.hierarchy format
 	static parseAnimation(animation, bones) {
 		if (!animation) {
-			console.error("THREE.AnimationClip: No animation in JSONLoader data.");
+			console.error("AnimationClip: No animation in JSONLoader data.");
 			return null;
 		}
 
@@ -356,12 +356,12 @@ function getTrackTypeForValueTypeName(typeName): KeyframeTrack & any {
 			return StringKeyframeTrack;
 	}
 
-	throw new Error("THREE.KeyframeTrack: Unsupported typeName: " + typeName);
+	throw new Error("KeyframeTrack: Unsupported typeName: " + typeName);
 }
 
 function parseKeyframeTrack(json) {
 	if (json.type === undefined) {
-		throw new Error("THREE.KeyframeTrack: track type undefined, can not parse");
+		throw new Error("KeyframeTrack: track type undefined, can not parse");
 	}
 
 	const TrackType = getTrackTypeForValueTypeName(json.type);

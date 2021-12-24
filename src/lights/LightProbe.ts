@@ -21,7 +21,8 @@ class LightProbe extends Light {
 	}
 
 	fromJSON(json) {
-		this.intensity = json.intensity; // TODO: Move this bit to Light.fromJSON();
+		super.fromJSON(json);
+
 		this.sh.fromArray(json.sh);
 
 		return this;

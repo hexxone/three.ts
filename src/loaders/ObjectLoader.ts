@@ -101,7 +101,7 @@ class ObjectLoader extends Loader {
 					metadata.type === undefined ||
 					metadata.type.toLowerCase() === "geometry"
 				) {
-					console.error("THREE.ObjectLoader: Can't load " + url);
+					console.error("ObjectLoader: Can't load " + url);
 					return;
 				}
 
@@ -174,7 +174,7 @@ class ObjectLoader extends Loader {
 		return shapes;
 	}
 
-	parseSkeletons(json, object) {
+	parseSkeletons(json, object: Object3D) {
 		const skeletons = {};
 		const bones = {};
 
@@ -625,7 +625,7 @@ class ObjectLoader extends Loader {
 				}
 
 				if (images[data.image] === undefined) {
-					console.warn("THREE.ObjectLoader: Undefined image", data.image);
+					console.warn("ObjectLoader: Undefined image", data.image);
 				}
 
 				let texture;
@@ -691,7 +691,7 @@ class ObjectLoader extends Loader {
 
 		function getGeometry(name) {
 			if (geometries[name] === undefined) {
-				console.warn("THREE.ObjectLoader: Undefined geometry", name);
+				console.warn("ObjectLoader: Undefined geometry", name);
 			}
 
 			return geometries[name];
@@ -707,7 +707,7 @@ class ObjectLoader extends Loader {
 					const uuid = name[i];
 
 					if (materials[uuid] === undefined) {
-						console.warn("THREE.ObjectLoader: Undefined material", uuid);
+						console.warn("ObjectLoader: Undefined material", uuid);
 					}
 
 					array.push(materials[uuid]);
@@ -717,7 +717,7 @@ class ObjectLoader extends Loader {
 			}
 
 			if (materials[name] === undefined) {
-				console.warn("THREE.ObjectLoader: Undefined material", name);
+				console.warn("ObjectLoader: Undefined material", name);
 			}
 
 			return materials[name];

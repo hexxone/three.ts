@@ -6,7 +6,7 @@ class DataUtils {
 
 	static toHalfFloat(val) {
 		if (val > 65504) {
-			console.warn("THREE.DataUtils.toHalfFloat(): value exceeds 65504.");
+			console.warn("DataUtils.toHalfFloat(): value exceeds 65504.");
 
 			val = 65504; // maximum representable value in float16
 		}

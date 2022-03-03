@@ -40,6 +40,9 @@ export type BufferGroup = {
 	materialIndex?: number;
 };
 
+/**
+ * @public
+ */
 export class BufferGeometry extends EventDispatcher {
 	isBufferGeometry = true;
 	isInstancedBufferGeometry: boolean;
@@ -51,7 +54,7 @@ export class BufferGeometry extends EventDispatcher {
 	index: BufferAttribute;
 
 	attributes: {
-		[name: string]: BufferAttribute | InterleavedBufferAttribute;
+		[name: string]: BufferAttribute;
 	};
 
 	morphAttributes: any;
@@ -276,7 +279,7 @@ export class BufferGeometry extends EventDispatcher {
 
 		if (position && position instanceof GLBufferAttribute) {
 			console.error(
-				'THREE.BufferGeometry.computeBoundingBox(): GLBufferAttribute requires a manual bounding box. Alternatively set "mesh.frustumCulled" to "false".',
+				'BufferGeometry.computeBoundingBox(): GLBufferAttribute requires a manual bounding box. Alternatively set "mesh.frustumCulled" to "false".',
 				this
 			);
 
@@ -320,7 +323,7 @@ export class BufferGeometry extends EventDispatcher {
 			isNaN(this.boundingBox.min.z)
 		) {
 			console.error(
-				'THREE.BufferGeometry.computeBoundingBox(): Computed min/max have NaN values. The "position" attribute is likely to have NaN values.',
+				'BufferGeometry.computeBoundingBox(): Computed min/max have NaN values. The "position" attribute is likely to have NaN values.',
 				this
 			);
 		}
@@ -336,7 +339,7 @@ export class BufferGeometry extends EventDispatcher {
 
 		if (position && position instanceof GLBufferAttribute) {
 			console.error(
-				'THREE.BufferGeometry.computeBoundingSphere(): GLBufferAttribute requires a manual bounding sphere. Alternatively set "mesh.frustumCulled" to "false".',
+				'BufferGeometry.computeBoundingSphere(): GLBufferAttribute requires a manual bounding sphere. Alternatively set "mesh.frustumCulled" to "false".',
 				this
 			);
 
@@ -412,7 +415,7 @@ export class BufferGeometry extends EventDispatcher {
 
 			if (isNaN(this.boundingSphere.radius)) {
 				console.error(
-					'THREE.BufferGeometry.computeBoundingSphere(): Computed radius is NaN. The "position" attribute is likely to have NaN values.',
+					'BufferGeometry.computeBoundingSphere(): Computed radius is NaN. The "position" attribute is likely to have NaN values.',
 					this
 				);
 			}
@@ -437,7 +440,7 @@ export class BufferGeometry extends EventDispatcher {
 			attributes.uv === undefined
 		) {
 			console.error(
-				"THREE.BufferGeometry: .computeTangents() failed. Missing required attributes (index, position, normal or uv)"
+				"BufferGeometry: .computeTangents() failed. Missing required attributes (index, position, normal or uv)"
 			);
 			return;
 		}
@@ -620,17 +623,17 @@ export class BufferGeometry extends EventDispatcher {
 					const vB = index.getX(i + 1);
 					const vC = index.getX(i + 2);
 
-					pA.fromBufferAttribute(positionAttribute, vA);
-					pB.fromBufferAttribute(positionAttribute, vB);
-					pC.fromBufferAttribute(positionAttribute, vC);
+					pA.fromBufferAttribute(positionAttribute, Number(vA));
+					pB.fromBufferAttribute(positionAttribute, Number(vB));
+					pC.fromBufferAttribute(positionAttribute, Number(vC));
 
 					cb.subVectors(pC, pB);
 					ab.subVectors(pA, pB);
 					cb.cross(ab);
 
-					nA.fromBufferAttribute(normalAttribute, vA);
-					nB.fromBufferAttribute(normalAttribute, vB);
-					nC.fromBufferAttribute(normalAttribute, vC);
+					nA.fromBufferAttribute(normalAttribute, Number(vA));
+					nB.fromBufferAttribute(normalAttribute, Number(vB));
+					nC.fromBufferAttribute(normalAttribute, Number(vC));
 
 					nA.add(cb);
 					nB.add(cb);
@@ -667,7 +670,7 @@ export class BufferGeometry extends EventDispatcher {
 	merge(geometry, offset) {
 		if (!(geometry && geometry.isBufferGeometry)) {
 			console.error(
-				"THREE.BufferGeometry.merge(): geometry not an instance of THREE.BufferGeometry.",
+				"BufferGeometry.merge(): geometry not an instance of BufferGeometry.",
 				geometry
 			);
 			return;
@@ -677,7 +680,7 @@ export class BufferGeometry extends EventDispatcher {
 			offset = 0;
 
 			console.warn(
-				"THREE.BufferGeometry.merge(): Overwriting original geometry, starting at offset=0. " +
+				"BufferGeometry.merge(): Overwriting original geometry, starting at offset=0. " +
 					"Use BufferGeometryUtils.mergeBufferGeometries() for lossless merge."
 			);
 		}
@@ -745,7 +748,7 @@ export class BufferGeometry extends EventDispatcher {
 
 		if (this.index === null) {
 			console.warn(
-				"THREE.BufferGeometry.toNonIndexed(): BufferGeometry is already non-indexed."
+				"BufferGeometry.toNonIndexed(): BufferGeometry is already non-indexed."
 			);
 			return this;
 		}

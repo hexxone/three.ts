@@ -3,6 +3,9 @@ import { Camera, Raycaster, Object3D, Vector3 } from "../";
 const _v1 = /* @__PURE__*/ new Vector3();
 const _v2 = /* @__PURE__*/ new Vector3();
 
+/**
+ * @public
+ */
 class LOD extends Object3D {
 	_currentLevel: number;
 	levels: any;

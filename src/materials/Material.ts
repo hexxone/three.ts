@@ -14,7 +14,7 @@ import {
 	Texture,
 	Vector2,
 	WebGlProgramsParameters,
-	WebGLRenderer
+	WebGLRenderer,
 } from "../";
 
 let materialId = 0;
@@ -69,6 +69,9 @@ export type MaterialParameters = {
 	morphTargets?: boolean;
 };
 
+/**
+ * @public
+ */
 class Material extends EventDispatcher {
 	id: number;
 	uuid: string;
@@ -296,7 +299,10 @@ class Material extends EventDispatcher {
 	}
 
 	/** function which runs before compilation */
-	onBeforeCompile(shaderobject: WebGlProgramsParameters, renderer: WebGLRenderer) {}
+	onBeforeCompile(
+		shaderobject: WebGlProgramsParameters,
+		renderer: WebGLRenderer
+	) {}
 
 	customProgramCacheKey() {
 		return this.onBeforeCompile.toString();

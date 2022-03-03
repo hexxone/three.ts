@@ -15,6 +15,9 @@ const _axis = /* @__PURE__*/ new Vector3();
 let _lineGeometry;
 let _coneGeometry;
 
+/**
+ * @public
+ */
 class ArrowHelper extends Object3D {
 	line: Line;
 	cone: Mesh;
@@ -55,10 +58,7 @@ class ArrowHelper extends Object3D {
 		const coneMat = new MeshBasicMaterial();
 		coneMat.color = new Color(color);
 		coneMat.toneMapped = false;
-		this.cone = new Mesh(
-			_coneGeometry,
-			coneMat
-		);
+		this.cone = new Mesh(_coneGeometry, coneMat);
 		this.cone.matrixAutoUpdate = false;
 		this.add(this.cone);
 

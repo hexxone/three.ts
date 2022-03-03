@@ -107,15 +107,15 @@ class LatheGeometry extends BufferGeometry {
 			for (let i = 0, j = 0; i < points.length; i++, j += 3) {
 				// select the normal of the vertex in the first line
 
-				n1.x = normals[j + 0];
-				n1.y = normals[j + 1];
-				n1.z = normals[j + 2];
+				n1.x = Number(normals[j + 0]);
+				n1.y = Number(normals[j + 1]);
+				n1.z = Number(normals[j + 2]);
 
 				// select the normal of the vertex in the last line
 
-				n2.x = normals[base + j + 0];
-				n2.y = normals[base + j + 1];
-				n2.z = normals[base + j + 2];
+				n2.x = Number(normals[base + j + 0]);
+				n2.y = Number(normals[base + j + 1]);
+				n2.z = Number(normals[base + j + 2]);
 
 				// average normals
 

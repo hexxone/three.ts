@@ -13,7 +13,7 @@ class CompressedTextureLoader extends Loader {
 		super(manager);
 	}
 
-	load(url, onLoad?, onProgress?, onError?) {
+	load(url, onLoad?: (ct: CompressedTexture) => void, onProgress?, onError?) {
 		const scope = this;
 
 		const images = [];
@@ -46,7 +46,7 @@ class CompressedTextureLoader extends Loader {
 					if (loaded === 6) {
 						if (texDatas.mipmapCount === 1) texture.minFilter = LinearFilter;
 
-						texture.image = images;
+						texture.image = images as any;
 						texture.format = texDatas.format;
 						texture.needsUpdate = true;
 
@@ -86,7 +86,7 @@ class CompressedTextureLoader extends Loader {
 							}
 						}
 
-						texture.image = images;
+						texture.image = images as any;
 					} else {
 						texture.image.width = texDatas.width;
 						texture.image.height = texDatas.height;

@@ -1,3 +1,4 @@
+import { AnyTypedArray } from "src/we_utils/src";
 import { BufferAttribute, InterleavedBufferAttribute, Matrix3 } from "../";
 
 /**
@@ -95,7 +96,7 @@ class Vector2 {
 	add(v: Vector2, w?) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector2: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
+				"Vector2: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
 			);
 			return this.addVectors(v, w);
 		}
@@ -130,7 +131,7 @@ class Vector2 {
 	sub(v: Vector2, w?) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector2: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
+				"Vector2: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
 			);
 			return this.subVectors(v, w);
 		}
@@ -332,7 +333,7 @@ class Vector2 {
 		return v.x === this.x && v.y === this.y;
 	}
 
-	fromArray(array: number[], offset = 0) {
+	fromArray(array: number[] | typeof AnyTypedArray, offset = 0) {
 		this.x = array[offset];
 		this.y = array[offset + 1];
 
@@ -346,7 +347,10 @@ class Vector2 {
 		return array;
 	}
 
-	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index: number) {
+	fromBufferAttribute(
+		attribute: BufferAttribute | InterleavedBufferAttribute,
+		index: number
+	) {
 		this.x = attribute.getX(index);
 		this.y = attribute.getY(index);
 

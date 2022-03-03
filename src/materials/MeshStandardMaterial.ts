@@ -8,36 +8,36 @@ import { Material } from "./Material";
  *  metalness: <float>,
  *  opacity: <float>,
  *
- *  map: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
  *
- *  lightMap: new THREE.Texture( <Image> ),
+ *  lightMap: new Texture( <Image> ),
  *  lightMapIntensity: <float>
  *
- *  aoMap: new THREE.Texture( <Image> ),
+ *  aoMap: new Texture( <Image> ),
  *  aoMapIntensity: <float>
  *
  *  emissive: <hex>,
  *  emissiveIntensity: <float>
- *  emissiveMap: new THREE.Texture( <Image> ),
+ *  emissiveMap: new Texture( <Image> ),
  *
- *  bumpMap: new THREE.Texture( <Image> ),
+ *  bumpMap: new Texture( <Image> ),
  *  bumpScale: <float>,
  *
- *  normalMap: new THREE.Texture( <Image> ),
- *  normalMapType: THREE.TangentSpaceNormalMap,
+ *  normalMap: new Texture( <Image> ),
+ *  normalMapType: TangentSpaceNormalMap,
  *  normalScale: <Vector2>,
  *
- *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementMap: new Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>,
  *
- *  roughnessMap: new THREE.Texture( <Image> ),
+ *  roughnessMap: new Texture( <Image> ),
  *
- *  metalnessMap: new THREE.Texture( <Image> ),
+ *  metalnessMap: new Texture( <Image> ),
  *
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *
- *  envMap: new THREE.CubeTexture( [posx, negx, posy, negy, posz, negz] ),
+ *  envMap: new CubeTexture( [posx, negx, posy, negy, posz, negz] ),
  *  envMapIntensity: <float>
  *
  *  refractionRatio: <float>,
@@ -61,7 +61,7 @@ class MeshStandardMaterial extends Material {
 		super();
 
 		this.isMeshStandardMaterial = true;
-		this.defines = { "STANDARD": "" };
+		this.defines = { STANDARD: "" };
 
 		this.type = "MeshStandardMaterial";
 
@@ -120,7 +120,7 @@ class MeshStandardMaterial extends Material {
 	copy(source: MeshStandardMaterial) {
 		super.copy(source);
 
-		this.defines = { "STANDARD": "" };
+		this.defines = { STANDARD: "" };
 
 		this.color.copy(source.color);
 		this.roughness = source.roughness;

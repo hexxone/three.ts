@@ -6,18 +6,52 @@ const MOZ_EXTENSIONS = [
 	"WEBGL_compressed_texture_s3tc",
 ];
 
+type AnyExtension =
+	| EXT_blend_minmax
+	| EXT_color_buffer_float
+	| EXT_color_buffer_half_float
+	| EXT_float_blend
+	| EXT_texture_filter_anisotropic
+	| EXT_frag_depth
+	| EXT_shader_texture_lod
+	| EXT_sRGB
+	| KHR_parallel_shader_compile
+	| OES_vertex_array_object
+	| OVR_multiview2
+	| WEBGL_color_buffer_float
+	| WEBGL_compressed_texture_astc
+	| WEBGL_compressed_texture_etc
+	| WEBGL_compressed_texture_etc1
+	| WEBGL_compressed_texture_pvrtc
+	| WEBGL_compressed_texture_s3tc_srgb
+	| WEBGL_debug_shaders
+	| WEBGL_draw_buffers
+	| WEBGL_lose_context
+	| WEBGL_depth_texture
+	| WEBGL_debug_renderer_info
+	| WEBGL_compressed_texture_s3tc
+	| OES_texture_half_float_linear
+	| OES_texture_half_float
+	| OES_texture_float_linear
+	| OES_texture_float
+	| OES_standard_derivatives
+	| OES_element_index_uint
+	| ANGLE_instanced_arrays;
+
 const WEBKIT_EXTENSIONS = [...MOZ_EXTENSIONS, "WEBGL_compressed_texture_pvrtc"];
 
 class WebGLExtensions {
 	_gl: GLESRenderingContext;
 
-	extensions = {};
+	extensions: {
+		[name: string]: AnyExtension;
+	} = {};
 
 	constructor(gl: GLESRenderingContext) {
 		this._gl = gl;
 	}
 
-	getExtension(name: string) {
+	private getExtension(name: string): AnyExtension {
 		// try get existing
 		if (this.extensions[name] !== undefined) {
 			return this.extensions[name];
@@ -41,7 +75,7 @@ class WebGLExtensions {
 		return extension;
 	}
 
-	has(name: string) {
+	has(name: string): boolean {
 		return this.getExtension(name) !== null;
 	}
 
@@ -63,13 +97,11 @@ class WebGLExtensions {
 		this.getExtension("EXT_color_buffer_half_float");
 	}
 
-	get(name: string) {
+	get(name: string): AnyExtension {
 		const extension = this.getExtension(name);
 
 		if (extension === null) {
-			console.warn(
-				"THREE.WebGLRenderer: " + name + " extension not supported."
-			);
+			console.warn("WebGLRenderer: " + name + " extension not supported.");
 		}
 
 		return extension;

@@ -3,11 +3,11 @@ import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "../";
 /**
  * parameters = {
  *  clearcoat: <float>,
- *  clearcoatMap: new THREE.Texture( <Image> ),
+ *  clearcoatMap: new Texture( <Image> ),
  *  clearcoatRoughness: <float>,
- *  clearcoatRoughnessMap: new THREE.Texture( <Image> ),
+ *  clearcoatRoughnessMap: new Texture( <Image> ),
  *  clearcoatNormalScale: <Vector2>,
- *  clearcoatNormalMap: new THREE.Texture( <Image> ),
+ *  clearcoatNormalMap: new Texture( <Image> ),
  *
  *  ior: <float>,
  *  reflectivity: <float>,
@@ -17,20 +17,23 @@ import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "../";
  *  sheenRoughness: <float>,
  *
  *  transmission: <float>,
- *  transmissionMap: new THREE.Texture( <Image> ),
+ *  transmissionMap: new Texture( <Image> ),
  *
  *  thickness: <float>,
- *  thicknessMap: new THREE.Texture( <Image> ),
+ *  thicknessMap: new Texture( <Image> ),
  *  attenuationDistance: <float>,
  *  attenuationTint: <Color>,
  *
  *  specularIntensity: <float>,
- *  specularIntensityhMap: new THREE.Texture( <Image> ),
+ *  specularIntensityhMap: new Texture( <Image> ),
  *  specularTint: <Color>,
- *  specularTintMap: new THREE.Texture( <Image> )
+ *  specularTintMap: new Texture( <Image> )
  * }
  */
 
+/**
+ * @public
+ */
 class MeshPhysicalMaterial extends MeshStandardMaterial {
 	ior: number;
 	sheenTint: Color;
@@ -50,8 +53,8 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 		super();
 
 		this.defines = {
-			"STANDARD": "",
-			"PHYSICAL": "",
+			STANDARD: "",
+			PHYSICAL: "",
 		};
 
 		this.isMeshPhysicalMaterial = true;
@@ -110,8 +113,8 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 		super.copy(source); // todo use super.copy everywhere instead protofype.copy.call
 
 		this.defines = {
-			"STANDARD": "",
-			"PHYSICAL": "",
+			STANDARD: "",
+			PHYSICAL: "",
 		};
 
 		this.clearcoat = source.clearcoat;

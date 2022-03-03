@@ -5,14 +5,14 @@ import { Material } from "./Material";
  * parameters = {
  *  opacity: <float>,
  *
- *  bumpMap: new THREE.Texture( <Image> ),
+ *  bumpMap: new Texture( <Image> ),
  *  bumpScale: <float>,
  *
- *  normalMap: new THREE.Texture( <Image> ),
- *  normalMapType: THREE.TangentSpaceNormalMap,
+ *  normalMap: new Texture( <Image> ),
+ *  normalMapType: TangentSpaceNormalMap,
  *  normalScale: <Vector2>,
  *
- *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementMap: new Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>,
  *

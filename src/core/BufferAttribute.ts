@@ -1,12 +1,19 @@
 import { Color, StaticDrawUsage, Vector2, Vector3, Vector4 } from "../";
+import { AnyTypedArray } from "src/we_utils/src";
+import { Matrix3, Matrix4 } from "../math";
+import { ObjectHelper } from ".";
 
 const _vector = new Vector3();
 const _vector2 = new Vector2();
 
+/**
+ * @public
+ */
 class BufferAttribute {
 	name: string;
-	array: any;
-	itemSize: any;
+	array: typeof AnyTypedArray;
+	itemSize: number;
+
 	count: number;
 	normalized: boolean;
 	usage: number;
@@ -16,12 +23,11 @@ class BufferAttribute {
 	isBufferAttribute = true;
 	isInstancedBufferAttribute: boolean;
 	isInterleavedBufferAttribute: boolean;
+	isFloat16BufferAttribute: boolean;
 
 	constructor(array, itemSize, normalized?) {
 		if (Array.isArray(array)) {
-			throw new TypeError(
-				"THREE.BufferAttribute: array should be a Typed Array."
-			);
+			throw new TypeError("BufferAttribute: array should be a Typed Array.");
 		}
 
 		this.name = "";
@@ -49,9 +55,9 @@ class BufferAttribute {
 		return this;
 	}
 
-	copy(source) {
+	copy(source: BufferAttribute) {
 		this.name = source.name;
-		this.array = new source.array.constructor(source.array);
+		this.array = ObjectHelper.deepCopy(source.array);
 		this.itemSize = source.itemSize;
 		this.count = source.count;
 		this.normalized = source.normalized;
@@ -61,7 +67,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	copyAt(index1, attribute, index2) {
+	copyAt(index1, attribute: BufferAttribute, index2) {
 		index1 *= this.itemSize;
 		index2 *= attribute.itemSize;
 
@@ -78,7 +84,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	copyColorsArray(colors) {
+	copyColorsArray(colors: Color[]) {
 		const array = this.array;
 		let offset = 0;
 
@@ -87,7 +93,7 @@ class BufferAttribute {
 
 			if (color === undefined) {
 				console.warn(
-					"THREE.BufferAttribute.copyColorsArray(): color is undefined",
+					"BufferAttribute.copyColorsArray(): color is undefined",
 					i
 				);
 				color = new Color(0, 0, 0);
@@ -101,7 +107,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	copyVector2sArray(vectors) {
+	copyVector2sArray(vectors: Vector2[]) {
 		const array = this.array;
 		let offset = 0;
 
@@ -110,7 +116,7 @@ class BufferAttribute {
 
 			if (vector === undefined) {
 				console.warn(
-					"THREE.BufferAttribute.copyVector2sArray(): vector is undefined",
+					"BufferAttribute.copyVector2sArray(): vector is undefined",
 					i
 				);
 				vector = new Vector2();
@@ -123,7 +129,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	copyVector3sArray(vectors) {
+	copyVector3sArray(vectors: Vector3[]) {
 		const array = this.array;
 		let offset = 0;
 
@@ -132,7 +138,7 @@ class BufferAttribute {
 
 			if (vector === undefined) {
 				console.warn(
-					"THREE.BufferAttribute.copyVector3sArray(): vector is undefined",
+					"BufferAttribute.copyVector3sArray(): vector is undefined",
 					i
 				);
 				vector = new Vector3();
@@ -146,7 +152,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	copyVector4sArray(vectors) {
+	copyVector4sArray(vectors: Vector4[]) {
 		const array = this.array;
 		let offset = 0;
 
@@ -155,7 +161,7 @@ class BufferAttribute {
 
 			if (vector === undefined) {
 				console.warn(
-					"THREE.BufferAttribute.copyVector4sArray(): vector is undefined",
+					"BufferAttribute.copyVector4sArray(): vector is undefined",
 					i
 				);
 				vector = new Vector4();
@@ -170,7 +176,7 @@ class BufferAttribute {
 		return this;
 	}
 
-	applyMatrix3(m) {
+	applyMatrix3(m: Matrix3) {
 		if (this.itemSize === 2) {
 			for (let i = 0, l = this.count; i < l; i++) {
 				_vector2.fromBufferAttribute(this, i);
@@ -190,11 +196,11 @@ class BufferAttribute {
 		return this;
 	}
 
-	applyMatrix4(m) {
+	applyMatrix4(m: Matrix4) {
 		for (let i = 0, l = this.count; i < l; i++) {
-			_vector.x = this.getX(i);
-			_vector.y = this.getY(i);
-			_vector.z = this.getZ(i);
+			_vector.x = Number(this.getX(i));
+			_vector.y = Number(this.getY(i));
+			_vector.z = Number(this.getZ(i));
 
 			_vector.applyMatrix4(m);
 
@@ -204,11 +210,11 @@ class BufferAttribute {
 		return this;
 	}
 
-	applyNormalMatrix(m) {
+	applyNormalMatrix(m: Matrix3) {
 		for (let i = 0, l = this.count; i < l; i++) {
-			_vector.x = this.getX(i);
-			_vector.y = this.getY(i);
-			_vector.z = this.getZ(i);
+			_vector.x = Number(this.getX(i));
+			_vector.y = Number(this.getY(i));
+			_vector.z = Number(this.getZ(i));
 
 			_vector.applyNormalMatrix(m);
 
@@ -218,11 +224,11 @@ class BufferAttribute {
 		return this;
 	}
 
-	transformDirection(m) {
+	transformDirection(m: Matrix4) {
 		for (let i = 0, l = this.count; i < l; i++) {
-			_vector.x = this.getX(i);
-			_vector.y = this.getY(i);
-			_vector.z = this.getZ(i);
+			_vector.x = Number(this.getX(i));
+			_vector.y = Number(this.getY(i));
+			_vector.z = Number(this.getZ(i));
 
 			_vector.transformDirection(m);
 

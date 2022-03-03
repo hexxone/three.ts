@@ -100,7 +100,7 @@ class WebGLClipping {
 		this.numIntersection = 0;
 	}
 
-	projectPlanes(planes: Plane[], camera?, dstOffset?, skipTransform?) {
+	projectPlanes(planes: Plane[], camera?: Camera, dstOffset?, skipTransform?) {
 		const nPlanes = planes !== null ? planes.length : 0;
 		let dstArray = null;
 

@@ -1,3 +1,4 @@
+import { WebGLRenderer } from "..";
 import {
 	CubeReflectionMapping,
 	CubeRefractionMapping,
@@ -5,17 +6,18 @@ import {
 	EquirectangularRefractionMapping,
 	WebGLCubeRenderTarget,
 } from "../../";
+import { Texture } from "../../textures";
 
 class WebGLCubeMaps {
-	_renderer;
+	_renderer: WebGLRenderer;
 
 	cubemaps = new WeakMap();
 
-	constructor(renderer) {
+	constructor(renderer: WebGLRenderer) {
 		this._renderer = renderer;
 	}
 
-	_mapTextureMapping(texture, mapping) {
+	_mapTextureMapping(texture: Texture, mapping: number) {
 		if (mapping === EquirectangularReflectionMapping) {
 			texture.mapping = CubeReflectionMapping;
 		} else if (mapping === EquirectangularRefractionMapping) {
@@ -38,7 +40,7 @@ class WebGLCubeMaps {
 		}
 	}
 
-	get(texture) {
+	get(texture: Texture) {
 		if (texture && texture.isTexture) {
 			const mapping = texture.mapping;
 
@@ -61,7 +63,9 @@ class WebGLCubeMaps {
 
 						this._renderer.setRenderTarget(currentRenderTarget);
 
-						texture.addEventListener("dispose", e => this._onTextureDispose(e));
+						texture.addEventListener("dispose", (e) =>
+							this._onTextureDispose(e)
+						);
 
 						return this._mapTextureMapping(
 							renderTarget.texture,

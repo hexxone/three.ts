@@ -11,11 +11,11 @@ import { Vector3 } from "../";
  *  skinning: <bool>,
  *  morphTargets: <bool>,
  *
- *  map: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
  *
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *
- *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementMap: new Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>
  *

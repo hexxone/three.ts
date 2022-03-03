@@ -1,3 +1,4 @@
+import { IBuffered } from "..";
 import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "./";
 
 class WebGLIndexedBufferRenderer {
@@ -6,9 +7,9 @@ class WebGLIndexedBufferRenderer {
 	info: WebGLInfo;
 	capabilities: WebGLCapabilities;
 
-	mode;
-	type;
-	bytesPerElement;
+	mode: number;
+	type: number;
+	bytesPerElement: number;
 
 	constructor(
 		gl: GLESRenderingContext,
@@ -26,7 +27,7 @@ class WebGLIndexedBufferRenderer {
 		this.mode = value;
 	}
 
-	setIndex(value) {
+	setIndex(value: IBuffered) {
 		this.type = value.type;
 		this.bytesPerElement = value.bytesPerElement;
 	}
@@ -57,7 +58,7 @@ class WebGLIndexedBufferRenderer {
 
 			if (extension === null) {
 				console.error(
-					"THREE.WebGLIndexedBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays."
+					"WebGLIndexedBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays."
 				);
 				return;
 			}

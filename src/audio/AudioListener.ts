@@ -6,6 +6,9 @@ const _quaternion = /* @__PURE__*/ new Quaternion();
 const _scale = /* @__PURE__*/ new Vector3();
 const _orientation = /* @__PURE__*/ new Vector3();
 
+/**
+ * @public
+ */
 class AudioListener extends Object3D {
 	context: any;
 	gain: any;

@@ -1,12 +1,16 @@
-import { Camera, Object3D } from "../..";
+import { Camera, Light, Object3D, ShadowMaterial } from "../..";
 import { WebGLCapabilities } from "./WebGLCapabilities";
 import { WebGLExtensions } from "./WebGLExtensions";
 import { WebGLLights } from "./WebGLLights";
 
+/**
+ * @public
+ */
 class WebGLRenderState {
 	lights: WebGLLights;
-	lightsArray = [];
-	shadowsArray = [];
+
+	lightsArray: Light[] = [];
+	shadowsArray: Light[] = [];
 
 	constructor(extensions: WebGLExtensions, capabilities: WebGLCapabilities) {
 		this.lights = new WebGLLights(extensions, capabilities);

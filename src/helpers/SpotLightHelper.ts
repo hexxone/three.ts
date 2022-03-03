@@ -9,6 +9,9 @@ import {
 
 const _vector = /* @__PURE__*/ new Vector3();
 
+/**
+ * @public
+ */
 class SpotLightHelper extends Object3D {
 	light: any;
 	color: any;

@@ -6,22 +6,22 @@ import { Material } from "./Material";
  *  color: <hex>,
  *  opacity: <float>,
  *
- *  matcap: new THREE.Texture( <Image> ),
+ *  matcap: new Texture( <Image> ),
  *
- *  map: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
  *
- *  bumpMap: new THREE.Texture( <Image> ),
+ *  bumpMap: new Texture( <Image> ),
  *  bumpScale: <float>,
  *
- *  normalMap: new THREE.Texture( <Image> ),
- *  normalMapType: THREE.TangentSpaceNormalMap,
+ *  normalMap: new Texture( <Image> ),
+ *  normalMapType: TangentSpaceNormalMap,
  *  normalScale: <Vector2>,
  *
- *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementMap: new Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>,
  *
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *
  *  skinning: <bool>,
  *  morphTargets: <bool>,
@@ -32,7 +32,7 @@ import { Material } from "./Material";
  */
 
 class MeshMatcapMaterial extends Material {
-	defines: { "MATCAP": string };
+	defines: { MATCAP: string };
 
 	constructor() {
 		super();
@@ -65,13 +65,13 @@ class MeshMatcapMaterial extends Material {
 
 		this.flatShading = false;
 
-		this.defines = { "MATCAP": "" };
+		this.defines = { MATCAP: "" };
 	}
 
 	copy(source: MeshMatcapMaterial) {
 		super.copy(source);
 
-		this.defines = { "MATCAP": "" };
+		this.defines = { MATCAP: "" };
 
 		this.color.copy(source.color);
 

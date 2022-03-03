@@ -157,7 +157,7 @@ function setValueV1f(gl: GLESRenderingContext, v) {
 	cache[0] = v;
 }
 
-// Single float vector (from flat array or THREE.VectorN)
+// Single float vector (from flat array or VectorN)
 
 function setValueV2f(gl: GLESRenderingContext, v) {
 	const cache = this.cache;

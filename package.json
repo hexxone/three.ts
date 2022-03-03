@@ -1,12 +1,11 @@
 {
   "name": "three",
-  "version": "0.133.1",
-  "description": "JavaScript 3D library",
+  "version": "0.133.7",
+  "description": "TypeScript 3D library",
   "main": "src/index.ts",
-  "module": "build/three.module.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mrdoob/three.js"
+    "url": "https://github.com/hexxone/three.ts"
   },
   "sideEffects": false,
   "directories": {
@@ -54,7 +53,7 @@
     "three",
     "three.js",
     "javascript",
-	"typescript",
+    "typescript",
     "3d",
     "virtual-reality",
     "augmented-reality",
@@ -69,11 +68,6 @@
   ],
   "author": "mrdoob",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mrdoob/three.js/issues"
-  },
   "homepage": "https://threejs.org/",
-  "devDependencies": {
-	  
-  }
+  "devDependencies": {}
 }

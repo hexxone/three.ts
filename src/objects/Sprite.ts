@@ -29,6 +29,9 @@ const _uvA = /* @__PURE__*/ new Vector2();
 const _uvB = /* @__PURE__*/ new Vector2();
 const _uvC = /* @__PURE__*/ new Vector2();
 
+/**
+ * @public
+ */
 class Sprite extends Object3D {
 	center: Vector2;
 
@@ -69,7 +72,7 @@ class Sprite extends Object3D {
 	raycast(raycaster: Raycaster, intersects: any[]) {
 		if (raycaster.camera === null) {
 			console.error(
-				'THREE.Sprite: "Raycaster.camera" needs to be set in order to raycast against sprites.'
+				'Sprite: "Raycaster.camera" needs to be set in order to raycast against sprites.'
 			);
 		}
 

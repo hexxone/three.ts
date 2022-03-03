@@ -1,4 +1,17 @@
 import {
+	WebGLCapabilities,
+	WebGLExtensions,
+	WebGLInfo,
+	WebGLProperties,
+	WebGLState,
+	WebGLUtils,
+} from ".";
+import {
+	WebGLCubeRenderTarget,
+	WebGLMultisampleRenderTarget,
+	WebGLRenderTarget,
+} from "..";
+import {
 	LinearFilter,
 	LinearMipmapLinearFilter,
 	LinearMipmapNearestFilter,
@@ -19,26 +32,49 @@ import {
 	RepeatWrapping,
 	MathUtils,
 } from "../../";
+import {
+	DataTexture2DArray,
+	DataTexture3D,
+	Texture,
+	VideoTexture,
+} from "../../textures";
 
+/**
+ * @public
+ */
 class WebGLTextures {
-	isWebGL2: any;
-	maxTextures: any;
-	maxCubemapSize: any;
-	maxTextureSize: any;
-	maxSamples: any;
+	isWebGL2: boolean;
 
-	wrappingToGL: any;
-	filterToGL: any;
+	maxTextures: number;
+	maxCubemapSize: number;
+	maxTextureSize: number;
+	maxSamples: number;
 
-	_gl;
-	_extensions;
-	_state;
-	_properties;
-	_capabilities;
-	_utils;
-	_info;
+	wrappingToGL: {
+		[name: number]: number;
+	};
 
-	constructor(gl, extensions, state, properties, capabilities, utils, info) {
+	filterToGL: {
+		[name: number]: number;
+	};
+
+	_gl: GLESRenderingContext;
+	_extensions: WebGLExtensions;
+	_state: WebGLState;
+	_properties: WebGLProperties;
+	_capabilities: WebGLCapabilities;
+	_utils: WebGLUtils;
+	_info: WebGLInfo;
+
+	constructor(
+		gl: GLESRenderingContext,
+		extensions: WebGLExtensions,
+		state: WebGLState,
+		properties: WebGLProperties,
+		capabilities: WebGLCapabilities,
+		utils: WebGLUtils,
+		info: WebGLInfo
+	) {
 		this._gl = gl;
 		this._extensions = extensions;
 		this._state = state;
@@ -146,7 +182,7 @@ class WebGLTextures {
 				context.drawImage(image, 0, 0, width, height);
 
 				console.warn(
-					"THREE.WebGLRenderer: Texture has been resized from (" +
+					"WebGLRenderer: Texture has been resized from (" +
 						image.width +
 						"x" +
 						image.height +
@@ -161,7 +197,7 @@ class WebGLTextures {
 			} else {
 				if ("data" in image) {
 					console.warn(
-						"THREE.WebGLRenderer: Image in DataTexture is too big (" +
+						"WebGLRenderer: Image in DataTexture is too big (" +
 							image.width +
 							"x" +
 							image.height +
@@ -219,7 +255,7 @@ class WebGLTextures {
 				return this._gl[internalFormatName];
 
 			console.warn(
-				"THREE.WebGLRenderer: Attempt to use non-existing WebGL internal format '" +
+				"WebGLRenderer: Attempt to use non-existing WebGL internal format '" +
 					internalFormatName +
 					"'"
 			);
@@ -290,7 +326,9 @@ class WebGLTextures {
 	onRenderTargetDispose(event) {
 		const renderTarget = event.target;
 
-		renderTarget.removeEventListener("dispose", e => this.onRenderTargetDispose(e));
+		renderTarget.removeEventListener("dispose", (e) =>
+			this.onRenderTargetDispose(e)
+		);
 
 		this.deallocateRenderTarget(renderTarget);
 
@@ -299,7 +337,7 @@ class WebGLTextures {
 
 	//
 
-	deallocateTexture(texture) {
+	deallocateTexture(texture: Texture) {
 		const textureProperties = this._properties.get(texture);
 
 		if (textureProperties.__webglInit === undefined) return;
@@ -309,7 +347,7 @@ class WebGLTextures {
 		this._properties.remove(texture);
 	}
 
-	deallocateRenderTarget(renderTarget) {
+	deallocateRenderTarget(renderTarget: WebGLRenderTarget) {
 		const texture = renderTarget.texture;
 
 		const renderTargetProperties = this._properties.get(renderTarget);
@@ -366,7 +404,7 @@ class WebGLTextures {
 
 		if (textureUnit >= this.maxTextures) {
 			console.warn(
-				"THREE.WebGLTextures: Trying to use " +
+				"WebGLTextures: Trying to use " +
 					textureUnit +
 					" texture units while this GPU supports only " +
 					this.maxTextures
@@ -380,10 +418,10 @@ class WebGLTextures {
 
 	//
 
-	setTexture2D(texture, slot) {
+	setTexture2D(texture: Texture, slot: number) {
 		const textureProperties = this._properties.get(texture);
 
-		if (texture.isVideoTexture) this.updateVideoTexture(texture);
+		if (texture instanceof VideoTexture) this.updateVideoTexture(texture);
 
 		if (
 			texture.version > 0 &&
@@ -393,11 +431,11 @@ class WebGLTextures {
 
 			if (image === undefined) {
 				console.warn(
-					"THREE.WebGLRenderer: Texture marked for update but image is undefined"
+					"WebGLRenderer: Texture marked for update but image is undefined"
 				);
 			} else if (image.complete === false) {
 				console.warn(
-					"THREE.WebGLRenderer: Texture marked for update but image is incomplete"
+					"WebGLRenderer: Texture marked for update but image is incomplete"
 				);
 			} else {
 				this.uploadTexture(textureProperties, texture, slot);
@@ -412,7 +450,7 @@ class WebGLTextures {
 		);
 	}
 
-	setTexture2DArray(texture, slot) {
+	setTexture2DArray(texture: Texture, slot: number) {
 		const textureProperties = this._properties.get(texture);
 
 		if (
@@ -430,7 +468,7 @@ class WebGLTextures {
 		);
 	}
 
-	setTexture3D(texture, slot) {
+	setTexture3D(texture: Texture, slot: number) {
 		const textureProperties = this._properties.get(texture);
 
 		if (
@@ -448,7 +486,7 @@ class WebGLTextures {
 		);
 	}
 
-	setTextureCube(texture, slot) {
+	setTextureCube(texture: Texture, slot: number) {
 		const textureProperties = this._properties.get(texture);
 
 		if (
@@ -466,7 +504,7 @@ class WebGLTextures {
 		);
 	}
 
-	setTextureParameters(textureType, texture, supportsMips) {
+	setTextureParameters(textureType, texture: Texture, supportsMips: boolean) {
 		if (supportsMips) {
 			this._gl.texParameteri(
 				textureType,
@@ -479,14 +517,19 @@ class WebGLTextures {
 				this.wrappingToGL[texture.wrapT]
 			);
 
-			if (
-				textureType === this._gl.TEXTURE_3D ||
-				textureType === this._gl.TEXTURE_2D_ARRAY
-			) {
+			if (textureType === this._gl.TEXTURE_3D) {
 				this._gl.texParameteri(
 					textureType,
 					this._gl.TEXTURE_WRAP_R,
-					this.wrappingToGL[texture.wrapR]
+					this.wrappingToGL[(texture as DataTexture3D).wrapR]
+				);
+			}
+
+			if (textureType === this._gl.TEXTURE_2D_ARRAY) {
+				this._gl.texParameteri(
+					textureType,
+					this._gl.TEXTURE_WRAP_R,
+					this.wrappingToGL[(texture as DataTexture2DArray).wrapR]
 				);
 			}
 
@@ -528,7 +571,7 @@ class WebGLTextures {
 				texture.wrapT !== ClampToEdgeWrapping
 			) {
 				console.warn(
-					"THREE.WebGLRenderer: Texture is not power of two. Texture.wrapS and Texture.wrapT should be set to THREE.ClampToEdgeWrapping."
+					"WebGLRenderer: Texture is not power of two. Texture.wrapS and Texture.wrapT should be set to ClampToEdgeWrapping."
 				);
 			}
 
@@ -548,13 +591,15 @@ class WebGLTextures {
 				texture.minFilter !== LinearFilter
 			) {
 				console.warn(
-					"THREE.WebGLRenderer: Texture is not power of two. Texture.minFilter should be set to THREE.NearestFilter or THREE.LinearFilter."
+					"WebGLRenderer: Texture is not power of two. Texture.minFilter should be set to NearestFilter or LinearFilter."
 				);
 			}
 		}
 
 		if (this._extensions.has("EXT_texture_filter_anisotropic") === true) {
-			const extension = this._extensions.get("EXT_texture_filter_anisotropic");
+			const extension = this._extensions.get(
+				"EXT_texture_filter_anisotropic"
+			) as EXT_texture_filter_anisotropic;
 
 			if (
 				texture.type === FloatType &&
@@ -575,7 +620,10 @@ class WebGLTextures {
 				this._gl.texParameterf(
 					textureType,
 					extension.TEXTURE_MAX_ANISOTROPY_EXT,
-					Math.min(texture.anisotropy, this._capabilities.getMaxAnisotropy())
+					Math.min(
+						texture.anisotropy,
+						this._capabilities.getMaxAnisotropy(this._gl, this._extensions)
+					)
 				);
 				this._properties.get(texture).__currentAnisotropy = texture.anisotropy;
 			}
@@ -586,7 +634,7 @@ class WebGLTextures {
 		if (textureProperties.__webglInit === undefined) {
 			textureProperties.__webglInit = true;
 
-			texture.addEventListener("dispose", e => this.onTextureDispose(e));
+			texture.addEventListener("dispose", (e) => this.onTextureDispose(e));
 
 			textureProperties.__webglTexture = this._gl.createTexture();
 
@@ -594,7 +642,7 @@ class WebGLTextures {
 		}
 	}
 
-	uploadTexture(textureProperties, texture, slot) {
+	uploadTexture(textureProperties, texture, slot: number) {
 		let textureType = this._gl.TEXTURE_2D;
 
 		if (texture.isDataTexture2DArray) textureType = this._gl.TEXTURE_2D_ARRAY;
@@ -678,7 +726,7 @@ class WebGLTextures {
 					texture.type !== UnsignedIntType
 				) {
 					console.warn(
-						"THREE.WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture."
+						"WebGLRenderer: Use UnsignedShortType or UnsignedIntType for DepthFormat DepthTexture."
 					);
 
 					texture.type = UnsignedShortType;
@@ -699,7 +747,7 @@ class WebGLTextures {
 				// (https://www.khronos.org/registry/webgl/extensions/WEBGL_depth_texture/)
 				if (texture.type !== UnsignedInt248Type) {
 					console.warn(
-						"THREE.WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture."
+						"WebGLRenderer: Use UnsignedInt248Type for DepthStencilFormat DepthTexture."
 					);
 
 					texture.type = UnsignedInt248Type;
@@ -774,7 +822,7 @@ class WebGLTextures {
 						);
 					} else {
 						console.warn(
-							"THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()"
+							"WebGLRenderer: Attempt to load unsupported compressed texture format in .uploadTexture()"
 						);
 					}
 				} else {
@@ -865,7 +913,7 @@ class WebGLTextures {
 		if (texture.onUpdate) texture.onUpdate(texture);
 	}
 
-	uploadCubeTexture(textureProperties, texture, slot) {
+	uploadCubeTexture(textureProperties, texture, slot: number) {
 		if (texture.image.length !== 6) return;
 
 		this.initTexture(textureProperties, texture);
@@ -943,7 +991,7 @@ class WebGLTextures {
 							);
 						} else {
 							console.warn(
-								"THREE.WebGLRenderer: Attempt to load unsupported compressed texture format in .setTextureCube()"
+								"WebGLRenderer: Attempt to load unsupported compressed texture format in .setTextureCube()"
 							);
 						}
 					} else {
@@ -1215,7 +1263,7 @@ class WebGLTextures {
 			!(renderTarget.depthTexture && renderTarget.depthTexture.isDepthTexture)
 		) {
 			throw new Error(
-				"renderTarget.depthTexture must be an instance of THREE.DepthTexture"
+				"renderTarget.depthTexture must be an instance of DepthTexture"
 			);
 		}
 
@@ -1258,7 +1306,7 @@ class WebGLTextures {
 	}
 
 	// Setup GL resources for a non-texture depth buffer
-	setupDepthRenderbuffer(renderTarget) {
+	setupDepthRenderbuffer(renderTarget: WebGLRenderTarget) {
 		const renderTargetProperties = this._properties.get(renderTarget);
 
 		const isCube = renderTarget.isWebGLCubeRenderTarget === true;
@@ -1309,13 +1357,15 @@ class WebGLTextures {
 	}
 
 	// Set up GL resources for the render target
-	setupRenderTarget(renderTarget) {
+	setupRenderTarget(renderTarget: WebGLRenderTarget) {
 		const texture = renderTarget.texture;
 
 		const renderTargetProperties = this._properties.get(renderTarget);
 		const textureProperties = this._properties.get(texture);
 
-		renderTarget.addEventListener("dispose", e=> this.onRenderTargetDispose(e));
+		renderTarget.addEventListener("dispose", (e) =>
+			this.onRenderTargetDispose(e)
+		);
 
 		textureProperties.__webglTexture = this._gl.createTexture();
 
@@ -1337,7 +1387,7 @@ class WebGLTextures {
 			texture.format = RGBAFormat;
 
 			console.warn(
-				"THREE.WebGLRenderer: Rendering to textures with RGB format is not supported. Using RGBA format instead."
+				"WebGLRenderer: Rendering to textures with RGB format is not supported. Using RGBA format instead."
 			);
 		}
 
@@ -1406,7 +1456,7 @@ class WebGLTextures {
 					this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, null);
 				} else {
 					console.warn(
-						"THREE.WebGLRenderer: WebGLMultisampleRenderTarget can only be used with WebGL2."
+						"WebGLRenderer: WebGLMultisampleRenderTarget can only be used with WebGL2."
 					);
 				}
 			}
@@ -1457,7 +1507,7 @@ class WebGLTextures {
 						: this._gl.TEXTURE_2D_ARRAY;
 				} else {
 					console.warn(
-						"THREE.DataTexture3D and THREE.DataTexture2DArray only supported with WebGL2."
+						"DataTexture3D and DataTexture2DArray only supported with WebGL2."
 					);
 				}
 			}
@@ -1490,7 +1540,7 @@ class WebGLTextures {
 		}
 	}
 
-	updateRenderTargetMipmap(renderTarget) {
+	updateRenderTargetMipmap(renderTarget: WebGLRenderTarget) {
 		const texture = renderTarget.texture;
 
 		const supportsMips = this.isPowerOfTwo(renderTarget) || this.isWebGL2;
@@ -1512,7 +1562,7 @@ class WebGLTextures {
 		}
 	}
 
-	updateMultisampleRenderTarget(renderTarget) {
+	updateMultisampleRenderTarget(renderTarget: WebGLRenderTarget) {
 		if (renderTarget.isWebGLMultisampleRenderTarget) {
 			if (this.isWebGL2) {
 				const renderTargetProperties = this._properties.get(renderTarget);
@@ -1552,19 +1602,19 @@ class WebGLTextures {
 				); // see #18905
 			} else {
 				console.warn(
-					"THREE.WebGLRenderer: WebGLMultisampleRenderTarget can only be used with WebGL2."
+					"WebGLRenderer: WebGLMultisampleRenderTarget can only be used with WebGL2."
 				);
 			}
 		}
 	}
 
-	getRenderTargetSamples(renderTarget) {
-		return this.isWebGL2 && renderTarget.isWebGLMultisampleRenderTarget
+	getRenderTargetSamples(renderTarget: WebGLRenderTarget) {
+		return this.isWebGL2 && renderTarget instanceof WebGLMultisampleRenderTarget
 			? Math.min(this.maxSamples, renderTarget.samples)
 			: 0;
 	}
 
-	updateVideoTexture(texture) {
+	updateVideoTexture(texture: VideoTexture) {
 		const frame = this._info.render.frame;
 
 		// Check the last frame we updated the VideoTexture
@@ -1575,11 +1625,11 @@ class WebGLTextures {
 		}
 	}
 
-	safeSetTexture2D(texture, slot) {
-		if (texture && texture.isWebGLRenderTarget) {
+	safeSetTexture2D(texture: Texture, slot: number) {
+		if (texture && texture instanceof WebGLRenderTarget) {
 			if (this.warnedTexture2D === false) {
 				console.warn(
-					"THREE.WebGLTextures.safeSetTexture2D: don't use render targets as textures. Use their .texture property instead."
+					"WebGLTextures.safeSetTexture2D: don't use render targets as textures. Use their .texture property instead."
 				);
 				this.warnedTexture2D = true;
 			}
@@ -1590,11 +1640,11 @@ class WebGLTextures {
 		this.setTexture2D(texture, slot);
 	}
 
-	safeSetTextureCube(texture, slot) {
-		if (texture && texture.isWebGLCubeRenderTarget) {
+	safeSetTextureCube(texture: Texture, slot: number) {
+		if (texture && texture instanceof WebGLCubeRenderTarget) {
 			if (this.warnedTextureCube === false) {
 				console.warn(
-					"THREE.WebGLTextures.safeSetTextureCube: don't use cube render targets as textures. Use their .texture property instead."
+					"WebGLTextures.safeSetTextureCube: don't use cube render targets as textures. Use their .texture property instead."
 				);
 				this.warnedTextureCube = true;
 			}

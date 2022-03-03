@@ -1,30 +1,31 @@
-three.js
-========
+# three.ts
 
-[![NPM Package][npm]][npm-url]
-[![Build Size][build-size]][build-size-url]
-[![NPM Downloads][npm-downloads]][npmtrends-url]
-[![Language Grade][lgtm]][lgtm-url]
+a custom fork of [three.js](https://github.com/mrdoob/three.js).
 
-#### JavaScript 3D library ####
+## TypeScript 3D library
 
-The aim of the project is to create an easy to use, lightweight, cross-browser, general purpose 3D library. The current builds only include a WebGL renderer but WebGPU (experimental), SVG and CSS3D renderers are also available in the examples.
+The aim of 'three.js' is to create an easy to use, lightweight, cross-browser, general purpose 3D library.
+
+However when using TypeScript, referencing precompiled ES-modules has it's drawbacks, like missing tree-shaking and sub-optimal code-splitting.
+
+Even then, the library is still a work in progress, and there are certainly some issues.
+
+The current version only includes a WebGL renderer.
+WebGPU, SVG and CSS3D renderers are available in the 'three.js' examples.
+WebXR-compatible Shader renderer is available in 'we_utils' EffectComposer.
 
 [Examples](https://threejs.org/examples/) &mdash;
 [Documentation](https://threejs.org/docs/) &mdash;
 [Wiki](https://github.com/mrdoob/three.js/wiki) &mdash;
-[Migrating](https://github.com/mrdoob/three.js/wiki/Migration-Guide) &mdash;
-[Questions](http://stackoverflow.com/questions/tagged/three.js) &mdash;
-[Forum](https://discourse.threejs.org/) &mdash;
-[Slack](https://join.slack.com/t/threejs/shared_invite/zt-rnuegz5e-FQpc6YboDVW~5idlp7GfDw) &mdash;
-[Discord](https://discordapp.com/invite/HF4UdyF)
 
-### Usage ###
+### Usage
 
-This code creates a scene, a camera, and a geometric cube, and it adds the cube to the scene. It then creates a `WebGL` renderer for the scene and camera, and it adds that viewport to the `document.body` element. Finally, it animates the cube within the scene for the camera.
+This code creates a scene, a camera, and a geometric cube, and it adds the cube to the scene.
+It then creates a `WebGL` renderer for the scene and camera, and it adds that viewport to the `document.body` element.
+Finally, it animates the cube within the scene for the camera.
 
 ```javascript
-import * as THREE from 'path/to/three.ts';
+import * as THREE from "path/to/three.ts";
 
 let camera, scene, renderer;
 let geometry, material, mesh;
@@ -32,55 +33,50 @@ let geometry, material, mesh;
 init();
 
 function init() {
+  camera = new PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    10
+  );
+  camera.position.z = 1;
 
-	camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 10 );
-	camera.position.z = 1;
+  scene = new Scene();
 
-	scene = new THREE.Scene();
+  geometry = new BoxGeometry(0.2, 0.2, 0.2);
+  material = new MeshNormalMaterial();
 
-	geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
-	material = new THREE.MeshNormalMaterial();
+  mesh = new Mesh(geometry, material);
+  scene.add(mesh);
 
-	mesh = new THREE.Mesh( geometry, material );
-	scene.add( mesh );
-
-	renderer = new THREE.WebGLRenderer( { antialias: true } );
-	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.setAnimationLoop( animation );
-	document.body.appendChild( renderer.domElement );
-
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animation);
+  document.body.appendChild(renderer.domElement);
 }
 
-function animation( time ) {
+function animation(time) {
+  mesh.rotation.x = time / 2000;
+  mesh.rotation.y = time / 1000;
 
-	mesh.rotation.x = time / 2000;
-	mesh.rotation.y = time / 1000;
-
-	renderer.render( scene, camera );
-
+  renderer.render(scene, camera);
 }
 ```
 
-If everything went well, you should see [this](https://jsfiddle.net/vy29n6aj/).
+If everything went well, you should maybe see something like [this](https://jsfiddle.net/vy29n6aj/).
 
-### Cloning this repository ###
+### Cloning this repository
 
-Cloning the repo with all its history results in a ~2 GB download. If you don't need the whole history you can use the `depth` parameter to significantly reduce download size.
+Cloning the repo with all its history results in a >2GB download.
+If you don't need the whole history you can use the `depth` parameter to significantly reduce download size.
 
 ```sh
-git clone --depth=1 https://github.com/mrdoob/three.js.git
+git clone --depth=1 https://github.com/hexxone/three.ts.git
 ```
 
-### Change log ###
+### Change log
 
-[Releases](https://github.com/mrdoob/three.js/releases)
+[Original Releases](https://github.com/mrdoob/three.js/releases)
 
-
-[npm]: https://img.shields.io/npm/v/three
-[npm-url]: https://www.npmjs.com/package/three
-[build-size]: https://badgen.net/bundlephobia/minzip/three
-[build-size-url]: https://bundlephobia.com/result?p=three
-[npm-downloads]: https://img.shields.io/npm/dw/three
-[npmtrends-url]: https://www.npmtrends.com/three
-[lgtm]: https://img.shields.io/lgtm/alerts/github/mrdoob/three.js
-[lgtm-url]: https://lgtm.com/projects/g/mrdoob/three.js/
+[lgtm]: https://img.shields.io/lgtm/alerts/github/hexxone/three.ts
+[lgtm-url]: https://lgtm.com/projects/g/hexxone/three.ts/

@@ -8,7 +8,7 @@ class InstancedBufferGeometry extends BufferGeometry {
 		this.type = "InstancedBufferGeometry";
 	}
 
-	copy(source) {
+	copy(source: InstancedBufferGeometry) {
 		super.copy(source);
 
 		this.instanceCount = source.instanceCount;

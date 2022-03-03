@@ -15,7 +15,11 @@ const AnimationUtils = {
 	},
 
 	// converts an array to a specific type
-	convertArray: function (myArray: any[], MyType: any, forceClone?: boolean): any[] & Float32Array {
+	convertArray: function (
+		myArray: any[],
+		MyType: any,
+		forceClone?: boolean
+	): any[] & Float32Array {
 		if (
 			!myArray || // let 'undefined' and 'null' pass
 			(!forceClone && myArray.constructor === MyType)
@@ -94,7 +98,7 @@ const AnimationUtils = {
 				key = jsonKeys[i++];
 			} while (key !== undefined);
 		} else if (value.toArray !== undefined) {
-			// ...assume THREE.Math-ish
+			// ...assume Math-ish
 			do {
 				value = key[valuePropertyName];
 				if (value !== undefined) {
@@ -118,7 +122,13 @@ const AnimationUtils = {
 		}
 	},
 
-	subclip: function (sourceClip: AnimationClip, name: string, startFrame: number, endFrame: number, fps = 30) {
+	subclip: function (
+		sourceClip: AnimationClip,
+		name: string,
+		startFrame: number,
+		endFrame: number,
+		fps = 30
+	) {
 		const clip = sourceClip.clone();
 
 		clip.name = name;

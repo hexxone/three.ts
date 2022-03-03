@@ -1,4 +1,4 @@
-import { BufferAttribute, Raycaster, Matrix4, Mesh } from "../";
+import { BufferAttribute, Raycaster, Matrix4, Mesh, ObjectHelper } from "../";
 
 const _instanceLocalMatrix = new Matrix4();
 const _instanceWorldMatrix = new Matrix4();
@@ -7,8 +7,11 @@ const _instanceIntersects = [];
 
 const _mesh = new Mesh();
 
+/**
+ * @public
+ */
 class InstancedMesh extends Mesh {
-	instanceColor: any;
+	instanceColor: BufferAttribute;
 
 	constructor(geometry, material, count) {
 		super(geometry, material);

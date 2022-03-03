@@ -1,4 +1,13 @@
-import { Camera, Cylindrical, Matrix3, Matrix4, Spherical, BufferAttribute, InterleavedBufferAttribute } from "../";
+import { AnyTypedArray } from "src/we_utils/src";
+import {
+	Camera,
+	Cylindrical,
+	Matrix3,
+	Matrix4,
+	Spherical,
+	BufferAttribute,
+	InterleavedBufferAttribute,
+} from "../";
 import { Euler } from "./Euler";
 import { MathUtils } from "./MathUtils";
 import { Quaternion } from "./Quaternion";
@@ -100,7 +109,7 @@ class Vector3 {
 	add(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
+				"Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
 			);
 			return this.addVectors(v, w);
 		}
@@ -139,7 +148,7 @@ class Vector3 {
 	sub(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
+				"Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
 			);
 			return this.subVectors(v, w);
 		}
@@ -170,7 +179,7 @@ class Vector3 {
 	multiply(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead."
+				"Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead."
 			);
 			return this.multiplyVectors(v, w);
 		}
@@ -201,7 +210,7 @@ class Vector3 {
 	applyEuler(euler: Euler) {
 		if (!(euler && euler.isEuler)) {
 			console.error(
-				"THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order."
+				"Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order."
 			);
 		}
 
@@ -282,7 +291,7 @@ class Vector3 {
 	}
 
 	transformDirection(m: Matrix4) {
-		// input: THREE.Matrix4 affine matrix
+		// input: Matrix4 affine matrix
 		// vector interpreted as a direction
 
 		const x = this.x;
@@ -436,7 +445,7 @@ class Vector3 {
 	cross(v: Vector3, w?) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead."
+				"Vector3: .cross() now only accepts one argument. Use .crossVectors( a, b ) instead."
 			);
 			return this.crossVectors(v, w);
 		}
@@ -572,10 +581,10 @@ class Vector3 {
 		return v.x === this.x && v.y === this.y && v.z === this.z;
 	}
 
-	fromArray(array: number[], offset = 0) {
-		this.x = array[offset];
-		this.y = array[offset + 1];
-		this.z = array[offset + 2];
+	fromArray(array: number[] | typeof AnyTypedArray, offset = 0) {
+		this.x = Number(array[offset]);
+		this.y = Number(array[offset + 1]);
+		this.z = Number(array[offset + 2]);
 
 		return this;
 	}
@@ -588,10 +597,13 @@ class Vector3 {
 		return array;
 	}
 
-	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index: number) {
-		this.x = attribute.getX(index);
-		this.y = attribute.getY(index);
-		this.z = attribute.getZ(index);
+	fromBufferAttribute(
+		attribute: BufferAttribute | InterleavedBufferAttribute,
+		index: number
+	) {
+		this.x = Number(attribute.getX(index));
+		this.y = Number(attribute.getY(index));
+		this.z = Number(attribute.getZ(index));
 
 		return this;
 	}

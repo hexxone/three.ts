@@ -4,6 +4,9 @@ import { PerspectiveCamera } from "./";
 const fov = 90;
 const aspect = 1;
 
+/**
+ * @public
+ */
 class CubeCamera extends Object3D {
 	renderTarget: any;
 
@@ -14,7 +17,7 @@ class CubeCamera extends Object3D {
 
 		if (renderTarget.isWebGLCubeRenderTarget !== true) {
 			console.error(
-				"THREE.CubeCamera: The constructor now expects an instance of WebGLCubeRenderTarget as third parameter."
+				"CubeCamera: The constructor now expects an instance of WebGLCubeRenderTarget as third parameter."
 			);
 			return;
 		}

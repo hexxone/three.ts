@@ -5,20 +5,20 @@ import { MultiplyOperation, Color } from "../";
  * parameters = {
  *  color: <hex>,
  *  opacity: <float>,
- *  map: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
  *
- *  lightMap: new THREE.Texture( <Image> ),
+ *  lightMap: new Texture( <Image> ),
  *  lightMapIntensity: <float>
  *
- *  aoMap: new THREE.Texture( <Image> ),
+ *  aoMap: new Texture( <Image> ),
  *  aoMapIntensity: <float>
  *
- *  specularMap: new THREE.Texture( <Image> ),
+ *  specularMap: new Texture( <Image> ),
  *
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *
- *  envMap: new THREE.CubeTexture( [posx, negx, posy, negy, posz, negz] ),
- *  combine: THREE.Multiply,
+ *  envMap: new CubeTexture( [posx, negx, posy, negy, posz, negz] ),
+ *  combine: Multiply,
  *  reflectivity: <float>,
  *  refractionRatio: <float>,
  *

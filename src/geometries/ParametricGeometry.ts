@@ -35,7 +35,7 @@ class ParametricGeometry extends BufferGeometry {
 
 		if (func.length < 3) {
 			console.error(
-				"THREE.ParametricGeometry: Function must now modify a Vector3 as third parameter."
+				"ParametricGeometry: Function must now modify a Vector3 as third parameter."
 			);
 		}
 

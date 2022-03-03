@@ -135,7 +135,14 @@ class PropertyBinding {
 		this.setValue = this._setValue_unbound;
 	}
 
-	static create(root, path, parsedPath) {
+	/**
+	 *
+	 * @param root
+	 * @param path
+	 * @param parsedPath
+	 * @returns
+	 */
+	static create(root, path, parsedPath): PropertyBinding {
 		if (!(root && root.isAnimationObjectGroup)) {
 			return new PropertyBinding(root, path, parsedPath);
 		} else {
@@ -382,7 +389,7 @@ class PropertyBinding {
 		// ensure there is a value node
 		if (!targetObject) {
 			console.error(
-				"THREE.PropertyBinding: Trying to update node for track: " +
+				"PropertyBinding: Trying to update node for track: " +
 					this.path +
 					" but it wasn't found."
 			);
@@ -397,7 +404,7 @@ class PropertyBinding {
 				case "materials":
 					if (!targetObject.material) {
 						console.error(
-							"THREE.PropertyBinding: Can not bind to material as node does not have a material.",
+							"PropertyBinding: Can not bind to material as node does not have a material.",
 							this
 						);
 						return;
@@ -405,7 +412,7 @@ class PropertyBinding {
 
 					if (!targetObject.material.materials) {
 						console.error(
-							"THREE.PropertyBinding: Can not bind to material.materials as node.material does not have a materials array.",
+							"PropertyBinding: Can not bind to material.materials as node.material does not have a materials array.",
 							this
 						);
 						return;
@@ -418,7 +425,7 @@ class PropertyBinding {
 				case "bones":
 					if (!targetObject.skeleton) {
 						console.error(
-							"THREE.PropertyBinding: Can not bind to bones as node does not have a skeleton.",
+							"PropertyBinding: Can not bind to bones as node does not have a skeleton.",
 							this
 						);
 						return;
@@ -442,7 +449,7 @@ class PropertyBinding {
 				default:
 					if (targetObject[objectName] === undefined) {
 						console.error(
-							"THREE.PropertyBinding: Can not bind to objectName of node undefined.",
+							"PropertyBinding: Can not bind to objectName of node undefined.",
 							this
 						);
 						return;
@@ -454,7 +461,7 @@ class PropertyBinding {
 			if (objectIndex !== undefined) {
 				if (targetObject[objectIndex] === undefined) {
 					console.error(
-						"THREE.PropertyBinding: Trying to bind to objectIndex of objectName, but is undefined.",
+						"PropertyBinding: Trying to bind to objectIndex of objectName, but is undefined.",
 						this,
 						targetObject
 					);
@@ -472,7 +479,7 @@ class PropertyBinding {
 			const nodeName = parsedPath.nodeName;
 
 			console.error(
-				"THREE.PropertyBinding: Trying to update property for track: " +
+				"PropertyBinding: Trying to update property for track: " +
 					nodeName +
 					"." +
 					propertyName +
@@ -507,7 +514,7 @@ class PropertyBinding {
 				// support resolving morphTarget names into indices.
 				if (!targetObject.geometry) {
 					console.error(
-						"THREE.PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.",
+						"PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.",
 						this
 					);
 					return;
@@ -516,7 +523,7 @@ class PropertyBinding {
 				if (targetObject.geometry.isBufferGeometry) {
 					if (!targetObject.geometry.morphAttributes) {
 						console.error(
-							"THREE.PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.morphAttributes.",
+							"PropertyBinding: Can not bind to morphTargetInfluences because node does not have a geometry.morphAttributes.",
 							this
 						);
 						return;
@@ -527,7 +534,7 @@ class PropertyBinding {
 					}
 				} else {
 					console.error(
-						"THREE.PropertyBinding: Can not bind to morphTargetInfluences on THREE.Geometry. Use THREE.BufferGeometry instead.",
+						"PropertyBinding: Can not bind to morphTargetInfluences on Geometry. Use BufferGeometry instead.",
 						this
 					);
 					return;

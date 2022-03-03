@@ -14,6 +14,9 @@ const _ray = new Ray();
 const _sphere = new Sphere();
 const _position = new Vector3();
 
+/**
+ * @public
+ */
 class Points extends Object3D {
 	constructor(
 		geometry = new BufferGeometry(),
@@ -75,7 +78,7 @@ class Points extends Object3D {
 				for (let i = 0, il = indices.length; i < il; i++) {
 					const a = indices[i];
 
-					_position.fromBufferAttribute(positionAttribute, a);
+					_position.fromBufferAttribute(positionAttribute, Number(a));
 
 					testPoint(
 						_position,
@@ -104,7 +107,7 @@ class Points extends Object3D {
 			}
 		} else {
 			console.error(
-				"THREE.Points.raycast() no longer supports THREE.Geometry. Use THREE.BufferGeometry instead."
+				"Points.raycast() no longer supports Geometry. Use BufferGeometry instead."
 			);
 		}
 	}

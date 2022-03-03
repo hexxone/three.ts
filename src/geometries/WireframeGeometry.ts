@@ -7,7 +7,7 @@ class WireframeGeometry extends BufferGeometry {
 
 		if (geometry.isGeometry === true) {
 			console.error(
-				"THREE.WireframeGeometry no longer supports THREE.Geometry. Use THREE.BufferGeometry instead."
+				"WireframeGeometry no longer supports Geometry. Use BufferGeometry instead."
 			);
 			return;
 		}

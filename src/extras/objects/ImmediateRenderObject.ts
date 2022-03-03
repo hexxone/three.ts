@@ -1,5 +1,8 @@
 import { Material, Object3D } from "../../";
 
+/**
+ * @public
+ */
 class ImmediateRenderObject extends Object3D {
 	render: (...args) => void;
 

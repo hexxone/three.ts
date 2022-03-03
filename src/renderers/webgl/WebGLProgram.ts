@@ -29,6 +29,7 @@ import {
 	WebGLBindingStates,
 	WebGlProgramsParameters,
 } from "../../";
+
 import { WebGLUniforms } from "./WebGLUniforms";
 import { webGLShader } from "./WebGLShader";
 
@@ -80,7 +81,7 @@ function getShaderErrors(gl, shader, type) {
 	const source = gl.getShaderSource(shader);
 
 	return (
-		"THREE.WebGLShader: gl.getShaderInfoLog() " +
+		"WebGLShader: gl.getShaderInfoLog() " +
 		type +
 		"\n" +
 		log +
@@ -192,7 +193,10 @@ function generateDefines(defines) {
 	return chunks.join("\n");
 }
 
-function fetchAttributeLocations(gl, program) {
+function fetchAttributeLocations(
+	gl: GLESRenderingContext,
+	program: GLESProgram
+) {
 	const attributes = {};
 
 	const n = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
@@ -201,7 +205,7 @@ function fetchAttributeLocations(gl, program) {
 		const info = gl.getActiveAttrib(program, i);
 		const name = info.name;
 
-		// console.log( 'THREE.WebGLProgram: ACTIVE VERTEX ATTRIBUTE:', name, i );
+		// console.log( 'WebGLProgram: ACTIVE VERTEX ATTRIBUTE:', name, i );
 
 		attributes[name] = gl.getAttribLocation(program, name);
 	}
@@ -841,7 +845,7 @@ class WebGLProgram {
 				);
 
 				console.error(
-					"THREE.WebGLProgram: shader error: ",
+					"WebGLProgram: shader error: ",
 					this.gl.getError(),
 					"gl.VALIDATE_STATUS",
 					this.gl.getProgramParameter(this.program, this.gl.VALIDATE_STATUS),

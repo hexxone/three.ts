@@ -5,31 +5,31 @@ import { Material } from "./Material";
  * parameters = {
  *  color: <hex>,
  *
- *  map: new THREE.Texture( <Image> ),
- *  gradientMap: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
+ *  gradientMap: new Texture( <Image> ),
  *
- *  lightMap: new THREE.Texture( <Image> ),
+ *  lightMap: new Texture( <Image> ),
  *  lightMapIntensity: <float>
  *
- *  aoMap: new THREE.Texture( <Image> ),
+ *  aoMap: new Texture( <Image> ),
  *  aoMapIntensity: <float>
  *
  *  emissive: <hex>,
  *  emissiveIntensity: <float>
- *  emissiveMap: new THREE.Texture( <Image> ),
+ *  emissiveMap: new Texture( <Image> ),
  *
- *  bumpMap: new THREE.Texture( <Image> ),
+ *  bumpMap: new Texture( <Image> ),
  *  bumpScale: <float>,
  *
- *  normalMap: new THREE.Texture( <Image> ),
- *  normalMapType: THREE.TangentSpaceNormalMap,
+ *  normalMap: new Texture( <Image> ),
+ *  normalMapType: TangentSpaceNormalMap,
  *  normalScale: <Vector2>,
  *
- *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementMap: new Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>,
  *
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *
  *  wireframe: <boolean>,
  *  wireframeLinewidth: <float>,
@@ -49,7 +49,7 @@ class MeshToonMaterial extends Material {
 		this.isMeshToonMaterial = true;
 		this.type = "MeshToonMaterial";
 
-		this.defines = { "TOON": "" };
+		this.defines = { TOON: "" };
 
 		this.color = new Color(0xffffff);
 

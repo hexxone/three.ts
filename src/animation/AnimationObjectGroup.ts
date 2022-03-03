@@ -157,7 +157,7 @@ class AnimationObjectGroup {
 				}
 			} else if (objects[index] !== knownObject) {
 				console.error(
-					"THREE.AnimationObjectGroup: Different objects with the same UUID " +
+					"AnimationObjectGroup: Different objects with the same UUID " +
 						"detected. Clean the caches or recreate your infrastructure when reloading scenes."
 				);
 			} // else the object is already where we want it to be

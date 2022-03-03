@@ -43,7 +43,7 @@ class Skeleton {
 
 			if (bones.length !== boneInverses.length) {
 				console.warn(
-					"THREE.Skeleton: Number of inverse bone matrices does not match amount of bones."
+					"Skeleton: Number of inverse bone matrices does not match amount of bones."
 				);
 
 				this.boneInverses = [];

@@ -5,7 +5,7 @@ class DataTexture extends Texture {
 	isDataTexture: boolean;
 
 	constructor(
-		data?,
+		data?: ArrayBufferLike,
 		width?,
 		height?,
 		format?,

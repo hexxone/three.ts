@@ -13,7 +13,7 @@ class Matrix4 {
 
 		if (args.length > 0) {
 			console.error(
-				"THREE.Matrix4: the constructor no longer reads arguments. use .set() instead."
+				"Matrix4: the constructor no longer reads arguments. use .set() instead."
 			);
 		}
 	}
@@ -195,7 +195,7 @@ class Matrix4 {
 	makeRotationFromEuler(euler: Euler) {
 		if (!(euler && euler.isEuler)) {
 			console.error(
-				"THREE.Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order."
+				"Matrix4: .makeRotationFromEuler() now expects a Euler rotation rather than a Vector3 and order."
 			);
 		}
 
@@ -935,7 +935,7 @@ class Matrix4 {
 	makePerspective(left, right, top, bottom, near, far) {
 		if (far === undefined) {
 			console.warn(
-				"THREE.Matrix4: .makePerspective() has been redefined and has a new signature. Please check the docs."
+				"Matrix4: .makePerspective() has been redefined and has a new signature. Please check the docs."
 			);
 		}
 

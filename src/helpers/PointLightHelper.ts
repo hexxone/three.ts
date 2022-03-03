@@ -1,10 +1,15 @@
 import { Mesh, MeshBasicMaterial, SphereGeometry } from "../";
+import { Light } from "../lights";
+import { Color } from "../math";
 
+/**
+ * @public
+ */
 class PointLightHelper extends Mesh {
-	light: any;
-	color: any;
+	light: Light;
+	color: Color;
 
-	constructor(light, sphereSize, color) {
+	constructor(light: Light, sphereSize, color: Color) {
 		const geometry = new SphereGeometry(sphereSize, 4, 2);
 		const material = new MeshBasicMaterial();
 		material.wireframe = true;
@@ -27,11 +32,11 @@ class PointLightHelper extends Mesh {
 
 		/*
 	// TODO: delete this comment?
-	const distanceGeometry = new THREE.IcosahedronBufferGeometry( 1, 2 );
-	const distanceMaterial = new THREE.MeshBasicMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
+	const distanceGeometry = new IcosahedronBufferGeometry( 1, 2 );
+	const distanceMaterial = new MeshBasicMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
 
-	this.lightSphere = new THREE.Mesh( bulbGeometry, bulbMaterial );
-	this.lightDistance = new THREE.Mesh( distanceGeometry, distanceMaterial );
+	this.lightSphere = new Mesh( bulbGeometry, bulbMaterial );
+	this.lightDistance = new Mesh( distanceGeometry, distanceMaterial );
 
 	const d = light.distance;
 

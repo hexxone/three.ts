@@ -69,9 +69,9 @@ class Box3 {
 		let maxZ = -Infinity;
 
 		for (let i = 0, l = attribute.count; i < l; i++) {
-			const x = attribute.getX(i);
-			const y = attribute.getY(i);
-			const z = attribute.getZ(i);
+			const x = Number(attribute.getX(i));
+			const y = Number(attribute.getY(i));
+			const z = Number(attribute.getZ(i));
 
 			if (x < minX) minX = x;
 			if (y < minY) minY = y;

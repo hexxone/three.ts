@@ -1,21 +1,28 @@
+import { InterleavedBuffer } from ".";
 import { Vector3 } from "../";
+import { getTypedArray } from "../utils";
 import { BufferAttribute } from "./BufferAttribute";
 
 const _vector = new Vector3();
 
 class InterleavedBufferAttribute {
 	name: string;
-	data: any;
+	data: InterleavedBuffer;
 	itemSize: any;
+
 	offset: any;
 	normalized: boolean;
 
 	count: number;
 	interleavedBuffers: any;
-
 	isInterleavedBufferAttribute = true;
 
-	constructor(interleavedBuffer, itemSize, offset, normalized) {
+	constructor(
+		interleavedBuffer: InterleavedBuffer,
+		itemSize,
+		offset,
+		normalized
+	) {
 		this.name = "";
 
 		this.data = interleavedBuffer;
@@ -39,9 +46,9 @@ class InterleavedBufferAttribute {
 
 	applyMatrix4(m) {
 		for (let i = 0, l = this.data.count; i < l; i++) {
-			_vector.x = this.getX(i);
-			_vector.y = this.getY(i);
-			_vector.z = this.getZ(i);
+			_vector.x = Number(this.getX(i));
+			_vector.y = Number(this.getY(i));
+			_vector.z = Number(this.getZ(i));
 
 			_vector.applyMatrix4(m);
 
@@ -124,7 +131,7 @@ class InterleavedBufferAttribute {
 	clone(data) {
 		if (data === undefined) {
 			console.log(
-				"THREE.InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data."
+				"InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data."
 			);
 
 			const array = [];
@@ -138,7 +145,7 @@ class InterleavedBufferAttribute {
 			}
 
 			return new BufferAttribute(
-				new this.array.constructor(array),
+				getTypedArray((this.array as any).constructor.name, array),
 				this.itemSize,
 				this.normalized
 			);

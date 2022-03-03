@@ -1,6 +1,9 @@
 import { Color, Object3D } from "../";
 import { LightShadow } from "./LightShadow";
 
+/**
+ * @public
+ */
 class Light extends Object3D {
 	color: Color;
 	intensity: number;

@@ -9,6 +9,9 @@ export interface EventObject {
 
 const EventCallback = function (event: EventObject): void {};
 
+/**
+ * @public
+ */
 class EventDispatcher {
 	_listeners: {
 		[name: string]: typeof EventCallback[];

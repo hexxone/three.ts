@@ -33,6 +33,9 @@ const _removedEvent = { type: "removed" } as EventObject;
 export const DefaultMatrixAutoUpdate = true;
 export const DefaultUp = new Vector3(0, 1, 0);
 
+/**
+ * @public
+ */
 export class Object3D extends EventDispatcher {
 	isObject3D = true;
 
@@ -284,7 +287,7 @@ export class Object3D extends EventDispatcher {
 
 		if (object === this) {
 			console.error(
-				"THREE.Object3D.add: object can't be added as a child of itself.",
+				"Object3D.add: object can't be added as a child of itself.",
 				object
 			);
 			return this;
@@ -301,7 +304,7 @@ export class Object3D extends EventDispatcher {
 			object.dispatchEvent(_addedEvent);
 		} else {
 			console.error(
-				"THREE.Object3D.add: object not an instance of THREE.Object3D.",
+				"Object3D.add: object not an instance of Object3D.",
 				object
 			);
 		}

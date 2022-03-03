@@ -1,19 +1,40 @@
-class WebGLAttributes {
-	_gl;
-	_capabilities;
+import { WebGLCapabilities } from ".";
+import {
+	BufferAttribute,
+	GLBufferAttribute,
+	InterleavedBuffer,
+	InterleavedBufferAttribute,
+} from "../..";
+
+export type IBuffered = {
+	buffer: GLESBuffer;
+	type: number;
+	bytesPerElement: number;
+	version: number;
+};
+
+export class WebGLAttributes {
+	_gl: GLESRenderingContext;
+	_capabilities: WebGLCapabilities;
 
 	isWebGL2: boolean;
 
-	buffers = new WeakMap();
+	buffers = new WeakMap<
+		GLBufferAttribute | BufferAttribute | InterleavedBuffer,
+		IBuffered
+	>();
 
-	constructor(gl, capabilities) {
+	constructor(gl: GLESRenderingContext, capabilities: WebGLCapabilities) {
 		this._gl = gl;
 		this._capabilities = capabilities;
 
 		this.isWebGL2 = capabilities.isWebGL2;
 	}
 
-	createBuffer(attribute, bufferType) {
+	createBuffer(
+		attribute: BufferAttribute | InterleavedBuffer,
+		bufferType: number
+	): IBuffered {
 		const array = attribute.array;
 		const usage = attribute.usage;
 
@@ -30,15 +51,15 @@ class WebGLAttributes {
 			type = this._gl.FLOAT;
 		} else if (array instanceof Float64Array) {
 			console.warn(
-				"THREE.WebGLAttributes: Unsupported data buffer format: Float64Array."
+				"WebGLAttributes: Unsupported data buffer format: Float64Array."
 			);
 		} else if (array instanceof Uint16Array) {
-			if (attribute.isFloat16BufferAttribute) {
+			if ((attribute as BufferAttribute).isFloat16BufferAttribute) {
 				if (this.isWebGL2) {
 					type = this._gl.HALF_FLOAT;
 				} else {
 					console.warn(
-						"THREE.WebGLAttributes: Usage of Float16BufferAttribute requires WebGL2."
+						"WebGLAttributes: Usage of Float16BufferAttribute requires WebGL2."
 					);
 				}
 			} else {
@@ -57,14 +78,18 @@ class WebGLAttributes {
 		}
 
 		return {
-			"buffer": buffer,
-			"type": type,
-			"bytesPerElement": array.BYTES_PER_ELEMENT,
-			"version": attribute.version,
+			buffer: buffer,
+			type: type,
+			bytesPerElement: array.BYTES_PER_ELEMENT,
+			version: attribute.version,
 		};
 	}
 
-	updateBuffer(buffer, attribute, bufferType) {
+	updateBuffer(
+		buffer: GLESBuffer,
+		attribute: BufferAttribute | InterleavedBuffer,
+		bufferType: number
+	) {
 		const array = attribute.array;
 		const updateRange = attribute.updateRange;
 
@@ -76,7 +101,8 @@ class WebGLAttributes {
 			this._gl.bufferSubData(bufferType, 0, array);
 		} else {
 			if (this.isWebGL2) {
-				this._gl.bufferSubData(
+				// @todo dont use as any but rather the correct webgl-spec
+				(this._gl.bufferSubData as any)(
 					bufferType,
 					updateRange.offset * array.BYTES_PER_ELEMENT,
 					array,
@@ -118,8 +144,11 @@ class WebGLAttributes {
 		}
 	}
 
-	update(attribute, bufferType) {
-		if (attribute.isGLBufferAttribute) {
+	update(
+		attribute: BufferAttribute | InterleavedBufferAttribute | GLBufferAttribute,
+		bufferType
+	) {
+		if (attribute instanceof GLBufferAttribute) {
 			const cached = this.buffers.get(attribute);
 
 			if (!cached || cached.version < attribute.version) {
@@ -134,18 +163,19 @@ class WebGLAttributes {
 			return;
 		}
 
-		if (attribute.isInterleavedBufferAttribute) attribute = attribute.data;
+		let attr =
+			attribute instanceof InterleavedBufferAttribute
+				? attribute.data
+				: attribute;
 
-		const data = this.buffers.get(attribute);
+		const data = this.buffers.get(attr);
 
 		if (data === undefined) {
-			this.buffers.set(attribute, this.createBuffer(attribute, bufferType));
-		} else if (data.version < attribute.version) {
-			this.updateBuffer(data.buffer, attribute, bufferType);
+			this.buffers.set(attr, this.createBuffer(attr, bufferType));
+		} else if (data.version < attr.version) {
+			this.updateBuffer(data.buffer, attr, bufferType);
 
-			data.version = attribute.version;
+			data.version = attr.version;
 		}
 	}
 }
-
-export { WebGLAttributes };

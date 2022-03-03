@@ -1,4 +1,12 @@
-import { Color, Matrix3, Matrix4, Vector2, Vector3, Vector4, MaterialMap } from "../";
+import {
+	Color,
+	Matrix3,
+	Matrix4,
+	Vector2,
+	Vector3,
+	Vector4,
+	MaterialMap,
+} from "../";
 import { FileLoader } from "./FileLoader";
 import { Loader } from "./Loader";
 
@@ -207,7 +215,7 @@ class MaterialLoader extends Loader {
 
 		// Deprecated
 
-		if (json.shading !== undefined) material.flatShading = json.shading === 1; // THREE.FlatShading
+		if (json.shading !== undefined) material.flatShading = json.shading === 1; // FlatShading
 
 		// for PointsMaterial
 

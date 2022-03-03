@@ -1,5 +1,8 @@
 import { Object3D } from "../";
 
+/**
+ * @public
+ */
 class Bone extends Object3D {
 	constructor() {
 		super();

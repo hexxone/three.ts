@@ -8,6 +8,7 @@ export * from "./InstancedBufferAttribute";
 export * from "./GLBufferAttribute";
 export * from "./BufferAttribute";
 export * from "./Object3D";
+export * from "./ObjectHelper";
 export * from "./Raycaster";
 export * from "./Layers";
 export * from "./EventDispatcher";

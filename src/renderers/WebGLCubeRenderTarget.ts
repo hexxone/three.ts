@@ -21,7 +21,7 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 	constructor(size, options?, dummy?) {
 		if (Number.isInteger(options)) {
 			console.warn(
-				"THREE.WebGLCubeRenderTarget: constructor signature is now WebGLCubeRenderTarget( size, options )"
+				"WebGLCubeRenderTarget: constructor signature is now WebGLCubeRenderTarget( size, options )"
 			);
 
 			options = dummy;
@@ -45,6 +45,8 @@ class WebGLCubeRenderTarget extends WebGLRenderTarget {
 			options.anisotropy,
 			options.encoding
 		));
+		this.texture.isRenderTargetTexture = true;
+
 		cTex.generateMipmaps =
 			options.generateMipmaps !== undefined ? options.generateMipmaps : false;
 		cTex.minFilter =

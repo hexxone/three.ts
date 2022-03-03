@@ -1,5 +1,8 @@
 import { Matrix4, Object3D, Vector3 } from "../";
 
+/**
+ * @public
+ */
 export class Camera extends Object3D {
 	isCamera = true;
 	isOrthographicCamera: boolean;

@@ -1,4 +1,9 @@
-import { BufferAttribute, InterleavedBufferAttribute, Matrix4, Vector3 } from "../";
+import {
+	BufferAttribute,
+	InterleavedBufferAttribute,
+	Matrix4,
+	Vector3,
+} from "../";
 import { Euler } from "../";
 import { MathUtils } from "./MathUtils";
 
@@ -245,8 +250,7 @@ class Quaternion {
 
 			default:
 				console.warn(
-					"THREE.Quaternion: .setFromEuler() encountered an unknown order: " +
-						order
+					"Quaternion: .setFromEuler() encountered an unknown order: " + order
 				);
 		}
 
@@ -443,7 +447,7 @@ class Quaternion {
 	multiply(q, p?) {
 		if (p !== undefined) {
 			console.warn(
-				"THREE.Quaternion: .multiply() now only accepts one argument. Use .multiplyQuaternions( a, b ) instead."
+				"Quaternion: .multiply() now only accepts one argument. Use .multiplyQuaternions( a, b ) instead."
 			);
 			return this.multiplyQuaternions(q, p);
 		}
@@ -569,11 +573,14 @@ class Quaternion {
 		return array;
 	}
 
-	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index) {
-		this._x = attribute.getX(index);
-		this._y = attribute.getY(index);
-		this._z = attribute.getZ(index);
-		this._w = attribute.getW(index);
+	fromBufferAttribute(
+		attribute: BufferAttribute | InterleavedBufferAttribute,
+		index
+	) {
+		this._x = Number(attribute.getX(index));
+		this._y = Number(attribute.getY(index));
+		this._z = Number(attribute.getZ(index));
+		this._w = Number(attribute.getW(index));
 
 		return this;
 	}

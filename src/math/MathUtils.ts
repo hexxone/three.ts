@@ -199,7 +199,7 @@ const MathUtils = {
 
 			default:
 				console.warn(
-					"THREE.MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: " +
+					"MathUtils: .setQuaternionFromProperEuler() encountered an unknown order: " +
 						order
 				);
 		}

@@ -15,7 +15,7 @@ class WebGLGeometries {
 	_info: WebGLInfo;
 	_bindingStates: WebGLBindingStates;
 
-	geometries = {};
+	geometries: boolean[] = [];
 	wireframeAttributes = new WeakMap();
 
 	constructor(
@@ -30,8 +30,9 @@ class WebGLGeometries {
 		this._bindingStates = bindingStates;
 	}
 
+	// @todo what event
 	onGeometryDispose(event) {
-		const geometry = event.target;
+		const geometry = event.target as BufferGeometry;
 
 		if (geometry.index !== null) {
 			this._attributes.remove(geometry.index);
@@ -97,7 +98,7 @@ class WebGLGeometries {
 		}
 	}
 
-	updateWireframeAttribute(geometry) {
+	updateWireframeAttribute(geometry: BufferGeometry) {
 		const indices = [];
 
 		const geometryIndex = geometry.index;
@@ -146,7 +147,7 @@ class WebGLGeometries {
 		this.wireframeAttributes.set(geometry, attribute);
 	}
 
-	getWireframeAttribute(geometry) {
+	getWireframeAttribute(geometry: BufferGeometry) {
 		const currentAttribute = this.wireframeAttributes.get(geometry);
 
 		if (currentAttribute) {

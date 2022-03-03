@@ -2,7 +2,7 @@
  * Text = 3D Text
  *
  * parameters = {
- *  font: <THREE.Font>, // font
+ *  font: <Font>, // font
  *
  *  size: <float>, // size of the text
  *  height: <float>, // thickness to extrude text
@@ -22,9 +22,7 @@ class TextGeometry extends ExtrudeGeometry {
 		const font = parameters.font;
 
 		if (!(font && font.isFont)) {
-			console.error(
-				"THREE.TextGeometry: font parameter is not an instance of THREE.Font."
-			);
+			console.error("TextGeometry: font parameter is not an instance of Font.");
 			return new BufferGeometry();
 		}
 

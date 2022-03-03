@@ -180,7 +180,6 @@ class WebGLPrograms {
 		this.precision = capabilities.precision;
 	}
 
-
 	parameterNames = [
 		"precision",
 		"isWebGL2",
@@ -277,7 +276,7 @@ class WebGLPrograms {
 
 			if (maxBones < bones.length) {
 				console.warn(
-					"THREE.WebGLRenderer: Skeleton has " +
+					"WebGLRenderer: Skeleton has " +
 						bones.length +
 						" bones. This GPU supports " +
 						maxBones +
@@ -297,7 +296,7 @@ class WebGLPrograms {
 			encoding = map.encoding;
 		} else if (map && map instanceof WebGLRenderTarget) {
 			console.warn(
-				"THREE.WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead."
+				"WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead."
 			);
 			encoding = map.texture.encoding;
 		} else {
@@ -307,36 +306,40 @@ class WebGLPrograms {
 		return encoding;
 	}
 
-	getShader(material: Material): { uniforms: any; vertexShader: string; fragmentShader: string } {
-		if(material instanceof MeshDepthMaterial) {
+	getShader(material: Material): {
+		uniforms: any;
+		vertexShader: string;
+		fragmentShader: string;
+	} {
+		if (material instanceof MeshDepthMaterial) {
 			return ShaderLib.depth;
-		} else if(material instanceof MeshDistanceMaterial) {
+		} else if (material instanceof MeshDistanceMaterial) {
 			return ShaderLib.distanceRGBA;
-		}else if(material instanceof MeshNormalMaterial) {
+		} else if (material instanceof MeshNormalMaterial) {
 			return ShaderLib.normal;
-		}else if(material instanceof MeshBasicMaterial) {
+		} else if (material instanceof MeshBasicMaterial) {
 			return ShaderLib.basic;
-		}else if(material instanceof MeshLambertMaterial) {
+		} else if (material instanceof MeshLambertMaterial) {
 			return ShaderLib.lambert;
-		}else if(material instanceof MeshPhongMaterial) {
+		} else if (material instanceof MeshPhongMaterial) {
 			return ShaderLib.phong;
-		}else if(material instanceof MeshToonMaterial) {
+		} else if (material instanceof MeshToonMaterial) {
 			return ShaderLib.toon;
-		}else if(material instanceof MeshStandardMaterial) {
+		} else if (material instanceof MeshStandardMaterial) {
 			return ShaderLib.physical;
-		}else if(material instanceof MeshPhysicalMaterial) {
+		} else if (material instanceof MeshPhysicalMaterial) {
 			return ShaderLib.physical;
-		}else if(material instanceof MeshMatcapMaterial) {
+		} else if (material instanceof MeshMatcapMaterial) {
 			return ShaderLib.matcap;
-		} else if(material instanceof LineBasicMaterial) {
+		} else if (material instanceof LineBasicMaterial) {
 			return ShaderLib.basic;
-		} else if(material instanceof LineDashedMaterial) {
+		} else if (material instanceof LineDashedMaterial) {
 			return ShaderLib.dashed;
-		} else if(material instanceof PointsMaterial) {
+		} else if (material instanceof PointsMaterial) {
 			return ShaderLib.points;
-		} else if(material instanceof ShadowMaterial) {
+		} else if (material instanceof ShadowMaterial) {
 			return ShaderLib.shadow;
-		} else if(material instanceof SpriteMaterial) {
+		} else if (material instanceof SpriteMaterial) {
 			return ShaderLib.sprite;
 		}
 	}
@@ -344,7 +347,7 @@ class WebGLPrograms {
 	getParameters(
 		material: Material,
 		lights: WebGLLights["state"],
-		shadows: ShadowMaterial[],
+		shadows: any[],
 		scene: Scene,
 		object: Object3D
 	): WebGlProgramsParameters {
@@ -365,11 +368,14 @@ class WebGLPrograms {
 		const maxBones = object.isSkinnedMesh ? this.getMaxBones(object) : 0;
 
 		if (material.precision !== null) {
-			this.precision = this._capabilities.getMaxPrecision(this._renderer.gl, material.precision);
+			this.precision = this._capabilities.getMaxPrecision(
+				this._renderer.gl,
+				material.precision
+			);
 
 			if (this.precision !== material.precision) {
 				console.warn(
-					"THREE.WebGLProgram.getParameters:",
+					"WebGLProgram.getParameters:",
 					material.precision,
 					"not supported, using",
 					this.precision,
@@ -594,7 +600,7 @@ class WebGLPrograms {
 		return array.join();
 	}
 
-	getUniforms(material: Material | ShaderMaterial): any {
+	getUniforms(material: Material): any {
 		let uniforms;
 		const shadr = this.getShader(material);
 		if (shadr) {

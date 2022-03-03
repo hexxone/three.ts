@@ -1,16 +1,17 @@
+import { ObjectHelper } from ".";
 import { MathUtils, StaticDrawUsage } from "../";
 import { AnyTypedArray } from "../../../";
 
 class InterleavedBuffer {
 	array: typeof AnyTypedArray;
-	stride: any;
+	stride: number;
 	count: number;
 	usage: number;
 	updateRange: { offset: number; count: number };
 	version: number;
 	uuid: string;
 
-	constructor(array: typeof AnyTypedArray, stride) {
+	constructor(array: typeof AnyTypedArray, stride: number) {
 		this.array = array;
 		this.stride = stride;
 		this.count = array !== undefined ? array.length / stride : 0;
@@ -35,8 +36,8 @@ class InterleavedBuffer {
 		return this;
 	}
 
-	copy(source) {
-		this.array = new source.array.constructor(source.array);
+	copy(source: InterleavedBuffer) {
+		this.array = ObjectHelper.deepCopy(source.array);
 		this.count = source.count;
 		this.stride = source.stride;
 		this.usage = source.usage;

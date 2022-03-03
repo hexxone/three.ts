@@ -13,7 +13,7 @@
  *  bevelOffset: <float>, // how far from shape outline does bevel start
  *  bevelSegments: <int>, // number of bevel layers
  *
- *  extrudePath: <THREE.Curve> // curve to extrude shape along
+ *  extrudePath: <Curve> // curve to extrude shape along
  *
  *  UVGenerator: <Object> // object that provides UV generator functions
  *
@@ -94,7 +94,7 @@ class ExtrudeGeometry extends BufferGeometry {
 
 			if (options.amount !== undefined) {
 				console.warn(
-					"THREE.ExtrudeBufferGeometry: amount has been renamed to depth."
+					"ExtrudeBufferGeometry: amount has been renamed to depth."
 				);
 				depth = options.amount;
 			}

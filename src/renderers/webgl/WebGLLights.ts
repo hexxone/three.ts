@@ -377,7 +377,7 @@ class WebGLLights {
 					this.state.rectAreaLTC2 = UniformsLib.LTC_HALF_2;
 				} else {
 					console.error(
-						"THREE.WebGLRenderer: Unable to use RectAreaLight. Missing WebGL extensions."
+						"WebGLRenderer: Unable to use RectAreaLight. Missing WebGL extensions."
 					);
 				}
 			}

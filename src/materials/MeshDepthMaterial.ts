@@ -6,11 +6,11 @@ import { BasicDepthPacking } from "../";
  *
  *  opacity: <float>,
  *
- *  map: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
  *
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *
- *  displacementMap: new THREE.Texture( <Image> ),
+ *  displacementMap: new Texture( <Image> ),
  *  displacementScale: <float>,
  *  displacementBias: <float>,
  *

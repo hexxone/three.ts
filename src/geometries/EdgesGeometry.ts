@@ -25,7 +25,7 @@ class EdgesGeometry extends BufferGeometry {
 
 		if (geometry.isGeometry === true) {
 			console.error(
-				"THREE.EdgesGeometry no longer supports THREE.Geometry. Use THREE.BufferGeometry instead."
+				"EdgesGeometry no longer supports Geometry. Use BufferGeometry instead."
 			);
 			return;
 		}

@@ -36,9 +36,9 @@ class WebGLBackground {
 	planeMesh: Mesh;
 	boxMesh: Mesh;
 
-	currentBackground = null;
+	currentBackground: Texture;
+	currentTonemapping: number;
 	currentBackgroundVersion = 0;
-	currentTonemapping = null;
 
 	constructor(
 		renderer: WebGLRenderer,
@@ -91,8 +91,12 @@ class WebGLBackground {
 			);
 		}
 
-		if ( background && (background instanceof CubeTexture || background instanceof WebGLCubeRenderTarget ||
-				(background instanceof Texture && background.mapping === CubeUVReflectionMapping))
+		if (
+			background &&
+			(background instanceof CubeTexture ||
+				background instanceof WebGLCubeRenderTarget ||
+				(background instanceof Texture &&
+					background.mapping === CubeUVReflectionMapping))
 		) {
 			if (this.boxMesh === undefined) {
 				const boxMat = new ShaderMaterial();
@@ -129,7 +133,8 @@ class WebGLBackground {
 				background = background.texture;
 			}
 
-			(this.boxMesh.material as ShaderMaterial).uniforms.envMap.value = background;
+			(this.boxMesh.material as ShaderMaterial).uniforms.envMap.value =
+				background;
 			(this.boxMesh.material as ShaderMaterial).uniforms.flipEnvMap.value =
 				background instanceof CubeTexture && background._needsFlipEnvMap
 					? -1
@@ -231,7 +236,7 @@ class WebGLBackground {
 		return this.clearColor;
 	}
 
-	setClearColor(color, alpha = 1) {
+	setClearColor(color: Color, alpha = 1) {
 		this.clearColor.set(color);
 		this.clearAlpha = alpha;
 		this.setClear(this.clearColor, this.clearAlpha);

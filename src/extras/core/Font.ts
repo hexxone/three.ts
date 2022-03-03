@@ -54,7 +54,7 @@ function createPath(char, scale, offsetX, offsetY, data) {
 
 	if (!glyph) {
 		console.error(
-			'THREE.Font: character "' +
+			'Font: character "' +
 				char +
 				'" does not exists in font family ' +
 				data.familyName +

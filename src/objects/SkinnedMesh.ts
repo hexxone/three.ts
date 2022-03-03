@@ -8,6 +8,9 @@ const _skinWeight = new Vector4();
 const _vector = new Vector3();
 const _matrix = new Matrix4();
 
+/**
+ * @public
+ */
 class SkinnedMesh extends Mesh {
 	bindMatrixInverse: Matrix4;
 
@@ -59,10 +62,10 @@ class SkinnedMesh extends Mesh {
 		const skinWeight = this.geometry.attributes.skinWeight;
 
 		for (let i = 0, l = skinWeight.count; i < l; i++) {
-			vector.x = skinWeight.getX(i);
-			vector.y = skinWeight.getY(i);
-			vector.z = skinWeight.getZ(i);
-			vector.w = skinWeight.getW(i);
+			vector.x = Number(skinWeight.getX(i));
+			vector.y = Number(skinWeight.getY(i));
+			vector.z = Number(skinWeight.getZ(i));
+			vector.w = Number(skinWeight.getW(i));
 
 			const scale = 1.0 / vector.manhattanLength();
 
@@ -84,9 +87,7 @@ class SkinnedMesh extends Mesh {
 		} else if (this.bindMode === "detached") {
 			this.bindMatrixInverse.copy(this.bindMatrix).invert();
 		} else {
-			console.warn(
-				"THREE.SkinnedMesh: Unrecognized bindMode: " + this.bindMode
-			);
+			console.warn("SkinnedMesh: Unrecognized bindMode: " + this.bindMode);
 		}
 	}
 

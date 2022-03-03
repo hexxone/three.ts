@@ -24,6 +24,7 @@ import {
 	Light,
 	Scene,
 } from "../../";
+import { Object3D } from "../../core";
 
 import vsm_frag from "../shaders/ShaderLib/vsm_frag.glsl";
 import vsm_vert from "../shaders/ShaderLib/vsm_vert.glsl";
@@ -68,13 +69,13 @@ class WebGLShadowMap {
 
 		this.shadowMaterialVertical = new ShaderMaterial();
 		this.shadowMaterialVertical.defines = {
-			"SAMPLE_RATE": 2.0 / 8.0,
-			"HALF_SAMPLE_RATE": 1.0 / 8.0,
+			SAMPLE_RATE: 2.0 / 8.0,
+			HALF_SAMPLE_RATE: 1.0 / 8.0,
 		};
 		this.shadowMaterialVertical.uniforms = {
-			"shadow_pass": { value: null },
-			"resolution": { value: new Vector2() },
-			"radius": { value: 4.0 },
+			shadow_pass: { value: null },
+			resolution: { value: new Vector2() },
+			radius: { value: 4.0 },
 		};
 		this.shadowMaterialVertical.vertexShader = vsm_vert;
 		this.shadowMaterialVertical.fragmentShader = vsm_frag;
@@ -95,7 +96,7 @@ class WebGLShadowMap {
 		this.fullScreenMesh = new Mesh(fullScreenTri, this.shadowMaterialVertical);
 	}
 
-	render(lights: Light[], scene: Scene | Mesh, camera: Camera) {
+	render(lights: Light[], scene: Object3D, camera: Camera) {
 		if (this.enabled === false) return;
 		if (this.autoUpdate === false && this.needsUpdate === false) return;
 
@@ -349,7 +350,7 @@ class WebGLShadowMap {
 					useSkinning = true;
 				} else {
 					console.warn(
-						"THREE.WebGLShadowMap: THREE.SkinnedMesh with material.skinning set to false:",
+						"WebGLShadowMap: SkinnedMesh with material.skinning set to false:",
 						object
 					);
 				}
@@ -419,7 +420,13 @@ class WebGLShadowMap {
 		return result;
 	}
 
-	renderObject(object, camera, shadowCamera, light, type) {
+	renderObject(
+		object: Object3D,
+		camera: Camera,
+		shadowCamera: Camera,
+		light: Light,
+		type: number
+	) {
 		if (object.visible === false) return;
 
 		const visible = object.layers.test(camera.layers);

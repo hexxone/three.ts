@@ -17,6 +17,7 @@ import {
 	Vector4,
 	BufferGeometry,
 	Camera,
+	IBuffered,
 	InstancedBufferGeometry,
 	Line,
 	Material,
@@ -83,6 +84,9 @@ type ContextAttributes =
 	| ImageBitmapRenderingContextSettings
 	| WebGLContextAttributes;
 
+/**
+ * @public
+ */
 export interface WebGLRendererParameters {
 	/**
 	 * A Canvas where the renderer draws its output.
@@ -147,6 +151,9 @@ export interface WebGLRendererParameters {
 	failIfMajorPerformanceCaveat?: boolean;
 }
 
+/**
+ * @public
+ */
 export class WebGLRenderer implements Renderer {
 	/**
 	 * PRIVATE
@@ -324,12 +331,12 @@ export class WebGLRenderer implements Renderer {
 
 			this.domElement.addEventListener(
 				"webglcontextlost",
-				e => this._onContextLost(e),
+				(e) => this._onContextLost(e),
 				false
 			);
 			this.domElement.addEventListener(
 				"webglcontextrestored",
-				e => this._onContextRestore(),
+				(e) => this._onContextRestore(),
 				false
 			);
 
@@ -557,12 +564,16 @@ export class WebGLRenderer implements Renderer {
 	}
 
 	forceContextLoss() {
-		const extension = this.extensions.get("WEBGL_lose_context");
+		const extension = this.extensions.get(
+			"WEBGL_lose_context"
+		) as WEBGL_lose_context;
 		if (extension) extension.loseContext();
 	}
 
 	forceContextRestore() {
-		const extension = this.extensions.get("WEBGL_lose_context");
+		const extension = this.extensions.get(
+			"WEBGL_lose_context"
+		) as WEBGL_lose_context;
 		if (extension) extension.restoreContext();
 	}
 
@@ -585,7 +596,7 @@ export class WebGLRenderer implements Renderer {
 	setSize(width: number, height: number, updateStyle?) {
 		if (this.xr.isPresenting) {
 			console.warn(
-				"THREE.WebGLRenderer: Can't change size while VR device is presenting."
+				"WebGLRenderer: Can't change size while VR device is presenting."
 			);
 			return;
 		}
@@ -926,7 +937,7 @@ export class WebGLRenderer implements Renderer {
 
 		this.bindingStates.setup(object, material, program, geometry, index);
 
-		let attribute;
+		let attribute: IBuffered;
 		let renderer = this.bufferRenderer;
 
 		if (index !== null) {
@@ -1057,7 +1068,7 @@ export class WebGLRenderer implements Renderer {
 	render(scene: Scene | Mesh, camera: Camera) {
 		if (camera !== undefined && camera.isCamera !== true) {
 			console.error(
-				"THREE.WebGLRenderer.render: camera is not an instance of THREE.Camera."
+				"WebGLRenderer.render: camera is not an instance of Camera."
 			);
 			return;
 		}
@@ -1421,7 +1432,7 @@ export class WebGLRenderer implements Renderer {
 
 		if (program === undefined) {
 			// new material
-			material.addEventListener("dispose", e => this._onMaterialDispose(e));
+			material.addEventListener("dispose", (e) => this._onMaterialDispose(e));
 		} else if (program.cacheKey !== programCacheKey) {
 			// changed glsl or parameters
 			this.releaseMaterialProgramReference(material);
@@ -1585,11 +1596,7 @@ export class WebGLRenderer implements Renderer {
 		}
 
 		if (refreshProgram || this._currentCamera !== camera) {
-			p_uniforms.setValue(
-				this.gl,
-				"projectionMatrix",
-				camera.projectionMatrix
-			);
+			p_uniforms.setValue(this.gl, "projectionMatrix", camera.projectionMatrix);
 
 			if (this.capabilities.logarithmicDepthBuffer) {
 				p_uniforms.setValue(
@@ -1837,7 +1844,11 @@ export class WebGLRenderer implements Renderer {
 		return this._currentRenderTarget;
 	}
 
-	setRenderTarget(renderTarget, activeCubeFace = 0, activeMipmapLevel = 0) {
+	setRenderTarget(
+		renderTarget: WebGLRenderTarget,
+		activeCubeFace = 0,
+		activeMipmapLevel = 0
+	) {
 		this._currentRenderTarget = renderTarget;
 		this._currentActiveCubeFace = activeCubeFace;
 		this._currentActiveMipmapLevel = activeMipmapLevel;
@@ -1930,7 +1941,7 @@ export class WebGLRenderer implements Renderer {
 	) {
 		if (!(renderTarget && renderTarget.isWebGLRenderTarget)) {
 			console.error(
-				"THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not THREE.WebGLRenderTarget."
+				"WebGLRenderer.readRenderTargetPixels: renderTarget is not WebGLRenderTarget."
 			);
 			return;
 		}
@@ -1964,7 +1975,7 @@ export class WebGLRenderer implements Renderer {
 						this.gl.getParameter(this.gl.IMPLEMENTATION_COLOR_READ_FORMAT)
 				) {
 					console.error(
-						"THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format."
+						"WebGLRenderer.readRenderTargetPixels: renderTarget is not in RGBA or implementation defined format."
 					);
 					return;
 				}
@@ -1988,7 +1999,7 @@ export class WebGLRenderer implements Renderer {
 					!halfFloatSupportedByExt
 				) {
 					console.error(
-						"THREE.WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type."
+						"WebGLRenderer.readRenderTargetPixels: renderTarget is not in UnsignedByteType or implementation defined type."
 					);
 					return;
 				}
@@ -2017,7 +2028,7 @@ export class WebGLRenderer implements Renderer {
 					}
 				} else {
 					console.error(
-						"THREE.WebGLRenderer.readRenderTargetPixels: readPixels from renderTarget failed. Framebuffer not complete."
+						"WebGLRenderer.readRenderTargetPixels: readPixels from renderTarget failed. Framebuffer not complete."
 					);
 				}
 			} finally {
@@ -2119,7 +2130,7 @@ export class WebGLRenderer implements Renderer {
 	) {
 		if (this.isWebGL1Renderer) {
 			console.warn(
-				"THREE.WebGLRenderer.copyTextureToTexture3D: can only be used with WebGL2."
+				"WebGLRenderer.copyTextureToTexture3D: can only be used with WebGL2."
 			);
 			return;
 		}
@@ -2137,7 +2148,7 @@ export class WebGLRenderer implements Renderer {
 			glTarget = this.gl.TEXTURE_2D_ARRAY;
 		} else {
 			console.warn(
-				"THREE.WebGLRenderer.copyTextureToTexture3D: only supports THREE.DataTexture3D and THREE.DataTexture2DArray."
+				"WebGLRenderer.copyTextureToTexture3D: only supports DataTexture3D and DataTexture2DArray."
 			);
 			return;
 		}
@@ -2150,9 +2161,7 @@ export class WebGLRenderer implements Renderer {
 		this.gl.pixelStorei(this.gl.UNPACK_ALIGNMENT, dstTexture.unpackAlignment);
 
 		const unpackRowLen = this.gl.getParameter(this.gl.UNPACK_ROW_LENGTH);
-		const unpackImageHeight = this.gl.getParameter(
-			this.gl.UNPACK_IMAGE_HEIGHT
-		);
+		const unpackImageHeight = this.gl.getParameter(this.gl.UNPACK_IMAGE_HEIGHT);
 		const unpackSkipPixels = this.gl.getParameter(this.gl.UNPACK_SKIP_PIXELS);
 		const unpackSkipRows = this.gl.getParameter(this.gl.UNPACK_SKIP_ROWS);
 		const unpackSkipImages = this.gl.getParameter(this.gl.UNPACK_SKIP_IMAGES);

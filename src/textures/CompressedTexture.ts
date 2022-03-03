@@ -1,6 +1,8 @@
-import { Texture } from "./Texture";
+import { IImage, Texture } from "./Texture";
 
 class CompressedTexture extends Texture {
+	images: IImage[];
+
 	constructor(
 		mipmaps?,
 		width?,

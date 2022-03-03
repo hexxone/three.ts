@@ -1,15 +1,16 @@
 import { Color } from "../";
+import { TFog } from "./TFog";
 
-class Fog {
-	name: string;
-	color: Color;
-	near: any;
-	far: any;
+/**
+ * @public
+ */
+class Fog extends TFog {
 	isFog = true;
 
 	constructor(color: Color, near: number, far: number) {
-		this.name = "";
+		super();
 
+		this.name = "";
 		this.color = new Color(color);
 
 		this.near = near !== undefined ? near : 1;

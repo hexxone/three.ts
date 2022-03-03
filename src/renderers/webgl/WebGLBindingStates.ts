@@ -5,11 +5,21 @@
 	Material,
 	Object3D,
 } from "../../";
+import {
+	BufferAttribute,
+	InstancedInterleavedBuffer,
+	InterleavedBuffer,
+} from "../../core";
+import { ShaderMaterial } from "../../materials";
+import { InstancedMesh } from "../../objects";
 import { WebGLAttributes } from "./WebGLAttributes";
 import { WebGLCapabilities } from "./WebGLCapabilities";
 import { WebGLExtensions } from "./WebGLExtensions";
 import { WebGLProgram } from "./WebGLProgram";
 
+/**
+ * @public
+ */
 interface WebGLBindingState {
 	// for backward compatibility on non-VAO support browser
 	geometry: number;
@@ -21,8 +31,10 @@ interface WebGLBindingState {
 	attributeDivisors: number[];
 	attributesNum: number;
 
-	object: Object3D;
-	attributes: any;
+	object: WebGLVertexArrayObject;
+	attributes: {
+		[name: string]: { attribute: BufferAttribute; data: InterleavedBuffer };
+	};
 	index: null;
 }
 
@@ -125,13 +137,13 @@ class WebGLBindingStates {
 		return this.extension.createVertexArrayOES();
 	}
 
-	bindVertexArrayObject(vao) {
+	bindVertexArrayObject(vao: WebGLVertexArrayObject) {
 		if (this._capabilities.isWebGL2) return this._gl.bindVertexArray(vao);
 
 		return this.extension.bindVertexArrayOES(vao);
 	}
 
-	deleteVertexArrayObject(vao) {
+	deleteVertexArrayObject(vao: WebGLVertexArrayObject) {
 		if (this._capabilities.isWebGL2) return this._gl.deleteVertexArray(vao);
 
 		return this.extension.deleteVertexArrayOES(vao);
@@ -139,8 +151,8 @@ class WebGLBindingStates {
 
 	getBindingState(
 		geometry: BufferGeometry,
-		program,
-		material
+		program: WebGLProgram,
+		material: Material
 	): WebGLBindingState {
 		const wireframe = material.wireframe === true;
 
@@ -168,10 +180,10 @@ class WebGLBindingStates {
 		return state;
 	}
 
-	createBindingState(vao): WebGLBindingState {
-		const newAttributes: number[] = [];
-		const enabledAttributes: number[] = [];
-		const attributeDivisors: number[] = [];
+	createBindingState(vao: WebGLVertexArrayObject): WebGLBindingState {
+		const newAttributes = [];
+		const enabledAttributes = [];
+		const attributeDivisors = [];
 
 		for (let i = 0; i < this.maxVertexAttributes; i++) {
 			newAttributes[i] = 0;
@@ -196,7 +208,7 @@ class WebGLBindingStates {
 		};
 	}
 
-	needsUpdate(geometry, index) {
+	needsUpdate(geometry: BufferGeometry, index) {
 		const cachedAttributes = this.currentState.attributes;
 		const geometryAttributes = geometry.attributes;
 
@@ -208,10 +220,16 @@ class WebGLBindingStates {
 
 			if (cachedAttribute === undefined) return true;
 
-			if (cachedAttribute.attribute !== geometryAttribute) return true;
+			if (cachedAttribute instanceof InterleavedBufferAttribute) {
+				if (cachedAttribute.attribute !== geometryAttribute) return true;
+			}
 
-			if (cachedAttribute.data !== geometryAttribute.data) return true;
-
+			if (
+				cachedAttribute instanceof InterleavedBufferAttribute &&
+				geometryAttribute instanceof InterleavedBufferAttribute
+			) {
+				if (cachedAttribute.data !== geometryAttribute.data) return true;
+			}
 			attributesNum++;
 		}
 
@@ -222,28 +240,28 @@ class WebGLBindingStates {
 		return false;
 	}
 
-	saveCache(geometry, index) {
-		const cache = {};
+	saveCache(geometry: BufferGeometry, index) {
 		const attributes = geometry.attributes;
-		let attributesNum = 0;
 
+		// @TODO lets hope we dont get an error due to async? overwriting
+		this.currentState.attributes = {};
+		this.currentState.attributesNum = 0;
 		for (const key in attributes) {
 			const attribute = attributes[key];
 
-			const data = {} as any;
-			data.attribute = attribute;
+			const data = {
+				attribute,
+				data: null,
+			};
 
-			if (attribute.data) {
+			if (attribute instanceof InterleavedBufferAttribute) {
 				data.data = attribute.data;
 			}
 
-			cache[key] = data;
+			this.currentState.attributes[key] = data;
 
-			attributesNum++;
+			this.currentState.attributesNum++;
 		}
-
-		this.currentState.attributes = cache;
-		this.currentState.attributesNum = attributesNum;
 
 		this.currentState.index = index;
 	}
@@ -260,7 +278,7 @@ class WebGLBindingStates {
 		this.enableAttributeAndDivisor(attribute, 0);
 	}
 
-	enableAttributeAndDivisor(attribute, meshPerAttribute) {
+	enableAttributeAndDivisor(attribute: number, meshPerAttribute) {
 		const newAttributes = this.currentState.newAttributes;
 		const enabledAttributes = this.currentState.enabledAttributes;
 		const attributeDivisors = this.currentState.attributeDivisors;
@@ -316,7 +334,12 @@ class WebGLBindingStates {
 		}
 	}
 
-	setupVertexAttributes(object, material, program, geometry: BufferGeometry) {
+	setupVertexAttributes(
+		object: Object3D,
+		material: Material,
+		program: WebGLProgram,
+		geometry: BufferGeometry
+	) {
 		if (
 			this._capabilities.isWebGL2 === false &&
 			(object.isInstancedMesh || geometry.isInstancedBufferGeometry)
@@ -329,8 +352,6 @@ class WebGLBindingStates {
 		const geometryAttributes = geometry.attributes;
 
 		const programAttributes = program.getAttributes();
-
-		const materialDefaultAttributeValues = material.defaultAttributeValues;
 
 		for (const name in programAttributes) {
 			const programAttribute = programAttributes[name];
@@ -357,7 +378,7 @@ class WebGLBindingStates {
 						const stride = data.stride;
 						const offset = geometryAttribute.offset;
 
-						if (data && data.isInstancedInterleavedBuffer) {
+						if (data && data instanceof InstancedInterleavedBuffer) {
 							this.enableAttributeAndDivisor(
 								programAttribute,
 								data.meshPerAttribute
@@ -453,7 +474,7 @@ class WebGLBindingStates {
 						64,
 						48
 					);
-				} else if (name === "instanceColor") {
+				} else if (object instanceof InstancedMesh) {
 					const attribute = this._attributes.get(object.instanceColor);
 
 					// TODO Attribute may not be available on context restore
@@ -468,8 +489,8 @@ class WebGLBindingStates {
 					this._gl.bindBuffer(this._gl.ARRAY_BUFFER, buffer);
 
 					this._gl.vertexAttribPointer(programAttribute, 3, type, false, 12, 0);
-				} else if (materialDefaultAttributeValues !== undefined) {
-					const value = materialDefaultAttributeValues[name];
+				} else if (material instanceof ShaderMaterial) {
+					const value = material.defaultAttributeValues[name];
 
 					if (value !== undefined) {
 						switch (value.length) {

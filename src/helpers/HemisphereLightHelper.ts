@@ -12,6 +12,9 @@ const _vector = /* @__PURE__*/ new Vector3();
 const _color1 = /* @__PURE__*/ new Color(0);
 const _color2 = /* @__PURE__*/ new Color(0);
 
+/**
+ * @public
+ */
 class HemisphereLightHelper extends Object3D {
 	light: any;
 	color: any;

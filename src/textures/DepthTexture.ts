@@ -23,7 +23,7 @@ class DepthTexture extends Texture {
 		format = format !== undefined ? format : DepthFormat;
 		if (format !== DepthFormat && format !== DepthStencilFormat) {
 			throw new Error(
-				"DepthTexture format must be either THREE.DepthFormat or THREE.DepthStencilFormat"
+				"DepthTexture format must be either DepthFormat or DepthStencilFormat"
 			);
 		}
 

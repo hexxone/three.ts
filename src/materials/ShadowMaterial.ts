@@ -3,7 +3,7 @@ import { Color } from "../";
 
 /**
  * parameters = {
- *  color: <THREE.Color>
+ *  color: <Color>
  * }
  */
 

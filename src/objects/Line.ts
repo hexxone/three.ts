@@ -9,6 +9,7 @@ import {
 	Sphere,
 	Vector3,
 } from "../";
+import { Material } from "../materials";
 
 const _start = new Vector3();
 const _end = new Vector3();
@@ -16,13 +17,21 @@ const _inverseMatrix = new Matrix4();
 const _ray = new Ray();
 const _sphere = new Sphere();
 
+/**
+ * @public
+ */
 class Line extends Object3D {
 	isLineLoop: boolean;
 	isLineSegments: boolean;
 
+	/**
+	 * Construct a new basic line
+	 * @param geometry Line path
+	 * @param material Line visuals
+	 */
 	constructor(
-		geometry = new BufferGeometry(),
-		material = new LineBasicMaterial()
+		geometry: BufferGeometry = new BufferGeometry(),
+		material: Material = new LineBasicMaterial()
 	) {
 		super();
 
@@ -68,7 +77,7 @@ class Line extends Object3D {
 				);
 			} else {
 				console.warn(
-					"THREE.Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry."
+					"Line.computeLineDistances(): Computation only possible with non-indexed BufferGeometry."
 				);
 			}
 		}
@@ -118,8 +127,8 @@ class Line extends Object3D {
 					const a = indices[i];
 					const b = indices[i + 1];
 
-					vStart.fromBufferAttribute(positionAttribute, a);
-					vEnd.fromBufferAttribute(positionAttribute, b);
+					vStart.fromBufferAttribute(positionAttribute, Number(a));
+					vEnd.fromBufferAttribute(positionAttribute, Number(b));
 
 					const distSq = _ray.distanceSqToSegment(
 						vStart,

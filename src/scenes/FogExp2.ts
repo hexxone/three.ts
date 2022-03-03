@@ -1,12 +1,14 @@
 import { Color } from "../";
+import { TFog } from "./TFog";
 
-class FogExp2 {
-	name: string;
-	color: Color;
-	density: number;
+/**
+ * @public
+ */
+class FogExp2 extends TFog {
 	isFogExp2 = true;
 
 	constructor(color, density) {
+		super();
 		this.name = "";
 
 		this.color = new Color(color);

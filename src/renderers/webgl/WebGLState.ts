@@ -143,7 +143,7 @@ class WebGLState {
 			this.equationToGL[MinEquation] = gl.MIN;
 			this.equationToGL[MaxEquation] = gl.MAX;
 		} else {
-			const extension = extensions.get("EXT_blend_minmax");
+			const extension = extensions.get("EXT_blend_minmax") as EXT_blend_minmax;
 
 			if (extension !== null) {
 				this.equationToGL[MinEquation] = extension.MIN_EXT;

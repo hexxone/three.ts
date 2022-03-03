@@ -23,7 +23,7 @@ class WebGLCapabilities {
 	precision: string;
 	maxPrecision: string;
 
-	maxAnisotropy: any;
+	maxAnisotropy: number;
 
 	constructor(
 		gl: GLESRenderingContext,
@@ -44,7 +44,7 @@ class WebGLCapabilities {
 
 		if (this.maxPrecision !== this.precision) {
 			console.warn(
-				"THREE.WebGLRenderer:",
+				"WebGLRenderer:",
 				this.precision,
 				"not supported, using",
 				this.maxPrecision,
@@ -75,7 +75,7 @@ class WebGLCapabilities {
 		if (this.maxAnisotropy !== undefined) return this.maxAnisotropy;
 
 		if (ext.has("EXT_texture_filter_anisotropic") === true) {
-			const extension = ext.get("EXT_texture_filter_anisotropic");
+			const extension = ext.get("EXT_texture_filter_anisotropic") as EXT_texture_filter_anisotropic;
 
 			this.maxAnisotropy = gl.getParameter(
 				extension.MAX_TEXTURE_MAX_ANISOTROPY_EXT

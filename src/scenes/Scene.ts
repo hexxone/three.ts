@@ -4,14 +4,16 @@ import {
 	WebGLRenderTarget,
 	Texture,
 	Color,
-	FogExp2,
+	TFog,
 } from "../";
-import { Fog } from "./Fog";
 
+/**
+ * @public
+ */
 class Scene extends Object3D {
 	background: WebGLRenderTarget | Texture | Color;
 	environment: Texture;
-	fog: Fog | FogExp2;
+	fog: TFog;
 	overrideMaterial: Material;
 
 	constructor() {
@@ -41,8 +43,7 @@ class Scene extends Object3D {
 	copy(source: Scene, recursive: boolean) {
 		super.copy(source, recursive);
 
-		if (source.background !== null)
-			this.background = source.background.clone() as any;
+		if (source.background !== null) this.background = source.background.clone();
 		if (source.environment !== null)
 			this.environment = source.environment.clone();
 		if (source.fog !== null) this.fog = source.fog.clone();

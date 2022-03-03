@@ -9,6 +9,9 @@ const _quaternion = /* @__PURE__*/ new Quaternion();
 export const DefaultOrder = "XYZ";
 export const RotationOrders = ["XYZ", "YZX", "ZXY", "XZY", "YXZ", "ZYX"];
 
+/**
+ * @public
+ */
 class Euler {
 	isEuler = true;
 
@@ -186,7 +189,7 @@ class Euler {
 
 			default:
 				console.warn(
-					"THREE.Euler: .setFromRotationMatrix() encountered an unknown order: " +
+					"Euler: .setFromRotationMatrix() encountered an unknown order: " +
 						order
 				);
 		}

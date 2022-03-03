@@ -4,6 +4,7 @@ import { EventDispatcher, LinearFilter, Texture, Vector4 } from "../";
  * In options, we can specify:
  * Texture parameters for an auto-generated target texture
  * depthBuffer/stencilBuffer: Booleans to indicate if we should generate these buffers
+ * @public
  */
 class WebGLRenderTarget extends EventDispatcher {
 	width: any;
@@ -51,11 +52,13 @@ class WebGLRenderTarget extends EventDispatcher {
 			options.anisotropy,
 			options.encoding
 		);
+		this.texture.isRenderTargetTexture = true;
 
-		this.texture.image = {};
-		this.texture.image.width = width;
-		this.texture.image.height = height;
-		this.texture.image.depth = 1;
+		this.texture.image = {
+			width,
+			height,
+			depth: 1,
+		};
 
 		this.texture.generateMipmaps =
 			options.generateMipmaps !== undefined ? options.generateMipmaps : false;
@@ -70,7 +73,7 @@ class WebGLRenderTarget extends EventDispatcher {
 			options.depthTexture !== undefined ? options.depthTexture : null;
 	}
 
-	setTexture(texture) {
+	setTexture(texture: Texture) {
 		texture.image = {
 			width: this.width,
 			height: this.height,

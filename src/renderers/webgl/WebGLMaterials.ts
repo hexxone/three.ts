@@ -1,4 +1,5 @@
 import { Material, BackSide } from "../../";
+import { MeshDistanceMaterial, MeshPhysicalMaterial } from "../../materials";
 
 class WebGLMaterials {
 	properties;
@@ -37,8 +38,7 @@ class WebGLMaterials {
 			this.refreshUniformsPhong(uniforms, material);
 		} else if (material.isMeshStandardMaterial) {
 			this.refreshUniformsCommon(uniforms, material);
-
-			if (material.isMeshPhysicalMaterial) {
+			if (material instanceof MeshPhysicalMaterial) {
 				this.refreshUniformsPhysical(uniforms, material);
 			} else {
 				this.refreshUniformsStandard(uniforms, material);
@@ -49,7 +49,7 @@ class WebGLMaterials {
 		} else if (material.isMeshDepthMaterial) {
 			this.refreshUniformsCommon(uniforms, material);
 			this.refreshUniformsDepth(uniforms, material);
-		} else if (material.isMeshDistanceMaterial) {
+		} else if (material instanceof MeshDistanceMaterial) {
 			this.refreshUniformsCommon(uniforms, material);
 			this.refreshUniformsDistance(uniforms, material);
 		} else if (material.isMeshNormalMaterial) {
@@ -57,7 +57,6 @@ class WebGLMaterials {
 			this.refreshUniformsNormal(uniforms, material);
 		} else if (material.isLineBasicMaterial) {
 			this.refreshUniformsLine(uniforms, material);
-
 			if (material.isLineDashedMaterial) {
 				this.refreshUniformsDash(uniforms, material);
 			}
@@ -73,7 +72,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsCommon(uniforms, material) {
+	refreshUniformsCommon(uniforms, material: Material) {
 		uniforms.opacity.value = material.opacity;
 
 		if (material.color) {
@@ -207,18 +206,18 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsLine(uniforms, material) {
+	refreshUniformsLine(uniforms, material: Material) {
 		uniforms.diffuse.value.copy(material.color);
 		uniforms.opacity.value = material.opacity;
 	}
 
-	refreshUniformsDash(uniforms, material) {
+	refreshUniformsDash(uniforms, material: Material) {
 		uniforms.dashSize.value = material.dashSize;
 		uniforms.totalSize.value = material.dashSize + material.gapSize;
 		uniforms.scale.value = material.scale;
 	}
 
-	refreshUniformsPoints(uniforms, material, pixelRatio, height) {
+	refreshUniformsPoints(uniforms, material: Material, pixelRatio, height) {
 		uniforms.diffuse.value.copy(material.color);
 		uniforms.opacity.value = material.opacity;
 		uniforms.size.value = material.size * pixelRatio;
@@ -253,7 +252,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsSprites(uniforms, material) {
+	refreshUniformsSprites(uniforms, material: Material) {
 		uniforms.diffuse.value.copy(material.color);
 		uniforms.opacity.value = material.opacity;
 		uniforms.rotation.value = material.rotation;
@@ -287,13 +286,13 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsLambert(uniforms, material) {
+	refreshUniformsLambert(uniforms, material: Material) {
 		if (material.emissiveMap) {
 			uniforms.emissiveMap.value = material.emissiveMap;
 		}
 	}
 
-	refreshUniformsPhong(uniforms, material) {
+	refreshUniformsPhong(uniforms, material: Material) {
 		uniforms.specular.value.copy(material.specular);
 		uniforms.shininess.value = Math.max(material.shininess, 1e-4); // to prevent pow( 0.0, 0.0 )
 
@@ -320,7 +319,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsToon(uniforms, material) {
+	refreshUniformsToon(uniforms, material: Material) {
 		if (material.gradientMap) {
 			uniforms.gradientMap.value = material.gradientMap;
 		}
@@ -348,7 +347,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsStandard(uniforms, material) {
+	refreshUniformsStandard(uniforms, material: Material) {
 		uniforms.roughness.value = material.roughness;
 		uniforms.metalness.value = material.metalness;
 
@@ -390,7 +389,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsPhysical(uniforms, material) {
+	refreshUniformsPhysical(uniforms, material: MeshPhysicalMaterial) {
 		this.refreshUniformsStandard(uniforms, material);
 
 		uniforms.reflectivity.value = material.reflectivity; // also part of uniforms common
@@ -423,7 +422,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsMatcap(uniforms, material) {
+	refreshUniformsMatcap(uniforms, material: Material) {
 		if (material.matcap) {
 			uniforms.matcap.value = material.matcap;
 		}
@@ -447,7 +446,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsDepth(uniforms, material) {
+	refreshUniformsDepth(uniforms, material: Material) {
 		if (material.displacementMap) {
 			uniforms.displacementMap.value = material.displacementMap;
 			uniforms.displacementScale.value = material.displacementScale;
@@ -455,7 +454,7 @@ class WebGLMaterials {
 		}
 	}
 
-	refreshUniformsDistance(uniforms, material) {
+	refreshUniformsDistance(uniforms, material: MeshDistanceMaterial) {
 		if (material.displacementMap) {
 			uniforms.displacementMap.value = material.displacementMap;
 			uniforms.displacementScale.value = material.displacementScale;
@@ -467,7 +466,7 @@ class WebGLMaterials {
 		uniforms.farDistance.value = material.farDistance;
 	}
 
-	refreshUniformsNormal(uniforms, material) {
+	refreshUniformsNormal(uniforms, material: Material) {
 		if (material.bumpMap) {
 			uniforms.bumpMap.value = material.bumpMap;
 			uniforms.bumpScale.value = material.bumpScale;

@@ -17,13 +17,27 @@ import {
 
 let textureId = 0;
 
-class Texture extends EventDispatcher {
+export type IImage = {
+	data?: ArrayBufferLike | number[];
+	width?: number;
+	height?: number;
+	depth?: number;
+
+	complete?: boolean;
+	readyState?: number;
+	HAVE_CURRENT_DATA?: number;
+};
+
+/**
+ * @public
+ */
+export class Texture extends EventDispatcher {
 	static DEFAULT_IMAGE: any;
 	static DEFAULT_MAPPING: any;
 
 	uuid: string;
 	name: string;
-	image: any;
+	image: IImage;
 	mipmaps: any[];
 	mapping: any;
 	wrapS: number;
@@ -56,6 +70,7 @@ class Texture extends EventDispatcher {
 	isDataTexture3D: boolean;
 	isDataTexture2DArray: boolean;
 	isCompressedTexture: boolean;
+	isRenderTargetTexture: boolean;
 
 	constructor(
 		image = Texture.DEFAULT_IMAGE,
@@ -107,7 +122,7 @@ class Texture extends EventDispatcher {
 		this.flipY = true;
 		this.unpackAlignment = 4; // valid values: 1, 2, 4, 8 (see http://www.khronos.org/opengles/sdk/docs/man/xhtml/glPixelStorei.xml)
 
-		// Values of encoding !== THREE.LinearEncoding only supported on map, envMap and emissiveMap.
+		// Values of encoding !== LinearEncoding only supported on map, envMap and emissiveMap.
 		//
 		// Also changing the encoding after already used by a Material will not automatically make the Material
 		// update. You need to explicitly call Material.needsUpdate to trigger it to recompile.
@@ -115,6 +130,8 @@ class Texture extends EventDispatcher {
 
 		this.version = 0;
 		this.onUpdate = null;
+
+		this.isRenderTargetTexture = false;
 	}
 
 	updateMatrix() {
@@ -267,5 +284,3 @@ function serializeImage(image) {
 		}
 	}
 }
-
-export { Texture };

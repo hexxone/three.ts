@@ -20,13 +20,16 @@ class KeyframeTrack {
 	TimeBufferType = Float32Array;
 	ValueBufferType = Float32Array;
 
-	constructor(name: string, times: number[], values: number[], interpolation?: number) {
+	constructor(
+		name: string,
+		times: number[],
+		values: number[],
+		interpolation?: number
+	) {
 		if (name === undefined)
 			throw new Error("KeyframeTrack: track name is undefined");
 		if (times === undefined || times.length === 0)
-			throw new Error(
-				"THREE.KeyframeTrack: no keyframes in track named " + name
-			);
+			throw new Error("KeyframeTrack: no keyframes in track named " + name);
 
 		this.name = name;
 
@@ -216,7 +219,7 @@ class KeyframeTrack {
 
 			if (typeof currTime === "number" && isNaN(currTime)) {
 				console.error(
-					"THREE.KeyframeTrack: Time is not a valid number.",
+					"KeyframeTrack: Time is not a valid number.",
 					this,
 					i,
 					currTime
@@ -227,7 +230,7 @@ class KeyframeTrack {
 
 			if (prevTime !== null && prevTime > currTime) {
 				console.error(
-					"THREE.KeyframeTrack: Out of order keys.",
+					"KeyframeTrack: Out of order keys.",
 					this,
 					i,
 					currTime,
@@ -247,7 +250,7 @@ class KeyframeTrack {
 
 					if (isNaN(value)) {
 						console.error(
-							"THREE.KeyframeTrack: Value is not a valid number.",
+							"KeyframeTrack: Value is not a valid number.",
 							this,
 							i,
 							value

@@ -128,7 +128,7 @@ class Vector4 {
 	add(v, w) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector4: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
+				"Vector4: .add() now only accepts one argument. Use .addVectors( a, b ) instead."
 			);
 			return this.addVectors(v, w);
 		}
@@ -171,7 +171,7 @@ class Vector4 {
 	sub(v, w) {
 		if (w !== undefined) {
 			console.warn(
-				"THREE.Vector4: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
+				"Vector4: .sub() now only accepts one argument. Use .subVectors( a, b ) instead."
 			);
 			return this.subVectors(v, w);
 		}
@@ -543,17 +543,21 @@ class Vector4 {
 		return array;
 	}
 
-	fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index, offset?) {
+	fromBufferAttribute(
+		attribute: BufferAttribute | InterleavedBufferAttribute,
+		index,
+		offset?
+	) {
 		if (offset !== undefined) {
 			console.warn(
-				"THREE.Vector4: offset has been removed from .fromBufferAttribute()."
+				"Vector4: offset has been removed from .fromBufferAttribute()."
 			);
 		}
 
-		this.x = attribute.getX(index);
-		this.y = attribute.getY(index);
-		this.z = attribute.getZ(index);
-		this.w = attribute.getW(index);
+		this.x = Number(attribute.getX(index));
+		this.y = Number(attribute.getY(index));
+		this.z = Number(attribute.getZ(index));
+		this.w = Number(attribute.getW(index));
 
 		return this;
 	}

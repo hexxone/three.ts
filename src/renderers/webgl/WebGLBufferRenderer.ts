@@ -40,7 +40,7 @@ class WebGLBufferRenderer {
 
 				if (extension === null) {
 					console.error(
-						"THREE.WebGLBufferRenderer: using THREE.InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays."
+						"WebGLBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays."
 					);
 					return;
 				}

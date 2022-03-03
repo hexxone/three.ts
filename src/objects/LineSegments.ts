@@ -1,11 +1,12 @@
 import { Line } from "./Line";
 import { Vector3, Float32BufferAttribute } from "../";
+import { Material } from "../materials";
 
 const _start = new Vector3();
 const _end = new Vector3();
 
 class LineSegments extends Line {
-	constructor(geometry, material) {
+	constructor(geometry, material: Material) {
 		super(geometry, material);
 
 		this.isLineSegments = true;
@@ -35,7 +36,7 @@ class LineSegments extends Line {
 				);
 			} else {
 				console.warn(
-					"THREE.LineSegments.computeLineDistances(): Computation only possible with non-indexed BufferGeometry."
+					"LineSegments.computeLineDistances(): Computation only possible with non-indexed BufferGeometry."
 				);
 			}
 		}

@@ -1,5 +1,8 @@
 import { Object3D } from "../";
 
+/**
+ * @public
+ */
 class Audio extends Object3D {
 	listener: any;
 	context: any;

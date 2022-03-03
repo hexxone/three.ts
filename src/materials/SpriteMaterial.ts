@@ -4,8 +4,8 @@ import { Color } from "../";
 /**
  * parameters = {
  *  color: <hex>,
- *  map: new THREE.Texture( <Image> ),
- *  alphaMap: new THREE.Texture( <Image> ),
+ *  map: new Texture( <Image> ),
+ *  alphaMap: new Texture( <Image> ),
  *  rotation: <float>,
  *  sizeAttenuation: <bool>
  * }

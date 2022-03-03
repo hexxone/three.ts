@@ -9,8 +9,11 @@ import {
 	WebGLAnimation,
 } from "../../";
 
-import { XRReferenceSpaceType } from "../../../../XRWebGL";
+import { XRReferenceSpaceType, XRWebGLLayerInit } from "../../../../XRWebGL";
 
+/**
+ * @public
+ */
 export class WebXRManager extends EventDispatcher {
 	_renderer: WebGLRenderer;
 	_gl: GLESRenderingContext;
@@ -128,22 +131,22 @@ export class WebXRManager extends EventDispatcher {
 		this.dispatchEvent({ type: "sessionend" });
 	}
 
-	setFramebufferScaleFactor(value) {
+	setFramebufferScaleFactor(value: number) {
 		this.framebufferScaleFactor = value;
 
 		if (this.isPresenting === true) {
 			console.warn(
-				"THREE.WebXRManager: Cannot change framebuffer scale while presenting."
+				"WebXRManager: Cannot change framebuffer scale while presenting."
 			);
 		}
 	}
 
-	setReferenceSpaceType(value) {
+	setReferenceSpaceType(value: XRReferenceSpaceType) {
 		this.referenceSpaceType = value;
 
 		if (this.isPresenting === true) {
 			console.warn(
-				"THREE.WebXRManager: Cannot change reference space type while presenting."
+				"WebXRManager: Cannot change reference space type while presenting."
 			);
 		}
 	}
@@ -156,20 +159,25 @@ export class WebXRManager extends EventDispatcher {
 		return this.session;
 	}
 
-	async setSession(value) {
+	async setSession(value: XRSession) {
 		this.session = value;
 
 		if (this.session !== null) {
-			this.session.addEventListener("select", e => this.onSessionEvent(e));
-			this.session.addEventListener("selectstart", e => this.onSessionEvent(e));
-			this.session.addEventListener("selectend", e => this.onSessionEvent(e));
-			this.session.addEventListener("squeeze", e => this.onSessionEvent(e));
-			this.session.addEventListener("squeezestart", e => this.onSessionEvent(e));
-			this.session.addEventListener("squeezeend", e => this.onSessionEvent(e));
-			this.session.addEventListener("end", e =>  this.onSessionEnd());
-			this.session.addEventListener(
-				"inputsourceschange",
-				e => this.onInputSourcesChange(e)
+			this.session.addEventListener("select", (e) => this.onSessionEvent(e));
+			this.session.addEventListener("selectstart", (e) =>
+				this.onSessionEvent(e)
+			);
+			this.session.addEventListener("selectend", (e) => this.onSessionEvent(e));
+			this.session.addEventListener("squeeze", (e) => this.onSessionEvent(e));
+			this.session.addEventListener("squeezestart", (e) =>
+				this.onSessionEvent(e)
+			);
+			this.session.addEventListener("squeezeend", (e) =>
+				this.onSessionEvent(e)
+			);
+			this.session.addEventListener("end", (e) => this.onSessionEnd());
+			this.session.addEventListener("inputsourceschange", (e) =>
+				this.onInputSourcesChange(e)
 			);
 
 			const attributes = this._gl.getContextAttributes();
@@ -184,9 +192,8 @@ export class WebXRManager extends EventDispatcher {
 				depth: attributes.depth,
 				stencil: attributes.stencil,
 				framebufferScaleFactor: this.framebufferScaleFactor,
-			};
+			} as XRWebGLLayerInit;
 
-			// eslint-disable-next-line no-undef
 			const baseLayer = new XRWebGLLayer(this.session, this._gl, layerInit);
 
 			this.session.updateRenderState({ baseLayer: baseLayer });

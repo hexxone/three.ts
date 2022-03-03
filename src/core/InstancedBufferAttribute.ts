@@ -8,7 +8,7 @@ class InstancedBufferAttribute extends BufferAttribute {
 			meshPerAttribute = normalized;
 			normalized = false;
 			console.error(
-				"THREE.InstancedBufferAttribute: The constructor now expects normalized as the third argument."
+				"InstancedBufferAttribute: The constructor now expects normalized as the third argument."
 			);
 		}
 

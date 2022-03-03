@@ -6,7 +6,7 @@ class CacheClass {
 	add(key, file) {
 		if (this.enabled === false) return;
 
-		// console.log( 'THREE.Cache', 'Adding key:', key );
+		// console.log( 'Cache', 'Adding key:', key );
 
 		this.files[key] = file;
 	}
@@ -14,7 +14,7 @@ class CacheClass {
 	get(key) {
 		if (this.enabled === false) return;
 
-		// console.log( 'THREE.Cache', 'Checking key:', key );
+		// console.log( 'Cache', 'Checking key:', key );
 
 		return this.files[key];
 	}

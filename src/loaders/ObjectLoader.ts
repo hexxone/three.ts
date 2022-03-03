@@ -420,16 +420,14 @@ class ObjectLoader extends Loader {
 
 					case "Geometry":
 						console.error(
-							'THREE.ObjectLoader: Loading "Geometry" is not supported anymore.'
+							'ObjectLoader: Loading "Geometry" is not supported anymore.'
 						);
 
 						break;
 
 					default:
 						console.warn(
-							'THREE.ObjectLoader: Unsupported geometry type "' +
-								data.type +
-								'"'
+							'ObjectLoader: Unsupported geometry type "' + data.type + '"'
 						);
 
 						continue;
@@ -604,7 +602,7 @@ class ObjectLoader extends Loader {
 			if (typeof value === "number") return value;
 
 			console.warn(
-				"THREE.ObjectLoader.parseTexture: Constant should be in numeric form.",
+				"ObjectLoader.parseTexture: Constant should be in numeric form.",
 				value
 			);
 
@@ -618,10 +616,7 @@ class ObjectLoader extends Loader {
 				const data = json[i];
 
 				if (data.image === undefined) {
-					console.warn(
-						'THREE.ObjectLoader: No "image" specified for',
-						data.uuid
-					);
+					console.warn('ObjectLoader: No "image" specified for', data.uuid);
 				}
 
 				if (images[data.image] === undefined) {
@@ -1020,7 +1015,7 @@ class ObjectLoader extends Loader {
 
 				if (skeleton === undefined) {
 					console.warn(
-						"THREE.ObjectLoader: No skeleton found with UUID:",
+						"ObjectLoader: No skeleton found with UUID:",
 						child.skeleton
 					);
 				} else {
@@ -1034,7 +1029,7 @@ class ObjectLoader extends Loader {
 
 	setTexturePath(value) {
 		console.warn(
-			"THREE.ObjectLoader: .setTexturePath() has been renamed to .setResourcePath()."
+			"ObjectLoader: .setTexturePath() has been renamed to .setResourcePath()."
 		);
 		return this.setResourcePath(value);
 	}

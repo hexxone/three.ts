@@ -6,18 +6,19 @@ import {
 	PMREMGenerator,
 	WebGLRenderer,
 } from "../../";
+import { Texture } from "../../textures";
 
 class WebGLCubeUVMaps {
 	_renderer: WebGLRenderer;
 
 	cubeUVmaps = new WeakMap();
-	pmremGenerator = null;
+	pmremGenerator: PMREMGenerator;
 
 	constructor(renderer: WebGLRenderer) {
 		this._renderer = renderer;
 	}
 
-	get(texture) {
+	get(texture: Texture) {
 		if (
 			texture &&
 			texture.isTexture &&
@@ -55,7 +56,9 @@ class WebGLCubeUVMaps {
 
 						this._renderer.setRenderTarget(currentRenderTarget);
 
-						texture.addEventListener("dispose", (e) => this.onTextureDispose(e));
+						texture.addEventListener("dispose", (e) =>
+							this.onTextureDispose(e)
+						);
 
 						return renderTarget.texture;
 					} else {

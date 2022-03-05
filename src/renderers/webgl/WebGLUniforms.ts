@@ -48,7 +48,6 @@ import {
 	DataTexture2DArray,
 	DataTexture3D,
 	Texture,
-	Vector2,
 	Color,
 	Matrix3,
 	Matrix4,
@@ -180,11 +179,11 @@ function setValueV2f(gl: GLESRenderingContext, v) {
 
 function setValueV3f(
 	gl: GLESRenderingContext,
-	v: Vector3 & Color & Float32Array
+	v: Vector3 | Color | Float32Array
 ) {
 	const cache = this.cache;
 
-	if (v.x !== undefined) {
+	if (v instanceof Vector3) {
 		if (cache[0] !== v.x || cache[1] !== v.y || cache[2] !== v.z) {
 			gl.uniform3f(this.addr, v.x, v.y, v.z);
 
@@ -192,7 +191,7 @@ function setValueV3f(
 			cache[1] = v.y;
 			cache[2] = v.z;
 		}
-	} else if (v.r !== undefined) {
+	} else if (v instanceof Color) {
 		if (cache[0] !== v.r || cache[1] !== v.g || cache[2] !== v.b) {
 			gl.uniform3f(this.addr, v.r, v.g, v.b);
 
@@ -209,10 +208,10 @@ function setValueV3f(
 	}
 }
 
-function setValueV4f(gl: GLESRenderingContext, v: Vector4 & Float32Array) {
+function setValueV4f(gl: GLESRenderingContext, v: Vector4 | Float32Array) {
 	const cache = this.cache;
 
-	if (v.x !== undefined) {
+	if (v instanceof Vector4) {
 		if (
 			cache[0] !== v.x ||
 			cache[1] !== v.y ||
@@ -237,18 +236,19 @@ function setValueV4f(gl: GLESRenderingContext, v: Vector4 & Float32Array) {
 
 // Single matrix (from flat array or MatrixN)
 
-function setValueM2(gl: GLESRenderingContext, v: Matrix4 & Float32Array) {
+function setValueM2(gl: GLESRenderingContext, v: Matrix4 | Float32Array) {
 	// @todo M3 & M4 ok ?
 	const cache = this.cache;
-	const elements = v.elements;
 
-	if (elements === undefined) {
+	if (v instanceof Float32Array) {
 		if (arraysEqual(cache, v)) return;
 
 		gl.uniformMatrix2fv(this.addr, false, v);
 
 		copyArray(cache, v);
 	} else {
+		const elements = v.elements;
+
 		if (arraysEqual(cache, elements)) return;
 
 		mat2array.set(elements);
@@ -259,17 +259,18 @@ function setValueM2(gl: GLESRenderingContext, v: Matrix4 & Float32Array) {
 	}
 }
 
-function setValueM3(gl: GLESRenderingContext, v: Matrix3 & Float32Array) {
+function setValueM3(gl: GLESRenderingContext, v: Matrix3 | Float32Array) {
 	const cache = this.cache;
-	const elements = v.elements;
 
-	if (elements === undefined) {
+	if (v instanceof Float32Array) {
 		if (arraysEqual(cache, v)) return;
 
 		gl.uniformMatrix3fv(this.addr, false, v);
 
 		copyArray(cache, v);
 	} else {
+		const elements = v.elements;
+
 		if (arraysEqual(cache, elements)) return;
 
 		mat3array.set(elements);
@@ -280,17 +281,18 @@ function setValueM3(gl: GLESRenderingContext, v: Matrix3 & Float32Array) {
 	}
 }
 
-function setValueM4(gl: GLESRenderingContext, v: Matrix4 & Float32Array) {
+function setValueM4(gl: GLESRenderingContext, v: Matrix4 | Float32Array) {
 	const cache = this.cache;
-	const elements = v.elements;
 
-	if (elements === undefined) {
+	if (v instanceof Float32Array) {
 		if (arraysEqual(cache, v)) return;
 
 		gl.uniformMatrix4fv(this.addr, false, v);
 
 		copyArray(cache, v);
 	} else {
+		const elements = v.elements;
+
 		if (arraysEqual(cache, elements)) return;
 
 		mat4array.set(elements);

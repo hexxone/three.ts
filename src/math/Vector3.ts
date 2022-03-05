@@ -1,5 +1,5 @@
-import { AnyTypedArray } from "src/we_utils/src";
 import {
+	AnyTypedArray,
 	Camera,
 	Cylindrical,
 	Matrix3,

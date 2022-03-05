@@ -551,7 +551,7 @@ class Matrix4 {
 		return this;
 	}
 
-	setPosition(x, y, z) {
+	setPosition(x, y?, z?) {
 		const te = this.elements;
 
 		if (x.isVector3) {

@@ -9,7 +9,7 @@ import {
 	WebGLAnimation,
 } from "../../";
 
-import { XRReferenceSpaceType, XRWebGLLayerInit } from "../../../../XRWebGL";
+import { XRReferenceSpaceType, XRWebGLLayerInit } from "../../XRWebGL";
 
 /**
  * @public

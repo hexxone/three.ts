@@ -25,6 +25,9 @@ function intersectObject(
 	}
 }
 
+/**
+ * @public
+ */
 class Raycaster {
 	ray: Ray;
 	near: number;

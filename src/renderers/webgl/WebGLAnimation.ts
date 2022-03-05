@@ -1,4 +1,4 @@
-import { XRFrameRequestCallback } from "src/we_utils/src/XRWebGL";
+import { XRFrameRequestCallback } from "../../XRWebGL";
 
 class WebGLAnimation {
 	context: XRSession | (Window & typeof globalThis) = null;

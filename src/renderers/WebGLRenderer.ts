@@ -1,4 +1,3 @@
-import { XRFrameRequestCallback } from "src/we_utils/src/XRWebGL";
 import {
 	ArrayCamera,
 	RGBAFormat,
@@ -59,6 +58,8 @@ import {
 	RenderItem,
 	ShaderMaterial,
 } from "../";
+import { XRFrameRequestCallback } from "../XRWebGL";
+
 import { WebGLProgram } from "./webgl/WebGLProgram";
 
 function createCanvasElement() {

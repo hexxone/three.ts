@@ -27,6 +27,10 @@ type GLUniform = {
 class UniformsCache {
 	lights: { [key: string]: GLUniform };
 
+	constructor() {
+		this.lights = {};
+	}
+
 	get(light: Light): GLUniform {
 		if (this.lights[light.id] !== undefined) {
 			return this.lights[light.id];
@@ -97,6 +101,10 @@ type GLShadowUniform = {
 
 class ShadowUniformsCache {
 	lights: { [key: string]: GLShadowUniform };
+
+	constructor() {
+		this.lights = {};
+	}
 
 	get(light: Light): GLShadowUniform {
 		if (this.lights[light.id] !== undefined) {

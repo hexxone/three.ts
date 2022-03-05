@@ -29,7 +29,7 @@ import {
 } from "../";
 
 class ExtrudeGeometry extends BufferGeometry {
-	constructor(shapes, options) {
+	constructor(shapes?, options?) {
 		super();
 
 		this.type = "ExtrudeGeometry";

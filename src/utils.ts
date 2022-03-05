@@ -34,6 +34,22 @@ const TYPED_ARRAYS = {
 	Float64Array: Float64Array,
 };
 
+/**
+ * Shorthand for Typed array stuff
+ * @public
+ */
+export const AnyTypedArray:
+	| Uint32Array
+	| Float32Array
+	| Float64Array
+	| Uint8Array
+	| Int8Array
+	| Uint16Array
+	| Int16Array
+	| Int32Array
+	| BigUint64Array
+	| BigInt64Array = null;
+
 function getTypedArray(type, buffer) {
 	return new TYPED_ARRAYS[type](buffer);
 }

@@ -1,4 +1,4 @@
-import { AnyTypedArray } from "src/we_utils/src";
+import { AnyTypedArray } from "../utils";
 import { BufferAttribute, InterleavedBufferAttribute, Matrix3 } from "../";
 
 /**

@@ -5,8 +5,11 @@
 
 import { BufferGeometry, Float32BufferAttribute, Vector3 } from "../";
 
+const DefaultFunc = (u, v, target) =>
+	target.set(u, v, Math.cos(u) * Math.sin(v));
+
 class ParametricGeometry extends BufferGeometry {
-	constructor(func, slices, stacks) {
+	constructor(func = DefaultFunc, slices: number, stacks: number) {
 		super();
 
 		this.type = "ParametricGeometry";

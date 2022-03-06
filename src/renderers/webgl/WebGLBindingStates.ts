@@ -316,7 +316,14 @@ class WebGLBindingStates {
 		}
 	}
 
-	vertexAttribPointer(index, size, type, normalized, stride, offset) {
+	vertexAttribPointer(
+		index: number,
+		size: number,
+		type: number,
+		normalized: boolean,
+		stride: number,
+		offset: number
+	) {
 		if (
 			this._capabilities.isWebGL2 === true &&
 			(type === this._gl.INT || type === this._gl.UNSIGNED_INT)

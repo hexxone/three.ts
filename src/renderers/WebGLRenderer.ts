@@ -57,6 +57,7 @@ import {
 	RawShaderMaterial,
 	RenderItem,
 	ShaderMaterial,
+	ensureInit,
 } from "../";
 import { XRFrameRequestCallback } from "../XRWebGL";
 
@@ -292,6 +293,8 @@ export class WebGLRenderer implements Renderer {
 	indexedBufferRenderer: WebGLIndexedBufferRenderer;
 
 	constructor(parameters?: WebGLRendererParameters) {
+		ensureInit();
+
 		this._parameters = parameters = parameters || {};
 
 		this.domElement =
@@ -402,12 +405,12 @@ export class WebGLRenderer implements Renderer {
 
 		if (typeof window !== "undefined") {
 			this.animation.setContext(window);
+		}
 
-			if (typeof window["__THREE_DEVTOOLS__"] !== "undefined") {
-				window["__THREE_DEVTOOLS__"].dispatchEvent(
-					new CustomEvent("observe", { detail: this })
-				); // eslint-disable-line no-undef
-			}
+		if (typeof __THREE_DEVTOOLS__ !== "undefined") {
+			__THREE_DEVTOOLS__.dispatchEvent(
+				new CustomEvent("observe", { detail: this })
+			);
 		}
 
 		this.animation.setAnimationLoop(this.onAnimationFrame.bind(this));
@@ -796,16 +799,19 @@ export class WebGLRenderer implements Renderer {
 		});
 	}
 
-	renderBufferImmediate(object, program) {
+	renderBufferImmediate(object: ImmediateRenderObject, program: WebGLProgram) {
 		this.bindingStates.initAttributes();
 
 		const buffers = this.properties.get(object);
 
 		if (object.hasPositions && !buffers.position)
 			buffers.position = this.gl.createBuffer();
+
 		if (object.hasNormals && !buffers.normal)
 			buffers.normal = this.gl.createBuffer();
+
 		if (object.hasUvs && !buffers.uv) buffers.uv = this.gl.createBuffer();
+
 		if (object.hasColors && !buffers.color)
 			buffers.color = this.gl.createBuffer();
 
@@ -1040,12 +1046,12 @@ export class WebGLRenderer implements Renderer {
 					for (let i = 0; i < material.length; i++) {
 						const material2 = material[i];
 
-						if (compiled.has(material2) === false) {
+						if (!compiled.has(material2)) {
 							this.initMaterial(material2, scene as any, object);
 							compiled.set(material2, {});
 						}
 					}
-				} else if (compiled.has(material) === false) {
+				} else if (!compiled.has(material)) {
 					this.initMaterial(material, scene as any, object);
 					compiled.set(material, {});
 				}

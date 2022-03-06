@@ -39,9 +39,7 @@ class EllipseCurve extends Curve {
 		this.aRotation = aRotation;
 	}
 
-	getPoint(t, optionalTarget?) {
-		const point = optionalTarget || new Vector2();
-
+	getPoint(t: number, point = new Vector2()) {
 		const twoPi = Math.PI * 2;
 		let deltaAngle = this.aEndAngle - this.aStartAngle;
 		const samePoints = Math.abs(deltaAngle) < Number.EPSILON;

@@ -596,20 +596,20 @@ class WebGLTextures {
 			}
 		}
 
-		if (this._extensions.has("EXT_texture_filter_anisotropic") === true) {
+		if (this._extensions.has("EXT_texture_filter_anisotropic")) {
 			const extension = this._extensions.get(
 				"EXT_texture_filter_anisotropic"
 			) as EXT_texture_filter_anisotropic;
 
 			if (
 				texture.type === FloatType &&
-				this._extensions.has("OES_texture_float_linear") === false
+				!this._extensions.has("OES_texture_float_linear")
 			)
 				return; // verify extension for WebGL 1 and WebGL 2
 			if (
-				this.isWebGL2 === false &&
+				!this.isWebGL2 &&
 				texture.type === HalfFloatType &&
-				this._extensions.has("OES_texture_half_float_linear") === false
+				!this._extensions.has("OES_texture_half_float_linear")
 			)
 				return; // verify extension for WebGL 1 only
 
@@ -1250,7 +1250,10 @@ class WebGLTextures {
 	}
 
 	// Setup resources for a Depth Texture for a FBO (needs an extension)
-	setupDepthTexture(framebuffer, renderTarget) {
+	setupDepthTexture(
+		framebuffer: GLESFramebuffer,
+		renderTarget: WebGLRenderTarget
+	) {
 		const isCube = renderTarget && renderTarget.isWebGLCubeRenderTarget;
 		if (isCube)
 			throw new Error(

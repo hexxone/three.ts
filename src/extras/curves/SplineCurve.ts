@@ -12,7 +12,7 @@ class SplineCurve extends Curve {
 		this.points = points || [];
 	}
 
-	getPoint(t, optionalTarget = new Vector2()) {
+	getPoint(t: number, optionalTarget = new Vector2()) {
 		const point = optionalTarget;
 
 		const points = this.points;

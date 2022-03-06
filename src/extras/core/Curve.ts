@@ -57,15 +57,15 @@ class Curve {
 	// Virtual base class method to overwrite and implement in subclasses
 	//	- t [0 .. 1]
 
-	getPoint(u, optionalTarget?) {
+	getPoint(u: number, optionalTarget?: Vector2 | Vector3) {
 		console.warn("Curve: .getPoint() not implemented.");
-		return null;
+		return optionalTarget;
 	}
 
 	// Get point at relative position in curve according to arc length
 	// - u [0 .. 1]
 
-	getPointAt(u, optionalTarget?) {
+	getPointAt(u: number, optionalTarget?: Vector2 | Vector3) {
 		const t = this.getUtoTmapping(u);
 		return this.getPoint(t, optionalTarget);
 	}
@@ -142,7 +142,7 @@ class Curve {
 
 	// Given u ( 0 .. 1 ), get a t to find p. This gives you points which are equidistant
 
-	getUtoTmapping(u, distance?) {
+	getUtoTmapping(u: number, distance?: number) {
 		const arcLengths = this.getLengths();
 
 		let i = 0;
@@ -208,7 +208,7 @@ class Curve {
 	// 2 points a small delta apart will be used to find its gradient
 	// which seems to give a reasonable approximation
 
-	getTangent(t, optionalTarget) {
+	getTangent(t: number, optionalTarget) {
 		const delta = 0.0001;
 		let t1 = t - delta;
 		let t2 = t + delta;
@@ -222,7 +222,8 @@ class Curve {
 		const pt2 = this.getPoint(t2);
 
 		const tangent =
-			optionalTarget || (pt1.isVector2 ? new Vector2() : new Vector3());
+			optionalTarget ||
+			(pt1 instanceof Vector2 ? new Vector2() : new Vector3());
 
 		tangent.copy(pt2).sub(pt1).normalize();
 

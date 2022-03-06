@@ -1,3 +1,4 @@
+import { Shape } from ".";
 import { ShapePath } from "./ShapePath";
 
 class Font {
@@ -10,7 +11,7 @@ class Font {
 	}
 
 	generateShapes(text, size = 100) {
-		const shapes = [];
+		const shapes = [] as Shape[];
 		const paths = createPaths(text, size, this.data);
 
 		for (let p = 0, pl = paths.length; p < pl; p++) {

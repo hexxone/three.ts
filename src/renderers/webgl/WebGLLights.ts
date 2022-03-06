@@ -3,10 +3,12 @@ import {
 	Light,
 	LightProbe,
 	Matrix4,
+	Texture,
 	UniformsLib,
 	Vector2,
 	Vector3,
 } from "../../";
+
 import { WebGLCapabilities } from "./WebGLCapabilities";
 import { WebGLExtensions } from "./WebGLExtensions";
 
@@ -156,6 +158,9 @@ function shadowCastingLightsFirst(lightA, lightB) {
 	return (lightB.castShadow ? 1 : 0) - (lightA.castShadow ? 1 : 0);
 }
 
+/**
+ * @public
+ */
 class WebGLLights {
 	_extensions: WebGLExtensions;
 	_capabilities: WebGLCapabilities;
@@ -164,6 +169,7 @@ class WebGLLights {
 
 	shadowCache = new ShadowUniformsCache();
 
+	// @TODO typization
 	state = {
 		version: 0,
 
@@ -179,24 +185,24 @@ class WebGLLights {
 			numSpotShadows: -1,
 		},
 
-		ambient: [],
+		ambient: [] as number[],
 		probe: [] as Vector3[],
-		directional: [],
-		directionalShadow: [],
-		directionalShadowMap: [],
-		directionalShadowMatrix: [],
-		spot: [],
-		spotShadow: [],
-		spotShadowMap: [],
-		spotShadowMatrix: [],
-		rectArea: [],
+		directional: [] as GLUniform[],
+		directionalShadow: [] as GLShadowUniform[],
+		directionalShadowMap: [] as Texture[],
+		directionalShadowMatrix: [] as Matrix4[],
+		spot: [] as GLUniform[],
+		spotShadow: [] as GLShadowUniform[],
+		spotShadowMap: [] as Texture[],
+		spotShadowMatrix: [] as Matrix4[],
+		rectArea: [] as GLUniform[],
 		rectAreaLTC1: null,
 		rectAreaLTC2: null,
-		point: [],
-		pointShadow: [],
-		pointShadowMap: [],
-		pointShadowMatrix: [],
-		hemi: [],
+		point: [] as GLUniform[],
+		pointShadow: [] as GLShadowUniform[],
+		pointShadowMap: [] as Texture[],
+		pointShadowMatrix: [] as Matrix4[],
+		hemi: [] as GLUniform[],
 	};
 
 	vector3 = new Vector3();
@@ -375,12 +381,10 @@ class WebGLLights {
 			} else {
 				// WebGL 1
 
-				if (this._extensions.has("OES_texture_float_linear") === true) {
+				if (this._extensions.has("OES_texture_float_linear")) {
 					this.state.rectAreaLTC1 = UniformsLib.LTC_FLOAT_1;
 					this.state.rectAreaLTC2 = UniformsLib.LTC_FLOAT_2;
-				} else if (
-					this._extensions.has("OES_texture_half_float_linear") === true
-				) {
+				} else if (this._extensions.has("OES_texture_half_float_linear")) {
 					this.state.rectAreaLTC1 = UniformsLib.LTC_HALF_1;
 					this.state.rectAreaLTC2 = UniformsLib.LTC_HALF_2;
 				} else {

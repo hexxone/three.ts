@@ -5,6 +5,7 @@ import {
 	Texture,
 	Color,
 	TFog,
+	ensureInit,
 } from "../";
 
 /**
@@ -18,6 +19,7 @@ class Scene extends Object3D {
 
 	constructor() {
 		super();
+		ensureInit();
 
 		this.isScene = true;
 		this.type = "Scene";
@@ -30,13 +32,10 @@ class Scene extends Object3D {
 
 		this.autoUpdate = true; // checked by the renderer
 
-		if (
-			typeof window !== "undefined" &&
-			typeof window["__THREE_DEVTOOLS__"] !== "undefined"
-		) {
-			window["__THREE_DEVTOOLS__"].dispatchEvent(
+		if (typeof __THREE_DEVTOOLS__ !== "undefined") {
+			__THREE_DEVTOOLS__.dispatchEvent(
 				new CustomEvent("observe", { detail: this })
-			); // eslint-disable-line no-undef
+			);
 		}
 	}
 

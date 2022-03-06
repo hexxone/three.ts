@@ -44,9 +44,9 @@ class ShapePath {
 		return this;
 	}
 
-	toShapes(isCCW, noHoles) {
+	toShapes(isCCW?, noHoles?): Shape[] {
 		function toShapesNoHoles(inSubpaths) {
-			const shapes = [];
+			const shapes = [] as Shape[];
 
 			for (let i = 0, l = inSubpaths.length; i < l; i++) {
 				const tmpPath = inSubpaths[i];
@@ -119,10 +119,10 @@ class ShapePath {
 
 		if (noHoles === true) return toShapesNoHoles(subPaths);
 
-		let solid;
-		let tmpPath;
-		let tmpShape;
-		const shapes = [];
+		let solid: boolean;
+		let tmpPath: Path;
+		let tmpShape: Shape;
+		const shapes = [] as Shape[];
 
 		if (subPaths.length === 1) {
 			tmpPath = subPaths[0];
@@ -138,7 +138,7 @@ class ShapePath {
 		// console.log("Holes first", holesFirst);
 
 		const betterShapeHoles = [];
-		const newShapes = [];
+		const newShapes = [] as { s: Shape; p: boolean }[];
 		let newShapeHoles = [];
 		let mainIdx = 0;
 		let tmpPoints;

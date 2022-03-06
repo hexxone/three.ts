@@ -15,11 +15,11 @@
  * }
  */
 
-import { BufferGeometry, ExtrudeGeometry } from "../";
+import { BufferGeometry, ExtrudeGeometry, Font } from "../";
 
 class TextGeometry extends ExtrudeGeometry {
 	constructor(text, parameters = {} as any) {
-		const font = parameters.font;
+		const font = parameters.font as Font;
 
 		if (!(font && font.isFont)) {
 			console.error("TextGeometry: font parameter is not an instance of Font.");

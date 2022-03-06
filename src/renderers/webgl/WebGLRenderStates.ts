@@ -52,7 +52,7 @@ class WebGLRenderStates {
 	get(scene: Object3D, renderCallDepth = 0): WebGLRenderState {
 		let renderState;
 
-		if (this.renderStates.has(scene) === false) {
+		if (!this.renderStates.has(scene)) {
 			renderState = new WebGLRenderState(this._extensions, this._capabilities);
 			this.renderStates.set(scene, [renderState]);
 		} else {

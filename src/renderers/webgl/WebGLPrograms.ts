@@ -613,7 +613,7 @@ class WebGLPrograms {
 	}
 
 	acquireProgram(parameters: WebGlProgramsParameters, cacheKey): WebGLProgram {
-		let program;
+		let program: WebGLProgram;
 
 		// Check if code has been already compiled
 		for (let p = 0, pl = this.programs.length; p < pl; p++) {

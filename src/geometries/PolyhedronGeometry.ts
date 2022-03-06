@@ -1,7 +1,7 @@
 import { BufferGeometry, Float32BufferAttribute, Vector2, Vector3 } from "../";
 
 class PolyhedronGeometry extends BufferGeometry {
-	constructor(vertices, indices, radius = 1, detail = 0) {
+	constructor(vertices: number[], indices: number[], radius = 1, detail = 0) {
 		super();
 
 		this.type = "PolyhedronGeometry";

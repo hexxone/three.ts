@@ -189,7 +189,7 @@ class WebGLRenderLists {
 	get(scene: Object3D, renderCallDepth: number): WebGLRenderList {
 		let list: WebGLRenderList;
 
-		if (this.lists.has(scene) === false) {
+		if (!this.lists.has(scene)) {
 			list = new WebGLRenderList(this._properties);
 			this.lists.set(scene, [list]);
 		} else {

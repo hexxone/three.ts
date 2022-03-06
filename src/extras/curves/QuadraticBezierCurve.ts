@@ -16,7 +16,7 @@ class QuadraticBezierCurve extends Curve {
 		this.v2 = v2;
 	}
 
-	getPoint(t, optionalTarget = new Vector2()) {
+	getPoint(t: number, optionalTarget = new Vector2()) {
 		const point = optionalTarget;
 
 		const v0 = this.v0;

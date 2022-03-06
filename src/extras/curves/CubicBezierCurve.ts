@@ -23,7 +23,7 @@ class CubicBezierCurve extends Curve {
 		this.v3 = v3;
 	}
 
-	getPoint(t, optionalTarget = new Vector2()) {
+	getPoint(t: number, optionalTarget = new Vector2()) {
 		const point = optionalTarget;
 
 		const v0 = this.v0;

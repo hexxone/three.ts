@@ -23,13 +23,14 @@
 import {
 	BufferGeometry,
 	Float32BufferAttribute,
+	Shape,
 	ShapeUtils,
 	Vector2,
 	Vector3,
 } from "../";
 
 class ExtrudeGeometry extends BufferGeometry {
-	constructor(shapes?, options?) {
+	constructor(shapes?: Shape[], options = {} as any) {
 		super();
 
 		this.type = "ExtrudeGeometry";

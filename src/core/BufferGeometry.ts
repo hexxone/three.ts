@@ -4,12 +4,13 @@ import {
 	Matrix3,
 	Matrix4,
 	Sphere,
+	Shape,
 	Vector2,
 	Vector3,
 	arrayMax,
 } from "../";
+
 import {
-	InterleavedBufferAttribute,
 	BufferAttribute,
 	EventDispatcher,
 	Float32BufferAttribute,
@@ -18,6 +19,7 @@ import {
 	Uint16BufferAttribute,
 	Uint32BufferAttribute,
 } from ".";
+import { Path } from "../extras";
 
 let _id = 0;
 
@@ -38,6 +40,58 @@ export type BufferGroup = {
 	start: number;
 	count: number;
 	materialIndex?: number;
+};
+
+export type GeometryParameters = {
+	width?: number;
+	height?: number;
+	depth?: number;
+
+	radius?: number;
+	innerRadius?: number;
+	outerRadius?: number;
+
+	detail?: number;
+	points?: number;
+	segments?: number;
+	tube?: number;
+	arc?: number;
+	p?: number;
+	q?: number;
+
+	widthSegments?: number;
+	heightSegments?: number;
+	depthSegments?: number;
+	radialSegments?: number;
+	curveSegments?: number;
+	tubularSegments?: number;
+
+	thetaStart?: number;
+	thetaLength?: number;
+	thetaSegments?: number;
+
+	phiStart?: number;
+	phiLength?: number;
+	phiSegments?: number;
+
+	shapes?: Shape[];
+	options?: any; // @todo
+	path?: Path;
+
+	openEnded?: boolean;
+	closed?: boolean;
+
+	radiusTop?: number;
+	radiusBottom?: number;
+	thresholdAngle?: number;
+
+	// parametric geomtry  https://prideout.net/blog/old/blog/index.html@p=44.html
+	func?: (u, v, target) => void;
+	slices?: number;
+	stacks?: number;
+
+	vertices?: number[];
+	indices?: number[];
 };
 
 /**
@@ -67,7 +121,7 @@ export class BufferGeometry extends EventDispatcher {
 	drawRange: { start: number; count: number };
 
 	userData: any;
-	parameters: any;
+	parameters: GeometryParameters;
 
 	_maxInstanceCount: number;
 

@@ -1,4 +1,12 @@
-import { Frustum, Matrix4, Vector2, Vector3, Vector4, Camera } from "../";
+import {
+	Frustum,
+	Matrix4,
+	Vector2,
+	Vector3,
+	Vector4,
+	Camera,
+	WebGLRenderTarget,
+} from "../";
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();
@@ -10,8 +18,8 @@ class LightShadow {
 	normalBias: number;
 	radius: number;
 	mapSize: Vector2;
-	map: any;
-	mapPass: any;
+	map: WebGLRenderTarget;
+	mapPass: WebGLRenderTarget;
 	matrix: Matrix4;
 	autoUpdate: boolean;
 	needsUpdate: boolean;

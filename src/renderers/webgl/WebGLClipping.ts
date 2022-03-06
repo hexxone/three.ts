@@ -4,7 +4,7 @@ import { WebGLProperties } from "./WebGLProperties";
 class WebGLClipping {
 	_properties: WebGLProperties;
 
-	globalState = null;
+	globalState: Float32Array;
 	numGlobalPlanes = 0;
 	localClippingEnabled = false;
 	renderingShadows = false;
@@ -100,7 +100,12 @@ class WebGLClipping {
 		this.numIntersection = 0;
 	}
 
-	projectPlanes(planes: Plane[], camera?: Camera, dstOffset?, skipTransform?) {
+	projectPlanes(
+		planes: Plane[],
+		camera?: Camera,
+		dstOffset?,
+		skipTransform?
+	): Float32Array {
 		const nPlanes = planes !== null ? planes.length : 0;
 		let dstArray = null;
 

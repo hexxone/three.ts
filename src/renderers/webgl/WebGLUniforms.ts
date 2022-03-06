@@ -237,7 +237,6 @@ function setValueV4f(gl: GLESRenderingContext, v: Vector4 | Float32Array) {
 // Single matrix (from flat array or MatrixN)
 
 function setValueM2(gl: GLESRenderingContext, v: Matrix4 | Float32Array) {
-	// @todo M3 & M4 ok ?
 	const cache = this.cache;
 
 	if (v instanceof Float32Array) {
@@ -612,19 +611,19 @@ function getPureArraySetter(type) {
 // --- Uniform Classes ---
 
 interface IUniform {
-	id: any;
+	id: number;
 
 	setValue: (gl: GLESRenderingContext, v: any, textures: WebGLTextures) => void;
 }
 
 class SingleUniform implements IUniform {
-	id: any;
+	id: number;
 	addr: GLESUniformLocation;
 	cache: any[];
 
 	// path = activeInfo.name; // DEBUG
 
-	constructor(id, activeInfo: GLESActiveInfo, addr) {
+	constructor(id: number, activeInfo: GLESActiveInfo, addr) {
 		this.id = id;
 		this.addr = addr;
 		this.cache = [];
@@ -637,7 +636,7 @@ class SingleUniform implements IUniform {
 }
 
 class PureArrayUniform implements IUniform {
-	id: any;
+	id: number;
 	addr: GLESUniformLocation;
 	cache: Array<any> | Float32Array;
 	size: number;
@@ -666,7 +665,7 @@ class PureArrayUniform implements IUniform {
 }
 
 class StructuredUniform implements IUniform {
-	id: any;
+	id: number;
 
 	seq: IUniform[];
 	map: {};
@@ -810,7 +809,7 @@ class WebGLUniforms {
 		}
 	}
 
-	static seqWithValue(seq: any, values: any) {
+	static seqWithValue(seq: IUniform[], values: any[]): IUniform[] {
 		const r = [];
 
 		for (let i = 0, n = seq.length; i !== n; ++i) {
@@ -822,4 +821,4 @@ class WebGLUniforms {
 	}
 }
 
-export { WebGLUniforms };
+export { IUniform, WebGLUniforms };

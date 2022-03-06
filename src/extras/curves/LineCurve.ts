@@ -16,7 +16,7 @@ class LineCurve extends Curve {
 		this.isLineCurve = true;
 	}
 
-	getPoint(t, optionalTarget = new Vector2()) {
+	getPoint(t: number, optionalTarget = new Vector2()) {
 		const point = optionalTarget;
 
 		if (t === 1) {

@@ -1,12 +1,18 @@
-import { BufferGeometry, Float32BufferAttribute, Vector2, Vector3 } from "../";
+import {
+	BufferGeometry,
+	Float32BufferAttribute,
+	Vector2,
+	Vector3,
+	Path,
+} from "../";
 
-class TubeGeometry extends BufferGeometry {
+export class TubeGeometry extends BufferGeometry {
 	tangents: any;
 	normals: any;
 	binormals: any;
 
 	constructor(
-		path,
+		path: Path,
 		tubularSegments = 64,
 		radius = 1,
 		radialSegments = 8,
@@ -83,7 +89,7 @@ class TubeGeometry extends BufferGeometry {
 		function generateSegment(i) {
 			// we use getPointAt to sample evenly distributed points from the given path
 
-			P = path.getPointAt(i / tubularSegments, P);
+			P = path.getPointAt(i / tubularSegments, P) as Vector3;
 
 			// retrieve corresponding normal and binormal
 
@@ -145,5 +151,3 @@ class TubeGeometry extends BufferGeometry {
 		}
 	}
 }
-
-export { TubeGeometry, TubeGeometry as TubeBufferGeometry };

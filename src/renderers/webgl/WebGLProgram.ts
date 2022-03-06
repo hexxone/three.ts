@@ -196,7 +196,7 @@ function generateDefines(defines) {
 function fetchAttributeLocations(
 	gl: GLESRenderingContext,
 	program: GLESProgram
-) {
+): { [name: string]: number } {
 	const attributes = {};
 
 	const n = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
@@ -404,7 +404,8 @@ class WebGLProgram {
 	// set up caching for uniform locations
 	cachedUniforms: WebGLUniforms;
 	// set up caching for attribute locations
-	cachedAttributes;
+	cachedAttributes: { [name: string]: number };
+
 	diagnostics: {
 		runnable: boolean;
 		programLog: any;
@@ -904,7 +905,7 @@ class WebGLProgram {
 		return this.cachedUniforms;
 	}
 
-	getAttributes() {
+	getAttributes(): { [name: string]: number } {
 		if (this.cachedAttributes === undefined) {
 			this.cachedAttributes = fetchAttributeLocations(this.gl, this.program);
 		}

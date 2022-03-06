@@ -10,6 +10,7 @@ import {
 	ArcCurve,
 	EllipseCurve,
 } from "../";
+import { Vector2 } from "../..";
 import { Curve } from "./Curve";
 
 /** ************************************************************
@@ -38,8 +39,8 @@ class CurvePath extends Curve {
 
 	closePath() {
 		// Add a line curve if start and end of lines are not connected
-		const startPoint = this.curves[0].getPoint(0);
-		const endPoint = this.curves[this.curves.length - 1].getPoint(1);
+		const startPoint = this.curves[0].getPoint(0) as Vector2;
+		const endPoint = this.curves[this.curves.length - 1].getPoint(1) as Vector2;
 
 		if (!startPoint.equals(endPoint)) {
 			this.curves.push(new LineCurve(endPoint, startPoint));
@@ -55,7 +56,7 @@ class CurvePath extends Curve {
 	// 3. Get t for the curve
 	// 4. Return curve.getPointAt(t')
 
-	getPoint(t) {
+	getPoint(t: number) {
 		const d = t * this.getLength();
 		const curveLengths = this.getCurveLengths();
 		let i = 0;

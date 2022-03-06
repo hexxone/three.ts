@@ -93,7 +93,7 @@ class CatmullRomCurve3 extends Curve {
 		this.tension = tension;
 	}
 
-	getPoint(t, optionalTarget = new Vector3()) {
+	getPoint(t: number, optionalTarget = new Vector3()) {
 		const point = optionalTarget;
 
 		const points = this.points;

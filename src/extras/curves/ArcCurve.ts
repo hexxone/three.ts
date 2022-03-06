@@ -1,4 +1,4 @@
-import { EllipseCurve } from "./EllipseCurve";
+import { EllipseCurve } from "../..";
 
 class ArcCurve extends EllipseCurve {
 	constructor(aX?, aY?, aRadius?, aStartAngle?, aEndAngle?, aClockwise?) {

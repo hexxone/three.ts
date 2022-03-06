@@ -1,6 +1,4 @@
-import { Font } from "../";
-import { FileLoader } from "./FileLoader";
-import { Loader } from "./Loader";
+import { FileLoader, Font, Loader } from "..";
 
 class FontLoader extends Loader {
 	constructor(manager?) {

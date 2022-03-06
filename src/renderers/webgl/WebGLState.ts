@@ -31,9 +31,9 @@ import {
 	Vector4,
 } from "../../";
 
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
-import { ColorBuffer, DepthBuffer, StencilBuffer } from "./WebGLStateBuffers";
+import { WebGLCapabilities } from "..";
+import { WebGLExtensions } from "..";
+import { ColorBuffer, DepthBuffer, StencilBuffer } from "..";
 
 class WebGLState {
 	_gl: GLESRenderingContext;

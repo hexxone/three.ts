@@ -31,26 +31,33 @@ const _trackRe = new RegExp(
 
 const _supportedObjectNames = ["material", "materials", "bones"];
 
-function Composite(targetGroup, path, optionalParsedPath) {
-	const parsedPath =
-		optionalParsedPath || PropertyBinding["parseTrackName"](path);
+/**
+ * @public
+ * @TODO typing
+ */
+class Composite {
+	_targetGroup: any;
+	_bindings: any;
 
-	this._targetGroup = targetGroup;
-	this._bindings = targetGroup.subscribe_(path, parsedPath);
-}
+	constructor(targetGroup, path, optionalParsedPath) {
+		const parsedPath =
+			optionalParsedPath || PropertyBinding.parseTrackName(path);
 
-Object.assign(Composite.prototype, {
-	getValue: function (array, offset) {
+		this._targetGroup = targetGroup;
+		this._bindings = targetGroup.subscribe_(path, parsedPath);
+	}
+
+	getValue(array, offset) {
 		this.bind(); // bind all binding
 
-		const firstValidIndex = this._targetGroup.nCachedObjects_;
-		const binding = this._bindings[firstValidIndex];
+		const firstValidIndex = this._targetGroup.nCachedObjects_,
+			binding = this._bindings[firstValidIndex];
 
 		// and only call .getValue on the first
 		if (binding !== undefined) binding.getValue(array, offset);
-	},
+	}
 
-	setValue: function (array, offset) {
+	setValue(array, offset) {
 		const bindings = this._bindings;
 
 		for (
@@ -60,9 +67,9 @@ Object.assign(Composite.prototype, {
 		) {
 			bindings[i].setValue(array, offset);
 		}
-	},
+	}
 
-	bind: function () {
+	bind() {
 		const bindings = this._bindings;
 
 		for (
@@ -72,9 +79,9 @@ Object.assign(Composite.prototype, {
 		) {
 			bindings[i].bind();
 		}
-	},
+	}
 
-	unbind: function () {
+	unbind() {
 		const bindings = this._bindings;
 
 		for (
@@ -84,14 +91,19 @@ Object.assign(Composite.prototype, {
 		) {
 			bindings[i].unbind();
 		}
-	},
-});
+	}
+}
 
 // Note: This class uses a State pattern on a per-method basis:
 // 'bind' sets 'this.getValue' / 'setValue' and shadows the
 // prototype version of these methods with one that represents
 // the bound state. When the property is not found, the methods
 // become no-ops.
+
+/**
+ * @public
+ * @TODO typing
+ */
 class PropertyBinding {
 	path: any;
 	parsedPath: any;
@@ -577,6 +589,8 @@ class PropertyBinding {
 		this.setValue = this._setValue_unbound;
 	}
 }
+
+// @TODO typing
 
 PropertyBinding.Composite = Composite;
 

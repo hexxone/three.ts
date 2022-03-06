@@ -1,5 +1,4 @@
-import { SphericalHarmonics3 } from "../";
-import { Light } from "./Light";
+import { SphericalHarmonics3, Light } from "..";
 
 class LightProbe extends Light {
 	sh: SphericalHarmonics3;

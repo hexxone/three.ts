@@ -8,8 +8,8 @@ import {
 	LineBasicMaterial,
 	Mesh,
 	MeshBasicMaterial,
-	Plane
-} from "../";
+	Plane,
+} from "..";
 
 class PlaneHelper extends Line {
 	plane: Plane;

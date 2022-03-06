@@ -5,9 +5,9 @@ import {
 	Uint32BufferAttribute,
 	arrayMax,
 } from "../../";
-import { WebGLAttributes } from "./WebGLAttributes";
-import { WebGLBindingStates } from "./WebGLBindingStates";
-import { WebGLInfo } from "./WebGLInfo";
+import { WebGLAttributes } from "..";
+import { WebGLBindingStates } from "..";
+import { WebGLInfo } from "..";
 
 class WebGLGeometries {
 	_gl: GLESRenderingContext;

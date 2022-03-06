@@ -8,7 +8,7 @@ import {
 	Raycaster,
 	Sphere,
 	Vector3,
-} from "../";
+} from "..";
 import { Material } from "../materials";
 
 const _start = new Vector3();

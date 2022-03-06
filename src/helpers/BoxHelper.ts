@@ -5,7 +5,7 @@ import {
 	Color,
 	LineBasicMaterial,
 	LineSegments,
-} from "../";
+} from "..";
 
 const _box = /* @__PURE__*/ new Box3();
 

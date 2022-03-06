@@ -1,11 +1,11 @@
-import { Texture } from "./Texture";
+import { Texture } from "..";
 import {
 	NearestFilter,
 	UnsignedShortType,
 	UnsignedInt248Type,
 	DepthFormat,
 	DepthStencilFormat,
-} from "../";
+} from "..";
 
 class DepthTexture extends Texture {
 	constructor(

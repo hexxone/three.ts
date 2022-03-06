@@ -28,7 +28,7 @@ import {
 	Vector3,
 	WebGLRenderTarget,
 	Material,
-} from "../";
+} from "..";
 
 const LOD_MIN = 4;
 const LOD_MAX = 8;

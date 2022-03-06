@@ -1,5 +1,5 @@
 import { IBuffered } from "..";
-import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "./";
+import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "..";
 
 class WebGLIndexedBufferRenderer {
 	gl: GLESRenderingContext;

@@ -1,4 +1,4 @@
-import { Mesh, Matrix4, Vector3, Vector4, Skeleton } from "../";
+import { Mesh, Matrix4, Vector3, Vector4, Skeleton } from "..";
 
 const _basePosition = new Vector3();
 

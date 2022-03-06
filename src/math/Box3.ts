@@ -7,7 +7,7 @@ import {
 	Sphere,
 	Triangle,
 } from "..";
-import { Vector3 } from "./Vector3";
+import { Vector3 } from "..";
 
 class Box3 {
 	min: Vector3;

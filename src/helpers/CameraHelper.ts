@@ -6,7 +6,7 @@ import {
 	LineBasicMaterial,
 	LineSegments,
 	Vector3,
-} from "../";
+} from "..";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _camera = /* @__PURE__*/ new Camera();

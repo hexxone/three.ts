@@ -1,7 +1,7 @@
-import { Quaternion } from "./Quaternion";
-import { Vector3 } from "./Vector3";
-import { Matrix4 } from "./Matrix4";
-import { MathUtils } from "./MathUtils";
+import { Quaternion } from "..";
+import { Vector3 } from "..";
+import { Matrix4 } from "..";
+import { MathUtils } from "..";
 
 const _matrix = /* @__PURE__*/ new Matrix4();
 const _quaternion = /* @__PURE__*/ new Quaternion();

@@ -1,4 +1,4 @@
-import { CylinderGeometry } from "./CylinderGeometry";
+import { CylinderGeometry } from "..";
 
 class ConeGeometry extends CylinderGeometry {
 	constructor(

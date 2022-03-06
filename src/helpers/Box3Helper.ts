@@ -5,7 +5,7 @@ import {
 	Float32BufferAttribute,
 	LineBasicMaterial,
 	LineSegments,
-} from "../";
+} from "..";
 
 class Box3Helper extends LineSegments {
 	box: any;

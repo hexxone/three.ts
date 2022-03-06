@@ -1,5 +1,5 @@
-import { Line } from "./Line";
-import { Vector3, Float32BufferAttribute } from "../";
+import { Line } from "..";
+import { Vector3, Float32BufferAttribute } from "..";
 import { Material } from "../materials";
 
 const _start = new Vector3();

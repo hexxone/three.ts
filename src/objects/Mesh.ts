@@ -12,7 +12,7 @@ import {
 	Triangle,
 	Vector2,
 	Vector3,
-} from "../";
+} from "..";
 
 const _inverseMatrix = new Matrix4();
 const _ray = new Ray();

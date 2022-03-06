@@ -1,5 +1,4 @@
-import { Camera, Material, Matrix3, Plane } from "../../";
-import { WebGLProperties } from "./WebGLProperties";
+import { Camera, Material, Matrix3, Plane, WebGLProperties } from "../../";
 
 class WebGLClipping {
 	_properties: WebGLProperties;

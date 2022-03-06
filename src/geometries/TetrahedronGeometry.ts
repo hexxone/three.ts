@@ -1,4 +1,4 @@
-import { PolyhedronGeometry } from "./PolyhedronGeometry";
+import { PolyhedronGeometry } from "..";
 
 class TetrahedronGeometry extends PolyhedronGeometry {
 	constructor(radius = 1, detail = 0) {

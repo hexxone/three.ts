@@ -1,6 +1,4 @@
-import { Light } from "./Light";
-import { SpotLightShadow } from "./SpotLightShadow";
-import { Object3D, DefaultUp } from "../";
+import { Object3D, DefaultUp, Light, SpotLightShadow } from "..";
 
 class SpotLight extends Light {
 	target: Object3D;

@@ -7,8 +7,9 @@ import {
 	LoopRepeat,
 	NormalAnimationBlendMode,
 	AdditiveAnimationBlendMode,
-} from "../";
+} from "..";
 
+// @TODO typing
 class AnimationAction {
 	_mixer: any;
 	_clip: any;

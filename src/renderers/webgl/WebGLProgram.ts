@@ -30,8 +30,8 @@ import {
 	WebGlProgramsParameters,
 } from "../../";
 
-import { WebGLUniforms } from "./WebGLUniforms";
-import { webGLShader } from "./WebGLShader";
+import { WebGLUniforms } from "..";
+import { webGLShader } from "..";
 
 let programIdCount = 0;
 

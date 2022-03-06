@@ -1,4 +1,4 @@
-import { Camera } from "./";
+import { Camera } from "..";
 
 class OrthographicCamera extends Camera {
 	left: number;

@@ -7,7 +7,7 @@ import {
 	LineSegments,
 	Matrix4,
 	Vector3,
-} from "../";
+} from "..";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _boneMatrix = /* @__PURE__*/ new Matrix4();

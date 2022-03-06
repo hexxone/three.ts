@@ -1,10 +1,9 @@
 export * from "./tracks";
-
-export * from "./PropertyMixer";
-export * from "./PropertyBinding";
-export * from "./KeyframeTrack";
 export * from "./AnimationAction";
-export * from "./AnimationUtils";
-export * from "./AnimationObjectGroup";
-export * from "./AnimationMixer";
 export * from "./AnimationClip";
+export * from "./AnimationMixer";
+export * from "./AnimationObjectGroup";
+export * from "./AnimationUtils";
+export * from "./KeyframeTrack";
+export * from "./PropertyBinding";
+export * from "./PropertyMixer";

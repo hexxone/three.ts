@@ -1,5 +1,5 @@
-import { RGBFormat, LinearFilter } from "../";
-import { Texture } from "./Texture";
+import { RGBFormat, LinearFilter } from "..";
+import { Texture } from "..";
 
 class VideoTexture extends Texture {
 	constructor(

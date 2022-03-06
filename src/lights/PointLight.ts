@@ -1,5 +1,4 @@
-import { Light } from "./Light";
-import { PointLightShadow } from "./PointLightShadow";
+import { Light, PointLightShadow } from "..";
 
 class PointLight extends Light {
 	constructor(color, intensity, distance = 0, decay = 1) {

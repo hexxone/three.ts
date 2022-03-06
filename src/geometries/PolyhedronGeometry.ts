@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, Vector2, Vector3 } from "../";
+import { BufferGeometry, Float32BufferAttribute, Vector2, Vector3 } from "..";
 
 class PolyhedronGeometry extends BufferGeometry {
 	constructor(vertices: number[], indices: number[], radius = 1, detail = 0) {

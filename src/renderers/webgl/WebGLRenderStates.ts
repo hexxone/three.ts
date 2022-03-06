@@ -1,7 +1,7 @@
 import { Camera, Light, Object3D, ShadowMaterial } from "../..";
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
-import { WebGLLights } from "./WebGLLights";
+import { WebGLCapabilities } from "..";
+import { WebGLExtensions } from "..";
+import { WebGLLights } from "..";
 
 /**
  * @public

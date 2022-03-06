@@ -9,9 +9,9 @@ import {
 	CubicBezierCurve3,
 	ArcCurve,
 	EllipseCurve,
-} from "../";
-import { Vector2 } from "../..";
-import { Curve } from "./Curve";
+	Curve,
+	Vector2,
+} from "../..";
 
 /** ************************************************************
  *	Curved Path - a curve path is simply a array of connected

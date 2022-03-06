@@ -27,7 +27,7 @@ import {
 	ShapeUtils,
 	Vector2,
 	Vector3,
-} from "../";
+} from "..";
 
 class ExtrudeGeometry extends BufferGeometry {
 	constructor(shapes?: Shape[], options = {} as any) {

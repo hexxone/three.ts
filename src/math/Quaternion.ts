@@ -3,9 +3,9 @@ import {
 	InterleavedBufferAttribute,
 	Matrix4,
 	Vector3,
-} from "../";
-import { Euler } from "../";
-import { MathUtils } from "./MathUtils";
+} from "..";
+import { Euler } from "..";
+import { MathUtils } from "..";
 
 /**
  * @public

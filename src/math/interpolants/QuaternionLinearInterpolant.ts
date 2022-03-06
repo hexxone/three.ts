@@ -1,4 +1,4 @@
-import { Interpolant, Quaternion } from "../";
+import { Interpolant, Quaternion } from "..";
 
 /**
  * Spherical linear unit quaternion interpolant.

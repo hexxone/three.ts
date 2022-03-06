@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, Vector3 } from "../";
+import { BufferGeometry, Float32BufferAttribute, Vector3 } from "..";
 
 class BoxGeometry extends BufferGeometry {
 	constructor(

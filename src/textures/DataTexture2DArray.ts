@@ -1,5 +1,5 @@
-import { Texture } from "./Texture";
-import { ClampToEdgeWrapping, NearestFilter } from "../";
+import { Texture } from "..";
+import { ClampToEdgeWrapping, NearestFilter } from "..";
 
 class DataTexture2DArray extends Texture {
 	wrapR: number;

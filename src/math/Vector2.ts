@@ -1,5 +1,5 @@
 import { AnyTypedArray } from "../utils";
-import { BufferAttribute, InterleavedBufferAttribute, Matrix3 } from "../";
+import { BufferAttribute, InterleavedBufferAttribute, Matrix3 } from "..";
 
 /**
  * @public

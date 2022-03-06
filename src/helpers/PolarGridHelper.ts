@@ -4,7 +4,7 @@ import {
 	Float32BufferAttribute,
 	LineBasicMaterial,
 	LineSegments,
-} from "../";
+} from "..";
 
 class PolarGridHelper extends LineSegments {
 	constructor(

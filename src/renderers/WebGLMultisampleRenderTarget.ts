@@ -1,4 +1,4 @@
-import { WebGLRenderTarget } from "./WebGLRenderTarget";
+import { WebGLRenderTarget } from "..";
 
 class WebGLMultisampleRenderTarget extends WebGLRenderTarget {
 	samples: number;

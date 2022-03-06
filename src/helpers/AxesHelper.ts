@@ -3,7 +3,7 @@ import {
 	Float32BufferAttribute,
 	LineBasicMaterial,
 	LineSegments,
-} from "../";
+} from "..";
 
 class AxesHelper extends LineSegments {
 	constructor(size = 1) {

@@ -11,7 +11,7 @@ import {
 	RGBAFormat,
 	ShaderMaterial,
 	WebGLRenderTarget,
-} from "../";
+} from "..";
 
 // shader optimization
 import vertex from "./glsl/CubeRenderTarget.vert.glsl";

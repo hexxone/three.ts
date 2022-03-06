@@ -39,8 +39,8 @@ import {
 	PointsMaterial,
 	SpriteMaterial,
 } from "../../";
-import { WebGLProgram } from "./WebGLProgram";
-import { WebGLLights } from "./WebGLLights";
+import { WebGLProgram } from "..";
+import { WebGLLights } from "..";
 
 /**
  * @public

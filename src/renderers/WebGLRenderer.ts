@@ -51,6 +51,7 @@ import {
 	WebGLUniforms,
 	WebGLUtils,
 	WebGLRenderTarget,
+	WebGLProgram,
 	WebGlProgramsParameters,
 	Mesh,
 	ImmediateRenderObject,
@@ -58,10 +59,9 @@ import {
 	RenderItem,
 	ShaderMaterial,
 	ensureInit,
-} from "../";
-import { XRFrameRequestCallback } from "../XRWebGL";
+} from "..";
 
-import { WebGLProgram } from "./webgl/WebGLProgram";
+import { XRFrameRequestCallback } from "../XRWebGL";
 
 function createCanvasElement() {
 	const canvas = document.createElementNS(

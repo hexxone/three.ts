@@ -1,4 +1,4 @@
-import { LineBasicMaterial } from "./LineBasicMaterial";
+import { LineBasicMaterial } from "..";
 
 /**
  * parameters = {

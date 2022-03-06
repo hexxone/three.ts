@@ -1,4 +1,4 @@
-import { Matrix4, Object3D, Vector3 } from "../";
+import { Matrix4, Object3D, Vector3 } from "..";
 
 /**
  * @public

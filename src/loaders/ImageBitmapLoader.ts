@@ -1,5 +1,4 @@
-import { Cache } from "./Cache";
-import { Loader } from "./Loader";
+import { Cache, Loader } from "..";
 
 function ImageBitmapLoader(manager) {
 	if (typeof createImageBitmap === "undefined") {

@@ -1,5 +1,4 @@
-import { Clock, Object3D, Quaternion, Vector3 } from "../";
-import { AudioContext } from "./AudioContext";
+import { Clock, Object3D, Quaternion, Vector3, AudioContext } from "..";
 
 const _position = /* @__PURE__*/ new Vector3();
 const _quaternion = /* @__PURE__*/ new Quaternion();

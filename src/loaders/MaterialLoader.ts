@@ -5,10 +5,10 @@ import {
 	Vector2,
 	Vector3,
 	Vector4,
+	FileLoader,
+	Loader,
 	MaterialMap,
-} from "../";
-import { FileLoader } from "./FileLoader";
-import { Loader } from "./Loader";
+} from "..";
 
 class MaterialLoader extends Loader {
 	textures: {};

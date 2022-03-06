@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute, ShapeUtils } from "../";
+import { BufferGeometry, Float32BufferAttribute, ShapeUtils } from "..";
 
 class ShapeGeometry extends BufferGeometry {
 	constructor(shapes, curveSegments = 12) {

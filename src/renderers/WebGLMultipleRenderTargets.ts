@@ -1,5 +1,5 @@
-import { Texture } from "../";
-import { WebGLRenderTarget } from "./WebGLRenderTarget";
+import { Texture } from "..";
+import { WebGLRenderTarget } from "..";
 
 class WebGLMultipleRenderTargets extends WebGLRenderTarget {
 	textures: Texture[];

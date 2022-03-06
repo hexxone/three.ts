@@ -1,5 +1,6 @@
-import { AnimationClip, Quaternion, AdditiveAnimationBlendMode } from "../";
+import { AnimationClip, Quaternion, AdditiveAnimationBlendMode } from "..";
 
+// @TODO typing
 const AnimationUtils = {
 	// same as Array.prototype.slice, but also works on typed arrays
 	arraySlice: function (array, from = 0, to?) {

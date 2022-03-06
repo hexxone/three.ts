@@ -4,7 +4,7 @@ import {
 	MathUtils,
 	Vector2,
 	Vector3,
-} from "../";
+} from "..";
 
 class LatheGeometry extends BufferGeometry {
 	constructor(points, segments = 12, phiStart = 0, phiLength = Math.PI * 2) {

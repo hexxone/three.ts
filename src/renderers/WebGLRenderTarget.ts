@@ -1,4 +1,4 @@
-import { EventDispatcher, LinearFilter, Texture, Vector4 } from "../";
+import { EventDispatcher, LinearFilter, Texture, Vector4 } from "..";
 
 /**
  * In options, we can specify:

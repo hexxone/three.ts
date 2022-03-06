@@ -4,7 +4,7 @@ import {
 	Vector2,
 	Vector3,
 	Path,
-} from "../";
+} from "..";
 
 export class TubeGeometry extends BufferGeometry {
 	tangents: any;

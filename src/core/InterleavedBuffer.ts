@@ -1,6 +1,5 @@
 import { ObjectHelper } from ".";
-import { MathUtils, StaticDrawUsage } from "../";
-import { AnyTypedArray } from "../../../";
+import { AnyTypedArray, MathUtils, StaticDrawUsage } from "..";
 
 class InterleavedBuffer {
 	array: typeof AnyTypedArray;

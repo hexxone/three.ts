@@ -5,7 +5,7 @@ import {
 	LineSegments,
 	Object3D,
 	Vector3,
-} from "../";
+} from "..";
 
 const _vector = /* @__PURE__*/ new Vector3();
 

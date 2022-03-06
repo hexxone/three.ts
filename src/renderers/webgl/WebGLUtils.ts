@@ -65,8 +65,8 @@ import {
 	SRGB8_ALPHA8_ASTC_12x12_Format,
 	RGBA_BPTC_Format,
 } from "../../constants";
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLCapabilities } from "..";
+import { WebGLExtensions } from "..";
 
 class WebGLUtils {
 	_gl: GLESRenderingContext;

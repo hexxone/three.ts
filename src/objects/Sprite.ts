@@ -9,7 +9,7 @@ import {
 	Triangle,
 	Vector2,
 	Vector3,
-} from "../";
+} from "..";
 
 let _geometry;
 

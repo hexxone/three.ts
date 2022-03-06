@@ -16,12 +16,11 @@ import {
 	WebGLRenderer,
 	WebGLCubeRenderTarget,
 	Texture,
+	WebGLCubeMaps,
+	WebGLObjects,
+	WebGLRenderList,
+	WebGLState,
 } from "../../";
-
-import { WebGLCubeMaps } from "./WebGLCubeMaps";
-import { WebGLObjects } from "./WebGLObjects";
-import { WebGLRenderList } from "./WebGLRenderLists";
-import { WebGLState } from "./WebGLState";
 
 class WebGLBackground {
 	_renderer: WebGLRenderer;

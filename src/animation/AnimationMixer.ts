@@ -1,12 +1,12 @@
 import {
+	AnimationAction,
 	AnimationClip,
 	EventDispatcher,
 	LinearInterpolant,
 	NormalAnimationBlendMode,
 	PropertyBinding,
 	PropertyMixer,
-} from "../";
-import { AnimationAction } from "./";
+} from "..";
 
 class AnimationMixer extends EventDispatcher {
 	_root: any;

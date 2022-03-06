@@ -9,7 +9,7 @@ import {
 	MeshBasicMaterial,
 	Object3D,
 	Vector3,
-} from "../";
+} from "..";
 
 const _axis = /* @__PURE__*/ new Vector3();
 let _lineGeometry;

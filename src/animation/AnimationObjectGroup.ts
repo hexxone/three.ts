@@ -1,5 +1,4 @@
-import { PropertyBinding } from "./";
-import { MathUtils } from "../";
+import { MathUtils, PropertyBinding } from "..";
 
 /**
  *
@@ -30,6 +29,7 @@ import { MathUtils } from "../";
  *    target group or directly, but not both.
  */
 
+// @TODO typing
 class AnimationObjectGroup {
 	nCachedObjects_: any;
 

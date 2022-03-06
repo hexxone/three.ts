@@ -8,7 +8,7 @@ import {
 	Vector2,
 	Vector3,
 	arrayMax,
-} from "../";
+} from "..";
 
 import {
 	BufferAttribute,

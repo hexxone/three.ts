@@ -1,6 +1,4 @@
-import { ImageLoader } from "./ImageLoader";
-import { CubeTexture } from "../";
-import { Loader } from "./Loader";
+import { CubeTexture, ImageLoader, Loader } from "..";
 
 class CubeTextureLoader extends Loader {
 	constructor(manager) {

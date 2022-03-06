@@ -1,4 +1,4 @@
-import { Interpolant } from "../";
+import { Interpolant } from "..";
 
 class LinearInterpolant extends Interpolant {
 	constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {

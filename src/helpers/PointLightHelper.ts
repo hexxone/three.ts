@@ -1,4 +1,4 @@
-import { Mesh, MeshBasicMaterial, SphereGeometry } from "../";
+import { Mesh, MeshBasicMaterial, SphereGeometry } from "..";
 import { Light } from "../lights";
 import { Color } from "../math";
 

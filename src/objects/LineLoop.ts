@@ -1,4 +1,4 @@
-import { Line } from "./Line";
+import { Line } from "..";
 
 class LineLoop extends Line {
 	constructor(geometry, material) {

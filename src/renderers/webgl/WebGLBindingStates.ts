@@ -1,21 +1,19 @@
 ﻿import {
+	BufferAttribute,
 	BufferGeometry,
 	InstancedBufferAttribute,
+	InstancedInterleavedBuffer,
+	InstancedMesh,
+	InterleavedBuffer,
 	InterleavedBufferAttribute,
 	Material,
 	Object3D,
+	ShaderMaterial,
+	WebGLAttributes,
+	WebGLCapabilities,
+	WebGLExtensions,
+	WebGLProgram,
 } from "../../";
-import {
-	BufferAttribute,
-	InstancedInterleavedBuffer,
-	InterleavedBuffer,
-} from "../../core";
-import { ShaderMaterial } from "../../materials";
-import { InstancedMesh } from "../../objects";
-import { WebGLAttributes } from "./WebGLAttributes";
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
-import { WebGLProgram } from "./WebGLProgram";
 
 /**
  * @public

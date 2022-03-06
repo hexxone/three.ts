@@ -1,5 +1,6 @@
-import { Quaternion } from "../";
+import { Quaternion } from "..";
 
+// @TODO typing
 class PropertyMixer {
 	_workIndex: number;
 	_mixBufferRegion: any;

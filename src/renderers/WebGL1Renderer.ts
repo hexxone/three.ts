@@ -1,4 +1,4 @@
-import { WebGLRenderer } from "./WebGLRenderer";
+import { WebGLRenderer } from "..";
 
 class WebGL1Renderer extends WebGLRenderer {
 	constructor(parameters?) {

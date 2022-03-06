@@ -1,5 +1,10 @@
-import { MultiplyOperation, TangentSpaceNormalMap, Vector2, Color } from "../";
-import { Material } from "./Material";
+import {
+	MultiplyOperation,
+	TangentSpaceNormalMap,
+	Vector2,
+	Color,
+	Material,
+} from "..";
 
 /**
  * parameters = {

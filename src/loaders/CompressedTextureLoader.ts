@@ -1,6 +1,4 @@
-import { CompressedTexture, LinearFilter } from "../";
-import { FileLoader } from "./FileLoader";
-import { Loader } from "./Loader";
+import { CompressedTexture, LinearFilter, FileLoader, Loader } from "..";
 
 /**
  * Abstract Base class to block based textures loader (dds, pvr, ...)

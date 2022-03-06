@@ -6,7 +6,7 @@ import {
 	Color,
 	TFog,
 	ensureInit,
-} from "../";
+} from "..";
 
 /**
  * @public

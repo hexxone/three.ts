@@ -1,5 +1,4 @@
-import { LightShadow } from "./LightShadow";
-import { OrthographicCamera } from "../";
+import { LightShadow, OrthographicCamera } from "..";
 
 export class DirectionalLightShadow extends LightShadow {
 	constructor() {

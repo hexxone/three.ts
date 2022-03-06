@@ -1,5 +1,5 @@
-import { Box3, Matrix4, Plane, Sphere } from "../";
-import { Vector3 } from "./Vector3";
+import { Box3, Matrix4, Plane, Sphere } from "..";
+import { Vector3 } from "..";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _segCenter = /* @__PURE__*/ new Vector3();

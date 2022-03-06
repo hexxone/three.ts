@@ -3,9 +3,9 @@ import {
 	LinearMipmapLinearFilter,
 	ClampToEdgeWrapping,
 	DataTexture,
-} from "../";
-import { FileLoader } from "./FileLoader";
-import { Loader } from "./Loader";
+	FileLoader,
+	Loader,
+} from "..";
 
 /**
  * Abstract Base class to load generic binary textures formats (rgbe, hdr, ...)

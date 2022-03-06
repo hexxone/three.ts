@@ -1,4 +1,4 @@
-import { BufferAttribute } from "./BufferAttribute";
+import { BufferAttribute } from "..";
 
 class InstancedBufferAttribute extends BufferAttribute {
 	meshPerAttribute: number;

@@ -1,5 +1,4 @@
-import { Material } from "./Material";
-import { Vector3 } from "../";
+import { Material, Vector3 } from "..";
 
 /**
  * parameters = {

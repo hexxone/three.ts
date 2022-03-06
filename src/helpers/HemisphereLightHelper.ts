@@ -6,7 +6,7 @@ import {
 	Object3D,
 	OctahedronGeometry,
 	Vector3,
-} from "../";
+} from "..";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _color1 = /* @__PURE__*/ new Color(0);

@@ -1,4 +1,4 @@
-import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLCapabilities } from "..";
 
 const MOZ_EXTENSIONS = [
 	"WEBGL_depth_texture",

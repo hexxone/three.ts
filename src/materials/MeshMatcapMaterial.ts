@@ -1,5 +1,4 @@
-import { Color, TangentSpaceNormalMap, Vector2 } from "../";
-import { Material } from "./Material";
+import { Color, TangentSpaceNormalMap, Vector2, Material } from "..";
 
 /**
  * parameters = {

@@ -1,4 +1,4 @@
-import { IImage, Texture } from "./Texture";
+import { IImage, Texture } from "..";
 
 class CompressedTexture extends Texture {
 	images: IImage[];

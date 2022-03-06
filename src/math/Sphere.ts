@@ -1,6 +1,6 @@
 import { Matrix4, Plane } from "..";
-import { Box3 } from "./Box3";
-import { Vector3 } from "./Vector3";
+import { Box3 } from "..";
+import { Vector3 } from "..";
 
 const _box = /* @__PURE__*/ new Box3();
 
@@ -96,7 +96,6 @@ class Sphere {
 	}
 
 	getBoundingBox(target: Box3) {
-
 		if (this.isEmpty()) {
 			// Empty sphere produces empty bounding box
 			target.makeEmpty();

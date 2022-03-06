@@ -9,7 +9,7 @@ import {
 	Vector3,
 	EventObject,
 	BufferAttribute,
-} from "../";
+} from "..";
 import { BufferGeometry, EventDispatcher, Layers, Raycaster } from ".";
 
 let _object3DId = 0;

@@ -1,4 +1,4 @@
-import { Vector2 } from "./Vector2";
+import { Vector2 } from "..";
 
 const _vector = /* @__PURE__*/ new Vector2();
 

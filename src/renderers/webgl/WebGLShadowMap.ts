@@ -28,7 +28,7 @@ import { Object3D } from "../../core";
 
 import vsm_frag from "../shaders/ShaderLib/vsm_frag.glsl";
 import vsm_vert from "../shaders/ShaderLib/vsm_vert.glsl";
-import { WebGLObjects } from "./WebGLObjects";
+import { WebGLObjects } from "..";
 
 class WebGLShadowMap {
 	_renderer: WebGLRenderer;

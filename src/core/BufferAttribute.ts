@@ -1,4 +1,4 @@
-import { Color, StaticDrawUsage, Vector2, Vector3, Vector4 } from "../";
+import { Color, StaticDrawUsage, Vector2, Vector3, Vector4 } from "..";
 import { AnyTypedArray } from "../../";
 import { Matrix3, Matrix4 } from "../math";
 import { ObjectHelper } from ".";

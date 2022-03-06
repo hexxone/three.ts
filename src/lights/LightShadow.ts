@@ -6,7 +6,7 @@ import {
 	Vector4,
 	Camera,
 	WebGLRenderTarget,
-} from "../";
+} from "..";
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();

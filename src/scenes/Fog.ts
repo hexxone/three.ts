@@ -1,5 +1,5 @@
-import { Color } from "../";
-import { TFog } from "./TFog";
+import { Color } from "..";
+import { TFog } from "..";
 
 /**
  * @public

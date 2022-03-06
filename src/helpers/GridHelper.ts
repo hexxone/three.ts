@@ -3,7 +3,7 @@ import {
 	BufferGeometry,
 	Float32BufferAttribute,
 	LineBasicMaterial,
-} from "../";
+} from "..";
 import { LineSegments } from "../objects/LineSegments";
 
 class GridHelper extends LineSegments {

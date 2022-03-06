@@ -1,4 +1,4 @@
-import { Color, DefaultUp, Light } from "../";
+import { Color, DefaultUp, Light } from "..";
 
 class HemisphereLight extends Light {
 	constructor(skyColor, groundColor, intensity) {

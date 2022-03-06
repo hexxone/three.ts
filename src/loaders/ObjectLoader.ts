@@ -59,7 +59,7 @@ import {
 	Geometries,
 	Curves,
 	Camera,
-} from "../";
+} from "..";
 
 class ObjectLoader extends Loader {
 	constructor(manager) {

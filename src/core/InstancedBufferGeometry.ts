@@ -1,4 +1,4 @@
-import { BufferGeometry } from "./BufferGeometry";
+import { BufferGeometry } from "..";
 
 class InstancedBufferGeometry extends BufferGeometry {
 	instanceCount = Infinity;

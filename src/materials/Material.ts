@@ -15,7 +15,7 @@ import {
 	Vector2,
 	WebGlProgramsParameters,
 	WebGLRenderer,
-} from "../";
+} from "..";
 
 let materialId = 0;
 

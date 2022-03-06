@@ -1,5 +1,4 @@
-import { Material } from "./Material";
-import { BasicDepthPacking } from "../";
+import { Material, BasicDepthPacking } from "..";
 
 /**
  * parameters = {

@@ -1,7 +1,3 @@
-import { REVISION } from "./constants";
-
-export * from "./objects";
-
 export * from "./animation";
 export * from "./audio";
 export * from "./cameras";
@@ -13,12 +9,14 @@ export * from "./lights";
 export * from "./loaders";
 export * from "./materials";
 export * from "./math";
-
+export * from "./objects";
 export * from "./renderers";
 export * from "./scenes";
 export * from "./textures";
 export * from "./constants";
 export * from "./utils";
+
+import { REVISION } from "./constants";
 
 let wasCalled = false;
 

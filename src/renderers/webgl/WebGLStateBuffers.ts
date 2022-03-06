@@ -9,7 +9,7 @@ import {
 	NotEqualDepth,
 	Vector4,
 } from "../..";
-import { WebGLState } from "./WebGLState";
+import { WebGLState } from "..";
 
 export class StencilBuffer {
 	_gl: GLESRenderingContext;

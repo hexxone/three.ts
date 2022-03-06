@@ -1,7 +1,7 @@
 import { InstancedMesh, Object3D } from "../../";
-import { WebGLAttributes } from "./WebGLAttributes";
-import { WebGLGeometries } from "./WebGLGeometries";
-import { WebGLInfo } from "./WebGLInfo";
+import { WebGLAttributes } from "..";
+import { WebGLGeometries } from "..";
+import { WebGLInfo } from "..";
 
 class WebGLObjects {
 	_gl: GLESRenderingContext;
@@ -42,7 +42,9 @@ class WebGLObjects {
 				object.hasEventListener("dispose", this.onInstancedMeshDispose) ===
 				false
 			) {
-				object.addEventListener("dispose", e => this.onInstancedMeshDispose(e));
+				object.addEventListener("dispose", (e) =>
+					this.onInstancedMeshDispose(e)
+				);
 			}
 
 			this._attributes.update(object.instanceMatrix, this._gl.ARRAY_BUFFER);

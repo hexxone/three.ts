@@ -1,5 +1,4 @@
-import { Object3D, Scene, Vector3, WebGLRenderer } from "../";
-import { PerspectiveCamera } from "./";
+import { Object3D, Scene, Vector3, WebGLRenderer, PerspectiveCamera } from "..";
 
 const fov = 90;
 const aspect = 1;

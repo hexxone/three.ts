@@ -1,4 +1,4 @@
-import { Texture } from "./Texture";
+import { Texture } from "..";
 
 class CanvasTexture extends Texture {
 	constructor(

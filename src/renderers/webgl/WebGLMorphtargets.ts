@@ -1,5 +1,5 @@
 import { Object3D, BufferGeometry, Material } from "../../";
-import { WebGLProgram } from "./WebGLProgram";
+import { WebGLProgram } from "..";
 
 function numericalSort(a, b) {
 	return a[0] - b[0];

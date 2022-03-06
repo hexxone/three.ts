@@ -1,6 +1,6 @@
 import { IUniform, WebGLRenderTarget } from "..";
 import { Fog, ImmediateRenderObject, Material, Texture } from "../..";
-import { WebGLProgram } from "./WebGLProgram";
+import { WebGLProgram } from "..";
 
 type WebGLImmediateProperties = {
 	__webglTexture: GLESTexture;

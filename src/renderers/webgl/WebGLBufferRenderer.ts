@@ -1,4 +1,4 @@
-import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "./";
+import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "..";
 
 class WebGLBufferRenderer {
 	setMode: (value: any) => void;

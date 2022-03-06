@@ -1,5 +1,4 @@
-import { Color, Object3D } from "../";
-import { LightShadow } from "./LightShadow";
+import { Color, Object3D, LightShadow } from "..";
 
 /**
  * @public

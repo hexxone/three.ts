@@ -1,5 +1,5 @@
-import { Texture } from "./Texture";
-import { NearestFilter } from "../";
+import { Texture } from "..";
+import { NearestFilter } from "..";
 
 class DataTexture extends Texture {
 	isDataTexture: boolean;

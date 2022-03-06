@@ -15,7 +15,7 @@
  * }
  */
 
-import { BufferGeometry, ExtrudeGeometry, Font } from "../";
+import { BufferGeometry, ExtrudeGeometry, Font } from "..";
 
 class TextGeometry extends ExtrudeGeometry {
 	constructor(text, parameters = {} as any) {

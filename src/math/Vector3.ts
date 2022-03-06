@@ -7,10 +7,10 @@ import {
 	Spherical,
 	BufferAttribute,
 	InterleavedBufferAttribute,
-} from "../";
-import { Euler } from "./Euler";
-import { MathUtils } from "./MathUtils";
-import { Quaternion } from "./Quaternion";
+} from "..";
+import { Euler } from "..";
+import { MathUtils } from "..";
+import { Quaternion } from "..";
 
 /**
  * @public

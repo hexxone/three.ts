@@ -1,4 +1,4 @@
-import { BufferGeometry, Float32BufferAttribute } from "../";
+import { BufferGeometry, Float32BufferAttribute } from "..";
 
 class PlaneGeometry extends BufferGeometry {
 	constructor(width = 1, height = 1, widthSegments = 1, heightSegments = 1) {

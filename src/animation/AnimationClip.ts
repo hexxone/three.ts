@@ -9,7 +9,7 @@ import {
 	ColorKeyframeTrack,
 	BooleanKeyframeTrack,
 	StringKeyframeTrack,
-} from "../";
+} from "..";
 
 class AnimationClip {
 	name: string;

@@ -1,5 +1,4 @@
-import { Material } from "./Material";
-import { MultiplyOperation, Color } from "../";
+import { Material, MultiplyOperation, Color } from "..";
 
 /**
  * parameters = {

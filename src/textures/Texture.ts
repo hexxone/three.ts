@@ -13,7 +13,7 @@ import {
 	MathUtils,
 	Matrix3,
 	Vector2,
-} from "../";
+} from "..";
 
 let textureId = 0;
 

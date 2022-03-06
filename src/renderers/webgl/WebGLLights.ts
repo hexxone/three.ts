@@ -9,8 +9,8 @@ import {
 	Vector3,
 } from "../../";
 
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLCapabilities } from "..";
+import { WebGLExtensions } from "..";
 
 type GLUniform = {
 	direction?: Vector3;

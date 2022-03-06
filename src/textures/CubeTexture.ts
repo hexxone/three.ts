@@ -1,5 +1,5 @@
-import { Texture } from "./Texture";
-import { CubeReflectionMapping, RGBFormat } from "../";
+import { Texture } from "..";
+import { CubeReflectionMapping, RGBFormat } from "..";
 
 class CubeTexture extends Texture {
 	_needsFlipEnvMap: boolean;

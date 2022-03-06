@@ -1,4 +1,4 @@
-import { BufferAttribute, Raycaster, Matrix4, Mesh, ObjectHelper } from "../";
+import { BufferAttribute, Raycaster, Matrix4, Mesh, ObjectHelper } from "..";
 
 const _instanceLocalMatrix = new Matrix4();
 const _instanceWorldMatrix = new Matrix4();

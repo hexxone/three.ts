@@ -1,6 +1,12 @@
-import { Vector3 } from "./Vector3";
-import { Plane } from "./Plane";
-import { Box3, BufferAttribute, InterleavedBufferAttribute, Points, Vector2 } from "..";
+import { Vector3 } from "..";
+import { Plane } from "..";
+import {
+	Box3,
+	BufferAttribute,
+	InterleavedBufferAttribute,
+	Points,
+	Vector2,
+} from "..";
 
 const _v0 = /* @__PURE__*/ new Vector3();
 const _v1 = /* @__PURE__*/ new Vector3();
@@ -26,7 +32,6 @@ class Triangle {
 	}
 
 	static getNormal(a: Vector3, b: Vector3, c: Vector3, target: Vector3) {
-
 		target.subVectors(c, b);
 		_v0.subVectors(a, b);
 		target.cross(_v0);
@@ -41,7 +46,13 @@ class Triangle {
 
 	// static/instance method to calculate barycentric coordinates
 	// based on: http://www.blackpawn.com/texts/pointinpoly/default.html
-	static getBarycoord(point: Vector3, a: Vector3, b: Vector3, c: Vector3, target: Vector3) {
+	static getBarycoord(
+		point: Vector3,
+		a: Vector3,
+		b: Vector3,
+		c: Vector3,
+		target: Vector3
+	) {
 		_v0.subVectors(c, a);
 		_v1.subVectors(b, a);
 		_v2.subVectors(point, a);
@@ -75,7 +86,16 @@ class Triangle {
 		return _v3.x >= 0 && _v3.y >= 0 && _v3.x + _v3.y <= 1;
 	}
 
-	static getUV(point: Vector3, p1: Vector3, p2: Vector3, p3: Vector3, uv1: Vector2, uv2: Vector2, uv3: Vector2, target: Vector2) {
+	static getUV(
+		point: Vector3,
+		p1: Vector3,
+		p2: Vector3,
+		p3: Vector3,
+		uv1: Vector2,
+		uv2: Vector2,
+		uv3: Vector2,
+		target: Vector2
+	) {
 		this.getBarycoord(point, p1, p2, p3, _v3);
 
 		target.set(0, 0);
@@ -102,7 +122,12 @@ class Triangle {
 		return this;
 	}
 
-	setFromPointsAndIndices(points: Vector3[], i0: number, i1: number, i2: number) {
+	setFromPointsAndIndices(
+		points: Vector3[],
+		i0: number,
+		i1: number,
+		i2: number
+	) {
 		this.a.copy(points[i0]);
 		this.b.copy(points[i1]);
 		this.c.copy(points[i2]);
@@ -110,7 +135,12 @@ class Triangle {
 		return this;
 	}
 
-	setFromAttributeAndIndices(attribute: BufferAttribute | InterleavedBufferAttribute, i0: number, i1: number, i2: number) {
+	setFromAttributeAndIndices(
+		attribute: BufferAttribute | InterleavedBufferAttribute,
+		i0: number,
+		i1: number,
+		i2: number
+	) {
 		this.a.fromBufferAttribute(attribute, i0);
 		this.b.fromBufferAttribute(attribute, i1);
 		this.c.fromBufferAttribute(attribute, i2);
@@ -155,7 +185,13 @@ class Triangle {
 		return Triangle.getBarycoord(point, this.a, this.b, this.c, target);
 	}
 
-	getUV(point: Vector3, uv1: Vector2, uv2: Vector2, uv3: Vector2, target: Vector2) {
+	getUV(
+		point: Vector3,
+		uv1: Vector2,
+		uv2: Vector2,
+		uv3: Vector2,
+		target: Vector2
+	) {
 		return Triangle.getUV(point, this.a, this.b, this.c, uv1, uv2, uv3, target);
 	}
 

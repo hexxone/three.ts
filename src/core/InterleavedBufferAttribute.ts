@@ -1,7 +1,4 @@
-import { InterleavedBuffer } from ".";
-import { Vector3 } from "../";
-import { getTypedArray } from "../utils";
-import { BufferAttribute } from "./BufferAttribute";
+import { BufferAttribute, getTypedArray, InterleavedBuffer, Vector3 } from "..";
 
 const _vector = new Vector3();
 

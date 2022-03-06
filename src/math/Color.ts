@@ -1,5 +1,5 @@
 import { BufferAttribute, HSL, InterleavedBufferAttribute } from "..";
-import { MathUtils } from "./MathUtils";
+import { MathUtils } from "..";
 
 const _colorKeywords = {
 	aliceblue: 0xf0f8ff,

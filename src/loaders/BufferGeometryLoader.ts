@@ -10,7 +10,7 @@ import {
 	Loader,
 	Sphere,
 	Vector3,
-} from "../";
+} from "..";
 
 class BufferGeometryLoader extends Loader {
 	constructor(manager?) {

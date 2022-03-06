@@ -1,4 +1,4 @@
-import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "../";
+import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "..";
 
 /**
  * parameters = {

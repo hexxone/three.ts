@@ -6,8 +6,9 @@ import {
 	CubicInterpolant,
 	DiscreteInterpolant,
 	LinearInterpolant,
-} from "../";
+} from "..";
 
+// @TODO typing
 class KeyframeTrack {
 	name: string;
 	times: number[];

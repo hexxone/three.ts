@@ -1,6 +1,4 @@
-import { Object3D } from ".";
-import { Camera, Mesh, Vector3, Ray } from "../";
-import { Layers } from "./Layers";
+import { Camera, Mesh, Vector3, Ray, Layers, Object3D } from "..";
 
 function ascSort(a, b) {
 	return a.distance - b.distance;

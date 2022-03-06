@@ -1,5 +1,4 @@
-import { Vector3, Quaternion } from "../";
-import { Audio } from "./";
+import { Vector3, Quaternion, Audio } from "..";
 
 const _position = /* @__PURE__*/ new Vector3();
 const _quaternion = /* @__PURE__*/ new Quaternion();

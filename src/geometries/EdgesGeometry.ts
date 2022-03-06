@@ -4,7 +4,7 @@ import {
 	MathUtils,
 	Triangle,
 	Vector3,
-} from "../";
+} from "..";
 
 const _v0 = new Vector3();
 const _v1 = new Vector3();

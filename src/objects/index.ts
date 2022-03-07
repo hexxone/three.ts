@@ -1,12 +1,14 @@
-export * from "./Bone";
-export * from "./Group";
-export * from "./InstancedMesh";
-export * from "./LOD";
-export * from "./Line";
-export * from "./LineLoop";
-export * from "./LineSegments";
 export * from "./Mesh";
-export * from "./Points";
-export * from "./Skeleton";
-export * from "./SkinnedMesh";
+
 export * from "./Sprite";
+export * from "./LOD";
+export * from "./SkinnedMesh";
+export * from "./Skeleton";
+export * from "./Bone";
+
+export * from "./InstancedMesh";
+export * from "./LineSegments";
+export * from "./LineLoop";
+export * from "./Line";
+export * from "./Points";
+export * from "./Group";

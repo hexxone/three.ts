@@ -1,4 +1,4 @@
-export * from "./CubicInterpolant";
-export * from "./DiscreteInterpolant";
-export * from "./LinearInterpolant";
 export * from "./QuaternionLinearInterpolant";
+export * from "./LinearInterpolant";
+export * from "./DiscreteInterpolant";
+export * from "./CubicInterpolant";

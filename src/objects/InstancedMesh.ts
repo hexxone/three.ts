@@ -10,7 +10,7 @@ const _mesh = new Mesh();
 /**
  * @public
  */
-class InstancedMesh extends Mesh {
+export class InstancedMesh extends Mesh {
 	instanceColor: BufferAttribute;
 
 	constructor(geometry, material, count) {
@@ -103,5 +103,3 @@ class InstancedMesh extends Mesh {
 		this.dispatchEvent({ type: "dispose" });
 	}
 }
-
-export { InstancedMesh };

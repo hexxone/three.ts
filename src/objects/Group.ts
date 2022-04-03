@@ -3,7 +3,7 @@ import { Object3D } from "..";
 /**
  * @public
  */
-class Group extends Object3D {
+export class Group extends Object3D {
 	constructor() {
 		super();
 
@@ -12,5 +12,3 @@ class Group extends Object3D {
 		this.type = "Group";
 	}
 }
-
-export { Group };

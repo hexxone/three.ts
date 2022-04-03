@@ -32,7 +32,7 @@ const _uvC = /* @__PURE__*/ new Vector2();
 /**
  * @public
  */
-class Sprite extends Object3D {
+export class Sprite extends Object3D {
 	center: Vector2;
 
 	constructor(material) {
@@ -221,5 +221,3 @@ function transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
 	// transform to world space
 	vertexPosition.applyMatrix4(_viewWorldMatrix);
 }
-
-export { Sprite };

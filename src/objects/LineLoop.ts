@@ -1,6 +1,6 @@
 import { Line } from "..";
 
-class LineLoop extends Line {
+export class LineLoop extends Line {
 	constructor(geometry, material) {
 		super(geometry, material);
 
@@ -8,5 +8,3 @@ class LineLoop extends Line {
 		this.type = "LineLoop";
 	}
 }
-
-export { LineLoop };

@@ -3,7 +3,7 @@ import {
 	Interpolant,
 	WrapAroundEnding,
 	ZeroSlopeEnding,
-} from "../../";
+} from "../..";
 
 /**
  * Fast and simple cubic spline interpolant.
@@ -24,7 +24,12 @@ class CubicInterpolant extends Interpolant {
 		endingEnd: number;
 	};
 
-	constructor(parameterPositions: number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer) {
+	constructor(
+		parameterPositions: number[],
+		sampleValues: Float32Array | number[],
+		sampleSize: number,
+		resultBuffer
+	) {
 		super(parameterPositions, sampleValues, sampleSize, resultBuffer);
 
 		this.DefaultSettings_ = {

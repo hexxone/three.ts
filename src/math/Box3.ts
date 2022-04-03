@@ -6,8 +6,8 @@ import {
 	Plane,
 	Sphere,
 	Triangle,
+	Vector3,
 } from "..";
-import { Vector3 } from "..";
 
 class Box3 {
 	min: Vector3;

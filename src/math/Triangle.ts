@@ -1,11 +1,10 @@
-import { Vector3 } from "..";
-import { Plane } from "..";
 import {
 	Box3,
 	BufferAttribute,
 	InterleavedBufferAttribute,
-	Points,
+	Plane,
 	Vector2,
+	Vector3,
 } from "..";
 
 const _v0 = /* @__PURE__*/ new Vector3();

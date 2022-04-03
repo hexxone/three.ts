@@ -1,11 +1,9 @@
-import { Line } from "..";
-import { Vector3, Float32BufferAttribute } from "..";
-import { Material } from "../materials";
+import { Vector3, Float32BufferAttribute, Line, Material } from "..";
 
 const _start = new Vector3();
 const _end = new Vector3();
 
-class LineSegments extends Line {
+export class LineSegments extends Line {
 	constructor(geometry, material: Material) {
 		super(geometry, material);
 
@@ -44,5 +42,3 @@ class LineSegments extends Line {
 		return this;
 	}
 }
-
-export { LineSegments };

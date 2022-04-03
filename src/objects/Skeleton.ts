@@ -1,10 +1,9 @@
-import { Bone } from "..";
-import { Matrix4, MathUtils } from "..";
+import { Bone, Matrix4, MathUtils } from "..";
 
 const _offsetMatrix = /* @__PURE__*/ new Matrix4();
 const _identityMatrix = /* @__PURE__*/ new Matrix4();
 
-class Skeleton {
+export class Skeleton {
 	uuid: any;
 	bones: Bone[];
 	boneInverses: any[];
@@ -165,5 +164,3 @@ class Skeleton {
 		return this;
 	}
 }
-
-export { Skeleton };

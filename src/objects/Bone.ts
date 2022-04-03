@@ -3,7 +3,7 @@ import { Object3D } from "..";
 /**
  * @public
  */
-class Bone extends Object3D {
+export class Bone extends Object3D {
 	constructor() {
 		super();
 
@@ -11,5 +11,3 @@ class Bone extends Object3D {
 		this.type = "Bone";
 	}
 }
-
-export { Bone };

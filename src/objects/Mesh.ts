@@ -40,7 +40,7 @@ const _intersectionPointWorld = new Vector3();
 /**
  * @public
  */
-class Mesh extends Object3D {
+export class Mesh extends Object3D {
 	constructor(
 		geometry = new BufferGeometry(),
 		material = new MeshBasicMaterial()
@@ -458,5 +458,3 @@ function checkBufferGeometryIntersection(
 
 	return intersection;
 }
-
-export { Mesh };

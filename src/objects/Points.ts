@@ -17,7 +17,7 @@ const _position = new Vector3();
 /**
  * @public
  */
-class Points extends Object3D {
+export class Points extends Object3D {
 	constructor(
 		geometry = new BufferGeometry(),
 		material = new PointsMaterial()
@@ -167,5 +167,3 @@ function testPoint(
 		});
 	}
 }
-
-export { Points };

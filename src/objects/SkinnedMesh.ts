@@ -11,7 +11,7 @@ const _matrix = new Matrix4();
 /**
  * @public
  */
-class SkinnedMesh extends Mesh {
+export class SkinnedMesh extends Mesh {
 	bindMatrixInverse: Matrix4;
 
 	constructor(geometry, material) {
@@ -125,5 +125,3 @@ class SkinnedMesh extends Mesh {
 		return target.applyMatrix4(this.bindMatrixInverse);
 	}
 }
-
-export { SkinnedMesh };

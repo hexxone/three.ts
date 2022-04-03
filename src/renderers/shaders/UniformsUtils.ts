@@ -4,11 +4,9 @@
 
 import {
 	Color,
-	Material,
 	Matrix3,
 	Matrix4,
 	Quaternion,
-	Texture,
 	Vector2,
 	Vector3,
 	Vector4,

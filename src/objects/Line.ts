@@ -1,6 +1,7 @@
 import {
 	BufferGeometry,
 	Float32BufferAttribute,
+	Material,
 	LineBasicMaterial,
 	Matrix4,
 	Object3D,
@@ -9,7 +10,6 @@ import {
 	Sphere,
 	Vector3,
 } from "..";
-import { Material } from "../materials";
 
 const _start = new Vector3();
 const _end = new Vector3();

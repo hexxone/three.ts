@@ -1,7 +1,11 @@
-function webGLShader(gl, type, string) {
+
+/**
+ * Intermediate helper function
+ */
+function webGLShader(gl: GLESRenderingContext, type: number, source: string) {
 	const shader = gl.createShader(type);
 
-	gl.shaderSource(shader, string);
+	gl.shaderSource(shader, source);
 	gl.compileShader(shader);
 
 	return shader;

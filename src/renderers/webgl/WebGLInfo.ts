@@ -1,3 +1,7 @@
+
+/**
+ * @public
+ */
 class WebGLInfo {
 	_gl: GLESRenderingContext;
 

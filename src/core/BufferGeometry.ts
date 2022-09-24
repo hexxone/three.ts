@@ -75,7 +75,7 @@ export type GeometryParameters = {
 	phiSegments?: number;
 
 	shapes?: Shape[];
-	options?: any; // @todo
+	options?: any; // TODO
 	path?: Path;
 
 	openEnded?: boolean;

@@ -1,4 +1,5 @@
 import {
+	AllGLTypeProperties,
 	WebGLCapabilities,
 	WebGLExtensions,
 	WebGLInfo,
@@ -31,8 +32,10 @@ import {
 	ClampToEdgeWrapping,
 	RepeatWrapping,
 	MathUtils,
+	EventObject,
 } from "../../";
 import {
+	CubeTexture,
 	DataTexture2DArray,
 	DataTexture3D,
 	Texture,
@@ -132,7 +135,7 @@ class WebGLTextures {
 	warnedTexture2D = false;
 	warnedTextureCube = false;
 
-	createCanvas(width, height) {
+	createCanvas(width: number, height: number) {
 		// Use OffscreenCanvas when available. Specially needed in web workers
 
 		return this.useOffscreenCanvas
@@ -140,7 +143,7 @@ class WebGLTextures {
 			: document.createElementNS("http://www.w3.org/1999/xhtml", "canvas");
 	}
 
-	resizeImage(image, needsPowerOfTwo, needsNewCanvas, maxSize) {
+	resizeImage(image: HTMLImageElement | HTMLCanvasElement | ImageBitmap | any, needsPowerOfTwo: boolean, needsNewCanvas: boolean, maxSize: number) {
 		let scale = 1;
 
 		// handle case if texture exceeds max size
@@ -212,14 +215,14 @@ class WebGLTextures {
 		return image;
 	}
 
-	isPowerOfTwo(image) {
+	isPowerOfTwo(image: any) {
 		return (
 			MathUtils.isPowerOfTwo(image.width) &&
 			MathUtils.isPowerOfTwo(image.height)
 		);
 	}
 
-	textureNeedsPowerOfTwo(texture) {
+	textureNeedsPowerOfTwo(texture: Texture) {
 		if (this.isWebGL2) return false;
 
 		return (
@@ -230,7 +233,7 @@ class WebGLTextures {
 		);
 	}
 
-	textureNeedsGenerateMipmaps(texture, supportsMips) {
+	textureNeedsGenerateMipmaps(texture: Texture, supportsMips: boolean) {
 		return (
 			texture.generateMipmaps &&
 			supportsMips &&
@@ -239,7 +242,7 @@ class WebGLTextures {
 		);
 	}
 
-	generateMipmap(target, texture, width, height) {
+	generateMipmap(target, texture: Texture, width: number, height: number) {
 		this._gl.generateMipmap(target);
 
 		const textureProperties = this._properties.get(texture);
@@ -247,7 +250,7 @@ class WebGLTextures {
 		textureProperties.__maxMipLevel = Math.log2(Math.max(width, height));
 	}
 
-	getInternalFormat(internalFormatName, glFormat, glType) {
+	getInternalFormat(internalFormatName: string, glFormat: number, glType: number) {
 		if (this.isWebGL2 === false) return glFormat;
 
 		if (internalFormatName !== null) {
@@ -295,7 +298,7 @@ class WebGLTextures {
 
 	// Fallback filters for non-power-of-2 textures
 
-	filterFallback(f) {
+	filterFallback(f: number) {
 		if (
 			f === NearestFilter ||
 			f === NearestMipmapNearestFilter ||
@@ -309,8 +312,8 @@ class WebGLTextures {
 
 	//
 
-	onTextureDispose(event) {
-		const texture = event.target;
+	onTextureDispose(event: EventObject) {
+		const texture = event.target as Texture;
 
 		texture.removeEventListener("dispose", this.onTextureDispose);
 
@@ -323,8 +326,8 @@ class WebGLTextures {
 		this._info.memory.textures--;
 	}
 
-	onRenderTargetDispose(event) {
-		const renderTarget = event.target;
+	onRenderTargetDispose(event: EventObject) {
+		const renderTarget = event.target as WebGLRenderTarget;
 
 		renderTarget.removeEventListener("dispose", (e) =>
 			this.onRenderTargetDispose(e)
@@ -486,7 +489,7 @@ class WebGLTextures {
 		);
 	}
 
-	setTextureCube(texture: Texture, slot: number) {
+	setTextureCube(texture: CubeTexture, slot: number) {
 		const textureProperties = this._properties.get(texture);
 
 		if (
@@ -504,7 +507,7 @@ class WebGLTextures {
 		);
 	}
 
-	setTextureParameters(textureType, texture: Texture, supportsMips: boolean) {
+	setTextureParameters(textureType: number, texture: Texture, supportsMips: boolean) {
 		if (supportsMips) {
 			this._gl.texParameteri(
 				textureType,
@@ -630,7 +633,7 @@ class WebGLTextures {
 		}
 	}
 
-	initTexture(textureProperties, texture) {
+	initTexture(textureProperties: Partial<AllGLTypeProperties>, texture: Texture) {
 		if (textureProperties.__webglInit === undefined) {
 			textureProperties.__webglInit = true;
 
@@ -642,7 +645,7 @@ class WebGLTextures {
 		}
 	}
 
-	uploadTexture(textureProperties, texture, slot: number) {
+	uploadTexture(textureProperties: Partial<AllGLTypeProperties>, texture: Texture, slot: number) {
 		let textureType = this._gl.TEXTURE_2D;
 
 		if (texture.isDataTexture2DArray) textureType = this._gl.TEXTURE_2D_ARRAY;
@@ -913,7 +916,7 @@ class WebGLTextures {
 		if (texture.onUpdate) texture.onUpdate(texture);
 	}
 
-	uploadCubeTexture(textureProperties, texture, slot: number) {
+	uploadCubeTexture(textureProperties: Partial<AllGLTypeProperties>, texture: CubeTexture, slot: number) {
 		if (texture.image.length !== 6) return;
 
 		this.initTexture(textureProperties, texture);
@@ -1091,10 +1094,10 @@ class WebGLTextures {
 
 	// Setup storage for target texture and bind it to correct framebuffer
 	setupFrameBufferTexture(
-		framebuffer,
-		renderTarget,
-		attachment,
-		textureTarget
+		framebuffer: GLESFramebuffer,
+		renderTarget: WebGLRenderTarget,
+		attachment: number,
+		textureTarget: number
 	) {
 		const texture = renderTarget.texture;
 
@@ -1144,11 +1147,12 @@ class WebGLTextures {
 			this._properties.get(texture).__webglTexture,
 			0
 		);
+
 		this._gl.bindFramebuffer(this._gl.FRAMEBUFFER, null);
 	}
 
 	// Setup storage for internal depth/stencil buffers and bind to correct framebuffer
-	setupRenderBufferStorage(renderbuffer, renderTarget, isMultisample) {
+	setupRenderBufferStorage(renderbuffer: GLESRenderbuffer, renderTarget: WebGLRenderTarget, isMultisample: boolean) {
 		this._gl.bindRenderbuffer(this._gl.RENDERBUFFER, renderbuffer);
 
 		if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
@@ -1643,7 +1647,7 @@ class WebGLTextures {
 		this.setTexture2D(texture, slot);
 	}
 
-	safeSetTextureCube(texture: Texture, slot: number) {
+	safeSetTextureCube(texture: CubeTexture, slot: number) {
 		if (texture && texture instanceof WebGLCubeRenderTarget) {
 			if (this.warnedTextureCube === false) {
 				console.warn(
@@ -1652,7 +1656,7 @@ class WebGLTextures {
 				this.warnedTextureCube = true;
 			}
 
-			texture = texture.texture;
+			texture = texture.texture as CubeTexture;
 		}
 
 		this.setTextureCube(texture, slot);

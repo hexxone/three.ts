@@ -1,6 +1,9 @@
 import { Texture } from "..";
 import { ClampToEdgeWrapping, NearestFilter } from "..";
 
+/**
+ * @public
+ */
 class DataTexture2DArray extends Texture {
 	wrapR: number;
 

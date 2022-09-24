@@ -129,7 +129,7 @@ class Material extends EventDispatcher {
 	emissive: Color;
 	emissiveIntensity: number;
 	specular: Color;
-	shininess: number; // @todo or color?
+	shininess: number; // TODO or color?
 	clearcoatRoughness: number;
 	clearcoatMap: Texture;
 	clearcoatRoughnessMap: Texture;

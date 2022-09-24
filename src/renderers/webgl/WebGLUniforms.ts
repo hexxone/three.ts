@@ -124,7 +124,7 @@ function copyArray(
 
 // Texture unit allocation
 
-function allocTexUnits(textures, n) {
+function allocTexUnits(textures: WebGLTextures, n) {
 	let r = arrayCacheI32[n];
 
 	if (r === undefined) {
@@ -536,7 +536,7 @@ function setValueM4Array(gl: GLESRenderingContext, v) {
 
 // Array of textures (2D / Cube)
 
-function setValueT1Array(gl: GLESRenderingContext, v, textures) {
+function setValueT1Array(gl: GLESRenderingContext, v: Texture[], textures: WebGLTextures) {
 	const n = v.length;
 
 	const units = allocTexUnits(textures, n);
@@ -548,7 +548,7 @@ function setValueT1Array(gl: GLESRenderingContext, v, textures) {
 	}
 }
 
-function setValueT6Array(gl: GLESRenderingContext, v, textures) {
+function setValueT6Array(gl: GLESRenderingContext, v: CubeTexture[], textures: WebGLTextures) {
 	const n = v.length;
 
 	const units = allocTexUnits(textures, n);
@@ -610,12 +610,18 @@ function getPureArraySetter(type) {
 
 // --- Uniform Classes ---
 
+/**
+ * @public
+ */
 interface IUniform {
 	id: number;
 
-	setValue: (gl: GLESRenderingContext, v: any, textures: WebGLTextures) => void;
+	setValue: (gl: GLESRenderingContext, v: Texture[], textures: WebGLTextures) => void;
 }
 
+/**
+ * @public
+ */
 class SingleUniform implements IUniform {
 	id: number;
 	addr: GLESUniformLocation;
@@ -623,7 +629,7 @@ class SingleUniform implements IUniform {
 
 	// path = activeInfo.name; // DEBUG
 
-	constructor(id: number, activeInfo: GLESActiveInfo, addr) {
+	constructor(id: number, activeInfo: GLESActiveInfo, addr: GLESUniformLocation) {
 		this.id = id;
 		this.addr = addr;
 		this.cache = [];
@@ -632,16 +638,19 @@ class SingleUniform implements IUniform {
 	}
 
 	/** virtual */
-	setValue: (gl: GLESRenderingContext, v: any, textures: WebGLTextures) => void;
+	setValue: (gl: GLESRenderingContext, v: Texture[], textures: WebGLTextures) => void;
 }
 
+/**
+ * @public
+ */
 class PureArrayUniform implements IUniform {
 	id: number;
 	addr: GLESUniformLocation;
 	cache: Array<any> | Float32Array;
 	size: number;
 
-	constructor(id, activeInfo, addr) {
+	constructor(id: number, activeInfo, addr: GLESUniformLocation) {
 		this.id = id;
 		this.addr = addr;
 		this.cache = [];
@@ -664,6 +673,9 @@ class PureArrayUniform implements IUniform {
 	}
 }
 
+/**
+ * @public
+ */
 class StructuredUniform implements IUniform {
 	id: number;
 
@@ -760,6 +772,9 @@ function parseUniform(
 
 // Root Container
 
+/**
+ * @public
+ */
 class WebGLUniforms {
 	seq: IUniform[] = [];
 	map: any = {};

@@ -7,6 +7,9 @@ import {
 	DepthStencilFormat,
 } from "..";
 
+/**
+ * @public
+ */
 class DepthTexture extends Texture {
 	constructor(
 		width,

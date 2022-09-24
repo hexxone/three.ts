@@ -15,6 +15,7 @@ import {
 	WebGLExtensions,
 	WebGLRenderer,
 	WebGLClipping,
+	WebGLProgram,
 	Object3D,
 	FogExp2,
 	InstancedMesh,
@@ -38,9 +39,8 @@ import {
 	MeshToonMaterial,
 	PointsMaterial,
 	SpriteMaterial,
+	WebGLLights,
 } from "../../";
-import { WebGLProgram } from "..";
-import { WebGLLights } from "..";
 
 /**
  * @public
@@ -534,6 +534,7 @@ class WebGLPrograms {
 			toneMapping: material.toneMapped
 				? this._renderer.toneMapping
 				: NoToneMapping,
+
 			physicallyCorrectLights: this._renderer.physicallyCorrectLights,
 
 			premultipliedAlpha: material.premultipliedAlpha,
@@ -543,7 +544,8 @@ class WebGLPrograms {
 			flipSided: material.side === BackSide,
 
 			depthPacking:
-				material instanceof MeshDepthMaterial ? material.depthPacking : false,
+				material instanceof MeshDepthMaterial
+				? material.depthPacking : false,
 
 			index0AttributeName: shaderMaterial.index0AttributeName,
 

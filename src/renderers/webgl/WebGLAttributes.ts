@@ -101,7 +101,7 @@ export class WebGLAttributes {
 			this._gl.bufferSubData(bufferType, 0, array);
 		} else {
 			if (this.isWebGL2) {
-				// @todo dont use as any but rather the correct webgl-spec
+				// TODO dont use as any but rather the correct webgl-spec
 				(this._gl.bufferSubData as any)(
 					bufferType,
 					updateRange.offset * array.BYTES_PER_ELEMENT,

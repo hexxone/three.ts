@@ -39,6 +39,7 @@ import {
 	WebGLMaterials,
 	WebGLMorphtargets,
 	WebGLObjects,
+	WebGLProgram,
 	WebGLPrograms,
 	WebGLProperties,
 	WebGLRenderList,
@@ -51,7 +52,6 @@ import {
 	WebGLUniforms,
 	WebGLUtils,
 	WebGLRenderTarget,
-	WebGLProgram,
 	WebGlProgramsParameters,
 	Mesh,
 	ImmediateRenderObject,
@@ -59,6 +59,7 @@ import {
 	RenderItem,
 	ShaderMaterial,
 	ensureInit,
+	Texture,
 } from "..";
 
 import { XRFrameRequestCallback } from "../XRWebGL";
@@ -456,7 +457,7 @@ export class WebGLRenderer implements Renderer {
 		return null;
 	}
 
-	// @todo test
+	// TODO test
 	_initGLContext() {
 		this.extensions = new WebGLExtensions(this.gl);
 
@@ -2068,7 +2069,7 @@ export class WebGLRenderer implements Renderer {
 		this.state.unbindTexture();
 	}
 
-	copyTextureToTexture(position, srcTexture, dstTexture, level = 0) {
+	copyTextureToTexture(position, srcTexture: Texture, dstTexture, level = 0) {
 		const width = srcTexture.image.width;
 		const height = srcTexture.image.height;
 		const glFormat = this.utils.convert(dstTexture.format);
@@ -2094,7 +2095,7 @@ export class WebGLRenderer implements Renderer {
 				height,
 				glFormat,
 				glType,
-				srcTexture.image.data
+				srcTexture.image.data as ArrayBufferView
 			);
 		} else {
 			if (srcTexture.isCompressedTexture) {
@@ -2116,7 +2117,7 @@ export class WebGLRenderer implements Renderer {
 					position.y,
 					glFormat,
 					glType,
-					srcTexture.image
+					srcTexture.image as TexImageSource
 				);
 			}
 		}

@@ -12,6 +12,9 @@ import {
 import { WebGLCapabilities } from "..";
 import { WebGLExtensions } from "..";
 
+/**
+ * @public
+ */
 type GLUniform = {
 	direction?: Vector3;
 	color?: Color;
@@ -26,6 +29,9 @@ type GLUniform = {
 	halfHeight?: Vector3;
 };
 
+/**
+ * @public
+ */
 class UniformsCache {
 	lights: { [key: string]: GLUniform };
 
@@ -92,6 +98,9 @@ class UniformsCache {
 	}
 }
 
+/**
+ * @public
+ */
 type GLShadowUniform = {
 	shadowBias: number;
 	shadowNormalBias: number;
@@ -101,6 +110,9 @@ type GLShadowUniform = {
 	shadowCameraFar?: number;
 };
 
+/**
+ * @public
+ */
 class ShadowUniformsCache {
 	lights: { [key: string]: GLShadowUniform };
 
@@ -169,7 +181,7 @@ class WebGLLights {
 
 	shadowCache = new ShadowUniformsCache();
 
-	// @TODO typization
+	// TODO typization
 	state = {
 		version: 0,
 

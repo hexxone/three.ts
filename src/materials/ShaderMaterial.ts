@@ -3,6 +3,11 @@ import { Material, cloneUniforms } from "..";
 import default_vertex from "../renderers/shaders/ShaderChunk/default_vertex.glsl";
 import default_fragment from "../renderers/shaders/ShaderChunk/default_fragment.glsl";
 
+export type IUniformPartial = { value: any; properties?: any; };
+
+export type IUniformType = { [key: string]: IUniformPartial };
+
+
 /**
  * @public
  */
@@ -11,21 +16,25 @@ class ShaderMaterial extends Material {
 
 	/** @public */
 	defines: any;
+
 	/** @public */
-	uniforms: any;
+	uniforms: IUniformType;
 
 	vertexShader: string;
 	fragmentShader: string;
 	lights: boolean;
+
+	/** @public */
 	extensions: {
 		derivatives: boolean; // set to use derivatives
 		fragDepth: boolean; // set to use fragment depth values
 		drawBuffers: boolean; // set to use draw buffers
 		shaderTextureLOD: boolean;
 	};
+
 	defaultAttributeValues: { color: number[]; uv: number[]; uv2: number[] };
-	index0AttributeName: any;
-	glslVersion: any;
+	index0AttributeName: string;
+	glslVersion: string;
 
 	constructor() {
 		super();

@@ -8,7 +8,7 @@ export class PerspectiveCamera extends Camera {
 	filmGauge: number;
 	filmOffset: number;
 
-	// @todo ???? where used wtf
+	// TODO ???? where used wtf
 	viewport: Vector4;
 
 	constructor(fov = 50, aspect = 1, near = 0.1, far = 2000) {

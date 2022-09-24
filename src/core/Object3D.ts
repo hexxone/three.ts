@@ -81,6 +81,9 @@ export class Object3D extends EventDispatcher {
 	skeleton: Skeleton;
 	material: Material;
 
+	customDepthMaterial?: Material;
+	customDistanceMaterial?: Material;
+
 	morphTargetInfluences: number[];
 	morphTargetDictionary: {
 		[name: string]: number;
@@ -425,7 +428,7 @@ export class Object3D extends EventDispatcher {
 	}
 
 	raycast(raycaster: Raycaster, intersects: any[]) {
-		// @todo fix impl arguments
+		// TODO fix impl arguments
 	}
 
 	traverse(callback: (object: Object3D) => void) {

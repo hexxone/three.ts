@@ -13,7 +13,7 @@ import {
  * Sub classes have to implement the parse() method which will be used in load().
  */
 
-// @TODO MAKE CLASS
+// TODO MAKE CLASS
 function DataTextureLoader(manager) {
 	Loader.call(this, manager);
 }

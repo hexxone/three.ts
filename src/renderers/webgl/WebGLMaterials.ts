@@ -1,6 +1,9 @@
 import { Material, BackSide } from "../../";
 import { MeshDistanceMaterial, MeshPhysicalMaterial } from "../../materials";
 
+/**
+ * @public
+ */
 class WebGLMaterials {
 	properties;
 

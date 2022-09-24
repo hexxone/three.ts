@@ -8,6 +8,9 @@ import {
 } from "../../";
 import { Texture } from "../../textures";
 
+/**
+ * @public
+ */
 class WebGLCubeMaps {
 	_renderer: WebGLRenderer;
 

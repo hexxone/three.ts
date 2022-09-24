@@ -1,11 +1,11 @@
 import { Interpolant } from "..";
 
 class LinearInterpolant extends Interpolant {
-	constructor(parameterPositions, sampleValues, sampleSize, resultBuffer) {
+	constructor(parameterPositions: Float32Array | number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer?: Float32Array) {
 		super(parameterPositions, sampleValues, sampleSize, resultBuffer);
 	}
 
-	interpolate_(i1, t0, t, t1) {
+	interpolate_(i1: number , t0: number, t: number, t1: number) {
 		const result = this.resultBuffer;
 		const values = this.sampleValues;
 		const stride = this.valueSize;

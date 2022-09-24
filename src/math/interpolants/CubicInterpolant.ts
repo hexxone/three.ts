@@ -28,7 +28,7 @@ class CubicInterpolant extends Interpolant {
 		parameterPositions: number[],
 		sampleValues: Float32Array | number[],
 		sampleSize: number,
-		resultBuffer
+		resultBuffer?: Float32Array
 	) {
 		super(parameterPositions, sampleValues, sampleSize, resultBuffer);
 
@@ -105,7 +105,7 @@ class CubicInterpolant extends Interpolant {
 		this._offsetNext = iNext * stride;
 	}
 
-	interpolate_(i1, t0, t, t1) {
+	interpolate_(i1: number, t0: number, t: number, t1: number) {
 		const result = this.resultBuffer;
 		const values = this.sampleValues;
 		const stride = this.valueSize;

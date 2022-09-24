@@ -22,13 +22,14 @@ import {
 	WebGLRenderTarget,
 	Camera,
 	Light,
-	Scene,
+	Object3D,
+	LightShadow,
+	Material,
+	WebGLObjects,
 } from "../../";
-import { Object3D } from "../../core";
 
 import vsm_frag from "../shaders/ShaderLib/vsm_frag.glsl";
 import vsm_vert from "../shaders/ShaderLib/vsm_vert.glsl";
-import { WebGLObjects } from "..";
 
 class WebGLShadowMap {
 	_renderer: WebGLRenderer;
@@ -42,10 +43,10 @@ class WebGLShadowMap {
 
 	_viewport = new Vector4();
 
-	_depthMaterials = [];
-	_distanceMaterials = [];
+	_depthMaterials: MeshDepthMaterial[] = [];
+	_distanceMaterials: MeshDistanceMaterial[] = [];
 
-	_materialCache = {};
+	_materialCache: { [uuid: string]: { [key: string]: Material }} = {};
 
 	shadowSide = { 0: BackSide, 1: FrontSide, 2: DoubleSide };
 
@@ -242,7 +243,7 @@ class WebGLShadowMap {
 		);
 	}
 
-	vsmPass(shadow, camera: Camera) {
+	vsmPass(shadow: LightShadow, camera: Camera) {
 		const geometry = this._objects.update(this.fullScreenMesh);
 
 		// vertical pass
@@ -279,9 +280,12 @@ class WebGLShadowMap {
 		);
 	}
 
-	getDepthMaterialVariant(useMorphing, useSkinning, useInstancing) {
+	// TODO fix bruh
+	getDepthMaterialVariant(useMorphing: boolean, useSkinning: boolean, useInstancing: boolean): Material {
 		const index =
-			(useMorphing << 0) | (useSkinning << 1) | (useInstancing << 2);
+			(useMorphing ? 1 : 0 << 0) |
+			(useSkinning ? 1 : 0 << 1) |
+			(useInstancing ? 1 : 0 << 2);
 
 		let material = this._depthMaterials[index];
 
@@ -294,12 +298,14 @@ class WebGLShadowMap {
 			this._depthMaterials[index] = material;
 		}
 
-		return material;
+		return material as any;
 	}
 
-	getDistanceMaterialVariant(useMorphing, useSkinning, useInstancing) {
+	getDistanceMaterialVariant(useMorphing: boolean, useSkinning: boolean, useInstancing: boolean): Material {
 		const index =
-			(useMorphing << 0) | (useSkinning << 1) | (useInstancing << 2);
+			(useMorphing ? 1 : 0 << 0) |
+			(useSkinning ? 1 : 0 << 1) |
+			(useInstancing ? 1 : 0 << 2);
 
 		let material = this._distanceMaterials[index];
 
@@ -311,17 +317,17 @@ class WebGLShadowMap {
 			this._distanceMaterials[index] = material;
 		}
 
-		return material;
+		return material as any;
 	}
 
 	getDepthMaterial(
-		object,
-		geometry,
-		material,
-		light,
-		shadowCameraNear,
-		shadowCameraFar,
-		type
+		object: Object3D,
+		geometry: BufferGeometry,
+		material: Material,
+		light: Light,
+		shadowCameraNear: number,
+		shadowCameraFar: number,
+		type: number
 	) {
 		let result = null;
 
@@ -446,11 +452,12 @@ class WebGLShadowMap {
 				const material = object.material;
 
 				if (Array.isArray(material)) {
+					const materialArray = material as Material[];
 					const groups = geometry.groups;
 
 					for (let k = 0, kl = groups.length; k < kl; k++) {
 						const group = groups[k];
-						const groupMaterial = material[group.materialIndex];
+						const groupMaterial = materialArray[group.materialIndex];
 
 						if (groupMaterial && groupMaterial.visible) {
 							const depthMaterial = this.getDepthMaterial(

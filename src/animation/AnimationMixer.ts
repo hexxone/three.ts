@@ -8,14 +8,29 @@ import {
 	PropertyMixer,
 } from "..";
 
+
+/**
+ * @public
+ */
+class AnimationActionForClip {
+	knownActions: AnimationAction[];
+	actionByRoot: {};
+}
+
+
+/**
+ * @public
+ */
 class AnimationMixer extends EventDispatcher {
 	_root: any;
 	_accuIndex: number;
 	time: number;
 	timeScale: number;
 	_bindingsByRootAndName: any;
-	_actionsByClip: any;
-	_actions: any[];
+
+	_actionsByClip: {[uuid: string]: AnimationActionForClip}; // @ TODO
+
+	_actions: AnimationAction[];
 	_nActiveActions: number;
 	_bindings: any[];
 	_nActiveBindings: number;
@@ -206,7 +221,7 @@ class AnimationMixer extends EventDispatcher {
 		return index !== null && index < this._nActiveActions;
 	}
 
-	_addInactiveAction(action, clipUuid, rootUuid) {
+	_addInactiveAction(action: AnimationAction, clipUuid, rootUuid) {
 		const actions = this._actions;
 		const actionsByClip = this._actionsByClip;
 

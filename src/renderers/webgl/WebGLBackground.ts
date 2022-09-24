@@ -134,6 +134,7 @@ class WebGLBackground {
 
 			(this.boxMesh.material as ShaderMaterial).uniforms.envMap.value =
 				background;
+
 			(this.boxMesh.material as ShaderMaterial).uniforms.flipEnvMap.value =
 				background instanceof CubeTexture && background._needsFlipEnvMap
 					? -1

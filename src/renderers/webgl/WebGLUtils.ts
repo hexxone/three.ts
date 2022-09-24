@@ -65,9 +65,12 @@ import {
 	SRGB8_ALPHA8_ASTC_12x12_Format,
 	RGBA_BPTC_Format,
 } from "../../constants";
-import { WebGLCapabilities } from "..";
+import { AnyExtension, WebGLCapabilities } from "..";
 import { WebGLExtensions } from "..";
 
+/**
+ * @public
+ */
 class WebGLUtils {
 	_gl: GLESRenderingContext;
 	_extensions: WebGLExtensions;
@@ -88,7 +91,7 @@ class WebGLUtils {
 	}
 
 	public convert(p: number) {
-		let extension;
+		let extension: Partial<AnyExtension>;
 
 		if (p === UnsignedByteType) return this._gl.UNSIGNED_BYTE;
 		if (p === UnsignedShort4444Type) return this._gl.UNSIGNED_SHORT_4_4_4_4;

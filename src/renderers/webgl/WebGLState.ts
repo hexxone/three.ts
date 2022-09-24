@@ -29,33 +29,37 @@ import {
 	OneMinusDstAlphaFactor,
 	Material,
 	Vector4,
+	ColorBuffer,
+	DepthBuffer,
+	StencilBuffer,
+	WebGLCapabilities,
+	WebGLExtensions,
 } from "../../";
 
-import { WebGLCapabilities } from "..";
-import { WebGLExtensions } from "..";
-import { ColorBuffer, DepthBuffer, StencilBuffer } from "..";
-
+/**
+ * @public
+ */
 class WebGLState {
 	_gl: GLESRenderingContext;
 
-	public isWebGL2: boolean;
+	isWebGL2: boolean;
 
 	colorBuffer: ColorBuffer;
 	depthBuffer: DepthBuffer;
 	stencilBuffer: StencilBuffer;
 
-	enabledCapabilities = {};
+	enabledCapabilities: { [index: number]: boolean} = {};
 
 	currentProgram: GLESProgram;
 
 	currentBlendingEnabled = false;
 	currentBlending: number;
 	currentBlendEquation: number;
-	currentBlendSrc = null;
-	currentBlendDst = null;
-	currentBlendEquationAlpha = null;
-	currentBlendSrcAlpha = null;
-	currentBlendDstAlpha = null;
+	currentBlendSrc: number = null;
+	currentBlendDst: number = null;
+	currentBlendEquationAlpha: number = null;
+	currentBlendSrcAlpha: number = null;
+	currentBlendDstAlpha: number = null;
 	currentPremultipledAlpha = false;
 
 	currentFlipSided: boolean;
@@ -73,15 +77,16 @@ class WebGLState {
 	version = 0;
 
 	currentTextureSlot: number;
-	currentBoundTextures = {};
+	currentBoundTextures: {[index: number]: { type: number; texture: GLESTexture }} = {};
 
 	currentScissor = new Vector4();
 	currentViewport = new Vector4();
 
-	emptyTextures = {};
+	emptyTextures: {[index: number]: GLESTexture} = {};
 
-	equationToGL;
-	factorToGL;
+	equationToGL: {[func: number]: number};
+
+	factorToGL: {[fact: number]: number};
 
 	constructor(
 		gl: GLESRenderingContext,

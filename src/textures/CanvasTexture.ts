@@ -1,5 +1,8 @@
 import { Texture } from "..";
 
+/**
+ * @public
+ */
 class CanvasTexture extends Texture {
 	constructor(
 		canvas,

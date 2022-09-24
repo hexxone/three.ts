@@ -1,6 +1,9 @@
 import { RGBFormat, LinearFilter } from "..";
 import { Texture } from "..";
 
+/**
+ * @public
+ */
 class VideoTexture extends Texture {
 	constructor(
 		video,

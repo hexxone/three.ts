@@ -3,6 +3,9 @@ import { WebGLAttributes } from "..";
 import { WebGLGeometries } from "..";
 import { WebGLInfo } from "..";
 
+/**
+ * @public
+ */
 class WebGLObjects {
 	_gl: GLESRenderingContext;
 	_geometries: WebGLGeometries;

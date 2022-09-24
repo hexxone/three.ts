@@ -1,5 +1,8 @@
 import { IImage, Texture } from "..";
 
+/**
+ * @public
+ */
 class CompressedTexture extends Texture {
 	images: IImage[];
 

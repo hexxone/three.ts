@@ -2,8 +2,13 @@
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
+import { AnimationAction } from "../animation";
+
 export interface EventObject {
 	target?: EventDispatcher;
+	action?: AnimationAction;
+	direction?: number;
+	loopDelta?: number;
 	type: string;
 }
 

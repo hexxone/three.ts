@@ -1,5 +1,4 @@
-import { Object3D, BufferGeometry, Material } from "../../";
-import { WebGLProgram } from "..";
+import { Object3D, BufferGeometry, Material, WebGLProgram } from "../../";
 
 function numericalSort(a, b) {
 	return a[0] - b[0];
@@ -9,6 +8,9 @@ function absNumericalSort(a, b) {
 	return Math.abs(b[1]) - Math.abs(a[1]);
 }
 
+/**
+ * @public
+ */
 class WebGLMorphtargets {
 	_gl: GLESRenderingContext;
 

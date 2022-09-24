@@ -1,4 +1,4 @@
-import { MathUtils, PropertyBinding } from "..";
+import { MathUtils, Object3D, ParsedPath, PropertyBinding } from "..";
 
 /**
  *
@@ -29,18 +29,23 @@ import { MathUtils, PropertyBinding } from "..";
  *    target group or directly, but not both.
  */
 
-// @TODO typing
-class AnimationObjectGroup {
-	nCachedObjects_: any;
+// TODO typing
 
-	_objects: any;
-	_indicesByUUID: any;
-	_bindings: any;
+/**
+ * @public
+ */
+class AnimationObjectGroup {
+	nCachedObjects_: number;
+
+	_objects: Object3D[];
+	_indicesByUUID: {[uuid: string]:number};
+	_bindings: PropertyBinding[][];
+
+	_paths: string[];
+	_parsedPaths: ParsedPath[];
+	_bindingsIndicesByPath: {[path: string]: number};
 
 	uuid: string;
-	_paths: any[];
-	_parsedPaths: any[];
-	_bindingsIndicesByPath: {};
 
 	stats: {
 		objects: {
@@ -52,7 +57,7 @@ class AnimationObjectGroup {
 
 	isAnimationObjectGroup = true;
 
-	constructor(...args) {
+	constructor(...args: Object3D[]) {
 		this.uuid = MathUtils.generateUUID();
 
 		// cached objects followed by the active ones
@@ -90,7 +95,7 @@ class AnimationObjectGroup {
 		};
 	}
 
-	add(...args) {
+	add(...args: Object3D[]) {
 		const objects = this._objects;
 		const indicesByUUID = this._indicesByUUID;
 		const paths = this._paths;
@@ -166,7 +171,7 @@ class AnimationObjectGroup {
 		this.nCachedObjects_ = nCachedObjects;
 	}
 
-	remove(...args) {
+	remove(...args: Object3D[]) {
 		const objects = this._objects;
 		const indicesByUUID = this._indicesByUUID;
 		const bindings = this._bindings;
@@ -208,7 +213,7 @@ class AnimationObjectGroup {
 	}
 
 	// remove & forget
-	uncache(...args) {
+	uncache(...args: Object3D[]) {
 		const objects = this._objects;
 		const indicesByUUID = this._indicesByUUID;
 		const bindings = this._bindings;
@@ -283,7 +288,7 @@ class AnimationObjectGroup {
 
 	// Internal interface used by befriended PropertyBinding.Composite:
 
-	subscribe_(path, parsedPath) {
+	subscribe_(path: string, parsedPath: ParsedPath) {
 		// returns an array of bindings for the given path that is changed
 		// according to the contained objects in the group
 
@@ -316,7 +321,7 @@ class AnimationObjectGroup {
 		return bindingsForPath;
 	}
 
-	unsubscribe_(path) {
+	unsubscribe_(path: string) {
 		// tells the group to forget about a property path and no longer
 		// update the array previously obtained with 'subscribe_'
 

@@ -1,6 +1,9 @@
 import { Texture } from "..";
 import { NearestFilter } from "..";
 
+/**
+ * @public
+ */
 class DataTexture extends Texture {
 	isDataTexture: boolean;
 

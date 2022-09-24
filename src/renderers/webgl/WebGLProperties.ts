@@ -1,6 +1,12 @@
-import { IUniform, WebGLRenderTarget } from "..";
-import { Fog, ImmediateRenderObject, Material, Texture } from "../..";
-import { WebGLProgram } from "..";
+import {
+	Fog,
+	ImmediateRenderObject,
+	IUniform,
+	Material,
+	Texture,
+	WebGLRenderTarget,
+	WebGLProgram,
+} from "../..";
 
 type WebGLImmediateProperties = {
 	__webglTexture: GLESTexture;
@@ -46,13 +52,16 @@ type WebGLTargetProperies = {
 	__webglDepthRenderbuffer: GLESFramebuffer;
 };
 
-class WebGLProperties {
+
+export type AllGLTypeProperties = WebGLImmediateProperties & WebGLMaterialProperies & WebGLTextureProperies & WebGLTargetProperies;
+
+export class WebGLProperties {
 	properties = new WeakMap();
 
-	get(object: ImmediateRenderObject): WebGLImmediateProperties;
-	get(object: Material): WebGLMaterialProperies;
-	get(object: Texture): WebGLTextureProperies;
-	get(object: WebGLRenderTarget): WebGLTargetProperies;
+	get(object: ImmediateRenderObject): Partial<AllGLTypeProperties>;
+	get(object: Material): Partial<AllGLTypeProperties>;
+	get(object: Texture): Partial<AllGLTypeProperties>;
+	get(object: WebGLRenderTarget): Partial<AllGLTypeProperties>;
 	get(object) {
 		let map = this.properties.get(object);
 		if (map === undefined) {
@@ -74,5 +83,3 @@ class WebGLProperties {
 		this.properties = new WeakMap();
 	}
 }
-
-export { WebGLProperties };

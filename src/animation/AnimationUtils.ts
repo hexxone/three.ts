@@ -1,9 +1,13 @@
 import { AnimationClip, Quaternion, AdditiveAnimationBlendMode } from "..";
 
-// @TODO typing
+// TODO typing
+
+/**
+ * @public
+ */
 const AnimationUtils = {
 	// same as Array.prototype.slice, but also works on typed arrays
-	arraySlice: function (array, from = 0, to?) {
+	arraySlice: function (array: any, from = 0, to?) {
 		if (AnimationUtils.isTypedArray(array)) {
 			// in ios9 array.subarray(from, undefined) will return empty array
 			// but array.subarray(from) or array.subarray(from, len) is correct

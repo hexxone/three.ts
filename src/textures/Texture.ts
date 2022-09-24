@@ -17,11 +17,17 @@ import {
 
 let textureId = 0;
 
+
+/**
+ * @public
+ */
 export type IImage = {
-	data?: ArrayBufferLike | number[];
+	data?: ArrayBufferView | ArrayBufferLike | number[];
 	width?: number;
 	height?: number;
 	depth?: number;
+
+	length?: number;
 
 	complete?: boolean;
 	readyState?: number;
@@ -37,7 +43,8 @@ export class Texture extends EventDispatcher {
 
 	uuid: string;
 	name: string;
-	image: IImage;
+	image: Partial<TexImageSource & IImage>;
+
 	mipmaps: any[];
 	mapping: any;
 	wrapS: number;
@@ -67,6 +74,8 @@ export class Texture extends EventDispatcher {
 	isDepthTexture: boolean;
 	isCanvasTexture: boolean;
 	isVideoTexture: boolean;
+
+	isDataTexture: boolean;
 	isDataTexture3D: boolean;
 	isDataTexture2DArray: boolean;
 	isCompressedTexture: boolean;

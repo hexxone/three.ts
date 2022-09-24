@@ -28,10 +28,9 @@ import {
 	WebGLRenderer,
 	WebGLBindingStates,
 	WebGlProgramsParameters,
+	WebGLUniforms,
 } from "../../";
-
-import { WebGLUniforms } from "..";
-import { webGLShader } from "..";
+import { webGLShader } from "./WebGLShader";
 
 let programIdCount = 0;
 
@@ -380,6 +379,9 @@ function generateEnvMapBlendingDefine(parameters) {
 	return envMapBlendingDefine;
 }
 
+/**
+ * @public
+ */
 class WebGLProgram {
 	gl: GLESRenderingContext;
 	defines;

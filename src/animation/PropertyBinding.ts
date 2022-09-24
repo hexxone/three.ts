@@ -1,5 +1,8 @@
 // eslint-disable no-invalid-this
 
+import { Object3D } from "../core";
+import { AnimationObjectGroup } from "./AnimationObjectGroup";
+
 // Characters [].:/ are reserved for track binding syntax.
 const _RESERVED_CHARS_RE = "\\[\\]\\.:\\/";
 const _reservedRe = new RegExp("[" + _RESERVED_CHARS_RE + "]", "g");
@@ -33,13 +36,15 @@ const _supportedObjectNames = ["material", "materials", "bones"];
 
 /**
  * @public
- * @TODO typing
+ * TODO typing
  */
 class Composite {
-	_targetGroup: any;
+
+	_targetGroup: AnimationObjectGroup;
+
 	_bindings: any;
 
-	constructor(targetGroup, path, optionalParsedPath) {
+	constructor(targetGroup: AnimationObjectGroup, path: string, optionalParsedPath?: ParsedPath) {
 		const parsedPath =
 			optionalParsedPath || PropertyBinding.parseTrackName(path);
 
@@ -94,6 +99,21 @@ class Composite {
 	}
 }
 
+
+/**
+ * @public
+ */
+ export class ParsedPath {
+		// directoryName: matches[ 1 ], // (tschw) currently unused
+		nodeName: string;
+		objectName: string;
+		objectIndex: number;
+		propertyName: string; // required
+		propertyIndex: number;
+}
+
+
+
 // Note: This class uses a State pattern on a per-method basis:
 // 'bind' sets 'this.getValue' / 'setValue' and shadows the
 // prototype version of these methods with one that represents
@@ -102,16 +122,18 @@ class Composite {
 
 /**
  * @public
- * @TODO typing
+ * TODO typing
  */
-class PropertyBinding {
+export class PropertyBinding {
 	path: any;
-	parsedPath: any;
+	parsedPath: ParsedPath;
 	node: any;
 	rootNode: any;
+
 	getValue: (targetArray: any, offset: any) => void;
 	setValue: (sourceArray: any, offset: any) => void;
 	static Composite: any;
+
 	targetObject: any;
 	propertyName: any;
 	resolvedProperty: any;
@@ -133,7 +155,7 @@ class PropertyBinding {
 	GetterByBindingType: any;
 	SetterByBindingTypeAndVersioning: any;
 
-	constructor(rootNode, path, parsedPath) {
+	constructor(rootNode: Object3D, path: string, parsedPath: ParsedPath) {
 		this.path = path;
 		this.parsedPath = parsedPath || PropertyBinding.parseTrackName(path);
 
@@ -154,7 +176,7 @@ class PropertyBinding {
 	 * @param parsedPath
 	 * @returns
 	 */
-	static create(root, path, parsedPath): PropertyBinding {
+	static create(root, path: string, parsedPath: ParsedPath): PropertyBinding {
 		if (!(root && root.isAnimationObjectGroup)) {
 			return new PropertyBinding(root, path, parsedPath);
 		} else {
@@ -173,20 +195,20 @@ class PropertyBinding {
 		return name.replace(/\s/g, "_").replace(_reservedRe, "");
 	}
 
-	static parseTrackName(trackName) {
+	static parseTrackName(trackName): ParsedPath {
 		const matches = _trackRe.exec(trackName);
 
 		if (!matches) {
 			throw new Error("PropertyBinding: Cannot parse trackName: " + trackName);
 		}
 
-		const results = {
+		const results: ParsedPath = {
 			// directoryName: matches[ 1 ], // (tschw) currently unused
 			nodeName: matches[2],
 			objectName: matches[3],
-			objectIndex: matches[4],
+			objectIndex: Number(matches[4]),
 			propertyName: matches[5], // required
-			propertyIndex: matches[6],
+			propertyIndex: Number(matches[6]),
 		};
 
 		const lastDot = results.nodeName && results.nodeName.lastIndexOf(".");
@@ -590,7 +612,7 @@ class PropertyBinding {
 	}
 }
 
-// @TODO typing
+// TODO typing
 
 PropertyBinding.Composite = Composite;
 
@@ -627,5 +649,3 @@ PropertyBinding.prototype.SetterByBindingTypeAndVersioning = [
 		PropertyBinding.prototype._setValue_fromArray_setMatrixWorldNeedsUpdate,
 	],
 ];
-
-export { PropertyBinding };

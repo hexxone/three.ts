@@ -12,6 +12,7 @@ import {
 } from "..";
 
 class AnimationClip {
+
 	name: string;
 	tracks: NumberKeyframeTrack[];
 	duration: number;

@@ -7,14 +7,22 @@ import {
 	LoopRepeat,
 	NormalAnimationBlendMode,
 	AdditiveAnimationBlendMode,
+	AnimationMixer,
+	AnimationClip,
 } from "..";
 
-// @TODO typing
+// TODO typing
+
+/**
+ * @public
+ */
 class AnimationAction {
-	_mixer: any;
-	_clip: any;
+	_mixer: AnimationMixer;
+	_clip: AnimationClip;
+
 	_localRoot: any;
 	blendMode: any;
+
 	_interpolantSettings: { endingStart: number; endingEnd: number };
 	_interpolants: any[];
 	_propertyBindings: any[];

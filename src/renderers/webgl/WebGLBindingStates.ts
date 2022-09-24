@@ -241,7 +241,7 @@ class WebGLBindingStates {
 	saveCache(geometry: BufferGeometry, index) {
 		const attributes = geometry.attributes;
 
-		// @TODO lets hope we dont get an error due to async? overwriting
+		// TODO lets hope we dont get an error due to async? overwriting
 		this.currentState.attributes = {};
 		this.currentState.attributesNum = 0;
 		for (const key in attributes) {

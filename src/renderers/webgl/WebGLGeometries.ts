@@ -9,6 +9,9 @@ import { WebGLAttributes } from "..";
 import { WebGLBindingStates } from "..";
 import { WebGLInfo } from "..";
 
+/**
+ * @public
+ */
 class WebGLGeometries {
 	_gl: GLESRenderingContext;
 	_attributes: WebGLAttributes;
@@ -30,7 +33,7 @@ class WebGLGeometries {
 		this._bindingStates = bindingStates;
 	}
 
-	// @todo what event
+	// TODO what event
 	onGeometryDispose(event) {
 		const geometry = event.target as BufferGeometry;
 

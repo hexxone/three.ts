@@ -4,6 +4,7 @@
 
 import {
 	Color,
+	IUniformType,
 	Matrix3,
 	Matrix4,
 	Quaternion,
@@ -12,11 +13,11 @@ import {
 	Vector4,
 } from "../../";
 
-export function cloneUniforms(src) {
-	const dst = {};
+export function cloneUniforms(src: IUniformType) {
+	const dst: IUniformType = {};
 
 	for (const u in src) {
-		dst[u] = {};
+		dst[u] = { value: null };
 
 		for (const p in src[u]) {
 			const property = src[u][p];
@@ -46,7 +47,7 @@ export function cloneUniforms(src) {
 	return dst;
 }
 
-export function mergeUniforms(uniforms) {
+export function mergeUniforms(uniforms: IUniformType[]) {
 	const merged = {};
 
 	for (let u = 0; u < uniforms.length; u++) {

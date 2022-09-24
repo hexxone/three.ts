@@ -1,6 +1,9 @@
 import { Texture } from "..";
 import { CubeReflectionMapping, RGBFormat } from "..";
 
+/**
+ * @public
+ */
 class CubeTexture extends Texture {
 	_needsFlipEnvMap: boolean;
 

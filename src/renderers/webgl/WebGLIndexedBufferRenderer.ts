@@ -1,6 +1,9 @@
 import { IBuffered } from "..";
 import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "..";
 
+/**
+ * @public
+ */
 class WebGLIndexedBufferRenderer {
 	gl: GLESRenderingContext;
 	extensions: WebGLExtensions;

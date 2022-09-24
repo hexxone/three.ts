@@ -6,15 +6,17 @@ import {
 	CubicInterpolant,
 	DiscreteInterpolant,
 	LinearInterpolant,
+	Interpolant,
 } from "..";
 
-// @TODO typing
+// TODO typing
 class KeyframeTrack {
 	name: string;
 	times: number[];
 	values: Float32Array;
 	ValueTypeName: string;
-	createInterpolant: any;
+
+	createInterpolant: (result)=>Interpolant;
 
 	DefaultInterpolation = InterpolateLinear;
 
@@ -40,7 +42,7 @@ class KeyframeTrack {
 		this.setInterpolation(interpolation || this.DefaultInterpolation);
 	}
 
-	InterpolantFactoryMethodDiscrete(result) {
+	InterpolantFactoryMethodDiscrete(result?: Float32Array) {
 		return new DiscreteInterpolant(
 			this.times,
 			this.values,
@@ -49,7 +51,7 @@ class KeyframeTrack {
 		);
 	}
 
-	InterpolantFactoryMethodLinear(result) {
+	InterpolantFactoryMethodLinear(result?: Float32Array) {
 		return new LinearInterpolant(
 			this.times,
 			this.values,
@@ -58,7 +60,7 @@ class KeyframeTrack {
 		);
 	}
 
-	InterpolantFactoryMethodSmooth(result) {
+	InterpolantFactoryMethodSmooth(result?: Float32Array) {
 		return new CubicInterpolant(
 			this.times,
 			this.values,
@@ -68,7 +70,7 @@ class KeyframeTrack {
 	}
 
 	setInterpolation(interpolation: number) {
-		let factoryMethod;
+		let factoryMethod: (result) => Interpolant;
 
 		switch (interpolation) {
 			case InterpolateDiscrete:

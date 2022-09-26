@@ -1,4 +1,6 @@
-import { Vector3, Color, LightProbe } from "..";
+import { Color } from "../math/Color";
+import { Vector3 } from "../math/Vector3";
+import { LightProbe } from "./LightProbe";
 
 class HemisphereLightProbe extends LightProbe {
 	constructor(skyColor, groundColor, intensity = 1) {

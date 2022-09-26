@@ -1,5 +1,5 @@
-import { Texture } from "..";
-import { CubeReflectionMapping, RGBFormat } from "..";
+import { CubeReflectionMapping, RGBFormat } from "../constants";
+import { Texture } from "./Texture";
 
 /**
  * @public

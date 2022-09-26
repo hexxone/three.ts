@@ -1,11 +1,9 @@
-import {
-	Box3,
-	BufferAttribute,
-	BufferGeometry,
-	Color,
-	LineBasicMaterial,
-	LineSegments,
-} from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Box3 } from "../math/Box3";
+import { Color } from "../math/Color";
+import { LineSegments } from "../objects/LineSegments";
 
 const _box = /* @__PURE__*/ new Box3();
 

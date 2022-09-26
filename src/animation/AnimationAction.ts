@@ -1,17 +1,9 @@
-import {
-	WrapAroundEnding,
-	ZeroCurvatureEnding,
-	ZeroSlopeEnding,
-	LoopPingPong,
-	LoopOnce,
-	LoopRepeat,
-	NormalAnimationBlendMode,
-	AdditiveAnimationBlendMode,
-	AnimationMixer,
-	AnimationClip,
-} from "..";
 
 // TODO typing
+
+import { AdditiveAnimationBlendMode, LoopOnce, LoopPingPong, LoopRepeat, NormalAnimationBlendMode, WrapAroundEnding, ZeroCurvatureEnding, ZeroSlopeEnding } from "../constants";
+import { AnimationClip } from "./AnimationClip";
+import { AnimationMixer } from "./AnimationMixer";
 
 /**
  * @public

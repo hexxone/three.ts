@@ -1,25 +1,18 @@
-import {
-	Box3,
-	MathUtils,
-	Matrix3,
-	Matrix4,
-	Sphere,
-	Shape,
-	Vector2,
-	Vector3,
-	arrayMax,
-} from "..";
 
-import {
-	BufferAttribute,
-	EventDispatcher,
-	Float32BufferAttribute,
-	GLBufferAttribute,
-	Object3D,
-	Uint16BufferAttribute,
-	Uint32BufferAttribute,
-} from ".";
-import { Path } from "../extras";
+import { Path } from "../extras/core/Path";
+import { Shape } from "../extras/core/Shape";
+import { Box3 } from "../math/Box3";
+import { MathUtils } from "../math/MathUtils";
+import { Matrix3 } from "../math/Matrix3";
+import { Matrix4 } from "../math/Matrix4";
+import { Sphere } from "../math/Sphere";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { arrayMax } from "../utils";
+import { BufferAttribute, Float32BufferAttribute, Uint16BufferAttribute, Uint32BufferAttribute } from "./BufferAttribute";
+import { EventDispatcher } from "./EventDispatcher";
+import { GLBufferAttribute } from "./GLBufferAttribute";
+import { Object3D } from "./Object3D";
 
 let _id = 0;
 

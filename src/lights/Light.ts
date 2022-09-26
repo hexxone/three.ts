@@ -1,4 +1,6 @@
-import { Color, Object3D, LightShadow } from "..";
+import { Object3D } from "../core/Object3D";
+import { Color } from "../math/Color";
+import { LightShadow } from "./LightShadow";
 
 /**
  * @public

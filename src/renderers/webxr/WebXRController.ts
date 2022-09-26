@@ -1,4 +1,5 @@
-import { Group, Vector3 } from "../../";
+import { Vector3 } from "../../math/Vector3";
+import { Group } from "../../objects/Group";
 
 const _moveEvent = { type: "move" };
 

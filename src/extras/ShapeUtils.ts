@@ -1,4 +1,4 @@
-import { Earcut } from "..";
+import { Earcut } from "./Earcut";
 
 const ShapeUtils = {
 	// calculate area of the contour polygon

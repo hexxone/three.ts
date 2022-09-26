@@ -1,68 +1,56 @@
-import {
-	ArrayCamera,
-	RGBAFormat,
-	HalfFloatType,
-	FloatType,
-	UnsignedByteType,
-	LinearEncoding,
-	NoToneMapping,
-	Color,
-	DataTexture,
-	Frustum,
-	MathUtils,
-	Matrix4,
-	Vector2,
-	Vector3,
-	Vector4,
-	BufferGeometry,
-	Camera,
-	IBuffered,
-	InstancedBufferGeometry,
-	Line,
-	Material,
-	Object3D,
-	Scene,
-	Sprite,
-	WebGLAnimation,
-	WebXRManager,
-	WebGLAttributes,
-	WebGLBackground,
-	WebGLBindingStates,
-	WebGLBufferRenderer,
-	WebGLCapabilities,
-	WebGLClipping,
-	WebGLCubeMaps,
-	WebGLExtensions,
-	WebGLGeometries,
-	WebGLIndexedBufferRenderer,
-	WebGLInfo,
-	WebGLMaterials,
-	WebGLMorphtargets,
-	WebGLObjects,
-	WebGLProgram,
-	WebGLPrograms,
-	WebGLProperties,
-	WebGLRenderList,
-	WebGLRenderLists,
-	WebGLRenderState,
-	WebGLRenderStates,
-	WebGLShadowMap,
-	WebGLState,
-	WebGLTextures,
-	WebGLUniforms,
-	WebGLUtils,
-	WebGLRenderTarget,
-	WebGlProgramsParameters,
-	Mesh,
-	ImmediateRenderObject,
-	RawShaderMaterial,
-	RenderItem,
-	ShaderMaterial,
-	ensureInit,
-	Texture,
-} from "..";
 
+import { ensureInit } from "../ensureInit";
+import { ArrayCamera } from "../cameras/ArrayCamera";
+import { Camera } from "../cameras/Camera";
+import { FloatType, HalfFloatType, LinearEncoding, NoToneMapping, RGBAFormat, UnsignedByteType } from "../constants";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { InstancedBufferGeometry } from "../core/InstancedBufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { ImmediateRenderObject } from "../extras/objects/ImmediateRenderObject";
+import { Material } from "../materials/Material";
+import { RawShaderMaterial } from "../materials/RawShaderMaterial";
+import { ShaderMaterial } from "../materials/ShaderMaterial";
+import { Color } from "../math/Color";
+import { Frustum } from "../math/Frustum";
+import { MathUtils } from "../math/MathUtils";
+import { Matrix4 } from "../math/Matrix4";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { Line } from "../objects/Line";
+import { Mesh } from "../objects/Mesh";
+import { Sprite } from "../objects/Sprite";
+import { Scene } from "../scenes/Scene";
+import { DataTexture } from "../textures/DataTexture";
+import { Texture } from "../textures/Texture";
 import { XRFrameRequestCallback } from "../XRWebGL";
+import { WebGLAnimation } from "./webgl/WebGLAnimation";
+import { IBuffered, WebGLAttributes } from "./webgl/WebGLAttributes";
+import { WebGLBackground } from "./webgl/WebGLBackground";
+import { WebGLBindingStates } from "./webgl/WebGLBindingStates";
+import { WebGLBufferRenderer } from "./webgl/WebGLBufferRenderer";
+import { WebGLCapabilities } from "./webgl/WebGLCapabilities";
+import { WebGLClipping } from "./webgl/WebGLClipping";
+import { WebGLCubeMaps } from "./webgl/WebGLCubeMaps";
+import { WebGLExtensions } from "./webgl/WebGLExtensions";
+import { WebGLGeometries } from "./webgl/WebGLGeometries";
+import { WebGLIndexedBufferRenderer } from "./webgl/WebGLIndexedBufferRenderer";
+import { WebGLInfo } from "./webgl/WebGLInfo";
+import { WebGLMaterials } from "./webgl/WebGLMaterials";
+import { WebGLMorphtargets } from "./webgl/WebGLMorphtargets";
+import { WebGLObjects } from "./webgl/WebGLObjects";
+import { WebGLProgram } from "./webgl/WebGLProgram";
+import { WebGLPrograms, WebGlProgramsParameters } from "./webgl/WebGLPrograms";
+import { WebGLProperties } from "./webgl/WebGLProperties";
+import { RenderItem, WebGLRenderList, WebGLRenderLists } from "./webgl/WebGLRenderLists";
+import { WebGLRenderState, WebGLRenderStates } from "./webgl/WebGLRenderStates";
+import { WebGLShadowMap } from "./webgl/WebGLShadowMap";
+import { WebGLState } from "./webgl/WebGLState";
+import { WebGLTextures } from "./webgl/WebGLTextures";
+import { WebGLUniforms } from "./webgl/WebGLUniforms";
+import { WebGLUtils } from "./webgl/WebGLUtils";
+import { WebGLRenderTarget } from "./WebGLRenderTarget";
+import { WebXRManager } from "./webxr/WebXRManager";
 
 function createCanvasElement() {
 	const canvas = document.createElementNS(

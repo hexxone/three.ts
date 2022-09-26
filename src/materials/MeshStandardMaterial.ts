@@ -1,4 +1,3 @@
-import { TangentSpaceNormalMap, Vector2, Color, Material } from "..";
 
 /**
  * parameters = {
@@ -51,6 +50,11 @@ import { TangentSpaceNormalMap, Vector2, Color, Material } from "..";
  *  flatShading: <bool>
  * }
  */
+
+import { TangentSpaceNormalMap } from "../constants";
+import { Color } from "../math/Color";
+import { Vector2 } from "../math/Vector2";
+import { Material } from "./Material";
 
 class MeshStandardMaterial extends Material {
 	defines: any;

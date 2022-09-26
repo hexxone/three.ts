@@ -1,11 +1,10 @@
-import {
-	Matrix4,
-	PerspectiveCamera,
-	Vector2,
-	Vector3,
-	Vector4,
-	LightShadow,
-} from "..";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { Matrix4 } from "../math/Matrix4";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { LightShadow } from "./LightShadow";
+
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();

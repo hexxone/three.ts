@@ -1,6 +1,8 @@
-import { Mesh, MeshBasicMaterial, SphereGeometry } from "..";
-import { Light } from "../lights";
-import { Color } from "../math";
+import { SphereGeometry } from "../geometries/SphereGeometry";
+import { Light } from "../lights/Light";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { Color } from "../math/Color";
+import { Mesh } from "../objects/Mesh";
 
 /**
  * @public

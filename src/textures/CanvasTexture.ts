@@ -1,4 +1,4 @@
-import { Texture } from "..";
+import { Texture } from "./Texture";
 
 /**
  * @public

@@ -1,5 +1,7 @@
-import { Euler, Matrix3, Quaternion } from ".";
-import { Vector3 } from "..";
+import { Euler } from "./Euler";
+import { Matrix3 } from "./Matrix3";
+import { Quaternion } from "./Quaternion";
+import { Vector3 } from "./Vector3";
 
 /**
  * @public

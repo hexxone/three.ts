@@ -1,5 +1,7 @@
-import { Material, BackSide } from "../../";
-import { MeshDistanceMaterial, MeshPhysicalMaterial } from "../../materials";
+import { BackSide } from "../../constants";
+import { Material } from "../../materials/Material";
+import { MeshDistanceMaterial } from "../../materials/MeshDistanceMaterial";
+import { MeshPhysicalMaterial } from "../../materials/MeshPhysicalMaterial";
 
 /**
  * @public

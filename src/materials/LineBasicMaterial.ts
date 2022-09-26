@@ -1,4 +1,3 @@
-import { Color, Material } from "..";
 
 /**
  * parameters = {
@@ -10,6 +9,9 @@ import { Color, Material } from "..";
  *  linejoin: "round"
  * }
  */
+
+import { Color } from "../math/Color";
+import { Material } from "./Material";
 
 class LineBasicMaterial extends Material {
 	linecap: string;

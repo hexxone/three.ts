@@ -1,18 +1,15 @@
-import {
-	Matrix4,
-	Ray,
-	Sphere,
-	Object3D,
-	BackSide,
-	BufferGeometry,
-	DoubleSide,
-	Material,
-	MeshBasicMaterial,
-	Raycaster,
-	Triangle,
-	Vector2,
-	Vector3,
-} from "..";
+import { BackSide, DoubleSide } from "../constants";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { Raycaster } from "../core/Raycaster";
+import { Material } from "../materials/Material";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { Matrix4 } from "../math/Matrix4";
+import { Ray } from "../math/Ray";
+import { Sphere } from "../math/Sphere";
+import { Triangle } from "../math/Triangle";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
 
 const _inverseMatrix = new Matrix4();
 const _ray = new Ray();

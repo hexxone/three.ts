@@ -2,7 +2,7 @@
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-import { AnimationAction } from "../animation";
+import { AnimationAction } from "../animation/AnimationAction";
 
 export interface EventObject {
 	target?: EventDispatcher;

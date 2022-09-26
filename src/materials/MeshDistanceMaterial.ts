@@ -1,4 +1,3 @@
-import { Material, Vector3 } from "..";
 
 /**
  * parameters = {
@@ -20,6 +19,9 @@ import { Material, Vector3 } from "..";
  *
  * }
  */
+
+import { Vector3 } from "../math/Vector3";
+import { Material } from "./Material";
 
 class MeshDistanceMaterial extends Material {
 	referencePosition: Vector3;

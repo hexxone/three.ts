@@ -1,4 +1,3 @@
-import { Curve, Vector3 } from "../../";
 
 /**
  * Centripetal CatmullRom Curve - which is useful for avoiding
@@ -8,6 +7,9 @@ import { Curve, Vector3 } from "../../";
  * curve.type accepts centripetal(default), chordal and catmullrom
  * curve.tension is used for catmullrom which defaults to 0.5
  */
+
+import { Vector3 } from "../../math/Vector3";
+import { Curve } from "../core/Curve";
 
 /*
 Based on an optimized c++ solution in

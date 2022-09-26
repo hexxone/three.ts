@@ -1,8 +1,10 @@
-import { Interpolant, Quaternion } from "..";
 
 /**
  * Spherical linear unit quaternion interpolant.
  */
+
+import { Interpolant } from "../Interpolant";
+import { Quaternion } from "../Quaternion";
 
 class QuaternionLinearInterpolant extends Interpolant {
 	constructor(parameterPositions: Float32Array | number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer?: Float32Array) {

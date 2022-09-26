@@ -1,15 +1,13 @@
-import {
-	BufferGeometry,
-	InterleavedBuffer,
-	InterleavedBufferAttribute,
-	Matrix4,
-	Object3D,
-	Raycaster,
-	SpriteMaterial,
-	Triangle,
-	Vector2,
-	Vector3,
-} from "..";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { InterleavedBuffer } from "../core/InterleavedBuffer";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { Object3D } from "../core/Object3D";
+import { Raycaster } from "../core/Raycaster";
+import { SpriteMaterial } from "../materials/SpriteMaterial";
+import { Matrix4 } from "../math/Matrix4";
+import { Triangle } from "../math/Triangle";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
 
 let _geometry;
 

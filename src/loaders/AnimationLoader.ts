@@ -1,4 +1,6 @@
-import { AnimationClip, Loader, FileLoader } from "..";
+import { AnimationClip } from "../animation/AnimationClip";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
 
 class AnimationLoader extends Loader {
 	constructor(manager) {

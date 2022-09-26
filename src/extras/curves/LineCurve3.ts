@@ -1,4 +1,5 @@
-import { Curve, Vector3 } from "../../";
+import { Vector3 } from "../../math/Vector3";
+import { Curve } from "../core/Curve";
 
 class LineCurve3 extends Curve {
 	v1: Vector3;

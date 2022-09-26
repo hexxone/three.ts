@@ -1,4 +1,5 @@
-import { Material, Object3D } from "../../";
+import { Object3D } from "../../core/Object3D";
+import { Material } from "../../materials/Material";
 
 /**
  * @public

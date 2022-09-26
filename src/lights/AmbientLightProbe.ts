@@ -1,4 +1,6 @@
-import { Color, LightProbe } from "..";
+import { Color } from "../math/Color";
+import { LightProbe } from "./LightProbe";
+
 
 class AmbientLightProbe extends LightProbe {
 	constructor(color, intensity = 1) {

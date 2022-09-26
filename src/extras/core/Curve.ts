@@ -1,4 +1,3 @@
-import { MathUtils, Matrix4, Vector2, Vector3 } from "../../";
 
 /**
  * Extensible curve object.
@@ -29,6 +28,11 @@ import { MathUtils, Matrix4, Vector2, Vector3 } from "../../";
  * A series of curves can be represented as a CurvePath.
  *
  **/
+
+import { MathUtils } from "../../math/MathUtils";
+import { Matrix4 } from "../../math/Matrix4";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
 
 class Curve {
 	type: string;

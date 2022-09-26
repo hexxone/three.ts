@@ -1,16 +1,17 @@
-import {
-	Euler,
-	Material,
-	MathUtils,
-	Matrix3,
-	Matrix4,
-	Quaternion,
-	Skeleton,
-	Vector3,
-	EventObject,
-	BufferAttribute,
-} from "..";
-import { BufferGeometry, EventDispatcher, Layers, Raycaster } from ".";
+import { Material } from "../materials/Material";
+import { Euler } from "../math/Euler";
+import { MathUtils } from "../math/MathUtils";
+import { Matrix3 } from "../math/Matrix3";
+import { Matrix4 } from "../math/Matrix4";
+import { Quaternion } from "../math/Quaternion";
+import { Vector3 } from "../math/Vector3";
+import { Skeleton } from "../objects/Skeleton";
+import { BufferAttribute } from "./BufferAttribute";
+import { BufferGeometry } from "./BufferGeometry";
+import { EventDispatcher, EventObject } from "./EventDispatcher";
+import { Layers } from "./Layers";
+import { Raycaster } from "./Raycaster";
+
 
 let _object3DId = 0;
 

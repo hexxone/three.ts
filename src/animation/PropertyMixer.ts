@@ -1,4 +1,4 @@
-import { Quaternion } from "..";
+import { Quaternion } from "../math/Quaternion";
 
 // TODO typing
 class PropertyMixer {

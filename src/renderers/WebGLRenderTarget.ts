@@ -1,4 +1,7 @@
-import { EventDispatcher, LinearFilter, Texture, Vector4 } from "..";
+import { LinearFilter } from "../constants";
+import { EventDispatcher } from "../core/EventDispatcher";
+import { Vector4 } from "../math/Vector4";
+import { Texture } from "../textures/Texture";
 
 /**
  * In options, we can specify:

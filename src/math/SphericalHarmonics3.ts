@@ -1,4 +1,3 @@
-import { Vector3 } from "..";
 
 /**
  * Primary reference:
@@ -7,6 +6,8 @@ import { Vector3 } from "..";
  * Secondary reference:
  *   https://www.ppsloan.org/publications/StupidSH36.pdf
  */
+
+import { Vector3 } from "./Vector3";
 
 // 3-band SH defined by 9 coefficients
 

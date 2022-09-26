@@ -1,4 +1,7 @@
-import { Color, ShapeUtils, Path, Shape } from "../../";
+import { Color } from "../../math/Color";
+import { ShapeUtils } from "../ShapeUtils";
+import { Path } from "./Path";
+import { Shape } from "./Shape";
 
 class ShapePath {
 	type: string;

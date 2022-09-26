@@ -1,4 +1,3 @@
-import { Color, TangentSpaceNormalMap, Vector2, Material } from "..";
 
 /**
  * parameters = {
@@ -29,6 +28,11 @@ import { Color, TangentSpaceNormalMap, Vector2, Material } from "..";
  *  flatShading: <bool>
  * }
  */
+
+import { TangentSpaceNormalMap } from "../constants";
+import { Color } from "../math/Color";
+import { Vector2 } from "../math/Vector2";
+import { Material } from "./Material";
 
 class MeshMatcapMaterial extends Material {
 	defines: { MATCAP: string };

@@ -1,6 +1,9 @@
-import { AnimationClip, Quaternion, AdditiveAnimationBlendMode } from "..";
 
 // TODO typing
+
+import { AdditiveAnimationBlendMode } from "../constants";
+import { Quaternion } from "../math/Quaternion";
+import { AnimationClip } from "./AnimationClip";
 
 /**
  * @public

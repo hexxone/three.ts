@@ -1,4 +1,7 @@
-import { Object3D, BufferGeometry, Material, WebGLProperties } from "../../";
+import { BufferGeometry } from "../../core/BufferGeometry";
+import { Object3D } from "../../core/Object3D";
+import { Material } from "../../materials/Material";
+import { WebGLProperties } from "./WebGLProperties";
 
 function painterSortStable(a, b) {
 	if (a.groupOrder !== b.groupOrder) {

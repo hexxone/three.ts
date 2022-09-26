@@ -1,4 +1,3 @@
-import { Material, BasicDepthPacking } from "..";
 
 /**
  * parameters = {
@@ -17,6 +16,9 @@ import { Material, BasicDepthPacking } from "..";
  *  wireframeLinewidth: <float>
  * }
  */
+
+import { BasicDepthPacking } from "../constants";
+import { Material } from "./Material";
 
 class MeshDepthMaterial extends Material {
 	depthPacking: number;

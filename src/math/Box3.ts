@@ -1,13 +1,11 @@
-import {
-	BufferAttribute,
-	InterleavedBufferAttribute,
-	Matrix4,
-	Object3D,
-	Plane,
-	Sphere,
-	Triangle,
-	Vector3,
-} from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { Object3D } from "../core/Object3D";
+import { Matrix4 } from "./Matrix4";
+import { Plane } from "./Plane";
+import { Sphere } from "./Sphere";
+import { Triangle } from "./Triangle";
+import { Vector3 } from "./Vector3";
 
 class Box3 {
 	min: Vector3;

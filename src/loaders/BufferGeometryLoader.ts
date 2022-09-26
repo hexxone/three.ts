@@ -1,16 +1,14 @@
-import {
-	BufferAttribute,
-	BufferGeometry,
-	FileLoader,
-	getTypedArray,
-	InstancedBufferAttribute,
-	InstancedBufferGeometry,
-	InterleavedBuffer,
-	InterleavedBufferAttribute,
-	Loader,
-	Sphere,
-	Vector3,
-} from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { InstancedBufferAttribute } from "../core/InstancedBufferAttribute";
+import { InstancedBufferGeometry } from "../core/InstancedBufferGeometry";
+import { InterleavedBuffer } from "../core/InterleavedBuffer";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { Sphere } from "../math/Sphere";
+import { Vector3 } from "../math/Vector3";
+import { getTypedArray } from "../utils";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
 
 class BufferGeometryLoader extends Loader {
 	constructor(manager?) {

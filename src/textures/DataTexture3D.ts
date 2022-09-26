@@ -1,5 +1,5 @@
-import { Texture } from "..";
-import { ClampToEdgeWrapping, NearestFilter } from "..";
+import { ClampToEdgeWrapping, NearestFilter } from "../constants";
+import { Texture } from "./Texture";
 
 /**
  * @public

@@ -1,4 +1,4 @@
-import { Quaternion } from "..";
+import { Quaternion } from "./Quaternion";
 
 const _lut = [];
 

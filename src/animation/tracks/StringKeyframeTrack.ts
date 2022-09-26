@@ -1,4 +1,5 @@
-import { InterpolateDiscrete, KeyframeTrack } from "../../";
+import { InterpolateDiscrete } from "../../constants";
+import { KeyframeTrack } from "../KeyframeTrack";
 
 /**
  * A Track that interpolates Strings

@@ -1,12 +1,10 @@
-import {
-	BufferGeometry,
-	Camera,
-	Color,
-	Float32BufferAttribute,
-	LineBasicMaterial,
-	LineSegments,
-	Vector3,
-} from "..";
+import { Camera } from "../cameras/Camera";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Color } from "../math/Color";
+import { Vector3 } from "../math/Vector3";
+import { LineSegments } from "../objects/LineSegments";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _camera = /* @__PURE__*/ new Camera();

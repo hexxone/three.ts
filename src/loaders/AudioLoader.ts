@@ -1,4 +1,6 @@
-import { AudioContext, FileLoader, Loader } from "..";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
+import { AudioContext } from "../audio/AudioContext";
 
 class AudioLoader extends Loader {
 	constructor(manager) {

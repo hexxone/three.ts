@@ -1,10 +1,8 @@
-import { WebGLCapabilities } from ".";
-import {
-	BufferAttribute,
-	GLBufferAttribute,
-	InterleavedBuffer,
-	InterleavedBufferAttribute,
-} from "../..";
+import { BufferAttribute } from "../../core/BufferAttribute";
+import { GLBufferAttribute } from "../../core/GLBufferAttribute";
+import { InterleavedBuffer } from "../../core/InterleavedBuffer";
+import { InterleavedBufferAttribute } from "../../core/InterleavedBufferAttribute";
+import { WebGLCapabilities } from "./WebGLCapabilities";
 
 export type IBuffered = {
 	buffer: GLESBuffer;

@@ -1,12 +1,7 @@
-import { WebGLRenderer } from "..";
-import {
-	CubeReflectionMapping,
-	CubeRefractionMapping,
-	EquirectangularReflectionMapping,
-	EquirectangularRefractionMapping,
-	WebGLCubeRenderTarget,
-} from "../../";
-import { Texture } from "../../textures";
+import { CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping } from "../../constants";
+import { Texture } from "../../textures/Texture";
+import { WebGLCubeRenderTarget } from "../WebGLCubeRenderTarget";
+import { WebGLRenderer } from "../WebGLRenderer";
 
 /**
  * @public

@@ -1,15 +1,12 @@
-import {
-	BackSide,
-	BufferGeometry,
-	Color,
-	Float32BufferAttribute,
-	FrontSide,
-	Line,
-	LineBasicMaterial,
-	Mesh,
-	MeshBasicMaterial,
-	Plane,
-} from "..";
+import { BackSide, FrontSide } from "../constants";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { Color } from "../math/Color";
+import { Plane } from "../math/Plane";
+import { Line } from "../objects/Line";
+import { Mesh } from "../objects/Mesh";
 
 class PlaneHelper extends Line {
 	plane: Plane;

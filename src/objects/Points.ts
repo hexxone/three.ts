@@ -1,13 +1,11 @@
-import {
-	BufferGeometry,
-	Matrix4,
-	Object3D,
-	PointsMaterial,
-	Ray,
-	Raycaster,
-	Sphere,
-	Vector3,
-} from "..";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { Raycaster } from "../core/Raycaster";
+import { PointsMaterial } from "../materials/PointsMaterial";
+import { Matrix4 } from "../math/Matrix4";
+import { Ray } from "../math/Ray";
+import { Sphere } from "../math/Sphere";
+import { Vector3 } from "../math/Vector3";
 
 const _inverseMatrix = new Matrix4();
 const _ray = new Ray();

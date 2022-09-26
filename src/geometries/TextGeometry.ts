@@ -15,7 +15,9 @@
  * }
  */
 
-import { BufferGeometry, ExtrudeGeometry, Font } from "..";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Font } from "../extras/core/Font";
+import { ExtrudeGeometry } from "./ExtrudeGeometry";
 
 class TextGeometry extends ExtrudeGeometry {
 	constructor(text, parameters = {} as any) {

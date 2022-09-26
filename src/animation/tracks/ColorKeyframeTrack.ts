@@ -1,4 +1,4 @@
-import { KeyframeTrack } from "..";
+import { KeyframeTrack } from "../KeyframeTrack";
 
 /**
  * A Track of keyframe values that represent color.

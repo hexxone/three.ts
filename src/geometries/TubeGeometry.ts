@@ -1,10 +1,8 @@
-import {
-	BufferGeometry,
-	Float32BufferAttribute,
-	Vector2,
-	Vector3,
-	Path,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Path } from "../extras/core/Path";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
 
 export class TubeGeometry extends BufferGeometry {
 	tangents: any;

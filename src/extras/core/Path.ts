@@ -1,12 +1,10 @@
-import {
-	CubicBezierCurve,
-	CurvePath,
-	EllipseCurve,
-	LineCurve,
-	QuadraticBezierCurve,
-	SplineCurve,
-	Vector2,
-} from "../../";
+import { Vector2 } from "../../math/Vector2";
+import { CubicBezierCurve } from "../curves/CubicBezierCurve";
+import { EllipseCurve } from "../curves/EllipseCurve";
+import { LineCurve } from "../curves/LineCurve";
+import { QuadraticBezierCurve } from "../curves/QuadraticBezierCurve";
+import { SplineCurve } from "../curves/SplineCurve";
+import { CurvePath } from "./CurvePath";
 
 class Path extends CurvePath {
 	currentPoint: Vector2;

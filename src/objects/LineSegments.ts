@@ -1,4 +1,7 @@
-import { Vector3, Float32BufferAttribute, Line, Material } from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { Material } from "../materials/Material";
+import { Vector3 } from "../math/Vector3";
+import { Line } from "./Line";
 
 const _start = new Vector3();
 const _end = new Vector3();

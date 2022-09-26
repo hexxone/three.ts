@@ -1,4 +1,6 @@
-import { Vector2, Curve, cubicBezier } from "../../";
+import { Vector2 } from "../../math/Vector2";
+import { Curve } from "../core/Curve";
+import { cubicBezier } from "../core/Interpolations";
 
 class CubicBezierCurve extends Curve {
 	v0: Vector2;

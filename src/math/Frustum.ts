@@ -1,8 +1,8 @@
-import { Vector3 } from "..";
-import { Sphere } from "..";
-import { Plane } from "..";
-import { Matrix4 } from "..";
-import { Object3D } from "..";
+import { Object3D } from "../core/Object3D";
+import { Matrix4 } from "./Matrix4";
+import { Plane } from "./Plane";
+import { Sphere } from "./Sphere";
+import { Vector3 } from "./Vector3";
 
 const _sphere = /* @__PURE__*/ new Sphere();
 const _vector = /* @__PURE__*/ new Vector3();

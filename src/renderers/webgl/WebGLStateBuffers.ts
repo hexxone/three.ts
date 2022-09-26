@@ -1,15 +1,6 @@
-import {
-	NeverDepth,
-	AlwaysDepth,
-	LessDepth,
-	LessEqualDepth,
-	EqualDepth,
-	GreaterEqualDepth,
-	GreaterDepth,
-	NotEqualDepth,
-	Vector4,
-	WebGLState,
-} from "../..";
+import { AlwaysDepth, EqualDepth, GreaterDepth, GreaterEqualDepth, LessDepth, LessEqualDepth, NeverDepth, NotEqualDepth } from "../../constants";
+import { Vector4 } from "../../math/Vector4";
+import { WebGLState } from "./WebGLState";
 
 /**
  * @public

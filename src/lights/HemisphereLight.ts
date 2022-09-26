@@ -1,4 +1,7 @@
-import { Color, DefaultUp, Light } from "..";
+import { DefaultUp } from "../core/Object3D";
+import { Color } from "../math/Color";
+import { Light } from "./Light";
+
 
 class HemisphereLight extends Light {
 	constructor(skyColor, groundColor, intensity) {

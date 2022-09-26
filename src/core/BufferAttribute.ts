@@ -1,7 +1,12 @@
-import { Color, StaticDrawUsage, Vector2, Vector3, Vector4 } from "..";
-import { AnyTypedArray } from "../../";
-import { Matrix3, Matrix4 } from "../math";
-import { ObjectHelper } from ".";
+import { StaticDrawUsage } from "../constants";
+import { Color } from "../math/Color";
+import { Matrix3 } from "../math/Matrix3";
+import { Matrix4 } from "../math/Matrix4";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { AnyTypedArray } from "../utils";
+import { ObjectHelper } from "./ObjectHelper";
 
 const _vector = new Vector3();
 const _vector2 = new Vector2();

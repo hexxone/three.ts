@@ -1,12 +1,10 @@
-import {
-	ShaderChunk,
-	mergeUniforms,
-	Color,
-	Matrix3,
-	UniformsLib,
-	Vector2,
-	Vector3,
-} from "../../";
+import { Color } from "../../math/Color";
+import { Matrix3 } from "../../math/Matrix3";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
+import { ShaderChunk } from "./ShaderChunk";
+import { UniformsLib } from "./UniformsLib";
+import { mergeUniforms } from "./UniformsUtils";
 
 /**
  * @public

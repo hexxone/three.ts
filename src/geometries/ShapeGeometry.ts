@@ -1,4 +1,6 @@
-import { BufferGeometry, Float32BufferAttribute, ShapeUtils } from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { ShapeUtils } from "../extras/ShapeUtils";
 
 class ShapeGeometry extends BufferGeometry {
 	constructor(shapes, curveSegments = 12) {

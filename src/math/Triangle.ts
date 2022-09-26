@@ -1,11 +1,9 @@
-import {
-	Box3,
-	BufferAttribute,
-	InterleavedBufferAttribute,
-	Plane,
-	Vector2,
-	Vector3,
-} from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { Box3 } from "./Box3";
+import { Plane } from "./Plane";
+import { Vector2 } from "./Vector2";
+import { Vector3 } from "./Vector3";
 
 const _v0 = /* @__PURE__*/ new Vector3();
 const _v1 = /* @__PURE__*/ new Vector3();

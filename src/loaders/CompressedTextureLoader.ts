@@ -1,10 +1,14 @@
-import { CompressedTexture, LinearFilter, FileLoader, Loader } from "..";
 
 /**
  * Abstract Base class to block based textures loader (dds, pvr, ...)
  *
  * Sub classes have to implement the parse() method which will be used in load().
  */
+
+import { LinearFilter } from "../constants";
+import { CompressedTexture } from "../textures/CompressedTexture";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
 
 class CompressedTextureLoader extends Loader {
 	constructor(manager?) {

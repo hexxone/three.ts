@@ -1,4 +1,3 @@
-import { MathUtils, Object3D, ParsedPath, PropertyBinding } from "..";
 
 /**
  *
@@ -28,6 +27,10 @@ import { MathUtils, Object3D, ParsedPath, PropertyBinding } from "..";
  *  - A single property can either be controlled through a
  *    target group or directly, but not both.
  */
+
+import { Object3D } from "../core/Object3D";
+import { MathUtils } from "../math/MathUtils";
+import { ParsedPath, PropertyBinding } from "./PropertyBinding";
 
 // TODO typing
 

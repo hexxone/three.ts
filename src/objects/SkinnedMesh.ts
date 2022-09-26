@@ -1,4 +1,8 @@
-import { Mesh, Matrix4, Vector3, Vector4, Skeleton } from "..";
+import { Matrix4 } from "../math/Matrix4";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { Mesh } from "./Mesh";
+import { Skeleton } from "./Skeleton";
 
 const _basePosition = new Vector3();
 

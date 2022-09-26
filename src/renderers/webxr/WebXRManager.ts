@@ -1,15 +1,13 @@
-import {
-	WebGLRenderer,
-	ArrayCamera,
-	EventDispatcher,
-	PerspectiveCamera,
-	Vector3,
-	Vector4,
-	WebXRController,
-	WebGLAnimation,
-} from "../../";
 
+import { ArrayCamera } from "../../cameras/ArrayCamera";
+import { PerspectiveCamera } from "../../cameras/PerspectiveCamera";
+import { EventDispatcher } from "../../core/EventDispatcher";
+import { Vector3 } from "../../math/Vector3";
+import { Vector4 } from "../../math/Vector4";
 import { XRReferenceSpaceType, XRWebGLLayerInit } from "../../XRWebGL";
+import { WebGLAnimation } from "../webgl/WebGLAnimation";
+import { WebGLRenderer } from "../WebGLRenderer";
+import { WebXRController } from "./WebXRController";
 
 /**
  * @public

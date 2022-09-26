@@ -1,4 +1,3 @@
-import { Material, MultiplyOperation, Color } from "..";
 
 /**
  * parameters = {
@@ -34,6 +33,10 @@ import { Material, MultiplyOperation, Color } from "..";
  *  morphNormals: <bool>
  * }
  */
+
+import { MultiplyOperation } from "../constants";
+import { Color } from "../math/Color";
+import { Material } from "./Material";
 
 class MeshLambertMaterial extends Material {
 	constructor() {

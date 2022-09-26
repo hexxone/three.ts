@@ -1,46 +1,37 @@
-import {
-	BackSide,
-	DoubleSide,
-	CubeUVRefractionMapping,
-	CubeUVReflectionMapping,
-	LinearEncoding,
-	ObjectSpaceNormalMap,
-	TangentSpaceNormalMap,
-	NoToneMapping,
-	ShaderLib,
-	UniformsUtils,
-	WebGLBindingStates,
-	WebGLCapabilities,
-	WebGLCubeMaps,
-	WebGLExtensions,
-	WebGLRenderer,
-	WebGLClipping,
-	WebGLProgram,
-	Object3D,
-	FogExp2,
-	InstancedMesh,
-	MeshDepthMaterial,
-	Scene,
-	ShadowMaterial,
-	Material,
-	MeshStandardMaterial,
-	MeshPhysicalMaterial,
-	ShaderMaterial,
-	Texture,
-	WebGLRenderTarget,
-	MeshDistanceMaterial,
-	LineBasicMaterial,
-	LineDashedMaterial,
-	MeshBasicMaterial,
-	MeshLambertMaterial,
-	MeshMatcapMaterial,
-	MeshNormalMaterial,
-	MeshPhongMaterial,
-	MeshToonMaterial,
-	PointsMaterial,
-	SpriteMaterial,
-	WebGLLights,
-} from "../../";
+import { BackSide, CubeUVReflectionMapping, CubeUVRefractionMapping, DoubleSide, LinearEncoding, NoToneMapping, ObjectSpaceNormalMap, TangentSpaceNormalMap } from "../../constants";
+import { Object3D } from "../../core/Object3D";
+import { LineBasicMaterial } from "../../materials/LineBasicMaterial";
+import { LineDashedMaterial } from "../../materials/LineDashedMaterial";
+import { Material } from "../../materials/Material";
+import { MeshBasicMaterial } from "../../materials/MeshBasicMaterial";
+import { MeshDepthMaterial } from "../../materials/MeshDepthMaterial";
+import { MeshDistanceMaterial } from "../../materials/MeshDistanceMaterial";
+import { MeshLambertMaterial } from "../../materials/MeshLambertMaterial";
+import { MeshMatcapMaterial } from "../../materials/MeshMatcapMaterial";
+import { MeshNormalMaterial } from "../../materials/MeshNormalMaterial";
+import { MeshPhongMaterial } from "../../materials/MeshPhongMaterial";
+import { MeshPhysicalMaterial } from "../../materials/MeshPhysicalMaterial";
+import { MeshStandardMaterial } from "../../materials/MeshStandardMaterial";
+import { MeshToonMaterial } from "../../materials/MeshToonMaterial";
+import { PointsMaterial } from "../../materials/PointsMaterial";
+import { ShaderMaterial } from "../../materials/ShaderMaterial";
+import { ShadowMaterial } from "../../materials/ShadowMaterial";
+import { SpriteMaterial } from "../../materials/SpriteMaterial";
+import { InstancedMesh } from "../../objects/InstancedMesh";
+import { FogExp2 } from "../../scenes/FogExp2";
+import { Scene } from "../../scenes/Scene";
+import { Texture } from "../../textures/Texture";
+import { ShaderLib } from "../shaders/ShaderLib";
+import { UniformsUtils } from "../shaders/UniformsUtils";
+import { WebGLRenderer } from "../WebGLRenderer";
+import { WebGLRenderTarget } from "../WebGLRenderTarget";
+import { WebGLBindingStates } from "./WebGLBindingStates";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLClipping } from "./WebGLClipping";
+import { WebGLCubeMaps } from "./WebGLCubeMaps";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLLights } from "./WebGLLights";
+import { WebGLProgram } from "./WebGLProgram";
 
 /**
  * @public

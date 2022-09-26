@@ -1,19 +1,9 @@
-import {
-	MirroredRepeatWrapping,
-	ClampToEdgeWrapping,
-	RepeatWrapping,
-	LinearEncoding,
-	UnsignedByteType,
-	RGBAFormat,
-	LinearMipmapLinearFilter,
-	EventDispatcher,
-	LinearFilter,
-	UVMapping,
-	ImageUtils,
-	MathUtils,
-	Matrix3,
-	Vector2,
-} from "..";
+import { ClampToEdgeWrapping, LinearEncoding, LinearFilter, LinearMipmapLinearFilter, MirroredRepeatWrapping, RepeatWrapping, RGBAFormat, UnsignedByteType, UVMapping } from "../constants";
+import { EventDispatcher } from "../core/EventDispatcher";
+import { ImageUtils } from "../extras/ImageUtils";
+import { MathUtils } from "../math/MathUtils";
+import { Matrix3 } from "../math/Matrix3";
+import { Vector2 } from "../math/Vector2";
 
 let textureId = 0;
 

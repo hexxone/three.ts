@@ -1,4 +1,7 @@
-import { Camera, Raycaster, Object3D, Vector3 } from "..";
+import { Camera } from "../cameras/Camera";
+import { Object3D } from "../core/Object3D";
+import { Raycaster } from "../core/Raycaster";
+import { Vector3 } from "../math/Vector3";
 
 const _v1 = /* @__PURE__*/ new Vector3();
 const _v2 = /* @__PURE__*/ new Vector3();

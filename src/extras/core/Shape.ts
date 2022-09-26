@@ -1,4 +1,5 @@
-import { Path, MathUtils } from "../../";
+import { MathUtils } from "../../math/MathUtils";
+import { Path } from "./Path";
 
 class Shape extends Path {
 	uuid: string;

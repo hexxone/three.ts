@@ -1,5 +1,7 @@
+import { BufferAttribute } from "../core/BufferAttribute";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
 import { AnyTypedArray } from "../utils";
-import { BufferAttribute, InterleavedBufferAttribute, Matrix3 } from "..";
+import { Matrix3 } from "./Matrix3";
 
 /**
  * @public

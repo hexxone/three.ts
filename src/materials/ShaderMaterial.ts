@@ -1,7 +1,8 @@
-import { Material, cloneUniforms } from "..";
 
 import default_vertex from "../renderers/shaders/ShaderChunk/default_vertex.glsl";
 import default_fragment from "../renderers/shaders/ShaderChunk/default_fragment.glsl";
+import { Material } from "./Material";
+import { cloneUniforms } from "../renderers/shaders/UniformsUtils";
 
 export type IUniformPartial = { value: any; properties?: any; };
 

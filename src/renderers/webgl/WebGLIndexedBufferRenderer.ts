@@ -1,5 +1,7 @@
-import { IBuffered } from "..";
-import { WebGLCapabilities, WebGLExtensions, WebGLInfo } from "..";
+import { IBuffered } from "./WebGLAttributes";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLInfo } from "./WebGLInfo";
 
 /**
  * @public

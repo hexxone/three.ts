@@ -1,4 +1,5 @@
-import { Shape, ShapePath } from "../..";
+import { Shape } from "./Shape";
+import { ShapePath } from "./ShapePath";
 
 class Font {
 	isFont = true;

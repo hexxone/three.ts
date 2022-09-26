@@ -1,46 +1,20 @@
-import {
-	AllGLTypeProperties,
-	WebGLCapabilities,
-	WebGLExtensions,
-	WebGLInfo,
-	WebGLProperties,
-	WebGLState,
-	WebGLUtils,
-} from ".";
-import {
-	WebGLCubeRenderTarget,
-	WebGLMultisampleRenderTarget,
-	WebGLRenderTarget,
-} from "..";
-import {
-	LinearFilter,
-	LinearMipmapLinearFilter,
-	LinearMipmapNearestFilter,
-	NearestFilter,
-	NearestMipmapLinearFilter,
-	NearestMipmapNearestFilter,
-	RGBFormat,
-	RGBAFormat,
-	DepthFormat,
-	DepthStencilFormat,
-	UnsignedShortType,
-	UnsignedIntType,
-	UnsignedInt248Type,
-	FloatType,
-	HalfFloatType,
-	MirroredRepeatWrapping,
-	ClampToEdgeWrapping,
-	RepeatWrapping,
-	MathUtils,
-	EventObject,
-} from "../../";
-import {
-	CubeTexture,
-	DataTexture2DArray,
-	DataTexture3D,
-	Texture,
-	VideoTexture,
-} from "../../textures";
+import { ClampToEdgeWrapping, DepthFormat, DepthStencilFormat, FloatType, HalfFloatType, LinearFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, MirroredRepeatWrapping, NearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, RepeatWrapping, RGBAFormat, RGBFormat, UnsignedInt248Type, UnsignedIntType, UnsignedShortType } from "../../constants";
+import { EventObject } from "../../core/EventDispatcher";
+import { MathUtils } from "../../math/MathUtils";
+import { CubeTexture } from "../../textures/CubeTexture";
+import { DataTexture2DArray } from "../../textures/DataTexture2DArray";
+import { DataTexture3D } from "../../textures/DataTexture3D";
+import { Texture } from "../../textures/Texture";
+import { VideoTexture } from "../../textures/VideoTexture";
+import { WebGLCubeRenderTarget } from "../WebGLCubeRenderTarget";
+import { WebGLMultisampleRenderTarget } from "../WebGLMultisampleRenderTarget";
+import { WebGLRenderTarget } from "../WebGLRenderTarget";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLInfo } from "./WebGLInfo";
+import { AllGLTypeProperties, WebGLProperties } from "./WebGLProperties";
+import { WebGLState } from "./WebGLState";
+import { WebGLUtils } from "./WebGLUtils";
 
 /**
  * @public

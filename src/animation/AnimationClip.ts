@@ -1,15 +1,13 @@
-import {
-	NormalAnimationBlendMode,
-	MathUtils,
-	KeyframeTrack,
-	AnimationUtils,
-	NumberKeyframeTrack,
-	VectorKeyframeTrack,
-	QuaternionKeyframeTrack,
-	ColorKeyframeTrack,
-	BooleanKeyframeTrack,
-	StringKeyframeTrack,
-} from "..";
+import { NormalAnimationBlendMode } from "../constants";
+import { MathUtils } from "../math/MathUtils";
+import { AnimationUtils } from "./AnimationUtils";
+import { KeyframeTrack } from "./KeyframeTrack";
+import { BooleanKeyframeTrack } from "./tracks/BooleanKeyframeTrack";
+import { ColorKeyframeTrack } from "./tracks/ColorKeyframeTrack";
+import { NumberKeyframeTrack } from "./tracks/NumberKeyframeTrack";
+import { QuaternionKeyframeTrack } from "./tracks/QuaternionKeyframeTrack";
+import { StringKeyframeTrack } from "./tracks/StringKeyframeTrack";
+import { VectorKeyframeTrack } from "./tracks/VectorKeyframeTrack";
 
 class AnimationClip {
 

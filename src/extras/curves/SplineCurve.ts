@@ -1,4 +1,6 @@
-import { Curve, catmullRom, Vector2 } from "../../";
+import { Vector2 } from "../../math/Vector2";
+import { Curve } from "../core/Curve";
+import { catmullRom } from "../core/Interpolations";
 
 class SplineCurve extends Curve {
 	points: Vector2[];

@@ -1,4 +1,5 @@
-import { Light } from "..";
+import { Light } from "./Light";
+
 
 class RectAreaLight extends Light {
 	constructor(color, intensity, width = 10, height = 10) {

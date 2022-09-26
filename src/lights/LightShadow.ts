@@ -1,12 +1,10 @@
-import {
-	Frustum,
-	Matrix4,
-	Vector2,
-	Vector3,
-	Vector4,
-	Camera,
-	WebGLRenderTarget,
-} from "..";
+import { Camera } from "../cameras/Camera";
+import { Frustum } from "../math/Frustum";
+import { Matrix4 } from "../math/Matrix4";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Vector4 } from "../math/Vector4";
+import { WebGLRenderTarget } from "../renderers/WebGLRenderTarget";
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();

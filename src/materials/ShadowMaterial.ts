@@ -1,10 +1,12 @@
-import { Material, Color } from "..";
 
 /**
  * parameters = {
  *  color: <Color>
  * }
  */
+
+import { Color } from "../math/Color";
+import { Material } from "./Material";
 
 class ShadowMaterial extends Material {
 	constructor() {

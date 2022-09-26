@@ -1,5 +1,5 @@
-import { RGBFormat, LinearFilter } from "..";
-import { Texture } from "..";
+import { LinearFilter, RGBFormat } from "../constants";
+import { Texture } from "./Texture";
 
 /**
  * @public

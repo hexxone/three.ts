@@ -1,10 +1,8 @@
-import {
-	BufferGeometry,
-	Float32BufferAttribute,
-	MathUtils,
-	Triangle,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { MathUtils } from "../math/MathUtils";
+import { Triangle } from "../math/Triangle";
+import { Vector3 } from "../math/Vector3";
 
 const _v0 = new Vector3();
 const _v1 = new Vector3();

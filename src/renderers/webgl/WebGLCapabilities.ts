@@ -1,4 +1,5 @@
-import { WebGLRendererParameters, WebGLExtensions } from "..";
+import { WebGLRendererParameters } from "../WebGLRenderer";
+import { WebGLExtensions } from "./WebGLExtensions";
 
 class WebGLCapabilities {
 	logarithmicDepthBuffer: boolean;

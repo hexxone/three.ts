@@ -1,17 +1,14 @@
-import {
-	LinearFilter,
-	LinearMipmapLinearFilter,
-	ClampToEdgeWrapping,
-	DataTexture,
-	FileLoader,
-	Loader,
-} from "..";
 
 /**
  * Abstract Base class to load generic binary textures formats (rgbe, hdr, ...)
  *
  * Sub classes have to implement the parse() method which will be used in load().
  */
+
+import { ClampToEdgeWrapping, LinearFilter, LinearMipmapLinearFilter } from "../constants";
+import { DataTexture } from "../textures/DataTexture";
+import { FileLoader } from "./FileLoader";
+import { Loader } from "./Loader";
 
 // TODO MAKE CLASS
 function DataTextureLoader(manager) {

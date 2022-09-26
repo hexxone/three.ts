@@ -1,4 +1,6 @@
-import { BufferGeometry, Float32BufferAttribute, Vector3 } from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Vector3 } from "../math/Vector3";
 
 class SphereGeometry extends BufferGeometry {
 	constructor(

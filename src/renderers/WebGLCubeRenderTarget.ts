@@ -1,21 +1,15 @@
-import {
-	BackSide,
-	BoxGeometry,
-	cloneUniforms,
-	CubeCamera,
-	CubeTexture,
-	LinearFilter,
-	LinearMipmapLinearFilter,
-	Mesh,
-	NoBlending,
-	RGBAFormat,
-	ShaderMaterial,
-	WebGLRenderTarget,
-} from "..";
 
 // shader optimization
 import vertex from "./glsl/CubeRenderTarget.vert.glsl";
 import fragment from "./glsl/CubeRenderTarget.frag.glsl";
+import { WebGLRenderTarget } from "./WebGLRenderTarget";
+import { CubeTexture } from "../textures/CubeTexture";
+import { BackSide, LinearFilter, LinearMipmapLinearFilter, NoBlending, RGBAFormat } from "../constants";
+import { BoxGeometry } from "../geometries/BoxGeometry";
+import { ShaderMaterial } from "../materials/ShaderMaterial";
+import { cloneUniforms } from "./shaders/UniformsUtils";
+import { Mesh } from "../objects/Mesh";
+import { CubeCamera } from "../cameras/CubeCamera";
 
 class WebGLCubeRenderTarget extends WebGLRenderTarget {
 	constructor(size, options?, dummy?) {

@@ -1,4 +1,7 @@
-import { ImageLoader, Loader, RGBAFormat, RGBFormat, Texture } from "..";
+import { RGBAFormat, RGBFormat } from "../constants";
+import { Texture } from "../textures/Texture";
+import { ImageLoader } from "./ImageLoader";
+import { Loader } from "./Loader";
 
 class TextureLoader extends Loader {
 	constructor() {

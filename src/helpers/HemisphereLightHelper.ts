@@ -1,12 +1,10 @@
-import {
-	BufferAttribute,
-	Color,
-	Mesh,
-	MeshBasicMaterial,
-	Object3D,
-	OctahedronGeometry,
-	Vector3,
-} from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { Object3D } from "../core/Object3D";
+import { OctahedronGeometry } from "../geometries/OctahedronGeometry";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { Color } from "../math/Color";
+import { Vector3 } from "../math/Vector3";
+import { Mesh } from "../objects/Mesh";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _color1 = /* @__PURE__*/ new Color(0);

@@ -1,5 +1,5 @@
-import { Texture } from "..";
-import { NearestFilter } from "..";
+import { NearestFilter } from "../constants";
+import { Texture } from "./Texture";
 
 /**
  * @public

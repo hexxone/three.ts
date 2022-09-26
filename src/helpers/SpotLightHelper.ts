@@ -1,11 +1,9 @@
-import {
-	BufferGeometry,
-	Float32BufferAttribute,
-	LineBasicMaterial,
-	LineSegments,
-	Object3D,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Vector3 } from "../math/Vector3";
+import { LineSegments } from "../objects/LineSegments";
 
 const _vector = /* @__PURE__*/ new Vector3();
 

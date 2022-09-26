@@ -1,40 +1,9 @@
-import {
-	LessEqualDepth,
-	CullFaceFront,
-	CullFaceBack,
-	CullFaceNone,
-	DoubleSide,
-	BackSide,
-	CustomBlending,
-	MultiplyBlending,
-	SubtractiveBlending,
-	AdditiveBlending,
-	NoBlending,
-	NormalBlending,
-	AddEquation,
-	SubtractEquation,
-	ReverseSubtractEquation,
-	MinEquation,
-	MaxEquation,
-	ZeroFactor,
-	OneFactor,
-	SrcColorFactor,
-	SrcAlphaFactor,
-	SrcAlphaSaturateFactor,
-	DstColorFactor,
-	DstAlphaFactor,
-	OneMinusSrcColorFactor,
-	OneMinusSrcAlphaFactor,
-	OneMinusDstColorFactor,
-	OneMinusDstAlphaFactor,
-	Material,
-	Vector4,
-	ColorBuffer,
-	DepthBuffer,
-	StencilBuffer,
-	WebGLCapabilities,
-	WebGLExtensions,
-} from "../../";
+import { AddEquation, AdditiveBlending, BackSide, CullFaceBack, CullFaceFront, CullFaceNone, CustomBlending, DoubleSide, DstAlphaFactor, DstColorFactor, LessEqualDepth, MaxEquation, MinEquation, MultiplyBlending, NoBlending, NormalBlending, OneFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, ReverseSubtractEquation, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, SubtractEquation, SubtractiveBlending, ZeroFactor } from "../../constants";
+import { Material } from "../../materials/Material";
+import { Vector4 } from "../../math/Vector4";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { ColorBuffer, DepthBuffer, StencilBuffer } from "./WebGLStateBuffers";
 
 /**
  * @public

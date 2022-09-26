@@ -1,4 +1,7 @@
-import { Bone, Matrix4, MathUtils } from "..";
+
+import { MathUtils } from "../math/MathUtils";
+import { Matrix4 } from "../math/Matrix4";
+import { Bone } from "./Bone";
 
 const _offsetMatrix = /* @__PURE__*/ new Matrix4();
 const _identityMatrix = /* @__PURE__*/ new Matrix4();

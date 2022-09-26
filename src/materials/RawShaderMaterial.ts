@@ -1,4 +1,4 @@
-import { ShaderMaterial } from "..";
+import { ShaderMaterial } from "./ShaderMaterial";
 
 class RawShaderMaterial extends ShaderMaterial {
 	constructor() {

@@ -1,65 +1,48 @@
-import {
-	UVMapping,
-	CubeReflectionMapping,
-	CubeRefractionMapping,
-	EquirectangularReflectionMapping,
-	EquirectangularRefractionMapping,
-	CubeUVReflectionMapping,
-	CubeUVRefractionMapping,
-	RepeatWrapping,
-	ClampToEdgeWrapping,
-	MirroredRepeatWrapping,
-	NearestFilter,
-	NearestMipmapNearestFilter,
-	NearestMipmapLinearFilter,
-	LinearFilter,
-	LinearMipmapNearestFilter,
-	LinearMipmapLinearFilter,
-	AmbientLight,
-	AnimationClip,
-	Bone,
-	BufferAttribute,
-	BufferGeometryLoader,
-	Color,
-	CubeTexture,
-	DataTexture,
-	DirectionalLight,
-	FileLoader,
-	Fog,
-	FogExp2,
-	getTypedArray,
-	Group,
-	HemisphereLight,
-	ImageLoader,
-	InstancedMesh,
-	Light,
-	LightProbe,
-	Line,
-	LineLoop,
-	LineSegments,
-	Loader,
-	LoaderUtils,
-	LoadingManager,
-	LOD,
-	MaterialLoader,
-	Mesh,
-	Object3D,
-	OrthographicCamera,
-	PerspectiveCamera,
-	PointLight,
-	Points,
-	RectAreaLight,
-	Scene,
-	Shape,
-	Skeleton,
-	SkinnedMesh,
-	SpotLight,
-	Sprite,
-	Texture,
-	Geometries,
-	Curves,
-	Camera,
-} from "..";
+import { AnimationClip } from "../animation/AnimationClip";
+import { Camera } from "../cameras/Camera";
+import { OrthographicCamera } from "../cameras/OrthographicCamera";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { ClampToEdgeWrapping, CubeReflectionMapping, CubeRefractionMapping, CubeUVReflectionMapping, CubeUVRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping, LinearFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, MirroredRepeatWrapping, NearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, RepeatWrapping, UVMapping } from "../constants";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { Object3D } from "../core/Object3D";
+import { Shape } from "../extras/core/Shape";
+import { Curves } from "../extras/curves";
+import { Geometries } from "../geometries";
+import { AmbientLight } from "../lights/AmbientLight";
+import { DirectionalLight } from "../lights/DirectionalLight";
+import { HemisphereLight } from "../lights/HemisphereLight";
+import { Light } from "../lights/Light";
+import { LightProbe } from "../lights/LightProbe";
+import { PointLight } from "../lights/PointLight";
+import { RectAreaLight } from "../lights/RectAreaLight";
+import { SpotLight } from "../lights/SpotLight";
+import { Color } from "../math/Color";
+import { Bone } from "../objects/Bone";
+import { Group } from "../objects/Group";
+import { InstancedMesh } from "../objects/InstancedMesh";
+import { Line } from "../objects/Line";
+import { LineLoop } from "../objects/LineLoop";
+import { LineSegments } from "../objects/LineSegments";
+import { LOD } from "../objects/LOD";
+import { Mesh } from "../objects/Mesh";
+import { Points } from "../objects/Points";
+import { Skeleton } from "../objects/Skeleton";
+import { SkinnedMesh } from "../objects/SkinnedMesh";
+import { Sprite } from "../objects/Sprite";
+import { Fog } from "../scenes/Fog";
+import { FogExp2 } from "../scenes/FogExp2";
+import { Scene } from "../scenes/Scene";
+import { CubeTexture } from "../textures/CubeTexture";
+import { DataTexture } from "../textures/DataTexture";
+import { Texture } from "../textures/Texture";
+import { getTypedArray } from "../utils";
+import { BufferGeometryLoader } from "./BufferGeometryLoader";
+import { FileLoader } from "./FileLoader";
+import { ImageLoader } from "./ImageLoader";
+import { Loader } from "./Loader";
+import { LoaderUtils } from "./LoaderUtils";
+import { LoadingManager } from "./LoadingManager";
+import { MaterialLoader } from "./MaterialLoader";
 
 class ObjectLoader extends Loader {
 	constructor(manager) {

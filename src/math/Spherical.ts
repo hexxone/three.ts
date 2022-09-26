@@ -5,7 +5,7 @@
  * The azimuthal angle (theta) is measured from the positive z-axis.
  */
 
-import { MathUtils } from "..";
+import { MathUtils } from "./MathUtils";
 
 class Spherical {
 	radius: number;

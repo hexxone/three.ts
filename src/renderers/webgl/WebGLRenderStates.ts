@@ -1,11 +1,9 @@
-import {
-	Camera,
-	Light,
-	Object3D,
-	WebGLCapabilities,
-	WebGLExtensions,
-	WebGLLights,
-} from "../..";
+import { Camera } from "../../cameras/Camera";
+import { Object3D } from "../../core/Object3D";
+import { Light } from "../../lights/Light";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
+import { WebGLLights } from "./WebGLLights";
 
 /**
  * @public

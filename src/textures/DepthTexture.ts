@@ -1,11 +1,5 @@
-import { Texture } from "..";
-import {
-	NearestFilter,
-	UnsignedShortType,
-	UnsignedInt248Type,
-	DepthFormat,
-	DepthStencilFormat,
-} from "..";
+import { DepthFormat, DepthStencilFormat, NearestFilter, UnsignedInt248Type, UnsignedShortType } from "../constants";
+import { Texture } from "./Texture";
 
 /**
  * @public

@@ -1,35 +1,25 @@
-import {
-	FrontSide,
-	BackSide,
-	DoubleSide,
-	RGBAFormat,
-	NearestFilter,
-	LinearFilter,
-	PCFShadowMap,
-	VSMShadowMap,
-	RGBADepthPacking,
-	NoBlending,
-	BufferAttribute,
-	BufferGeometry,
-	Frustum,
-	Mesh,
-	MeshDepthMaterial,
-	MeshDistanceMaterial,
-	ShaderMaterial,
-	Vector2,
-	Vector4,
-	WebGLRenderer,
-	WebGLRenderTarget,
-	Camera,
-	Light,
-	Object3D,
-	LightShadow,
-	Material,
-	WebGLObjects,
-} from "../../";
 
+
+import { Camera } from "../../cameras/Camera";
+import { BackSide, DoubleSide, FrontSide, LinearFilter, NearestFilter, NoBlending, PCFShadowMap, RGBADepthPacking, RGBAFormat, VSMShadowMap } from "../../constants";
+import { BufferAttribute } from "../../core/BufferAttribute";
+import { BufferGeometry } from "../../core/BufferGeometry";
+import { Object3D } from "../../core/Object3D";
+import { Light } from "../../lights/Light";
+import { LightShadow } from "../../lights/LightShadow";
+import { Material } from "../../materials/Material";
+import { MeshDepthMaterial } from "../../materials/MeshDepthMaterial";
+import { MeshDistanceMaterial } from "../../materials/MeshDistanceMaterial";
+import { ShaderMaterial } from "../../materials/ShaderMaterial";
+import { Frustum } from "../../math/Frustum";
+import { Vector2 } from "../../math/Vector2";
+import { Vector4 } from "../../math/Vector4";
+import { Mesh } from "../../objects/Mesh";
 import vsm_frag from "../shaders/ShaderLib/vsm_frag.glsl";
 import vsm_vert from "../shaders/ShaderLib/vsm_vert.glsl";
+import { WebGLRenderer } from "../WebGLRenderer";
+import { WebGLRenderTarget } from "../WebGLRenderTarget";
+import { WebGLObjects } from "./WebGLObjects";
 
 class WebGLShadowMap {
 	_renderer: WebGLRenderer;

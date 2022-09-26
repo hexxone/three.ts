@@ -1,16 +1,14 @@
-import {
-	AnyTypedArray,
-	Camera,
-	Cylindrical,
-	Matrix3,
-	Matrix4,
-	Spherical,
-	BufferAttribute,
-	InterleavedBufferAttribute,
-} from "..";
-import { Euler } from "..";
-import { MathUtils } from "..";
-import { Quaternion } from "..";
+import { Camera } from "../cameras/Camera";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { AnyTypedArray } from "../utils";
+import { Cylindrical } from "./Cylindrical";
+import { Euler } from "./Euler";
+import { MathUtils } from "./MathUtils";
+import { Matrix3 } from "./Matrix3";
+import { Matrix4 } from "./Matrix4";
+import { Quaternion } from "./Quaternion";
+import { Spherical } from "./Spherical";
 
 /**
  * @public

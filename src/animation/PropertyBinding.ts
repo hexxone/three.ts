@@ -1,6 +1,6 @@
 // eslint-disable no-invalid-this
 
-import { Object3D } from "../core";
+import { Object3D } from "../core/Object3D";
 import { AnimationObjectGroup } from "./AnimationObjectGroup";
 
 // Characters [].:/ are reserved for track binding syntax.

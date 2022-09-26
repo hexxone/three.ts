@@ -1,6 +1,7 @@
-import { Matrix4, Plane } from "..";
-import { Box3 } from "..";
-import { Vector3 } from "..";
+import { Box3 } from "./Box3";
+import { Matrix4 } from "./Matrix4";
+import { Plane } from "./Plane";
+import { Vector3 } from "./Vector3";
 
 const _box = /* @__PURE__*/ new Box3();
 

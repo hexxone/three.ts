@@ -1,15 +1,13 @@
-import {
-	BufferGeometry,
-	Float32BufferAttribute,
-	Material,
-	LineBasicMaterial,
-	Matrix4,
-	Object3D,
-	Ray,
-	Raycaster,
-	Sphere,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { Raycaster } from "../core/Raycaster";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Material } from "../materials/Material";
+import { Matrix4 } from "../math/Matrix4";
+import { Ray } from "../math/Ray";
+import { Sphere } from "../math/Sphere";
+import { Vector3 } from "../math/Vector3";
 
 const _start = new Vector3();
 const _end = new Vector3();

@@ -1,13 +1,9 @@
-import {
-	InterpolateLinear,
-	InterpolateSmooth,
-	InterpolateDiscrete,
-	AnimationUtils,
-	CubicInterpolant,
-	DiscreteInterpolant,
-	LinearInterpolant,
-	Interpolant,
-} from "..";
+import { InterpolateDiscrete, InterpolateLinear, InterpolateSmooth } from "../constants";
+import { Interpolant } from "../math/Interpolant";
+import { CubicInterpolant } from "../math/interpolants/CubicInterpolant";
+import { DiscreteInterpolant } from "../math/interpolants/DiscreteInterpolant";
+import { LinearInterpolant } from "../math/interpolants/LinearInterpolant";
+import { AnimationUtils } from "./AnimationUtils";
 
 // TODO typing
 class KeyframeTrack {

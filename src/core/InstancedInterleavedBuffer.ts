@@ -1,4 +1,4 @@
-import { InterleavedBuffer } from "..";
+import { InterleavedBuffer } from "./InterleavedBuffer";
 
 class InstancedInterleavedBuffer extends InterleavedBuffer {
 	meshPerAttribute: number;

@@ -1,9 +1,3 @@
-import {
-	ZeroCurvatureEnding,
-	Interpolant,
-	WrapAroundEnding,
-	ZeroSlopeEnding,
-} from "../..";
 
 /**
  * Fast and simple cubic spline interpolant.
@@ -12,6 +6,9 @@ import {
  * at each sample position to the linear slope between neighboring positions
  * over their parameter interval.
  */
+
+import { WrapAroundEnding, ZeroCurvatureEnding, ZeroSlopeEnding } from "../../constants";
+import { Interpolant } from "../Interpolant";
 
 class CubicInterpolant extends Interpolant {
 	_weightPrev: number = -0;

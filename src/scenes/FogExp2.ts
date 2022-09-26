@@ -1,5 +1,5 @@
-import { Color } from "..";
-import { TFog } from "..";
+import { Color } from "../math/Color";
+import { TFog } from "./TFog";
 
 /**
  * @public

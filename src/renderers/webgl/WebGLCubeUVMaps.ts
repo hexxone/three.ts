@@ -1,12 +1,7 @@
-import {
-	CubeReflectionMapping,
-	CubeRefractionMapping,
-	EquirectangularReflectionMapping,
-	EquirectangularRefractionMapping,
-	PMREMGenerator,
-	WebGLRenderer,
-} from "../../";
-import { Texture } from "../../textures";
+import { CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping } from "../../constants";
+import { PMREMGenerator } from "../../extras/PMREMGenerator";
+import { Texture } from "../../textures/Texture";
+import { WebGLRenderer } from "../WebGLRenderer";
 
 /**
  * @public

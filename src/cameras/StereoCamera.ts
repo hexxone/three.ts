@@ -1,4 +1,6 @@
-import { MathUtils, Matrix4, PerspectiveCamera } from "..";
+import { MathUtils } from "../math/MathUtils";
+import { Matrix4 } from "../math/Matrix4";
+import { PerspectiveCamera } from "./PerspectiveCamera";
 
 const _eyeRight = new Matrix4();
 const _eyeLeft = new Matrix4();

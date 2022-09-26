@@ -1,4 +1,6 @@
-import { Color, Matrix3, Vector2 } from "../../";
+import { Color } from "../../math/Color";
+import { Matrix3 } from "../../math/Matrix3";
+import { Vector2 } from "../../math/Vector2";
 
 /**
  * Uniforms library for shared webgl shaders

@@ -1,4 +1,4 @@
-import { PerspectiveCamera } from "..";
+import { PerspectiveCamera } from "./PerspectiveCamera";
 
 class ArrayCamera extends PerspectiveCamera {
 	cameras: any;

@@ -1,4 +1,8 @@
-import { MathUtils, PerspectiveCamera, Light, LightShadow } from "..";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { MathUtils } from "../math/MathUtils";
+import { Light } from "./Light";
+import { LightShadow } from "./LightShadow";
+
 
 class SpotLightShadow extends LightShadow {
 	focus: number;

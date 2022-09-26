@@ -1,4 +1,7 @@
-import { DefaultUp, Light, Object3D, DirectionalLightShadow } from "..";
+import { DefaultUp, Object3D } from "../core/Object3D";
+import { DirectionalLightShadow } from "./DirectionalLightShadow";
+import { Light } from "./Light";
+
 
 class DirectionalLight extends Light {
 	target: Object3D;

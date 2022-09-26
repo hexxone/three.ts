@@ -1,4 +1,5 @@
-import { Cache, Loader } from "..";
+import { Loader } from "./Loader";
+import { Cache } from "./Cache"
 
 const loading = {};
 

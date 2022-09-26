@@ -1,10 +1,8 @@
-import {
-	BufferGeometry,
-	Color,
-	Float32BufferAttribute,
-	LineBasicMaterial,
-	LineSegments,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Color } from "../math/Color";
+import { LineSegments } from "../objects/LineSegments";
 
 class PolarGridHelper extends LineSegments {
 	constructor(

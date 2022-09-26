@@ -1,9 +1,7 @@
-import {
-	Color,
-	BufferGeometry,
-	Float32BufferAttribute,
-	LineBasicMaterial,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Color } from "../math/Color";
 import { LineSegments } from "../objects/LineSegments";
 
 class GridHelper extends LineSegments {

@@ -1,13 +1,10 @@
-import {
-	BufferGeometry,
-	Object3D,
-	Uint16BufferAttribute,
-	Uint32BufferAttribute,
-	arrayMax,
-} from "../../";
-import { WebGLAttributes } from "..";
-import { WebGLBindingStates } from "..";
-import { WebGLInfo } from "..";
+import { Uint16BufferAttribute, Uint32BufferAttribute } from "../../core/BufferAttribute";
+import { BufferGeometry } from "../../core/BufferGeometry";
+import { Object3D } from "../../core/Object3D";
+import { arrayMax } from "../../utils";
+import { WebGLAttributes } from "./WebGLAttributes";
+import { WebGLBindingStates } from "./WebGLBindingStates";
+import { WebGLInfo } from "./WebGLInfo";
 
 /**
  * @public

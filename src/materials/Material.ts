@@ -1,21 +1,12 @@
-import {
-	AddEquation,
-	AlwaysStencilFunc,
-	Color,
-	EventDispatcher,
-	FrontSide,
-	KeepStencilOp,
-	LessEqualDepth,
-	MathUtils,
-	NormalBlending,
-	OneMinusSrcAlphaFactor,
-	Plane,
-	SrcAlphaFactor,
-	Texture,
-	Vector2,
-	WebGlProgramsParameters,
-	WebGLRenderer,
-} from "..";
+import { AddEquation, AlwaysStencilFunc, FrontSide, KeepStencilOp, LessEqualDepth, NormalBlending, OneMinusSrcAlphaFactor, SrcAlphaFactor } from "../constants";
+import { EventDispatcher } from "../core/EventDispatcher";
+import { Color } from "../math/Color";
+import { MathUtils } from "../math/MathUtils";
+import { Plane } from "../math/Plane";
+import { Vector2 } from "../math/Vector2";
+import { WebGlProgramsParameters } from "../renderers/webgl/WebGLPrograms";
+import { WebGLRenderer } from "../renderers/WebGLRenderer";
+import { Texture } from "../textures/Texture";
 
 let materialId = 0;
 

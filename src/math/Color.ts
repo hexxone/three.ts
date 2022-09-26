@@ -1,9 +1,7 @@
-import {
-	BufferAttribute,
-	HSL,
-	InterleavedBufferAttribute,
-	MathUtils,
-} from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { HSL } from "../core/BufferGeometry";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { MathUtils } from "./MathUtils";
 
 const _colorKeywords = {
 	aliceblue: 0xf0f8ff,

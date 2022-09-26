@@ -1,4 +1,8 @@
-import { Camera, Material, Matrix3, Plane, WebGLProperties } from "../../";
+import { Camera } from "../../cameras/Camera";
+import { Material } from "../../materials/Material";
+import { Matrix3 } from "../../math/Matrix3";
+import { Plane } from "../../math/Plane";
+import { WebGLProperties } from "./WebGLProperties";
 
 /**
  * @public

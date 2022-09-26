@@ -1,4 +1,4 @@
-import { Interpolant } from "..";
+import { Interpolant } from "../Interpolant";
 
 class LinearInterpolant extends Interpolant {
 	constructor(parameterPositions: Float32Array | number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer?: Float32Array) {

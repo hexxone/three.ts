@@ -1,4 +1,6 @@
-import { MathUtils, Matrix4, Vector3 } from "..";
+import { MathUtils } from "./MathUtils";
+import { Matrix4 } from "./Matrix4";
+import { Vector3 } from "./Vector3";
 
 const _startP = /* @__PURE__*/ new Vector3();
 const _startEnd = /* @__PURE__*/ new Vector3();

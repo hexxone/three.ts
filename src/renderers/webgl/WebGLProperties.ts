@@ -1,12 +1,11 @@
-import {
-	Fog,
-	ImmediateRenderObject,
-	IUniform,
-	Material,
-	Texture,
-	WebGLRenderTarget,
-	WebGLProgram,
-} from "../..";
+
+import { ImmediateRenderObject } from "../../extras/objects/ImmediateRenderObject";
+import { Material } from "../../materials/Material";
+import { Fog } from "../../scenes/Fog";
+import { Texture } from "../../textures/Texture";
+import { WebGLRenderTarget } from "../WebGLRenderTarget";
+import { WebGLProgram } from "./WebGLProgram";
+import { IUniform } from "./WebGLUniforms";
 
 type WebGLImmediateProperties = {
 	__webglTexture: GLESTexture;

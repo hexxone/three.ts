@@ -1,26 +1,22 @@
-import {
-	CubeTexture,
-	BackSide,
-	BoxGeometry,
-	Camera,
-	cloneUniforms,
-	Color,
-	CubeUVReflectionMapping,
-	FrontSide,
-	Mesh,
-	Object3D,
-	PlaneGeometry,
-	Scene,
-	ShaderLib,
-	ShaderMaterial,
-	WebGLRenderer,
-	WebGLCubeRenderTarget,
-	Texture,
-	WebGLCubeMaps,
-	WebGLObjects,
-	WebGLRenderList,
-	WebGLState,
-} from "../../";
+import { Camera } from "../../cameras/Camera";
+import { BackSide, CubeUVReflectionMapping, FrontSide } from "../../constants";
+import { Object3D } from "../../core/Object3D";
+import { BoxGeometry } from "../../geometries/BoxGeometry";
+import { PlaneGeometry } from "../../geometries/PlaneGeometry";
+import { ShaderMaterial } from "../../materials/ShaderMaterial";
+import { Color } from "../../math/Color";
+import { Mesh } from "../../objects/Mesh";
+import { Scene } from "../../scenes/Scene";
+import { CubeTexture } from "../../textures/CubeTexture";
+import { Texture } from "../../textures/Texture";
+import { ShaderLib } from "../shaders/ShaderLib";
+import { cloneUniforms } from "../shaders/UniformsUtils";
+import { WebGLCubeRenderTarget } from "../WebGLCubeRenderTarget";
+import { WebGLRenderer } from "../WebGLRenderer";
+import { WebGLCubeMaps } from "./WebGLCubeMaps";
+import { WebGLObjects } from "./WebGLObjects";
+import { WebGLRenderList } from "./WebGLRenderLists";
+import { WebGLState } from "./WebGLState";
 
 class WebGLBackground {
 	_renderer: WebGLRenderer;

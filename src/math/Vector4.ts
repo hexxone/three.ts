@@ -1,4 +1,5 @@
-import { BufferAttribute, InterleavedBufferAttribute } from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
 
 /**
  * @public

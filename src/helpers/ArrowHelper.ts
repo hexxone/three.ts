@@ -1,15 +1,14 @@
-import {
-	BufferGeometry,
-	Color,
-	CylinderGeometry,
-	Float32BufferAttribute,
-	Line,
-	LineBasicMaterial,
-	Mesh,
-	MeshBasicMaterial,
-	Object3D,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { CylinderGeometry } from "../geometries/CylinderGeometry";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { Color } from "../math/Color";
+import { Vector3 } from "../math/Vector3";
+import { Line } from "../objects/Line";
+import { Mesh } from "../objects/Mesh";
+
 
 const _axis = /* @__PURE__*/ new Vector3();
 let _lineGeometry;

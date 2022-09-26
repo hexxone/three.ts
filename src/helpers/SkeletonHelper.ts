@@ -1,13 +1,11 @@
-import {
-	Object3D,
-	BufferGeometry,
-	Color,
-	Float32BufferAttribute,
-	LineBasicMaterial,
-	LineSegments,
-	Matrix4,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Object3D } from "../core/Object3D";
+import { LineBasicMaterial } from "../materials/LineBasicMaterial";
+import { Color } from "../math/Color";
+import { Vector3 } from "../math/Vector3";
+import { Matrix4 } from "../math/Matrix4";
+import { LineSegments } from "../objects/LineSegments";
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _boneMatrix = /* @__PURE__*/ new Matrix4();

@@ -1,4 +1,6 @@
-import { CubeTexture, ImageLoader, Loader } from "..";
+import { CubeTexture } from "../textures/CubeTexture";
+import { ImageLoader } from "./ImageLoader";
+import { Loader } from "./Loader";
 
 class CubeTextureLoader extends Loader {
 	constructor(manager) {

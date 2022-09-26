@@ -1,22 +1,21 @@
-import {
-	LineCurve,
-	SplineCurve,
-	CatmullRomCurve3,
-	CubicBezierCurve,
-	QuadraticBezierCurve,
-	LineCurve3,
-	QuadraticBezierCurve3,
-	CubicBezierCurve3,
-	ArcCurve,
-	EllipseCurve,
-	Curve,
-	Vector2,
-} from "../..";
 
 /** ************************************************************
  *	Curved Path - a curve path is simply a array of connected
  *  curves, but retains the api of a curve
  **************************************************************/
+
+import { Vector2 } from "../../math/Vector2";
+import { ArcCurve } from "../curves/ArcCurve";
+import { CatmullRomCurve3 } from "../curves/CatmullRomCurve3";
+import { CubicBezierCurve } from "../curves/CubicBezierCurve";
+import { CubicBezierCurve3 } from "../curves/CubicBezierCurve3";
+import { EllipseCurve } from "../curves/EllipseCurve";
+import { LineCurve } from "../curves/LineCurve";
+import { LineCurve3 } from "../curves/LineCurve3";
+import { QuadraticBezierCurve } from "../curves/QuadraticBezierCurve";
+import { QuadraticBezierCurve3 } from "../curves/QuadraticBezierCurve3";
+import { SplineCurve } from "../curves/SplineCurve";
+import { Curve } from "./Curve";
 
 class CurvePath extends Curve {
 	curves: Curve[];

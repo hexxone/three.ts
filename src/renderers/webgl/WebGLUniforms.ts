@@ -1,5 +1,16 @@
 // eslint-disable no-invalid-this
 
+import { Color } from "../../math/Color";
+import { Matrix3 } from "../../math/Matrix3";
+import { Matrix4 } from "../../math/Matrix4";
+import { Vector3 } from "../../math/Vector3";
+import { Vector4 } from "../../math/Vector4";
+import { CubeTexture } from "../../textures/CubeTexture";
+import { DataTexture2DArray } from "../../textures/DataTexture2DArray";
+import { DataTexture3D } from "../../textures/DataTexture3D";
+import { Texture } from "../../textures/Texture";
+import { WebGLTextures } from "./WebGLTextures";
+
 /**
  * Uniforms of a program.
  * Those form a tree structure with a special top-level container for the root,
@@ -42,19 +53,6 @@
  * 		like .set for an optional property of the object
  *
  */
-
-import {
-	CubeTexture,
-	DataTexture2DArray,
-	DataTexture3D,
-	Texture,
-	Color,
-	Matrix3,
-	Matrix4,
-	Vector3,
-	Vector4,
-	WebGLTextures,
-} from "../../";
 
 const emptyTexture = new Texture();
 const emptyTexture2dArray = new DataTexture2DArray();

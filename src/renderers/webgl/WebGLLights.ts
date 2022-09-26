@@ -1,16 +1,13 @@
-import {
-	Color,
-	Light,
-	LightProbe,
-	Matrix4,
-	Texture,
-	UniformsLib,
-	Vector2,
-	Vector3,
-} from "../../";
-
-import { WebGLCapabilities } from "..";
-import { WebGLExtensions } from "..";
+import { Light } from "../../lights/Light";
+import { LightProbe } from "../../lights/LightProbe";
+import { Color } from "../../math/Color";
+import { Matrix4 } from "../../math/Matrix4";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
+import { Texture } from "../../textures/Texture";
+import { UniformsLib } from "../shaders/UniformsLib";
+import { WebGLCapabilities } from "./WebGLCapabilities";
+import { WebGLExtensions } from "./WebGLExtensions";
 
 /**
  * @public

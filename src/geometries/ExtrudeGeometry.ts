@@ -20,14 +20,12 @@
  * }
  */
 
-import {
-	BufferGeometry,
-	Float32BufferAttribute,
-	Shape,
-	ShapeUtils,
-	Vector2,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Shape } from "../extras/core/Shape";
+import { ShapeUtils } from "../extras/ShapeUtils";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
 
 class ExtrudeGeometry extends BufferGeometry {
 	constructor(shapes?: Shape[], options = {} as any) {

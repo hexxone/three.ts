@@ -1,34 +1,19 @@
-import {
-	WebGLRenderer,
-	CubeUVReflectionMapping,
-	GammaEncoding,
-	LinearEncoding,
-	NoToneMapping,
-	NearestFilter,
-	NoBlending,
-	RGBDEncoding,
-	RGBEEncoding,
-	RGBEFormat,
-	RGBM16Encoding,
-	RGBM7Encoding,
-	UnsignedByteType,
-	sRGBEncoding,
-	BackSide,
-	BoxBufferGeometry,
-	BufferAttribute,
-	BufferGeometry,
-	Color,
-	Mesh,
-	MeshBasicMaterial,
-	OrthographicCamera,
-	PerspectiveCamera,
-	RawShaderMaterial,
-	Scene,
-	Vector2,
-	Vector3,
-	WebGLRenderTarget,
-	Material,
-} from "..";
+import { OrthographicCamera } from "../cameras/OrthographicCamera";
+import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
+import { BackSide, CubeUVReflectionMapping, GammaEncoding, LinearEncoding, NearestFilter, NoBlending, NoToneMapping, RGBDEncoding, RGBEEncoding, RGBEFormat, RGBM16Encoding, RGBM7Encoding, sRGBEncoding, UnsignedByteType } from "../constants";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { BoxBufferGeometry } from "../geometries/BoxGeometry";
+import { Material } from "../materials";
+import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
+import { RawShaderMaterial } from "../materials/RawShaderMaterial";
+import { Color } from "../math/Color";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
+import { Mesh } from "../objects/Mesh";
+import { WebGLRenderer } from "../renderers/WebGLRenderer";
+import { WebGLRenderTarget } from "../renderers/WebGLRenderTarget";
+import { Scene } from "../scenes/Scene";
 
 const LOD_MIN = 4;
 const LOD_MAX = 8;

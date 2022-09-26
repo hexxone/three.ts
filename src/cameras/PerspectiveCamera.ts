@@ -1,4 +1,6 @@
-import { MathUtils, Vector4, Camera } from "..";
+import { MathUtils } from "../math/MathUtils";
+import { Vector4 } from "../math/Vector4";
+import { Camera } from "./Camera";
 
 export class PerspectiveCamera extends Camera {
 	fov: number;

@@ -3,7 +3,9 @@
  * based on the brilliant article by @prideout https://prideout.net/blog/old/blog/index.html@p=44.html
  */
 
-import { BufferGeometry, Float32BufferAttribute, Vector3 } from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { Vector3 } from "../math/Vector3";
 
 const DefaultFunc = (u, v, target) =>
 	target.set(u, v, Math.cos(u) * Math.sin(v));

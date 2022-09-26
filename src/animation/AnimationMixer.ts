@@ -1,13 +1,11 @@
-import {
-	AnimationAction,
-	AnimationClip,
-	EventDispatcher,
-	LinearInterpolant,
-	NormalAnimationBlendMode,
-	PropertyBinding,
-	PropertyMixer,
-} from "..";
+import { NormalAnimationBlendMode } from "../constants";
+import { EventDispatcher } from "../core/EventDispatcher";
+import { LinearInterpolant } from "../math/interpolants/LinearInterpolant";
 
+import { AnimationAction } from "./AnimationAction";
+import { AnimationClip } from "./AnimationClip";
+import { PropertyBinding } from "./PropertyBinding";
+import { PropertyMixer } from "./PropertyMixer";
 
 /**
  * @public

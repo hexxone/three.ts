@@ -1,10 +1,8 @@
-import {
-	BufferGeometry,
-	Float32BufferAttribute,
-	MathUtils,
-	Vector2,
-	Vector3,
-} from "..";
+import { Float32BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
+import { MathUtils } from "../math/MathUtils";
+import { Vector2 } from "../math/Vector2";
+import { Vector3 } from "../math/Vector3";
 
 class LatheGeometry extends BufferGeometry {
 	constructor(points, segments = 12, phiStart = 0, phiLength = Math.PI * 2) {

@@ -1,36 +1,10 @@
-import {
-	ShaderChunk,
-	NoToneMapping,
-	AddOperation,
-	MixOperation,
-	MultiplyOperation,
-	CubeRefractionMapping,
-	CubeUVRefractionMapping,
-	CubeUVReflectionMapping,
-	CubeReflectionMapping,
-	PCFSoftShadowMap,
-	PCFShadowMap,
-	VSMShadowMap,
-	ACESFilmicToneMapping,
-	CineonToneMapping,
-	CustomToneMapping,
-	ReinhardToneMapping,
-	LinearToneMapping,
-	GammaEncoding,
-	RGBDEncoding,
-	RGBM16Encoding,
-	RGBM7Encoding,
-	RGBEEncoding,
-	sRGBEncoding,
-	LinearEncoding,
-	LogLuvEncoding,
-	GLSL3,
-	WebGLRenderer,
-	WebGLBindingStates,
-	WebGlProgramsParameters,
-	WebGLUniforms,
-} from "../../";
+import { ACESFilmicToneMapping, AddOperation, CineonToneMapping, CubeReflectionMapping, CubeRefractionMapping, CubeUVReflectionMapping, CubeUVRefractionMapping, CustomToneMapping, GammaEncoding, GLSL3, LinearEncoding, LinearToneMapping, LogLuvEncoding, MixOperation, MultiplyOperation, NoToneMapping, PCFShadowMap, PCFSoftShadowMap, ReinhardToneMapping, RGBDEncoding, RGBEEncoding, RGBM16Encoding, RGBM7Encoding, sRGBEncoding, VSMShadowMap } from "../../constants";
+import { ShaderChunk } from "../shaders/ShaderChunk";
+import { WebGLRenderer } from "../WebGLRenderer";
+import { WebGLBindingStates } from "./WebGLBindingStates";
+import { WebGlProgramsParameters } from "./WebGLPrograms";
 import { webGLShader } from "./WebGLShader";
+import { WebGLUniforms } from "./WebGLUniforms";
 
 let programIdCount = 0;
 

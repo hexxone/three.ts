@@ -1,4 +1,3 @@
-import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "..";
 
 /**
  * parameters = {
@@ -30,6 +29,12 @@ import { Vector2, Color, MathUtils, MeshStandardMaterial, Texture } from "..";
  *  specularTintMap: new Texture( <Image> )
  * }
  */
+
+import { Color } from "../math/Color";
+import { MathUtils } from "../math/MathUtils";
+import { Vector2 } from "../math/Vector2";
+import { Texture } from "../textures/Texture";
+import { MeshStandardMaterial } from "./MeshStandardMaterial";
 
 /**
  * @public

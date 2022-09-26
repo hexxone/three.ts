@@ -1,4 +1,5 @@
-import { Curve, Vector2 } from "../../";
+import { Vector2 } from "../../math/Vector2";
+import { Curve } from "../core/Curve";
 
 class EllipseCurve extends Curve {
 	aX: number;

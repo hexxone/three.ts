@@ -1,7 +1,8 @@
-import { InstancedMesh, Object3D } from "../../";
-import { WebGLAttributes } from "..";
-import { WebGLGeometries } from "..";
-import { WebGLInfo } from "..";
+import { Object3D } from "../../core/Object3D";
+import { InstancedMesh } from "../../objects/InstancedMesh";
+import { WebGLAttributes } from "./WebGLAttributes";
+import { WebGLGeometries } from "./WebGLGeometries";
+import { WebGLInfo } from "./WebGLInfo";
 
 /**
  * @public

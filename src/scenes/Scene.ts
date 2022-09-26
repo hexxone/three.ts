@@ -1,12 +1,10 @@
-import {
-	Material,
-	Object3D,
-	WebGLRenderTarget,
-	Texture,
-	Color,
-	TFog,
-	ensureInit,
-} from "..";
+import { ensureInit } from "../ensureInit";
+import { Object3D } from "../core/Object3D";
+import { Material } from "../materials/Material";
+import { Color } from "../math/Color";
+import { WebGLRenderTarget } from "../renderers/WebGLRenderTarget";
+import { Texture } from "../textures/Texture";
+import { TFog } from "./TFog";
 
 /**
  * @public

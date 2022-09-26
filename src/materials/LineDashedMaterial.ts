@@ -1,4 +1,3 @@
-import { LineBasicMaterial } from "..";
 
 /**
  * parameters = {
@@ -12,6 +11,8 @@ import { LineBasicMaterial } from "..";
  *  gapSize: <float>
  * }
  */
+
+import { LineBasicMaterial } from "./LineBasicMaterial";
 
 class LineDashedMaterial extends LineBasicMaterial {
 	constructor() {

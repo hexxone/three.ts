@@ -1,11 +1,9 @@
-import {
-	BufferAttribute,
-	InterleavedBufferAttribute,
-	Matrix4,
-	Vector3,
-} from "..";
-import { Euler } from "..";
-import { MathUtils } from "..";
+import { BufferAttribute } from "../core/BufferAttribute";
+import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
+import { Euler } from "./Euler";
+import { MathUtils } from "./MathUtils";
+import { Matrix4 } from "./Matrix4";
+import { Vector3 } from "./Vector3";
 
 /**
  * @public

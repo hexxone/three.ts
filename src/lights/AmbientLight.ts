@@ -1,4 +1,4 @@
-import { Light } from "..";
+import { Light } from "./Light";
 
 export class AmbientLight extends Light {
 	constructor(color, intensity) {

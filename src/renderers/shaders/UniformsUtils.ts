@@ -2,16 +2,15 @@
  * Uniform Utilities
  */
 
-import {
-	Color,
-	IUniformType,
-	Matrix3,
-	Matrix4,
-	Quaternion,
-	Vector2,
-	Vector3,
-	Vector4,
-} from "../../";
+import { IUniformType } from "../../materials/ShaderMaterial";
+import { Color } from "../../math/Color";
+import { Matrix3 } from "../../math/Matrix3";
+import { Matrix4 } from "../../math/Matrix4";
+import { Quaternion } from "../../math/Quaternion";
+import { Vector2 } from "../../math/Vector2";
+import { Vector3 } from "../../math/Vector3";
+import { Vector4 } from "../../math/Vector4";
+
 
 export function cloneUniforms(src: IUniformType) {
 	const dst: IUniformType = {};

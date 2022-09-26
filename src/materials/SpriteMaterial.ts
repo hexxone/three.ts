@@ -1,4 +1,3 @@
-import { Color, Material } from "..";
 
 /**
  * parameters = {
@@ -9,6 +8,9 @@ import { Color, Material } from "..";
  *  sizeAttenuation: <bool>
  * }
  */
+
+import { Color } from "../math/Color";
+import { Material } from "./Material";
 
 class SpriteMaterial extends Material {
 	constructor() {

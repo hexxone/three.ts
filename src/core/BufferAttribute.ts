@@ -48,7 +48,7 @@ class BufferAttribute {
 		this.version = 0;
 	}
 
-	set needsUpdate(value) {
+	set needsUpdate(value: boolean) {
 		if (value === true) this.version++;
 	}
 

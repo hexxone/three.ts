@@ -216,7 +216,7 @@ export class WebGLRenderer implements Renderer {
 	 * PUBLIC
 	 */
 
-	domElement: HTMLCanvasElement | OffscreenCanvas;
+	domElement: (HTMLCanvasElement | OffscreenCanvas);
 
 	/**
 	 * Enables error checking and reporting when shader programs are being compiled
@@ -2057,7 +2057,7 @@ export class WebGLRenderer implements Renderer {
 		this.state.unbindTexture();
 	}
 
-	copyTextureToTexture(position, srcTexture: Texture, dstTexture, level = 0) {
+	copyTextureToTexture(position: Vector3, srcTexture: Texture, dstTexture, level = 0) {
 		const width = srcTexture.image.width;
 		const height = srcTexture.image.height;
 		const glFormat = this.utils.convert(dstTexture.format);

@@ -1,12 +1,15 @@
 
 import { ImmediateRenderObject } from "../../extras/objects/ImmediateRenderObject";
 import { Material } from "../../materials/Material";
-import { Fog } from "../../scenes/Fog";
+import { TFog } from "../../scenes/TFog";
 import { Texture } from "../../textures/Texture";
 import { WebGLRenderTarget } from "../WebGLRenderTarget";
 import { WebGLProgram } from "./WebGLProgram";
 import { IUniform } from "./WebGLUniforms";
 
+/**
+ * @public
+ */
 type WebGLImmediateProperties = {
 	__webglTexture: GLESTexture;
 	__webglFramebuffer: GLESFramebuffer;
@@ -18,12 +21,15 @@ type WebGLImmediateProperties = {
 	color: GLESBuffer;
 };
 
+/**
+ * @public
+ */
 type WebGLMaterialProperies = {
 	__version: number;
 
 	program: WebGLProgram;
 	environment: Texture;
-	fog: Fog;
+	fog: TFog;
 	envMap: Texture;
 	lightsStateVersion: number;
 	uniforms: any;
@@ -36,6 +42,9 @@ type WebGLMaterialProperies = {
 	clippingState: Float32Array;
 };
 
+/**
+ * @public
+ */
 type WebGLTextureProperies = {
 	__webglInit: boolean;
 	__webglTexture: GLESTexture;
@@ -43,6 +52,9 @@ type WebGLTextureProperies = {
 	__currentAnisotropy: number;
 };
 
+/**
+ * @public
+ */
 type WebGLTargetProperies = {
 	__webglFramebuffer: GLESFramebuffer;
 	__webglDepthbuffer: GLESFramebuffer;
@@ -52,8 +64,14 @@ type WebGLTargetProperies = {
 };
 
 
+/**
+ * @public
+ */
 export type AllGLTypeProperties = WebGLImmediateProperties & WebGLMaterialProperies & WebGLTextureProperies & WebGLTargetProperies;
 
+/**
+ * @public
+ */
 export class WebGLProperties {
 	properties = new WeakMap();
 

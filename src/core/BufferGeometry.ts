@@ -146,7 +146,7 @@ export class BufferGeometry extends EventDispatcher {
 		return this.index;
 	}
 
-	setIndex(index) {
+	setIndex(index: number[] | BufferAttribute) {
 		if (Array.isArray(index)) {
 			this.index = new (
 				arrayMax(index) > 65535 ? Uint32BufferAttribute : Uint16BufferAttribute

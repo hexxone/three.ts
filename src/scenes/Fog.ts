@@ -11,7 +11,7 @@ class Fog extends TFog {
 		super();
 
 		this.name = "";
-		this.color = new Color(color);
+		this.color = color;
 
 		this.near = near !== undefined ? near : 1;
 		this.far = far !== undefined ? far : 1000;

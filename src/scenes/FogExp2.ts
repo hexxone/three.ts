@@ -7,11 +7,11 @@ import { TFog } from "./TFog";
 class FogExp2 extends TFog {
 	isFogExp2 = true;
 
-	constructor(color, density) {
+	constructor(color: Color, density) {
 		super();
 		this.name = "";
 
-		this.color = new Color(color);
+		this.color = color;
 		this.density = density !== undefined ? density : 0.00025;
 	}
 

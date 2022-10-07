@@ -31,22 +31,22 @@ class SphereGeometry extends BufferGeometry {
 		const thetaEnd = Math.min(thetaStart + thetaLength, Math.PI);
 
 		let index = 0;
-		const grid = [];
+		const grid: number[][] = [];
 
 		const vertex = new Vector3();
 		const normal = new Vector3();
 
 		// buffers
 
-		const indices = [];
-		const vertices = [];
-		const normals = [];
-		const uvs = [];
+		const indices: number[] = [];
+		const vertices: number[] = [];
+		const normals: number[] = [];
+		const uvs: number[] = [];
 
 		// generate vertices, normals and uvs
 
 		for (let iy = 0; iy <= heightSegments; iy++) {
-			const verticesRow = [];
+			const verticesRow: number[] = [];
 
 			const v = iy / heightSegments;
 
@@ -116,4 +116,4 @@ class SphereGeometry extends BufferGeometry {
 	}
 }
 
-export { SphereGeometry, SphereGeometry as SphereBufferGeometry };
+export { SphereGeometry };

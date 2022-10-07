@@ -257,7 +257,7 @@ class Quaternion {
 		return this;
 	}
 
-	setFromAxisAngle(axis: Vector3, angle) {
+	setFromAxisAngle(axis: Vector3, angle: number) {
 		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
 
 		// assumes axis is normalized

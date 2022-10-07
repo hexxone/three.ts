@@ -182,7 +182,7 @@ export class Object3D extends EventDispatcher {
 		this.quaternion.copy(q);
 	}
 
-	rotateOnAxis(axis, angle) {
+	rotateOnAxis(axis: Vector3, angle) {
 		// rotate object on axis in object space
 		// axis is assumed to be normalized
 
@@ -240,7 +240,7 @@ export class Object3D extends EventDispatcher {
 		return this.translateOnAxis(_zAxis, distance);
 	}
 
-	localToWorld(vector) {
+	localToWorld(vector: Vector3) {
 		return vector.applyMatrix4(this.matrixWorld);
 	}
 

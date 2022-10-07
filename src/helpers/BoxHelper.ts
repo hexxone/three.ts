@@ -1,3 +1,4 @@
+import { Object3D } from "../core/Object3D";
 import { BufferAttribute } from "../core/BufferAttribute";
 import { BufferGeometry } from "../core/BufferGeometry";
 import { LineBasicMaterial } from "../materials/LineBasicMaterial";
@@ -8,9 +9,9 @@ import { LineSegments } from "../objects/LineSegments";
 const _box = /* @__PURE__*/ new Box3();
 
 class BoxHelper extends LineSegments {
-	object: any;
+	object: Object3D;
 
-	constructor(object, color = 0xffff00) {
+	constructor(object: Object3D, color = 0xffff00) {
 		const indices = new Uint16Array([
 			0, 1, 1, 2, 2, 3, 3, 0, 4, 5, 5, 6, 6, 7, 7, 4, 0, 4, 1, 5, 2, 6, 3, 7,
 		]);

@@ -1,3 +1,4 @@
+import { Vector3 } from "../../math/Vector3";
 import { Vector2 } from "../../math/Vector2";
 import { CubicBezierCurve } from "../curves/CubicBezierCurve";
 import { EllipseCurve } from "../curves/EllipseCurve";
@@ -9,7 +10,7 @@ import { CurvePath } from "./CurvePath";
 class Path extends CurvePath {
 	currentPoint: Vector2;
 
-	constructor(points?: Vector2[]) {
+	constructor(points?: (Vector2 | Vector3)[]) {
 		super();
 		this.type = "Path";
 
@@ -20,7 +21,7 @@ class Path extends CurvePath {
 		}
 	}
 
-	setFromPoints(points: Vector2[]) {
+	setFromPoints(points: (Vector2 | Vector3)[]) {
 		this.moveTo(points[0].x, points[0].y);
 
 		for (let i = 1, l = points.length; i < l; i++) {

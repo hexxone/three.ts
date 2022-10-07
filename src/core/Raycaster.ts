@@ -1,4 +1,5 @@
 import { Camera } from "../cameras/Camera";
+import { Vector2 } from "../math";
 import { Ray } from "../math/Ray";
 import { Vector3 } from "../math/Vector3";
 import { Mesh } from "../objects/Mesh";
@@ -47,7 +48,7 @@ class Raycaster {
 		Sprite: {};
 	};
 
-	constructor(origin: Vector3, direction, near = 0, far = Infinity) {
+	constructor(origin?: Vector3, direction?, near = 0, far = Infinity) {
 		this.ray = new Ray(origin, direction);
 		// direction is assumed to be normalized (for accurate distance calculations)
 
@@ -71,7 +72,7 @@ class Raycaster {
 		this.ray.set(origin, direction);
 	}
 
-	setFromCamera(coords: Vector3, camera: Camera) {
+	setFromCamera(coords: Vector2, camera: Camera) {
 		if (camera && camera.isPerspectiveCamera) {
 			this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
 			this.ray.direction

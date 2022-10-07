@@ -201,13 +201,13 @@ class Euler {
 		return this;
 	}
 
-	setFromQuaternion(q: Quaternion, order, update?) {
+	setFromQuaternion(q: Quaternion, order?, update?) {
 		_matrix.makeRotationFromQuaternion(q);
 
 		return this.setFromRotationMatrix(_matrix, order, update);
 	}
 
-	setFromVector3(v: Vector3, order) {
+	setFromVector3(v: Vector3, order?) {
 		return this.set(v.x, v.y, v.z, order || this._order);
 	}
 

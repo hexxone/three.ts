@@ -50,7 +50,7 @@ class PolyhedronGeometry extends BufferGeometry {
 
 		// helper functions
 
-		function subdivide(detail) {
+		function subdivide(detail: number) {
 			const a = new Vector3();
 			const b = new Vector3();
 			const c = new Vector3();
@@ -70,7 +70,7 @@ class PolyhedronGeometry extends BufferGeometry {
 			}
 		}
 
-		function subdivideFace(a, b, c, detail) {
+		function subdivideFace(a: Vector3, b: Vector3, c: Vector3, detail: number) {
 			const cols = detail + 1;
 
 			// we use this multidimensional array as a data structure for creating the subdivision

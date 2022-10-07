@@ -5,6 +5,7 @@ import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
 import { Quaternion } from "../math/Quaternion";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "../objects/IIntersection";
 import { Skeleton } from "../objects/Skeleton";
 import { BufferAttribute } from "./BufferAttribute";
 import { BufferGeometry } from "./BufferGeometry";
@@ -428,7 +429,7 @@ export class Object3D extends EventDispatcher {
 		return target.set(e[8], e[9], e[10]).normalize();
 	}
 
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		// TODO fix impl arguments
 	}
 

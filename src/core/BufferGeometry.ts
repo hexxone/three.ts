@@ -104,7 +104,10 @@ export class BufferGeometry extends EventDispatcher {
 		[name: string]: BufferAttribute;
 	};
 
-	morphAttributes: any;
+	morphAttributes: {
+		[name: string]: BufferAttribute[];
+	};
+
 	morphTargetsRelative: boolean;
 
 	groups: BufferGroup[] = [];

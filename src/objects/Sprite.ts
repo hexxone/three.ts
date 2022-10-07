@@ -8,6 +8,7 @@ import { Matrix4 } from "../math/Matrix4";
 import { Triangle } from "../math/Triangle";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "./IIntersection";
 
 let _geometry;
 
@@ -67,7 +68,7 @@ export class Sprite extends Object3D {
 		this.center = new Vector2(0.5, 0.5);
 	}
 
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		if (raycaster.camera === null) {
 			console.error(
 				'Sprite: "Raycaster.camera" needs to be set in order to raycast against sprites.'

@@ -2,6 +2,7 @@ import { Camera } from "../cameras/Camera";
 import { Object3D } from "../core/Object3D";
 import { Raycaster } from "../core/Raycaster";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "./IIntersection";
 
 const _v1 = /* @__PURE__*/ new Vector3();
 const _v2 = /* @__PURE__*/ new Vector3();
@@ -92,7 +93,7 @@ class LOD extends Object3D {
 		return null;
 	}
 
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		if (this.levels.length > 0) {
 			_v1.setFromMatrixPosition(this.matrixWorld);
 

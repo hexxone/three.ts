@@ -2,6 +2,7 @@ import { Camera } from "../cameras/Camera";
 import { Vector2 } from "../math";
 import { Ray } from "../math/Ray";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "../objects/IIntersection";
 import { Mesh } from "../objects/Mesh";
 import { Layers } from "./Layers";
 import { Object3D } from "./Object3D";
@@ -13,7 +14,7 @@ function ascSort(a, b) {
 function intersectObject(
 	object: Object3D,
 	raycaster: Raycaster,
-	intersects,
+	intersects: IIntersection[],
 	recursive: boolean
 ) {
 	if (object.layers.test(raycaster.layers)) {
@@ -96,7 +97,7 @@ class Raycaster {
 		}
 	}
 
-	intersectObject(object: Object3D, recursive = false, intersects = []) {
+	intersectObject(object: Object3D, recursive = false, intersects = []): IIntersection[] {
 		intersectObject(object, this, intersects, recursive);
 
 		intersects.sort(ascSort);
@@ -104,7 +105,7 @@ class Raycaster {
 		return intersects;
 	}
 
-	intersectObjects(objects: Object3D[], recursive = false, intersects = []) {
+	intersectObjects(objects: Object3D[], recursive = false, intersects = []): IIntersection[] {
 		for (let i = 0, l = objects.length; i < l; i++) {
 			intersectObject(objects[i], this, intersects, recursive);
 		}

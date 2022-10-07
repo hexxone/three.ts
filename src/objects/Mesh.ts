@@ -1,4 +1,5 @@
 import { BackSide, DoubleSide } from "../constants";
+import { BufferAttribute } from "../core/BufferAttribute";
 import { BufferGeometry } from "../core/BufferGeometry";
 import { Object3D } from "../core/Object3D";
 import { Raycaster } from "../core/Raycaster";
@@ -10,6 +11,7 @@ import { Sphere } from "../math/Sphere";
 import { Triangle } from "../math/Triangle";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "./IIntersection";
 
 const _inverseMatrix = new Matrix4();
 const _ray = new Ray();
@@ -33,6 +35,7 @@ const _uvC = new Vector2();
 
 const _intersectionPoint = new Vector3();
 const _intersectionPointWorld = new Vector3();
+
 
 /**
  * @public
@@ -104,7 +107,7 @@ export class Mesh extends Object3D {
 	 * @param args [0] = raycaster, [1] = intersects
 	 * @returns
 	 */
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		const geometry = this.geometry as BufferGeometry;
 		const material = this.material;
 		const matrixWorld = this.matrixWorld;
@@ -131,7 +134,7 @@ export class Mesh extends Object3D {
 			if (_ray.intersectsBox(geometry.boundingBox) === false) return;
 		}
 
-		let intersection;
+		let intersection: IIntersection;
 
 		if (geometry.isBufferGeometry) {
 			const index = geometry.index;
@@ -172,9 +175,9 @@ export class Mesh extends Object3D {
 								morphTargetsRelative,
 								uv,
 								uv2,
-								a,
-								b,
-								c
+								a as number,
+								b as number,
+								c as number
 							);
 
 							if (intersection) {
@@ -203,9 +206,9 @@ export class Mesh extends Object3D {
 							morphTargetsRelative,
 							uv,
 							uv2,
-							a,
-							b,
-							c
+							a as number,
+							b as number,
+							c as number
 						);
 
 						if (intersection) {
@@ -298,11 +301,11 @@ function checkIntersection(
 	material: Material,
 	raycaster: Raycaster,
 	ray: Ray,
-	pA,
-	pB,
-	pC,
-	point
-) {
+	pA: Vector3,
+	pB: Vector3,
+	pC: Vector3,
+	point: Vector3
+): IIntersection {
 	let intersect;
 
 	if (material.side === BackSide) {
@@ -340,15 +343,15 @@ function checkBufferGeometryIntersection(
 	object: Object3D,
 	material: Material,
 	raycaster: Raycaster,
-	ray,
-	position,
+	ray: Ray,
+	position: BufferAttribute,
 	morphPosition,
 	morphTargetsRelative,
-	uv,
-	uv2,
-	a,
-	b,
-	c
+	uv: BufferAttribute,
+	uv2: BufferAttribute,
+	a: number,
+	b: number,
+	c: number
 ) {
 	_vA.fromBufferAttribute(position, a);
 	_vB.fromBufferAttribute(position, b);

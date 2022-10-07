@@ -1,6 +1,7 @@
 import { BufferAttribute } from "../core/BufferAttribute";
 import { Raycaster } from "../core/Raycaster";
 import { Matrix4 } from "../math/Matrix4";
+import { IIntersection } from "./IIntersection";
 import { Mesh } from "./Mesh";
 
 const _instanceLocalMatrix = new Matrix4();
@@ -50,7 +51,7 @@ export class InstancedMesh extends Mesh {
 		matrix.fromArray(this.instanceMatrix.array, index * 16);
 	}
 
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		const matrixWorld = this.matrixWorld;
 		const raycastTimes = this.count;
 

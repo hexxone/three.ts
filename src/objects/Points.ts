@@ -6,6 +6,7 @@ import { Matrix4 } from "../math/Matrix4";
 import { Ray } from "../math/Ray";
 import { Sphere } from "../math/Sphere";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "./IIntersection";
 
 const _inverseMatrix = new Matrix4();
 const _ray = new Ray();
@@ -41,7 +42,7 @@ export class Points extends Object3D {
 		return this;
 	}
 
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		const geometry = this.geometry as BufferGeometry;
 		const matrixWorld = this.matrixWorld;
 		const threshold = raycaster.params.Points.threshold;

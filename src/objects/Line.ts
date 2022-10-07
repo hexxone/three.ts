@@ -8,6 +8,7 @@ import { Matrix4 } from "../math/Matrix4";
 import { Ray } from "../math/Ray";
 import { Sphere } from "../math/Sphere";
 import { Vector3 } from "../math/Vector3";
+import { IIntersection } from "./IIntersection";
 
 const _start = new Vector3();
 const _end = new Vector3();
@@ -83,7 +84,7 @@ class Line extends Object3D {
 		return this;
 	}
 
-	raycast(raycaster: Raycaster, intersects: any[]) {
+	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		const geometry = this.geometry;
 		const matrixWorld = this.matrixWorld;
 		const threshold = raycaster.params.Line.threshold;

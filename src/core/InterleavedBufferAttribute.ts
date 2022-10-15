@@ -21,7 +21,7 @@ class InterleavedBufferAttribute {
 		interleavedBuffer: InterleavedBuffer,
 		itemSize,
 		offset,
-		normalized
+		normalized?: boolean
 	) {
 		this.name = "";
 

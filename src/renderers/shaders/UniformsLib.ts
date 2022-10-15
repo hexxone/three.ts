@@ -207,6 +207,31 @@ const UniformsLib = {
 		alphaMap: { value: null },
 		uvTransform: { value: new Matrix3() },
 	},
+
+	line: {
+		worldUnits: {
+			value: 1
+		},
+		linewidth: {
+			value: 1
+		},
+		resolution: {
+			value: new Vector2(1, 1)
+		},
+		dashOffset: {
+			value: 0
+		},
+		dashScale: {
+			value: 1
+		},
+		dashSize: {
+			value: 1
+		},
+		gapSize: {
+			value: 1
+		} // TODO FIX - maybe change to totalSize
+
+	}
 };
 
 export { UniformsLib };

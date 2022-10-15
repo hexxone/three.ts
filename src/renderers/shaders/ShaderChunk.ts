@@ -172,12 +172,18 @@ import meshphysical_vert from "./ShaderLib/meshphysical_vert.glsl";
 
 import normal_frag from "./ShaderLib/normal_frag.glsl";
 import normal_vert from "./ShaderLib/normal_vert.glsl";
+
 import points_frag from "./ShaderLib/points_frag.glsl";
 import points_vert from "./ShaderLib/points_vert.glsl";
+
 import shadow_frag from "./ShaderLib/shadow_frag.glsl";
 import shadow_vert from "./ShaderLib/shadow_vert.glsl";
+
 import sprite_frag from "./ShaderLib/sprite_frag.glsl";
 import sprite_vert from "./ShaderLib/sprite_vert.glsl";
+
+import linemat_frag from "./ShaderLib/linemat_frag.glsl";
+import linemat_vert from "./ShaderLib/linemat_vert.glsl";
 
 /**
  * @public
@@ -318,4 +324,7 @@ export const ShaderChunk = {
 	shadow_vert: shadow_vert,
 	sprite_frag: sprite_frag,
 	sprite_vert: sprite_vert,
+
+	linemat_vert: linemat_vert,
+	linemat_frag: linemat_frag
 };

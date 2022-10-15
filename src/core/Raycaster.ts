@@ -1,6 +1,6 @@
 import { Camera } from "../cameras/Camera";
-import { Vector2 } from "../math";
 import { Ray } from "../math/Ray";
+import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 import { IIntersection } from "../objects/IIntersection";
 import { Mesh } from "../objects/Mesh";

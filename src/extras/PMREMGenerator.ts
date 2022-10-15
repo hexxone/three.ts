@@ -4,7 +4,7 @@ import { BackSide, CubeUVReflectionMapping, GammaEncoding, LinearEncoding, Neare
 import { BufferAttribute } from "../core/BufferAttribute";
 import { BufferGeometry } from "../core/BufferGeometry";
 import { BoxBufferGeometry } from "../geometries/BoxGeometry";
-import { Material } from "../materials";
+import { Material } from "../materials/Material";
 import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
 import { RawShaderMaterial } from "../materials/RawShaderMaterial";
 import { Color } from "../math/Color";

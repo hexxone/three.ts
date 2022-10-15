@@ -1,4 +1,21 @@
-import { SpriteMaterial, RawShaderMaterial, ShaderMaterial, PointsMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshPhongMaterial, MeshToonMaterial, MeshNormalMaterial, MeshLambertMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshBasicMaterial, MeshMatcapMaterial, LineDashedMaterial, LineBasicMaterial, Material, ShadowMaterial } from ".";
+import { LineBasicMaterial } from "./LineBasicMaterial";
+import { LineDashedMaterial } from "./LineDashedMaterial";
+import { Material } from "./Material";
+import { MeshBasicMaterial } from "./MeshBasicMaterial";
+import { MeshDepthMaterial } from "./MeshDepthMaterial";
+import { MeshDistanceMaterial } from "./MeshDistanceMaterial";
+import { MeshLambertMaterial } from "./MeshLambertMaterial";
+import { MeshMatcapMaterial } from "./MeshMatcapMaterial";
+import { MeshNormalMaterial } from "./MeshNormalMaterial";
+import { MeshPhongMaterial } from "./MeshPhongMaterial";
+import { MeshPhysicalMaterial } from "./MeshPhysicalMaterial";
+import { MeshStandardMaterial } from "./MeshStandardMaterial";
+import { MeshToonMaterial } from "./MeshToonMaterial";
+import { PointsMaterial } from "./PointsMaterial";
+import { RawShaderMaterial } from "./RawShaderMaterial";
+import { ShaderMaterial } from "./ShaderMaterial";
+import { ShadowMaterial } from "./ShadowMaterial";
+import { SpriteMaterial } from "./SpriteMaterial";
 
 const MaterialMap = {
 	"ShadowMaterial": ShadowMaterial,

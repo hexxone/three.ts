@@ -268,6 +268,17 @@ const ShaderLib = {
 		vertexShader: ShaderChunk.meshphysical_vert,
 		fragmentShader: ShaderChunk.meshphysical_frag,
 	},
+
+	line: {
+		uniforms: mergeUniforms([
+			UniformsLib.common,
+			UniformsLib.fog,
+			UniformsLib.line
+		]),
+
+		vertexShader: ShaderChunk.linemat_vert,
+		fragmentShader: ShaderChunk.linemat_frag,
+	}
 };
 
 export { ShaderLib };

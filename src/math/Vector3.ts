@@ -1,7 +1,6 @@
 import { Camera } from "../cameras/Camera";
 import { BufferAttribute } from "../core/BufferAttribute";
 import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
-import { AnyTypedArray } from "../utils";
 import { Cylindrical } from "./Cylindrical";
 import { Euler } from "./Euler";
 import { MathUtils } from "./MathUtils";
@@ -579,7 +578,7 @@ class Vector3 {
 		return v.x === this.x && v.y === this.y && v.z === this.z;
 	}
 
-	fromArray(array: number[] | typeof AnyTypedArray, offset = 0) {
+	fromArray(array: number[] | AnyTypedArray, offset = 0) {
 		this.x = Number(array[offset]);
 		this.y = Number(array[offset + 1]);
 		this.z = Number(array[offset + 2]);

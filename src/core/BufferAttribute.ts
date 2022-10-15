@@ -5,7 +5,6 @@ import { Matrix4 } from "../math/Matrix4";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 import { Vector4 } from "../math/Vector4";
-import { AnyTypedArray } from "../utils";
 import { ObjectHelper } from "./ObjectHelper";
 
 const _vector = new Vector3();
@@ -16,7 +15,7 @@ const _vector2 = new Vector2();
  */
 class BufferAttribute {
 	name: string;
-	array: typeof AnyTypedArray;
+	array: AnyTypedArray;
 	itemSize: number;
 
 	count: number;

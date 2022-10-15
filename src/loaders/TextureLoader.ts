@@ -8,7 +8,7 @@ class TextureLoader extends Loader {
 		super();
 	}
 
-	load(url, onLoad?, onProgress?, onError?) {
+	load(url: string, onLoad?: (t: Texture) => void, onProgress?, onError?) {
 		const texture = new Texture();
 		const loader = new ImageLoader(this.manager);
 

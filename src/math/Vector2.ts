@@ -1,6 +1,5 @@
 import { BufferAttribute } from "../core/BufferAttribute";
 import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
-import { AnyTypedArray } from "../utils";
 import { Matrix3 } from "./Matrix3";
 
 /**
@@ -335,7 +334,7 @@ class Vector2 {
 		return v.x === this.x && v.y === this.y;
 	}
 
-	fromArray(array: number[] | typeof AnyTypedArray, offset = 0) {
+	fromArray(array: number[] | AnyTypedArray, offset = 0) {
 		this.x = array[offset];
 		this.y = array[offset + 1];
 

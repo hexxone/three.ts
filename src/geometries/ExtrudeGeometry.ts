@@ -22,13 +22,29 @@
 
 import { Float32BufferAttribute } from "../core/BufferAttribute";
 import { BufferGeometry } from "../core/BufferGeometry";
+import { Curve } from "../extras/core/Curve";
 import { Shape } from "../extras/core/Shape";
 import { ShapeUtils } from "../extras/ShapeUtils";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
 
+export type ExtrudeGeometryParameters = {
+	curveSegments?: number;
+	steps?: number;
+	depth?: number;
+	bevelEnabled?: boolean;
+	bevelThickness?: number;
+	bevelSize?: number;
+	bevelOffset?: number;
+	bevelSegments?: number;
+	extrudePath?: Curve;
+	UVGenerator?: any;
+
+	amount?: number;
+};
+
 class ExtrudeGeometry extends BufferGeometry {
-	constructor(shapes?: Shape[], options = {} as any) {
+	constructor(shapes?: Shape[], options: ExtrudeGeometryParameters = {}) {
 		super();
 
 		this.type = "ExtrudeGeometry";

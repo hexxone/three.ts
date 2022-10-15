@@ -1,10 +1,9 @@
 import { StaticDrawUsage } from "../constants";
 import { MathUtils } from "../math/MathUtils";
-import { AnyTypedArray } from "../utils";
 import { ObjectHelper } from "./ObjectHelper";
 
 class InterleavedBuffer {
-	array: typeof AnyTypedArray;
+	array: AnyTypedArray;
 	stride: number;
 	count: number;
 	usage: number;
@@ -12,7 +11,7 @@ class InterleavedBuffer {
 	version: number;
 	uuid: string;
 
-	constructor(array: typeof AnyTypedArray, stride: number) {
+	constructor(array: AnyTypedArray, stride: number) {
 		this.array = array;
 		this.stride = stride;
 		this.count = array !== undefined ? array.length / stride : 0;

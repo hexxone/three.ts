@@ -5,7 +5,7 @@
  *  font: <Font>, // font
  *
  *  size: <float>, // size of the text
- *  height: <float>, // thickness to extrude text
+ *  depth: <float>, // thickness to extrude text
  *  curveSegments: <int>, // number of points on the curves
  *
  *  bevelEnabled: <bool>, // turn on bevel
@@ -19,8 +19,24 @@ import { BufferGeometry } from "../core/BufferGeometry";
 import { Font } from "../extras/core/Font";
 import { ExtrudeGeometry } from "./ExtrudeGeometry";
 
+/**
+ * @public
+ */
+export type TextGeometryParameters = {
+	font?: Font;
+
+	size?: number;
+	depth?: number;
+	curveSegments?: number;
+
+	bevelThickness?: number;
+	bevelSize?: number;
+	bevelEnabled?: boolean;
+	bevelOffset?: number;
+};
+
 class TextGeometry extends ExtrudeGeometry {
-	constructor(text, parameters = {} as any) {
+	constructor(text, parameters: TextGeometryParameters = {}) {
 		const font = parameters.font as Font;
 
 		if (!(font && font.isFont)) {
@@ -32,7 +48,7 @@ class TextGeometry extends ExtrudeGeometry {
 
 		// translate parameters to ExtrudeGeometry API
 
-		parameters.depth = parameters.height !== undefined ? parameters.height : 50;
+		parameters.depth = parameters.depth !== undefined ? parameters.depth : 50;
 
 		// defaults
 

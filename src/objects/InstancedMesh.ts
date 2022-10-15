@@ -1,5 +1,7 @@
 import { BufferAttribute } from "../core/BufferAttribute";
+import { BufferGeometry } from "../core/BufferGeometry";
 import { Raycaster } from "../core/Raycaster";
+import { Material } from "../materials/Material";
 import { Matrix4 } from "../math/Matrix4";
 import { IIntersection } from "./IIntersection";
 import { Mesh } from "./Mesh";
@@ -17,7 +19,7 @@ const _mesh = new Mesh();
 export class InstancedMesh extends Mesh {
 	instanceColor: BufferAttribute;
 
-	constructor(geometry, material, count) {
+	constructor(geometry: BufferGeometry, material: Material, count: number) {
 		super(geometry, material);
 
 		this.isInstancedMesh = true;

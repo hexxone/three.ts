@@ -1,3 +1,6 @@
+/**
+ * @public
+ */
 class CacheClass {
 	enabled = false;
 

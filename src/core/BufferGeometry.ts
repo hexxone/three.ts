@@ -2,7 +2,7 @@
 import { Path } from "../extras/core/Path";
 import { Shape } from "../extras/core/Shape";
 import { Box3 } from "../math/Box3";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
 import { Sphere } from "../math/Sphere";
@@ -126,7 +126,7 @@ export class BufferGeometry extends EventDispatcher {
 
 		this.id = _id++;
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.name = "";
 		this.type = "BufferGeometry";

@@ -1,7 +1,7 @@
 import { BufferAttribute } from "../core/BufferAttribute";
 import { HSL } from "../core/BufferGeometry";
 import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
-import { MathUtils } from "./MathUtils";
+import { clamp, euclideanModulo, lerp } from "./MathUtils";
 
 const _colorKeywords = {
 	aliceblue: 0xf0f8ff,
@@ -233,9 +233,9 @@ class Color {
 
 	setHSL(h, s, l) {
 		// h,s,l ranges are in 0.0 - 1.0
-		h = MathUtils.euclideanModulo(h, 1);
-		s = MathUtils.clamp(s, 0, 1);
-		l = MathUtils.clamp(l, 0, 1);
+		h = euclideanModulo(h, 1);
+		s = clamp(s, 0, 1);
+		l = clamp(l, 0, 1);
 
 		if (s === 0) {
 			this.r = this.g = this.b = l;
@@ -590,9 +590,9 @@ class Color {
 		this.getHSL(_hslA);
 		color.getHSL(_hslB);
 
-		const h = MathUtils.lerp(_hslA.h, _hslB.h, alpha);
-		const s = MathUtils.lerp(_hslA.s, _hslB.s, alpha);
-		const l = MathUtils.lerp(_hslA.l, _hslB.l, alpha);
+		const h = lerp(_hslA.h, _hslB.h, alpha);
+		const s = lerp(_hslA.s, _hslB.s, alpha);
+		const l = lerp(_hslA.l, _hslB.l, alpha);
 
 		this.setHSL(h, s, l);
 

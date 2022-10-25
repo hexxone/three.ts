@@ -1,4 +1,4 @@
-import { MathUtils } from "./MathUtils";
+import { clamp } from "./MathUtils";
 import { Matrix4 } from "./Matrix4";
 import { Vector3 } from "./Vector3";
 
@@ -58,7 +58,7 @@ class Line3 {
 		let t = startEnd_startP / startEnd2;
 
 		if (clampToLine) {
-			t = MathUtils.clamp(t, 0, 1);
+			t = clamp(t, 0, 1);
 		}
 
 		return t;

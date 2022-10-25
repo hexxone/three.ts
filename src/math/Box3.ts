@@ -7,7 +7,7 @@ import { Sphere } from "./Sphere";
 import { Triangle } from "./Triangle";
 import { Vector3 } from "./Vector3";
 
-class Box3 {
+export class Box3 {
 	min: Vector3;
 	max: Vector3;
 	isBox3 = true;
@@ -26,7 +26,7 @@ class Box3 {
 		return this;
 	}
 
-	setFromArray(array) {
+	setFromArray(array: NumberTypedArray) {
 		let minX = +Infinity;
 		let minY = +Infinity;
 		let minZ = +Infinity;
@@ -96,7 +96,7 @@ class Box3 {
 		return this;
 	}
 
-	setFromCenterAndSize(center, size) {
+	setFromCenterAndSize(center: Vector3, size) {
 		const halfSize = _vector.copy(size).multiplyScalar(0.5);
 
 		this.min.copy(center).sub(halfSize);
@@ -477,4 +477,3 @@ function satForAxes(axes, v0, v1, v2, extents) {
 	return true;
 }
 
-export { Box3 };

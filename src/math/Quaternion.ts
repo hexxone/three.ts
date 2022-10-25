@@ -1,7 +1,7 @@
 import { BufferAttribute } from "../core/BufferAttribute";
 import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
 import { Euler } from "./Euler";
-import { MathUtils } from "./MathUtils";
+import { clamp } from "./MathUtils";
 import { Matrix4 } from "./Matrix4";
 import { Vector3 } from "./Vector3";
 
@@ -363,7 +363,7 @@ class Quaternion {
 	}
 
 	angleTo(q) {
-		return 2 * Math.acos(Math.abs(MathUtils.clamp(this.dot(q), -1, 1)));
+		return 2 * Math.acos(Math.abs(clamp(this.dot(q), -1, 1)));
 	}
 
 	rotateTowards(q, step) {

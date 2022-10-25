@@ -1,6 +1,9 @@
 import { DefaultLoadingManager, LoadingManager } from "./LoadingManager";
 
-class Loader {
+/**
+ * @public
+ */
+export class Loader {
 	manager: LoadingManager;
 	crossOrigin: string;
 	withCredentials: boolean;
@@ -41,7 +44,7 @@ class Loader {
 		});
 	}
 
-	parse(data, bool?): any {}
+	parse(data, bool?): any { }
 
 	setCrossOrigin(crossOrigin) {
 		this.crossOrigin = crossOrigin;
@@ -68,5 +71,3 @@ class Loader {
 		return this;
 	}
 }
-
-export { Loader };

@@ -1,7 +1,7 @@
 import { ClampToEdgeWrapping, LinearEncoding, LinearFilter, LinearMipmapLinearFilter, MirroredRepeatWrapping, RepeatWrapping, RGBAFormat, UnsignedByteType, UVMapping } from "../constants";
 import { EventDispatcher } from "../core/EventDispatcher";
 import { ImageUtils } from "../extras/ImageUtils";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { Matrix3 } from "../math/Matrix3";
 import { Vector2 } from "../math/Vector2";
 
@@ -87,7 +87,7 @@ export class Texture extends EventDispatcher {
 
 		Object.defineProperty(this, "id", { value: textureId++ });
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.name = "";
 

@@ -29,7 +29,7 @@
  */
 
 import { Object3D } from "../core/Object3D";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { ParsedPath, PropertyBinding } from "./PropertyBinding";
 
 // TODO typing
@@ -61,7 +61,7 @@ class AnimationObjectGroup {
 	isAnimationObjectGroup = true;
 
 	constructor(...args: Object3D[]) {
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		// cached objects followed by the active ones
 		this._objects = Array.prototype.slice.call(args);

@@ -1,5 +1,5 @@
 import { StaticDrawUsage } from "../constants";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { ObjectHelper } from "./ObjectHelper";
 
 class InterleavedBuffer {
@@ -21,7 +21,7 @@ class InterleavedBuffer {
 
 		this.version = 0;
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 	}
 
 	set needsUpdate(value) {
@@ -68,7 +68,7 @@ class InterleavedBuffer {
 		}
 
 		if ((this.array.buffer as any)._uuid === undefined) {
-			(this.array.buffer as any)._uuid = MathUtils.generateUUID();
+			(this.array.buffer as any)._uuid = generateUUID();
 		}
 
 		if (data.arrayBuffers[(this.array.buffer as any)._uuid] === undefined) {

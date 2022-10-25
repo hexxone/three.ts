@@ -1,6 +1,6 @@
 import { Float32BufferAttribute } from "../core/BufferAttribute";
 import { BufferGeometry } from "../core/BufferGeometry";
-import { MathUtils } from "../math/MathUtils";
+import { DEG2RAD } from "../math/MathUtils";
 import { Triangle } from "../math/Triangle";
 import { Vector3 } from "../math/Vector3";
 
@@ -30,7 +30,7 @@ class EdgesGeometry extends BufferGeometry {
 
 		const precisionPoints = 4;
 		const precision = Math.pow(10, precisionPoints);
-		const thresholdDot = Math.cos(MathUtils.DEG2RAD * thresholdAngle);
+		const thresholdDot = Math.cos(DEG2RAD * thresholdAngle);
 
 		const indexAttr = geometry.getIndex();
 		const positionAttr = geometry.getAttribute("position");

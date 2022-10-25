@@ -1,6 +1,6 @@
 import { ClampToEdgeWrapping, DepthFormat, DepthStencilFormat, FloatType, HalfFloatType, LinearFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, MirroredRepeatWrapping, NearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, RepeatWrapping, RGBAFormat, RGBFormat, UnsignedInt248Type, UnsignedIntType, UnsignedShortType } from "../../constants";
 import { EventObject } from "../../core/EventDispatcher";
-import { MathUtils } from "../../math/MathUtils";
+import { floorPowerOfTwo, isPowerOfTwo } from "../../math/MathUtils";
 import { CubeTexture } from "../../textures/CubeTexture";
 import { DataTexture2DArray } from "../../textures/DataTexture2DArray";
 import { DataTexture3D } from "../../textures/DataTexture3D";
@@ -138,7 +138,7 @@ class WebGLTextures {
 					image instanceof HTMLCanvasElement) ||
 				(typeof ImageBitmap !== "undefined" && image instanceof ImageBitmap)
 			) {
-				const floor = needsPowerOfTwo ? MathUtils.floorPowerOfTwo : Math.floor;
+				const floor = needsPowerOfTwo ? floorPowerOfTwo : Math.floor;
 
 				const width = floor(scale * image.width);
 				const height = floor(scale * image.height);
@@ -191,8 +191,8 @@ class WebGLTextures {
 
 	isPowerOfTwo(image: any) {
 		return (
-			MathUtils.isPowerOfTwo(image.width) &&
-			MathUtils.isPowerOfTwo(image.height)
+			isPowerOfTwo(image.width) &&
+			isPowerOfTwo(image.height)
 		);
 	}
 

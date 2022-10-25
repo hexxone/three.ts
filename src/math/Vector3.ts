@@ -3,7 +3,7 @@ import { BufferAttribute } from "../core/BufferAttribute";
 import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
 import { Cylindrical } from "./Cylindrical";
 import { Euler } from "./Euler";
-import { MathUtils } from "./MathUtils";
+import { clamp } from "./MathUtils";
 import { Matrix3 } from "./Matrix3";
 import { Matrix4 } from "./Matrix4";
 import { Quaternion } from "./Quaternion";
@@ -497,7 +497,7 @@ class Vector3 {
 
 		// clamp, to handle numerical problems
 
-		return Math.acos(MathUtils.clamp(theta, -1, 1));
+		return Math.acos(clamp(theta, -1, 1));
 	}
 
 	distanceTo(v: Vector3) {

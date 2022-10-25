@@ -1,4 +1,4 @@
-import { MathUtils } from "../math/MathUtils";
+import { DEG2RAD } from "../math/MathUtils";
 import { Matrix4 } from "../math/Matrix4";
 import { PerspectiveCamera } from "./PerspectiveCamera";
 
@@ -75,7 +75,7 @@ class StereoCamera {
 			const eyeSepHalf = cache.eyeSep / 2;
 			const eyeSepOnProjection = (eyeSepHalf * cache.near) / cache.focus;
 			const ymax =
-				(cache.near * Math.tan(MathUtils.DEG2RAD * cache.fov * 0.5)) /
+				(cache.near * Math.tan(DEG2RAD * cache.fov * 0.5)) /
 				cache.zoom;
 			let xmin;
 			let xmax;

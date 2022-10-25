@@ -1,4 +1,4 @@
-import { MathUtils } from "../../math/MathUtils";
+import { generateUUID } from "../../math/MathUtils";
 import { Path } from "./Path";
 
 class Shape extends Path {
@@ -8,7 +8,7 @@ class Shape extends Path {
 	constructor(points?) {
 		super(points);
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.type = "Shape";
 

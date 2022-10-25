@@ -1,5 +1,5 @@
 import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
-import { MathUtils } from "../math/MathUtils";
+import { RAD2DEG } from "../math/MathUtils";
 import { Light } from "./Light";
 import { LightShadow } from "./LightShadow";
 
@@ -18,7 +18,7 @@ class SpotLightShadow extends LightShadow {
 	updateMatrices(light: Light) {
 		const camera = this.camera as PerspectiveCamera;
 
-		const fov = MathUtils.RAD2DEG * 2 * light.angle * this.focus;
+		const fov = RAD2DEG * 2 * light.angle * this.focus;
 		const aspect = this.mapSize.width / this.mapSize.height;
 		const far = light.distance || camera.far;
 

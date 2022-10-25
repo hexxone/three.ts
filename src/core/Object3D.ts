@@ -1,6 +1,6 @@
 import { Material } from "../materials/Material";
 import { Euler } from "../math/Euler";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { Matrix3 } from "../math/Matrix3";
 import { Matrix4 } from "../math/Matrix4";
 import { Quaternion } from "../math/Quaternion";
@@ -112,7 +112,7 @@ export class Object3D extends EventDispatcher {
 
 		Object.defineProperty(this, "id", { value: _object3DId++ });
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.name = "";
 		this.type = "Object3D";

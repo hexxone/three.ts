@@ -1,7 +1,7 @@
 import { Loader } from "./Loader";
 import { Cache } from "./Cache"
 
-class ImageLoader extends Loader {
+export class ImageLoader extends Loader {
 	constructor(manager?) {
 		super(manager);
 	}
@@ -68,5 +68,3 @@ class ImageLoader extends Loader {
 		return image;
 	}
 }
-
-export { ImageLoader };

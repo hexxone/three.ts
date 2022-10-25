@@ -1,5 +1,5 @@
 import { NormalAnimationBlendMode } from "../constants";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { AnimationUtils } from "./AnimationUtils";
 import { KeyframeTrack } from "./KeyframeTrack";
 import { BooleanKeyframeTrack } from "./tracks/BooleanKeyframeTrack";
@@ -28,7 +28,7 @@ class AnimationClip {
 		this.duration = duration;
 		this.blendMode = blendMode;
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		// this means it should figure out its duration by scanning the tracks
 		if (this.duration < 0) {

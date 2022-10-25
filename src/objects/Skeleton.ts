@@ -1,5 +1,5 @@
 
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { Matrix4 } from "../math/Matrix4";
 import { Bone } from "./Bone";
 
@@ -16,7 +16,7 @@ export class Skeleton {
 	frame: number;
 
 	constructor(bones = [], boneInverses = []) {
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.bones = bones.slice(0);
 		this.boneInverses = boneInverses;

@@ -64,7 +64,7 @@ class Interpolant {
 
 								i1 = pp.length;
 								this._cachedIndex = i1;
-								return this.afterEnd_(i1 - 1, t, t0);
+								return this.copySampleValue_(i1 - 1, t, t0);
 							}
 
 							if (i1 === giveUpAt) break; // this loop
@@ -102,7 +102,7 @@ class Interpolant {
 								// before start
 
 								this._cachedIndex = 0;
-								return this.beforeStart_(0, t, t1);
+								return this.copySampleValue_(0, t, t1);
 							}
 
 							if (i1 === giveUpAt) break; // this loop
@@ -146,13 +146,13 @@ class Interpolant {
 
 				if (t0 === undefined) {
 					this._cachedIndex = 0;
-					return this.beforeStart_(0, t, t1);
+					return this.copySampleValue_(0, t, t1);
 				}
 
 				if (t1 === undefined) {
 					i1 = pp.length;
 					this._cachedIndex = i1;
-					return this.afterEnd_(i1 - 1, t0, t);
+					return this.copySampleValue_(i1 - 1, t0, t);
 				}
 			} // seek
 
@@ -164,19 +164,12 @@ class Interpolant {
 		return this.interpolate_(i1, t0, t, t1);
 	}
 
-	afterEnd_(arg0: number, t: any, t0: any) {
-		throw new Error("Method not implemented.");
-	}
-
-	beforeStart_(arg0: number, t: any, t1: any) {
-		throw new Error("Method not implemented.");
-	}
-
 	getSettings_() {
 		return this.settings || this.DefaultSettings_;
 	}
 
-	copySampleValue_(index) {
+	// TODO
+	copySampleValue_(index, to, d) {
 		// copies a sample value to the result buffer
 
 		const result = this.resultBuffer;
@@ -203,10 +196,5 @@ class Interpolant {
 		// empty
 	}
 }
-
-// ALIAS DEFINITIONS
-
-Interpolant.prototype.beforeStart_ = Interpolant.prototype.copySampleValue_;
-Interpolant.prototype.afterEnd_ = Interpolant.prototype.copySampleValue_;
 
 export { Interpolant };

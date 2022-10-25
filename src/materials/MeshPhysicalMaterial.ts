@@ -31,7 +31,7 @@
  */
 
 import { Color } from "../math/Color";
-import { MathUtils } from "../math/MathUtils";
+import { clamp } from "../math/MathUtils";
 import { Vector2 } from "../math/Vector2";
 import { Texture } from "../textures/Texture";
 import { MeshStandardMaterial } from "./MeshStandardMaterial";
@@ -75,7 +75,7 @@ class MeshPhysicalMaterial extends MeshStandardMaterial {
 
 		Object.defineProperty(this, "reflectivity", {
 			get: function () {
-				return MathUtils.clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
+				return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
 			},
 			set: function (reflectivity) {
 				this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);

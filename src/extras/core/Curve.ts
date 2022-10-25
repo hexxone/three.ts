@@ -29,7 +29,7 @@
  *
  **/
 
-import { MathUtils } from "../../math/MathUtils";
+import { clamp } from "../../math/MathUtils";
 import { Matrix4 } from "../../math/Matrix4";
 import { Vector2 } from "../../math/Vector2";
 import { Vector3 } from "../../math/Vector3";
@@ -77,10 +77,10 @@ class Curve {
 	// Get sequence of points using getPoint( t )
 
 	getPoints(divisions = 5) {
-		const points = [];
+		const points: Vector3[] = [];
 
 		for (let d = 0; d <= divisions; d++) {
-			points.push(this.getPoint(d / divisions));
+			points.push(this.getPoint(d / divisions) as Vector3);
 		}
 
 		return points;
@@ -302,7 +302,7 @@ class Curve {
 				vec.normalize();
 
 				const theta = Math.acos(
-					MathUtils.clamp(tangents[i - 1].dot(tangents[i]), -1, 1)
+					clamp(tangents[i - 1].dot(tangents[i]), -1, 1)
 				); // clamp for floating pt errors
 
 				normals[i].applyMatrix4(mat.makeRotationAxis(vec, theta));
@@ -315,7 +315,7 @@ class Curve {
 
 		if (closed === true) {
 			let theta = Math.acos(
-				MathUtils.clamp(normals[0].dot(normals[segments]), -1, 1)
+				clamp(normals[0].dot(normals[segments]), -1, 1)
 			);
 			theta /= segments;
 

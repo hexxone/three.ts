@@ -1,4 +1,8 @@
-class LoadingManager {
+
+/**
+ * @public
+ */
+export class LoadingManager {
 	onStart: any;
 	onLoad: any;
 	onProgress: any;
@@ -98,6 +102,4 @@ class LoadingManager {
 	}
 }
 
-const DefaultLoadingManager = new LoadingManager();
-
-export { DefaultLoadingManager, LoadingManager };
+export const DefaultLoadingManager = new LoadingManager();

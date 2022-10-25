@@ -1,7 +1,7 @@
 import { AddEquation, AlwaysStencilFunc, FrontSide, KeepStencilOp, LessEqualDepth, NormalBlending, OneMinusSrcAlphaFactor, SrcAlphaFactor } from "../constants";
 import { EventDispatcher } from "../core/EventDispatcher";
 import { Color } from "../math/Color";
-import { MathUtils } from "../math/MathUtils";
+import { generateUUID } from "../math/MathUtils";
 import { Plane } from "../math/Plane";
 import { Vector2 } from "../math/Vector2";
 import { WebGlProgramsParameters } from "../renderers/webgl/WebGLPrograms";
@@ -203,7 +203,7 @@ class Material extends EventDispatcher {
 			},
 		});
 
-		this.uuid = MathUtils.generateUUID();
+		this.uuid = generateUUID();
 
 		this.name = "";
 		this.type = "Material";

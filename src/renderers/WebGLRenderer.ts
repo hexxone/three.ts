@@ -12,7 +12,6 @@ import { RawShaderMaterial } from "../materials/RawShaderMaterial";
 import { ShaderMaterial } from "../materials/ShaderMaterial";
 import { Color } from "../math/Color";
 import { Frustum } from "../math/Frustum";
-import { MathUtils } from "../math/MathUtils";
 import { Matrix4 } from "../math/Matrix4";
 import { Vector2 } from "../math/Vector2";
 import { Vector3 } from "../math/Vector3";
@@ -51,6 +50,7 @@ import { WebGLUniforms } from "./webgl/WebGLUniforms";
 import { WebGLUtils } from "./webgl/WebGLUtils";
 import { WebGLRenderTarget } from "./WebGLRenderTarget";
 import { WebXRManager } from "./webxr/WebXRManager";
+import { ceilPowerOfTwo } from "../math/MathUtils";
 
 function createCanvasElement() {
 	const canvas = document.createElementNS(
@@ -1685,7 +1685,7 @@ export class WebGLRenderer implements Renderer {
 						//       64x64 pixel texture max 1024 bones * 4 pixels = (64 * 64)
 
 						let size = Math.sqrt(bones.length * 4); // 4 pixels needed for 1 matrix
-						size = MathUtils.ceilPowerOfTwo(size);
+						size = ceilPowerOfTwo(size);
 						size = Math.max(size, 4);
 
 						const boneMatrices = new Float32Array(size * size * 4); // 4 floats per RGBA pixel

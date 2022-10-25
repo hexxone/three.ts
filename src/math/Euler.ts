@@ -1,4 +1,4 @@
-import { MathUtils } from "./MathUtils";
+import { clamp } from "./MathUtils";
 import { Matrix4 } from "./Matrix4";
 import { Quaternion } from "./Quaternion";
 import { Vector3 } from "./Vector3";
@@ -91,7 +91,6 @@ class Euler {
 	}
 
 	setFromRotationMatrix(m: Matrix4, order?: string, update?: boolean) {
-		const clamp = MathUtils.clamp;
 
 		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 

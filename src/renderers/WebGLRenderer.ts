@@ -1054,7 +1054,7 @@ export class WebGLRenderer implements Renderer {
 			this.onAnimationFrameCallback(time, frame);
 	}
 
-	setAnimationLoop(callback: XRFrameRequestCallback) {
+	setAnimationLoop(callback: XRFrameRequestCallback | undefined) {
 		this.onAnimationFrameCallback = callback;
 		this.xr.setAnimationLoop(callback);
 

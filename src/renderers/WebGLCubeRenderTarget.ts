@@ -11,8 +11,22 @@ import { cloneUniforms } from "./shaders/UniformsUtils";
 import { Mesh } from "../objects/Mesh";
 import { CubeCamera } from "../cameras/CubeCamera";
 
+export type WebGLCubeRenderTargetOptions = {
+	mapping: any;
+	wrapS: any;
+	wrapT: any;
+	magFilter: any;
+	minFilter: any;
+	format: any;
+	type: any;
+	anisotropy: any;
+	encoding: any;
+	generateMipmaps: any;
+
+}
+
 class WebGLCubeRenderTarget extends WebGLRenderTarget {
-	constructor(size, options?, dummy?) {
+	constructor(size, options?: Partial<WebGLCubeRenderTargetOptions> | undefined, dummy?) {
 		if (Number.isInteger(options)) {
 			console.warn(
 				"WebGLCubeRenderTarget: constructor signature is now WebGLCubeRenderTarget( size, options )"

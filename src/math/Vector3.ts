@@ -504,6 +504,11 @@ class Vector3 {
 		return Math.sqrt(this.distanceToSquared(v));
 	}
 
+	/**
+	 * Takes the dot product of the distance, without the square root, for being more efficient.
+	 * @param v Distance to calculate to
+	 * @returns float
+	 */
 	distanceToSquared(v: Vector3) {
 		const dx = this.x - v.x;
 		const dy = this.y - v.y;

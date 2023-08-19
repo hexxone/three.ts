@@ -39,7 +39,7 @@ export const DefaultUp = new Vector3(0, 1, 0);
  * @public
  */
 export class Object3D extends EventDispatcher {
-	isObject3D = true;
+	isObject3D: boolean;
 
 	id: number;
 	uuid: string;
@@ -109,6 +109,7 @@ export class Object3D extends EventDispatcher {
 
 	constructor() {
 		super();
+		this.isObject3D = true;
 
 		Object.defineProperty(this, "id", { value: _object3DId++ });
 

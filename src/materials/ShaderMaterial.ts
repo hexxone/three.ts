@@ -27,10 +27,10 @@ class ShaderMaterial extends Material {
 
 	/** @public */
 	extensions: {
-		derivatives: boolean; // set to use derivatives
-		fragDepth: boolean; // set to use fragment depth values
-		drawBuffers: boolean; // set to use draw buffers
-		shaderTextureLOD: boolean;
+		derivatives?: string; // set to use derivatives
+		fragDepth?: string; // set to use fragment depth values
+		drawBuffers?: string; // set to use draw buffers
+		shaderTextureLOD?: string;
 	};
 
 	defaultAttributeValues: { color: number[]; uv: number[]; uv2: number[] };
@@ -64,10 +64,10 @@ class ShaderMaterial extends Material {
 		this.morphNormals = false; // set to use morph normals
 
 		this.extensions = {
-			derivatives: false, // set to use derivatives
-			fragDepth: false, // set to use fragment depth values
-			drawBuffers: false, // set to use draw buffers
-			shaderTextureLOD: false, // set to use shader texture LOD
+			derivatives: undefined, // set to use derivatives
+			fragDepth: undefined, // set to use fragment depth values
+			drawBuffers: undefined, // set to use draw buffers
+			shaderTextureLOD: undefined, // set to use shader texture LOD
 		};
 
 		// When rendered geometry doesn't include these attributes but the material does,

@@ -541,13 +541,13 @@ class WebGLPrograms {
 			index0AttributeName: shaderMaterial.index0AttributeName,
 
 			extensionDerivatives:
-				shaderMaterial.extensions && shaderMaterial.extensions.derivatives,
+				shaderMaterial.extensions && !!shaderMaterial.extensions.derivatives,
 			extensionFragDepth:
-				shaderMaterial.extensions && shaderMaterial.extensions.fragDepth,
+				shaderMaterial.extensions && !!shaderMaterial.extensions.fragDepth,
 			extensionDrawBuffers:
-				shaderMaterial.extensions && shaderMaterial.extensions.drawBuffers,
+				shaderMaterial.extensions && !!shaderMaterial.extensions.drawBuffers,
 			extensionShaderTextureLOD:
-				shaderMaterial.extensions && shaderMaterial.extensions.shaderTextureLOD,
+				shaderMaterial.extensions && !!shaderMaterial.extensions.shaderTextureLOD,
 
 			rendererExtensionFragDepth:
 				this.isWebGL2 || this._extensions.has("EXT_frag_depth"),

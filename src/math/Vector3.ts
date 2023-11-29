@@ -95,10 +95,10 @@ class Vector3 {
 		return new Vector3(this.x, this.y, this.z);
 	}
 
-	copy(v: Vector3) {
-		this.x = v.x;
-		this.y = v.y;
-		this.z = v.z;
+	copy(from: Vector3) {
+		this.x = from.x;
+		this.y = from.y;
+		this.z = from.z;
 
 		return this;
 	}

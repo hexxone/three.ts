@@ -289,11 +289,17 @@ class Material extends EventDispatcher {
 		this._clearcoat = value;
 	}
 
+	/* shaderobject, renderer */
+	onBuild(...args) { }
+
+	/* renderer, scene, camera, geometry, object, group */
+	onBeforeRender(...args) { }
+
 	/** function which runs before compilation */
 	onBeforeCompile(
 		shaderobject: WebGlProgramsParameters,
 		renderer: WebGLRenderer
-	) {}
+	) { }
 
 	customProgramCacheKey() {
 		return this.onBeforeCompile.toString();

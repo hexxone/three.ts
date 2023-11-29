@@ -46,7 +46,7 @@ export class Object3D extends EventDispatcher {
 	name: string;
 	type: string;
 
-	parent: Object3D;
+	parent: Object3D | null;
 	children: Object3D[];
 
 	up: Vector3 = null;
@@ -142,8 +142,10 @@ export class Object3D extends EventDispatcher {
 		this.rotation.setFromQuaternion(this.quaternion, null, false);
 	}
 
+	/* renderer, scene, camera, geometry, material, group */
 	onBeforeRender(...args) {}
 
+	/* renderer, scene, camera, geometry, material, group */
 	onAfterRender(...args) {}
 
 	update(...args) {}

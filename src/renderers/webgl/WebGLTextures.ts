@@ -620,7 +620,7 @@ class WebGLTextures {
 	}
 
 	uploadTexture(textureProperties: Partial<AllGLTypeProperties>, texture: Texture, slot: number) {
-		let textureType = this._gl.TEXTURE_2D;
+		let textureType = this._gl.TEXTURE_2D as number;
 
 		if (texture.isDataTexture2DArray) textureType = this._gl.TEXTURE_2D_ARRAY;
 		if (texture.isDataTexture3D) textureType = this._gl.TEXTURE_3D;
@@ -1130,7 +1130,7 @@ class WebGLTextures {
 		this._gl.bindRenderbuffer(this._gl.RENDERBUFFER, renderbuffer);
 
 		if (renderTarget.depthBuffer && !renderTarget.stencilBuffer) {
-			let glInternalFormat = this._gl.DEPTH_COMPONENT16;
+			let glInternalFormat = this._gl.DEPTH_COMPONENT16 as number;
 
 			if (isMultisample) {
 				const depthTexture = renderTarget.depthTexture;
@@ -1476,7 +1476,7 @@ class WebGLTextures {
 
 			this._state.bindTexture(this._gl.TEXTURE_CUBE_MAP, null);
 		} else {
-			let glTextureType = this._gl.TEXTURE_2D;
+			let glTextureType = this._gl.TEXTURE_2D as number;
 
 			if (isRenderTarget3D) {
 				// Render targets containing layers, i.e: Texture 3D and 2d arrays

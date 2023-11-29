@@ -73,11 +73,11 @@ class Raycaster {
 		this.ray.set(origin, direction);
 	}
 
-	setFromCamera(coords: Vector2, camera: Camera) {
+	setFromCamera(coords: Vector2 | Vector3, camera: Camera) {
 		if (camera && camera.isPerspectiveCamera) {
 			this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
 			this.ray.direction
-				.set(coords.x, coords.y, 0.5)
+				.set(coords.x, coords.y, 0.5) // TODO z coord ???
 				.unproject(camera)
 				.sub(this.ray.origin)
 				.normalize();

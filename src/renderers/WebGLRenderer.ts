@@ -1379,6 +1379,8 @@ export class WebGLRenderer implements Renderer {
 		);
 		object.normalMatrix.getNormalMatrix(object.modelViewMatrix);
 
+		material.onBeforeRender(this, scene, camera, geometry, material, group);
+
 		if (object instanceof ImmediateRenderObject) {
 			const program = this.setProgram(camera, scene, material, object);
 
@@ -1841,7 +1843,7 @@ export class WebGLRenderer implements Renderer {
 	}
 
 	setRenderTarget(
-		renderTarget: WebGLRenderTarget,
+		renderTarget: WebGLRenderTarget | undefined,
 		activeCubeFace = 0,
 		activeMipmapLevel = 0
 	) {

@@ -98,7 +98,7 @@ class ObjectLoader extends Loader {
 	/**
 	 *
 	 * @param args [0] = json, [1] = onLoad event
-	 * @returns
+	 * @returns {Object3D}
 	 */
 	parse(...args) {
 		const json = args[0];

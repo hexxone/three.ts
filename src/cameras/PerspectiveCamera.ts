@@ -73,7 +73,7 @@ export class PerspectiveCamera extends Camera {
 
 	/**
 	 * Calculates the focal length from the current .fov and .filmGauge.
-	 * @return {number}
+	 * @returns {number}
 	 */
 	getFocalLength() {
 		const vExtentSlope = Math.tan(DEG2RAD * 0.5 * this.fov);

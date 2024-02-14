@@ -35,8 +35,8 @@ const _trackRe = new RegExp(
 const _supportedObjectNames = ["material", "materials", "bones"];
 
 /**
+ * @TODO typing
  * @public
- * TODO typing
  */
 class Composite {
 
@@ -121,8 +121,8 @@ class Composite {
 // become no-ops.
 
 /**
+ * @TODO typing
  * @public
- * TODO typing
  */
 export class PropertyBinding {
 	path: any;
@@ -174,7 +174,7 @@ export class PropertyBinding {
 	 * @param root
 	 * @param path
 	 * @param parsedPath
-	 * @returns
+	 * @returns {PropertyBinding} binding
 	 */
 	static create(root, path: string, parsedPath: ParsedPath): PropertyBinding {
 		if (!(root && root.isAnimationObjectGroup)) {
@@ -189,7 +189,7 @@ export class PropertyBinding {
 	 * node names, to ensure compatibility with parseTrackName().
 	 *
 	 * @param {string} name Node name to be sanitized.
-	 * @return {string}
+	 * @returns {string} sanitized
 	 */
 	static sanitizeNodeName(name) {
 		return name.replace(/\s/g, "_").replace(_reservedRe, "");

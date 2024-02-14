@@ -104,8 +104,9 @@ export class Mesh extends Object3D {
 
 	/**
 	 *
-	 * @param args [0] = raycaster, [1] = intersects
-	 * @returns
+	 * @param raycaster to shoot
+	 * @param intersects result data
+	 * @returns {void}
 	 */
 	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
 		const geometry = this.geometry as BufferGeometry;

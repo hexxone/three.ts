@@ -110,9 +110,9 @@ class MeshPhongMaterial extends Material {
 	}
 
 	/**
-	 *
-	 * @param source
-	 * @returns
+	 * Copy to self from source
+	 * @param source to copy from
+	 * @returns {MeshPhongMaterial} self
 	 */
 	copy(source: MeshPhongMaterial) {
 		super.copy(source);

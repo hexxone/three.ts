@@ -1,67 +1,68 @@
-
 /**
  * @public
  */
 class WebGLInfo {
-	_gl: GLESRenderingContext;
 
-	memory = {
-		geometries: 0,
-		textures: 0,
-	};
+    _gl: GLESRenderingContext;
 
-	render = {
-		frame: 0,
-		calls: 0,
-		triangles: 0,
-		points: 0,
-		lines: 0,
-	};
+    memory = {
+        geometries: 0,
+        textures: 0
+    };
 
-	programs: any[];
-	autoReset: boolean;
+    render = {
+        frame: 0,
+        calls: 0,
+        triangles: 0,
+        points: 0,
+        lines: 0
+    };
 
-	constructor(gl: GLESRenderingContext) {
-		this._gl = gl;
-	}
+    programs: any[];
+    autoReset: boolean;
 
-	update(count: number, mode: number, instanceCount: number) {
-		this.render.calls++;
+    constructor(gl: GLESRenderingContext) {
+        this._gl = gl;
+    }
 
-		switch (mode) {
-			case this._gl.TRIANGLES:
-				this.render.triangles += instanceCount * (count / 3);
-				break;
+    update(count: number, mode: number, instanceCount: number) {
+        this.render.calls++;
 
-			case this._gl.LINES:
-				this.render.lines += instanceCount * (count / 2);
-				break;
+        switch (mode) {
+            case this._gl.TRIANGLES:
+                this.render.triangles += instanceCount * (count / 3);
+                break;
 
-			case this._gl.LINE_STRIP:
-				this.render.lines += instanceCount * (count - 1);
-				break;
+            case this._gl.LINES:
+                this.render.lines += instanceCount * (count / 2);
+                break;
 
-			case this._gl.LINE_LOOP:
-				this.render.lines += instanceCount * count;
-				break;
+            case this._gl.LINE_STRIP:
+                this.render.lines += instanceCount * (count - 1);
+                break;
 
-			case this._gl.POINTS:
-				this.render.points += instanceCount * count;
-				break;
+            case this._gl.LINE_LOOP:
+                this.render.lines += instanceCount * count;
+                break;
 
-			default:
-				console.error("WebGLInfo: Unknown draw mode:", mode);
-				break;
-		}
-	}
+            case this._gl.POINTS:
+                this.render.points += instanceCount * count;
+                break;
 
-	reset() {
-		this.render.frame++;
-		this.render.calls = 0;
-		this.render.triangles = 0;
-		this.render.points = 0;
-		this.render.lines = 0;
-	}
+            default:
+                console.error('WebGLInfo: Unknown draw mode:', mode);
+                break;
+        }
+    }
+
+    reset() {
+        this.render.frame++;
+        this.render.calls = 0;
+        this.render.triangles = 0;
+        this.render.points = 0;
+        this.render.lines = 0;
+    }
+
 }
 
 export { WebGLInfo };

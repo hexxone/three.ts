@@ -1,46 +1,49 @@
-import { CubeTexture } from "../textures/CubeTexture";
-import { ImageLoader } from "./ImageLoader";
-import { Loader } from "./Loader";
+import { CubeTexture } from '../textures/CubeTexture';
+import { ImageLoader } from './ImageLoader';
+import { Loader } from './Loader';
 
 class CubeTextureLoader extends Loader {
-	constructor(manager) {
-		super(manager);
-	}
 
-	load(urls, onLoad, onProgress, onError) {
-		const texture = new CubeTexture();
+    constructor(manager) {
+        super(manager);
+    }
 
-		const loader = new ImageLoader(this.manager);
-		loader.setCrossOrigin(this.crossOrigin);
-		loader.setPath(this.path);
+    load(urls, onLoad, onProgress, onError) {
+        const texture = new CubeTexture();
 
-		let loaded = 0;
+        const loader = new ImageLoader(this.manager);
 
-		function loadTexture(i) {
-			loader.load(
-				urls[i],
-				function (image) {
-					texture.images[i] = image;
+        loader.setCrossOrigin(this.crossOrigin);
+        loader.setPath(this.path);
 
-					loaded++;
+        let loaded = 0;
 
-					if (loaded === 6) {
-						texture.needsUpdate = true;
+        function loadTexture(i) {
+            loader.load(
+                urls[i],
+                (image) => {
+                    texture.images[i] = image;
 
-						if (onLoad) onLoad(texture);
-					}
-				},
-				undefined,
-				onError
-			);
-		}
+                    loaded++;
 
-		for (let i = 0; i < urls.length; ++i) {
-			loadTexture(i);
-		}
+                    if (loaded === 6) {
+                        texture.needsUpdate = true;
 
-		return texture;
-	}
+                        if (onLoad) { onLoad(texture); }
+                    }
+                },
+                undefined,
+                onError
+            );
+        }
+
+        for (let i = 0; i < urls.length; ++i) {
+            loadTexture(i);
+        }
+
+        return texture;
+    }
+
 }
 
 export { CubeTextureLoader };

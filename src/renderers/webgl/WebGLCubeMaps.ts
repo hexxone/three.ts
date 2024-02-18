@@ -1,89 +1,99 @@
-import { CubeReflectionMapping, CubeRefractionMapping, EquirectangularReflectionMapping, EquirectangularRefractionMapping } from "../../constants";
-import { Texture } from "../../textures/Texture";
-import { WebGLCubeRenderTarget } from "../WebGLCubeRenderTarget";
-import { WebGLRenderer } from "../WebGLRenderer";
+import { CubeReflectionMapping,
+    CubeRefractionMapping,
+    EquirectangularReflectionMapping,
+    EquirectangularRefractionMapping } from '../../constants';
+import { Texture } from '../../textures/Texture';
+import { WebGLCubeRenderTarget } from '../WebGLCubeRenderTarget';
+import { WebGLRenderer } from '../WebGLRenderer';
 
 /**
  * @public
  */
 class WebGLCubeMaps {
-	_renderer: WebGLRenderer;
 
-	cubemaps = new WeakMap();
+    _renderer: WebGLRenderer;
 
-	constructor(renderer: WebGLRenderer) {
-		this._renderer = renderer;
-	}
+    cubemaps = new WeakMap();
 
-	_mapTextureMapping(texture: Texture, mapping: number) {
-		if (mapping === EquirectangularReflectionMapping) {
-			texture.mapping = CubeReflectionMapping;
-		} else if (mapping === EquirectangularRefractionMapping) {
-			texture.mapping = CubeRefractionMapping;
-		}
+    constructor(renderer: WebGLRenderer) {
+        this._renderer = renderer;
+    }
 
-		return texture;
-	}
+    _mapTextureMapping(texture: Texture, mapping: number) {
+        if (mapping === EquirectangularReflectionMapping) {
+            texture.mapping = CubeReflectionMapping;
+        } else if (mapping === EquirectangularRefractionMapping) {
+            texture.mapping = CubeRefractionMapping;
+        }
 
-	_onTextureDispose(event) {
-		const texture = event.target;
+        return texture;
+    }
 
-		texture.removeEventListener("dispose", this._onTextureDispose);
+    _onTextureDispose(event) {
+        const texture = event.target;
 
-		const cubemap = this.cubemaps.get(texture);
+        texture.removeEventListener('dispose', this._onTextureDispose);
 
-		if (cubemap !== undefined) {
-			this.cubemaps.delete(texture);
-			cubemap.dispose();
-		}
-	}
+        const cubemap = this.cubemaps.get(texture);
 
-	get(texture: Texture) {
-		if (texture && texture.isTexture) {
-			const mapping = texture.mapping;
+        if (cubemap !== undefined) {
+            this.cubemaps.delete(texture);
+            cubemap.dispose();
+        }
+    }
 
-			if (
-				mapping === EquirectangularReflectionMapping ||
-				mapping === EquirectangularRefractionMapping
-			) {
-				if (this.cubemaps.has(texture)) {
-					const cubemap = this.cubemaps.get(texture).texture;
-					return this._mapTextureMapping(cubemap, texture.mapping);
-				} else {
-					const image = texture.image;
+    get(texture: Texture) {
+        if (texture && texture.isTexture) {
+            const { mapping } = texture;
 
-					if (image && image.height > 0) {
-						const currentRenderTarget = this._renderer.getRenderTarget();
+            if (
+                mapping === EquirectangularReflectionMapping
+                || mapping === EquirectangularRefractionMapping
+            ) {
+                if (this.cubemaps.has(texture)) {
+                    const cubemap = this.cubemaps.get(texture).texture;
 
-						const renderTarget = new WebGLCubeRenderTarget(image.height / 2);
-						renderTarget.fromEquirectangularTexture(this._renderer, texture);
-						this.cubemaps.set(texture, renderTarget);
+                    return this._mapTextureMapping(cubemap, texture.mapping);
+                }
+                const { image } = texture;
 
-						this._renderer.setRenderTarget(currentRenderTarget);
+                if (image && image.height > 0) {
+                    const currentRenderTarget
+                            = this._renderer.getRenderTarget();
 
-						texture.addEventListener("dispose", (e) =>
-							this._onTextureDispose(e)
-						);
+                    const renderTarget = new WebGLCubeRenderTarget(
+                        image.height / 2
+                    );
 
-						return this._mapTextureMapping(
-							renderTarget.texture,
-							texture.mapping
-						);
-					} else {
-						// image not yet ready. try the conversion next frame
+                    renderTarget.fromEquirectangularTexture(
+                        this._renderer,
+                        texture
+                    );
+                    this.cubemaps.set(texture, renderTarget);
 
-						return null;
-					}
-				}
-			}
-		}
+                    this._renderer.setRenderTarget(currentRenderTarget);
 
-		return texture;
-	}
+                    texture.addEventListener('dispose', (e) => { return this._onTextureDispose(e); }
+                    );
 
-	dispose() {
-		this.cubemaps = new WeakMap();
-	}
+                    return this._mapTextureMapping(
+                        renderTarget.texture,
+                        texture.mapping
+                    );
+                }
+                // image not yet ready. try the conversion next frame
+
+                return null;
+            }
+        }
+
+        return texture;
+    }
+
+    dispose() {
+        this.cubemaps = new WeakMap();
+    }
+
 }
 
 export { WebGLCubeMaps };

@@ -1,194 +1,209 @@
-import { Vector3 } from "../../math/Vector3";
-import { Vector2 } from "../../math/Vector2";
-import { CubicBezierCurve } from "../curves/CubicBezierCurve";
-import { EllipseCurve } from "../curves/EllipseCurve";
-import { LineCurve } from "../curves/LineCurve";
-import { QuadraticBezierCurve } from "../curves/QuadraticBezierCurve";
-import { SplineCurve } from "../curves/SplineCurve";
-import { CurvePath } from "./CurvePath";
+import { Vector3 } from '../../math/Vector3';
+import { Vector2 } from '../../math/Vector2';
+import { CubicBezierCurve } from '../curves/CubicBezierCurve';
+import { EllipseCurve } from '../curves/EllipseCurve';
+import { LineCurve } from '../curves/LineCurve';
+import { QuadraticBezierCurve } from '../curves/QuadraticBezierCurve';
+import { SplineCurve } from '../curves/SplineCurve';
+import { CurvePath } from './CurvePath';
 
 class Path extends CurvePath {
-	currentPoint: Vector2;
 
-	constructor(points?: (Vector2 | Vector3)[]) {
-		super();
-		this.type = "Path";
+    currentPoint: Vector2;
 
-		this.currentPoint = new Vector2();
+    constructor(points?: (Vector2 | Vector3)[]) {
+        super();
+        this.type = 'Path';
 
-		if (points && points.length > 0) {
-			this.setFromPoints(points);
-		}
-	}
+        this.currentPoint = new Vector2();
 
-	setFromPoints(points: (Vector2 | Vector3)[]) {
-		this.moveTo(points[0].x, points[0].y);
+        if (points && points.length > 0) {
+            this.setFromPoints(points);
+        }
+    }
 
-		for (let i = 1, l = points.length; i < l; i++) {
-			this.lineTo(points[i].x, points[i].y);
-		}
+    setFromPoints(points: (Vector2 | Vector3)[]) {
+        this.moveTo(points[0].x, points[0].y);
 
-		return this;
-	}
+        for (let i = 1, l = points.length; i < l; i++) {
+            this.lineTo(points[i].x, points[i].y);
+        }
 
-	moveTo(x, y) {
-		this.currentPoint.set(x, y); // TODO consider referencing vectors instead of copying?
+        return this;
+    }
 
-		return this;
-	}
+    moveTo(x, y) {
+        this.currentPoint.set(x, y); // TODO consider referencing vectors instead of copying?
 
-	lineTo(x, y) {
-		const curve = new LineCurve(this.currentPoint.clone(), new Vector2(x, y));
-		this.curves.push(curve);
+        return this;
+    }
 
-		this.currentPoint.set(x, y);
+    lineTo(x, y) {
+        const curve = new LineCurve(
+            this.currentPoint.clone(),
+            new Vector2(x, y)
+        );
 
-		return this;
-	}
+        this.curves.push(curve);
 
-	quadraticCurveTo(aCPx, aCPy, aX, aY) {
-		const curve = new QuadraticBezierCurve(
-			this.currentPoint.clone(),
-			new Vector2(aCPx, aCPy),
-			new Vector2(aX, aY)
-		);
+        this.currentPoint.set(x, y);
 
-		this.curves.push(curve);
+        return this;
+    }
 
-		this.currentPoint.set(aX, aY);
+    quadraticCurveTo(aCPx, aCPy, aX, aY) {
+        const curve = new QuadraticBezierCurve(
+            this.currentPoint.clone(),
+            new Vector2(aCPx, aCPy),
+            new Vector2(aX, aY)
+        );
 
-		return this;
-	}
+        this.curves.push(curve);
 
-	bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
-		const curve = new CubicBezierCurve(
-			this.currentPoint.clone(),
-			new Vector2(aCP1x, aCP1y),
-			new Vector2(aCP2x, aCP2y),
-			new Vector2(aX, aY)
-		);
+        this.currentPoint.set(aX, aY);
 
-		this.curves.push(curve);
+        return this;
+    }
 
-		this.currentPoint.set(aX, aY);
+    bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
+        const curve = new CubicBezierCurve(
+            this.currentPoint.clone(),
+            new Vector2(aCP1x, aCP1y),
+            new Vector2(aCP2x, aCP2y),
+            new Vector2(aX, aY)
+        );
 
-		return this;
-	}
+        this.curves.push(curve);
 
-	splineThru(pts /* Array of Vector*/) {
-		const npts = [this.currentPoint.clone()].concat(pts);
+        this.currentPoint.set(aX, aY);
 
-		const curve = new SplineCurve(npts);
-		this.curves.push(curve);
+        return this;
+    }
 
-		this.currentPoint.copy(pts[pts.length - 1]);
+    splineThru(pts /* Array of Vector*/) {
+        const npts = [this.currentPoint.clone()].concat(pts);
 
-		return this;
-	}
+        const curve = new SplineCurve(npts);
 
-	arc(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
-		const x0 = this.currentPoint.x;
-		const y0 = this.currentPoint.y;
+        this.curves.push(curve);
 
-		this.absarc(aX + x0, aY + y0, aRadius, aStartAngle, aEndAngle, aClockwise);
+        this.currentPoint.copy(pts[pts.length - 1]);
 
-		return this;
-	}
+        return this;
+    }
 
-	absarc(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
-		this.absellipse(
-			aX,
-			aY,
-			aRadius,
-			aRadius,
-			aStartAngle,
-			aEndAngle,
-			aClockwise
-		);
+    arc(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
+        const x0 = this.currentPoint.x;
+        const y0 = this.currentPoint.y;
 
-		return this;
-	}
+        this.absarc(
+            aX + x0,
+            aY + y0,
+            aRadius,
+            aStartAngle,
+            aEndAngle,
+            aClockwise
+        );
 
-	ellipse(
-		aX,
-		aY,
-		xRadius,
-		yRadius,
-		aStartAngle,
-		aEndAngle,
-		aClockwise,
-		aRotation
-	) {
-		const x0 = this.currentPoint.x;
-		const y0 = this.currentPoint.y;
+        return this;
+    }
 
-		this.absellipse(
-			aX + x0,
-			aY + y0,
-			xRadius,
-			yRadius,
-			aStartAngle,
-			aEndAngle,
-			aClockwise,
-			aRotation
-		);
+    absarc(aX, aY, aRadius, aStartAngle, aEndAngle, aClockwise) {
+        this.absellipse(
+            aX,
+            aY,
+            aRadius,
+            aRadius,
+            aStartAngle,
+            aEndAngle,
+            aClockwise
+        );
 
-		return this;
-	}
+        return this;
+    }
 
-	absellipse(
-		aX,
-		aY,
-		xRadius,
-		yRadius,
-		aStartAngle,
-		aEndAngle,
-		aClockwise,
-		aRotation?
-	) {
-		const curve = new EllipseCurve(
-			aX,
-			aY,
-			xRadius,
-			yRadius,
-			aStartAngle,
-			aEndAngle,
-			aClockwise,
-			aRotation
-		);
+    ellipse(
+        aX,
+        aY,
+        xRadius,
+        yRadius,
+        aStartAngle,
+        aEndAngle,
+        aClockwise,
+        aRotation
+    ) {
+        const x0 = this.currentPoint.x;
+        const y0 = this.currentPoint.y;
 
-		if (this.curves.length > 0) {
-			// if a previous curve is present, attempt to join
-			const firstPoint = curve.getPoint(0);
+        this.absellipse(
+            aX + x0,
+            aY + y0,
+            xRadius,
+            yRadius,
+            aStartAngle,
+            aEndAngle,
+            aClockwise,
+            aRotation
+        );
 
-			if (!firstPoint.equals(this.currentPoint)) {
-				this.lineTo(firstPoint.x, firstPoint.y);
-			}
-		}
+        return this;
+    }
 
-		this.curves.push(curve);
+    absellipse(
+        aX,
+        aY,
+        xRadius,
+        yRadius,
+        aStartAngle,
+        aEndAngle,
+        aClockwise,
+        aRotation?
+    ) {
+        const curve = new EllipseCurve(
+            aX,
+            aY,
+            xRadius,
+            yRadius,
+            aStartAngle,
+            aEndAngle,
+            aClockwise,
+            aRotation
+        );
 
-		const lastPoint = curve.getPoint(1);
-		this.currentPoint.copy(lastPoint);
+        if (this.curves.length > 0) {
+            // if a previous curve is present, attempt to join
+            const firstPoint = curve.getPoint(0);
 
-		return this;
-	}
+            if (!firstPoint.equals(this.currentPoint)) {
+                this.lineTo(firstPoint.x, firstPoint.y);
+            }
+        }
 
-	copy(source: Path) {
-		super.copy(source);
+        this.curves.push(curve);
 
-		this.currentPoint.copy(source.currentPoint);
+        const lastPoint = curve.getPoint(1);
 
-		return this;
-	}
+        this.currentPoint.copy(lastPoint);
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        return this;
+    }
 
-		this.currentPoint.fromArray(json.currentPoint);
+    copy(source: Path) {
+        super.copy(source);
 
-		return this;
-	}
+        this.currentPoint.copy(source.currentPoint);
+
+        return this;
+    }
+
+    fromJSON(json) {
+        super.fromJSON(json);
+
+        this.currentPoint.fromArray(json.currentPoint);
+
+        return this;
+    }
+
 }
 
 export { Path };

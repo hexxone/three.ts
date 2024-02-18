@@ -1,70 +1,77 @@
-import { Vector2 } from "../../math/Vector2";
-import { Vector3 } from "../../math/Vector3";
-import { Curve } from "../core/Curve";
-import { catmullRom } from "../core/Interpolations";
+import { Vector2 } from '../../math/Vector2';
+import { Vector3 } from '../../math/Vector3';
+import { Curve } from '../core/Curve';
+import { catmullRom } from '../core/Interpolations';
 
 class SplineCurve extends Curve {
-	points: Vector2[];
 
-	constructor(points?: Vector2[]) {
-		super();
+    points: Vector2[];
 
-		this.isSplineCurve = true;
-		this.type = "SplineCurve";
+    constructor(points?: Vector2[]) {
+        super();
 
-		this.points = points || [];
-	}
+        this.isSplineCurve = true;
+        this.type = 'SplineCurve';
 
-	getPoint(t: number, optionalTarget = new Vector2()) {
-		const point = optionalTarget;
+        this.points = points || [];
+    }
 
-		const points = this.points;
-		const p = (points.length - 1) * t;
+    getPoint(t: number, optionalTarget = new Vector2()) {
+        const point = optionalTarget;
 
-		const intPoint = Math.floor(p);
-		const weight = p - intPoint;
+        const { points } = this;
+        const p = (points.length - 1) * t;
 
-		const p0 = points[intPoint === 0 ? intPoint : intPoint - 1];
-		const p1 = points[intPoint];
-		const p2 =
-			points[intPoint > points.length - 2 ? points.length - 1 : intPoint + 1];
-		const p3 =
-			points[intPoint > points.length - 3 ? points.length - 1 : intPoint + 2];
+        const intPoint = Math.floor(p);
+        const weight = p - intPoint;
 
-		point.set(
-			catmullRom(weight, p0.x, p1.x, p2.x, p3.x),
-			catmullRom(weight, p0.y, p1.y, p2.y, p3.y)
-		);
+        const p0 = points[intPoint === 0 ? intPoint : intPoint - 1];
+        const p1 = points[intPoint];
+        const p2
+            = points[
+                intPoint > points.length - 2 ? points.length - 1 : intPoint + 1
+            ];
+        const p3
+            = points[
+                intPoint > points.length - 3 ? points.length - 1 : intPoint + 2
+            ];
 
-		return point;
-	}
+        point.set(
+            catmullRom(weight, p0.x, p1.x, p2.x, p3.x),
+            catmullRom(weight, p0.y, p1.y, p2.y, p3.y)
+        );
 
-	copy(source: SplineCurve) {
-		super.copy(source);
+        return point;
+    }
 
-		this.points = [];
+    copy(source: SplineCurve) {
+        super.copy(source);
 
-		for (let i = 0, l = source.points.length; i < l; i++) {
-			const point = source.points[i];
+        this.points = [];
 
-			this.points.push(point.clone());
-		}
+        for (let i = 0, l = source.points.length; i < l; i++) {
+            const point = source.points[i];
 
-		return this;
-	}
+            this.points.push(point.clone());
+        }
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        return this;
+    }
 
-		this.points = [];
+    fromJSON(json) {
+        super.fromJSON(json);
 
-		for (let i = 0, l = json.points.length; i < l; i++) {
-			const point = json.points[i];
-			this.points.push(new Vector2().fromArray(point));
-		}
+        this.points = [];
 
-		return this;
-	}
+        for (let i = 0, l = json.points.length; i < l; i++) {
+            const point = json.points[i];
+
+            this.points.push(new Vector2().fromArray(point));
+        }
+
+        return this;
+    }
+
 }
 
 export { SplineCurve };

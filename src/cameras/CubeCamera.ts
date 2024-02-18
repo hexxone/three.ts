@@ -1,8 +1,8 @@
-import { Object3D } from "../core/Object3D";
-import { Vector3 } from "../math/Vector3";
-import { WebGLRenderer } from "../renderers/WebGLRenderer";
-import { Scene } from "../scenes/Scene";
-import { PerspectiveCamera } from "./PerspectiveCamera";
+import { Object3D } from '../core/Object3D';
+import { Vector3 } from '../math/Vector3';
+import { WebGLRenderer } from '../renderers/WebGLRenderer';
+import { Scene } from '../scenes/Scene';
+import { PerspectiveCamera } from './PerspectiveCamera';
 
 const fov = 90;
 const aspect = 1;
@@ -11,103 +11,112 @@ const aspect = 1;
  * @public
  */
 class CubeCamera extends Object3D {
-	renderTarget: any;
 
-	constructor(near, far, renderTarget) {
-		super();
+    renderTarget: any;
 
-		this.type = "CubeCamera";
+    constructor(near, far, renderTarget) {
+        super();
 
-		if (renderTarget.isWebGLCubeRenderTarget !== true) {
-			console.error(
-				"CubeCamera: The constructor now expects an instance of WebGLCubeRenderTarget as third parameter."
-			);
-			return;
-		}
+        this.type = 'CubeCamera';
 
-		this.renderTarget = renderTarget;
+        if (renderTarget.isWebGLCubeRenderTarget !== true) {
+            console.error(
+                'CubeCamera: The constructor now expects an instance of WebGLCubeRenderTarget as third parameter.'
+            );
 
-		const cameraPX = new PerspectiveCamera(fov, aspect, near, far);
-		cameraPX.layers = this.layers;
-		cameraPX.up.set(0, -1, 0);
-		cameraPX.lookAt(new Vector3(1, 0, 0));
-		this.add(cameraPX);
+            return;
+        }
 
-		const cameraNX = new PerspectiveCamera(fov, aspect, near, far);
-		cameraNX.layers = this.layers;
-		cameraNX.up.set(0, -1, 0);
-		cameraNX.lookAt(new Vector3(-1, 0, 0));
-		this.add(cameraNX);
+        this.renderTarget = renderTarget;
 
-		const cameraPY = new PerspectiveCamera(fov, aspect, near, far);
-		cameraPY.layers = this.layers;
-		cameraPY.up.set(0, 0, 1);
-		cameraPY.lookAt(new Vector3(0, 1, 0));
-		this.add(cameraPY);
+        const cameraPX = new PerspectiveCamera(fov, aspect, near, far);
 
-		const cameraNY = new PerspectiveCamera(fov, aspect, near, far);
-		cameraNY.layers = this.layers;
-		cameraNY.up.set(0, 0, -1);
-		cameraNY.lookAt(new Vector3(0, -1, 0));
-		this.add(cameraNY);
+        cameraPX.layers = this.layers;
+        cameraPX.up.set(0, -1, 0);
+        cameraPX.lookAt(new Vector3(1, 0, 0));
+        this.add(cameraPX);
 
-		const cameraPZ = new PerspectiveCamera(fov, aspect, near, far);
-		cameraPZ.layers = this.layers;
-		cameraPZ.up.set(0, -1, 0);
-		cameraPZ.lookAt(new Vector3(0, 0, 1));
-		this.add(cameraPZ);
+        const cameraNX = new PerspectiveCamera(fov, aspect, near, far);
 
-		const cameraNZ = new PerspectiveCamera(fov, aspect, near, far);
-		cameraNZ.layers = this.layers;
-		cameraNZ.up.set(0, -1, 0);
-		cameraNZ.lookAt(new Vector3(0, 0, -1));
-		this.add(cameraNZ);
-	}
+        cameraNX.layers = this.layers;
+        cameraNX.up.set(0, -1, 0);
+        cameraNX.lookAt(new Vector3(-1, 0, 0));
+        this.add(cameraNX);
 
-	update(...args) {
-		const renderer = args[0] as WebGLRenderer;
-		const scene = args[1] as Scene;
+        const cameraPY = new PerspectiveCamera(fov, aspect, near, far);
 
-		if (this.parent === null) this.updateMatrixWorld();
+        cameraPY.layers = this.layers;
+        cameraPY.up.set(0, 0, 1);
+        cameraPY.lookAt(new Vector3(0, 1, 0));
+        this.add(cameraPY);
 
-		const renderTarget = this.renderTarget;
+        const cameraNY = new PerspectiveCamera(fov, aspect, near, far);
 
-		const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ] = this
-			.children as PerspectiveCamera[];
+        cameraNY.layers = this.layers;
+        cameraNY.up.set(0, 0, -1);
+        cameraNY.lookAt(new Vector3(0, -1, 0));
+        this.add(cameraNY);
 
-		const currentXrEnabled = renderer.xr.enabled;
-		const currentRenderTarget = renderer.getRenderTarget();
+        const cameraPZ = new PerspectiveCamera(fov, aspect, near, far);
 
-		renderer.xr.enabled = false;
+        cameraPZ.layers = this.layers;
+        cameraPZ.up.set(0, -1, 0);
+        cameraPZ.lookAt(new Vector3(0, 0, 1));
+        this.add(cameraPZ);
 
-		const generateMipmaps = renderTarget.texture.generateMipmaps;
+        const cameraNZ = new PerspectiveCamera(fov, aspect, near, far);
 
-		renderTarget.texture.generateMipmaps = false;
+        cameraNZ.layers = this.layers;
+        cameraNZ.up.set(0, -1, 0);
+        cameraNZ.lookAt(new Vector3(0, 0, -1));
+        this.add(cameraNZ);
+    }
 
-		renderer.setRenderTarget(renderTarget, 0);
-		renderer.render(scene, cameraPX);
+    update(...args) {
+        const renderer = args[0] as WebGLRenderer;
+        const scene = args[1] as Scene;
 
-		renderer.setRenderTarget(renderTarget, 1);
-		renderer.render(scene, cameraNX);
+        if (this.parent === null) { this.updateMatrixWorld(); }
 
-		renderer.setRenderTarget(renderTarget, 2);
-		renderer.render(scene, cameraPY);
+        const { renderTarget } = this;
 
-		renderer.setRenderTarget(renderTarget, 3);
-		renderer.render(scene, cameraNY);
+        const [cameraPX, cameraNX, cameraPY, cameraNY, cameraPZ, cameraNZ]
+            = this.children as PerspectiveCamera[];
 
-		renderer.setRenderTarget(renderTarget, 4);
-		renderer.render(scene, cameraPZ);
+        const currentXrEnabled = renderer.xr.enabled;
+        const currentRenderTarget = renderer.getRenderTarget();
 
-		renderTarget.texture.generateMipmaps = generateMipmaps;
+        renderer.xr.enabled = false;
 
-		renderer.setRenderTarget(renderTarget, 5);
-		renderer.render(scene, cameraNZ);
+        const { generateMipmaps } = renderTarget.texture;
 
-		renderer.setRenderTarget(currentRenderTarget);
+        renderTarget.texture.generateMipmaps = false;
 
-		renderer.xr.enabled = currentXrEnabled;
-	}
+        renderer.setRenderTarget(renderTarget, 0);
+        renderer.render(scene, cameraPX);
+
+        renderer.setRenderTarget(renderTarget, 1);
+        renderer.render(scene, cameraNX);
+
+        renderer.setRenderTarget(renderTarget, 2);
+        renderer.render(scene, cameraPY);
+
+        renderer.setRenderTarget(renderTarget, 3);
+        renderer.render(scene, cameraNY);
+
+        renderer.setRenderTarget(renderTarget, 4);
+        renderer.render(scene, cameraPZ);
+
+        renderTarget.texture.generateMipmaps = generateMipmaps;
+
+        renderer.setRenderTarget(renderTarget, 5);
+        renderer.render(scene, cameraNZ);
+
+        renderer.setRenderTarget(currentRenderTarget);
+
+        renderer.xr.enabled = currentXrEnabled;
+    }
+
 }
 
 export { CubeCamera };

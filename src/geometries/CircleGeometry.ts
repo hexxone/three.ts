@@ -1,81 +1,85 @@
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Vector2 } from "../math/Vector2";
-import { Vector3 } from "../math/Vector3";
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
 
 class CircleGeometry extends BufferGeometry {
-	constructor(
-		radius = 1,
-		segments = 8,
-		thetaStart = 0,
-		thetaLength = Math.PI * 2
-	) {
-		super();
 
-		this.type = "CircleGeometry";
+    constructor(
+        radius = 1,
+        segments = 8,
+        thetaStart = 0,
+        thetaLength = Math.PI * 2
+    ) {
+        super();
 
-		this.parameters = {
-			radius: radius,
-			segments: segments,
-			thetaStart: thetaStart,
-			thetaLength: thetaLength,
-		};
+        this.type = 'CircleGeometry';
 
-		segments = Math.max(3, segments);
+        this.parameters = {
+            radius,
+            segments,
+            thetaStart,
+            thetaLength
+        };
 
-		// buffers
+        segments = Math.max(3, segments);
 
-		const indices = [];
-		const vertices = [];
-		const normals = [];
-		const uvs = [];
+        // buffers
 
-		// helper variables
+        const indices = [];
+        const vertices = [];
+        const normals = [];
+        const uvs = [];
 
-		const vertex = new Vector3();
-		const uv = new Vector2();
+        // helper variables
 
-		// center point
+        const vertex = new Vector3();
+        const uv = new Vector2();
 
-		vertices.push(0, 0, 0);
-		normals.push(0, 0, 1);
-		uvs.push(0.5, 0.5);
+        // center point
 
-		for (let s = 0, i = 3; s <= segments; s++, i += 3) {
-			const segment = thetaStart + (s / segments) * thetaLength;
+        vertices.push(0, 0, 0);
+        normals.push(0, 0, 1);
+        uvs.push(0.5, 0.5);
 
-			// vertex
+        for (let i = 3, s = 0; s <= segments; s++, i += 3) {
+            const segment = thetaStart + (s / segments) * thetaLength;
 
-			vertex.x = radius * Math.cos(segment);
-			vertex.y = radius * Math.sin(segment);
+            // vertex
 
-			vertices.push(vertex.x, vertex.y, vertex.z);
+            vertex.x = radius * Math.cos(segment);
+            vertex.y = radius * Math.sin(segment);
 
-			// normal
+            vertices.push(vertex.x, vertex.y, vertex.z);
 
-			normals.push(0, 0, 1);
+            // normal
 
-			// uvs
+            normals.push(0, 0, 1);
 
-			uv.x = (vertices[i] / radius + 1) / 2;
-			uv.y = (vertices[i + 1] / radius + 1) / 2;
+            // uvs
 
-			uvs.push(uv.x, uv.y);
-		}
+            uv.x = (vertices[i] / radius + 1) / 2;
+            uv.y = (vertices[i + 1] / radius + 1) / 2;
 
-		// indices
+            uvs.push(uv.x, uv.y);
+        }
 
-		for (let i = 1; i <= segments; i++) {
-			indices.push(i, i + 1, 0);
-		}
+        // indices
 
-		// build geometry
+        for (let i = 1; i <= segments; i++) {
+            indices.push(i, i + 1, 0);
+        }
 
-		this.setIndex(indices);
-		this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
-		this.setAttribute("normal", new Float32BufferAttribute(normals, 3));
-		this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
-	}
+        // build geometry
+
+        this.setIndex(indices);
+        this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
+    }
+
 }
 
-export { CircleGeometry, CircleGeometry as CircleBufferGeometry };
+export {
+    CircleGeometry, CircleGeometry as CircleBufferGeometry
+};

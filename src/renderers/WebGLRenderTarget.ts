@@ -1,7 +1,7 @@
-import { LinearFilter } from "../constants";
-import { EventDispatcher } from "../core/EventDispatcher";
-import { Vector4 } from "../math/Vector4";
-import { Texture } from "../textures/Texture";
+import { LinearFilter } from '../constants';
+import { EventDispatcher } from '../core/EventDispatcher';
+import { Vector4 } from '../math/Vector4';
+import { Texture } from '../textures/Texture';
 
 /**
  * In options, we can specify:
@@ -10,128 +10,136 @@ import { Texture } from "../textures/Texture";
  * @public
  */
 class WebGLRenderTarget extends EventDispatcher {
-	width: any;
-	height: any;
-	depth: number;
-	scissor: Vector4;
-	scissorTest: boolean;
-	viewport: Vector4;
-	texture: Texture;
-	depthBuffer: any;
-	stencilBuffer: any;
-	depthTexture: any;
 
-	options: any;
+    width: any;
+    height: any;
+    depth: number;
+    scissor: Vector4;
+    scissorTest: boolean;
+    viewport: Vector4;
+    texture: Texture;
+    depthBuffer: any;
+    stencilBuffer: any;
+    depthTexture: any;
 
-	isWebGLCubeRenderTarget: boolean;
-	isWebGLMultipleRenderTargets: boolean;
-	isWebGLMultisampleRenderTarget: boolean;
+    options: any;
 
-	constructor(width: number, height: number, options?) {
-		super();
+    isWebGLCubeRenderTarget: boolean;
+    isWebGLMultipleRenderTargets: boolean;
+    isWebGLMultisampleRenderTarget: boolean;
 
-		this.isWebGLRenderTarget = true;
+    constructor(width: number, height: number, options?) {
+        super();
 
-		this.width = width;
-		this.height = height;
-		this.depth = 1;
+        this.isWebGLRenderTarget = true;
 
-		this.scissor = new Vector4(0, 0, width, height);
-		this.scissorTest = false;
+        this.width = width;
+        this.height = height;
+        this.depth = 1;
 
-		this.viewport = new Vector4(0, 0, width, height);
+        this.scissor = new Vector4(0, 0, width, height);
+        this.scissorTest = false;
 
-		this.options = options = options || {};
+        this.viewport = new Vector4(0, 0, width, height);
 
-		this.texture = new Texture(
-			undefined,
-			options.mapping,
-			options.wrapS,
-			options.wrapT,
-			options.magFilter,
-			options.minFilter,
-			options.format,
-			options.type,
-			options.anisotropy,
-			options.encoding
-		);
-		this.texture.isRenderTargetTexture = true;
+        this.options = options = options || {};
 
-		this.texture.image = {
-			width,
-			height,
-			depth: 1,
-		};
+        this.texture = new Texture(
+            undefined,
+            options.mapping,
+            options.wrapS,
+            options.wrapT,
+            options.magFilter,
+            options.minFilter,
+            options.format,
+            options.type,
+            options.anisotropy,
+            options.encoding
+        );
+        this.texture.isRenderTargetTexture = true;
 
-		this.texture.generateMipmaps =
-			options.generateMipmaps !== undefined ? options.generateMipmaps : false;
-		this.texture.minFilter =
-			options.minFilter !== undefined ? options.minFilter : LinearFilter;
+        this.texture.image = {
+            width,
+            height,
+            depth: 1
+        };
 
-		this.depthBuffer =
-			options.depthBuffer !== undefined ? options.depthBuffer : true;
-		this.stencilBuffer =
-			options.stencilBuffer !== undefined ? options.stencilBuffer : false;
-		this.depthTexture =
-			options.depthTexture !== undefined ? options.depthTexture : null;
-	}
+        this.texture.generateMipmaps
+            = options.generateMipmaps !== undefined
+                ? options.generateMipmaps
+                : false;
+        this.texture.minFilter
+            = options.minFilter !== undefined ? options.minFilter : LinearFilter;
 
-	setTexture(texture: Texture) {
-		texture.image = {
-			width: this.width,
-			height: this.height,
-			depth: this.depth,
-		};
+        this.depthBuffer
+            = options.depthBuffer !== undefined ? options.depthBuffer : true;
+        this.stencilBuffer
+            = options.stencilBuffer !== undefined ? options.stencilBuffer : false;
+        this.depthTexture
+            = options.depthTexture !== undefined ? options.depthTexture : null;
+    }
 
-		this.texture = texture;
-	}
+    setTexture(texture: Texture) {
+        texture.image = {
+            width: this.width,
+            height: this.height,
+            depth: this.depth
+        };
 
-	setSize(width, height, depth = 1) {
-		if (
-			this.width !== width ||
-			this.height !== height ||
-			this.depth !== depth
-		) {
-			this.width = width;
-			this.height = height;
-			this.depth = depth;
+        this.texture = texture;
+    }
 
-			this.texture.image.width = width;
-			this.texture.image.height = height;
-			this.texture.image.depth = depth;
+    setSize(width, height, depth = 1) {
+        if (
+            this.width !== width
+            || this.height !== height
+            || this.depth !== depth
+        ) {
+            this.width = width;
+            this.height = height;
+            this.depth = depth;
 
-			this.dispose();
-		}
+            this.texture.image.width = width;
+            this.texture.image.height = height;
+            this.texture.image.depth = depth;
 
-		this.viewport.set(0, 0, width, height);
-		this.scissor.set(0, 0, width, height);
-	}
+            this.dispose();
+        }
 
-	clone() {
-		return new WebGLRenderTarget(this.width, this.height, this.options).copy(
-			this
-		);
-	}
+        this.viewport.set(0, 0, width, height);
+        this.scissor.set(0, 0, width, height);
+    }
 
-	copy(source: WebGLRenderTarget) {
-		this.width = source.width;
-		this.height = source.height;
-		this.depth = source.depth;
+    clone() {
+        return new WebGLRenderTarget(
+            this.width,
+            this.height,
+            this.options
+        ).copy(this);
+    }
 
-		this.viewport.copy(source.viewport);
+    copy(source: WebGLRenderTarget) {
+        this.width = source.width;
+        this.height = source.height;
+        this.depth = source.depth;
 
-		this.texture = source.texture.clone();
+        this.viewport.copy(source.viewport);
 
-		this.depthBuffer = source.depthBuffer;
-		this.stencilBuffer = source.stencilBuffer;
-		this.depthTexture = source.depthTexture;
+        this.texture = source.texture.clone();
 
-		return this;
-	}
+        this.depthBuffer = source.depthBuffer;
+        this.stencilBuffer = source.stencilBuffer;
+        this.depthTexture = source.depthTexture;
 
-	dispose() {
-		this.dispatchEvent({ type: "dispose" });
-	}
+        return this;
+    }
+
+    dispose() {
+        this.dispatchEvent({
+            type: 'dispose'
+        });
+    }
+
 }
 
 export { WebGLRenderTarget };

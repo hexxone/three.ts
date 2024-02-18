@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *  color: <hex>,
@@ -10,41 +9,43 @@
  * }
  */
 
-import { Color } from "../math/Color";
-import { Material } from "./Material";
+import { Color } from '../math/Color';
+import { Material } from './Material';
 
 class LineBasicMaterial extends Material {
-	linecap: string;
-	linejoin: string;
 
-	constructor() {
-		super();
+    linecap: string;
+    linejoin: string;
 
-		this.isLineBasicMaterial = true;
-		this.type = "LineBasicMaterial";
+    constructor() {
+        super();
 
-		this.color = new Color(0xffffff);
+        this.isLineBasicMaterial = true;
+        this.type = 'LineBasicMaterial';
 
-		this.linewidth = 1;
-		this.linecap = "round";
-		this.linejoin = "round";
+        this.color = new Color(0xffffff);
 
-		this.morphTargets = false;
-	}
+        this.linewidth = 1;
+        this.linecap = 'round';
+        this.linejoin = 'round';
 
-	copy(source: LineBasicMaterial) {
-		super.copy(source);
+        this.morphTargets = false;
+    }
 
-		this.color.copy(source.color);
+    copy(source: LineBasicMaterial) {
+        super.copy(source);
 
-		this.linewidth = source.linewidth;
-		this.linecap = source.linecap;
-		this.linejoin = source.linejoin;
+        this.color.copy(source.color);
 
-		this.morphTargets = source.morphTargets;
+        this.linewidth = source.linewidth;
+        this.linecap = source.linecap;
+        this.linejoin = source.linejoin;
 
-		return this;
-	}
+        this.morphTargets = source.morphTargets;
+
+        return this;
+    }
+
 }
 
 export { LineBasicMaterial };

@@ -1,18 +1,17 @@
-import { Material } from "../materials/Material";
-import { Euler } from "../math/Euler";
-import { generateUUID } from "../math/MathUtils";
-import { Matrix3 } from "../math/Matrix3";
-import { Matrix4 } from "../math/Matrix4";
-import { Quaternion } from "../math/Quaternion";
-import { Vector3 } from "../math/Vector3";
-import { IIntersection } from "../objects/IIntersection";
-import { Skeleton } from "../objects/Skeleton";
-import { BufferAttribute } from "./BufferAttribute";
-import { BufferGeometry } from "./BufferGeometry";
-import { EventDispatcher, EventObject } from "./EventDispatcher";
-import { Layers } from "./Layers";
-import { Raycaster } from "./Raycaster";
-
+import { Material } from '../materials/Material';
+import { Euler } from '../math/Euler';
+import { generateUUID } from '../math/MathUtils';
+import { Matrix3 } from '../math/Matrix3';
+import { Matrix4 } from '../math/Matrix4';
+import { Quaternion } from '../math/Quaternion';
+import { Vector3 } from '../math/Vector3';
+import { IIntersection } from '../objects/IIntersection';
+import { Skeleton } from '../objects/Skeleton';
+import { BufferAttribute } from './BufferAttribute';
+import { BufferGeometry } from './BufferGeometry';
+import { EventDispatcher, EventObject } from './EventDispatcher';
+import { Layers } from './Layers';
+import { Raycaster } from './Raycaster';
 
 let _object3DId = 0;
 
@@ -29,8 +28,12 @@ const _xAxis = new Vector3(1, 0, 0);
 const _yAxis = new Vector3(0, 1, 0);
 const _zAxis = new Vector3(0, 0, 1);
 
-const _addedEvent = { type: "added" } as EventObject;
-const _removedEvent = { type: "removed" } as EventObject;
+const _addedEvent = {
+    type: 'added'
+} as EventObject;
+const _removedEvent = {
+    type: 'removed'
+} as EventObject;
 
 export const DefaultMatrixAutoUpdate = true;
 export const DefaultUp = new Vector3(0, 1, 0);
@@ -39,529 +42,541 @@ export const DefaultUp = new Vector3(0, 1, 0);
  * @public
  */
 export class Object3D extends EventDispatcher {
-	isObject3D: boolean;
-
-	id: number;
-	uuid: string;
-	name: string;
-	type: string;
 
-	parent: Object3D | null;
-	children: Object3D[];
+    isObject3D: boolean;
 
-	up: Vector3 = null;
-	position: Vector3 = null;
-	rotation: Euler = null;
-	quaternion: Quaternion = null;
-	scale: Vector3 = null;
+    id: number;
+    uuid: string;
+    name: string;
+    type: string;
 
-	modelViewMatrix = new Matrix4();
-	normalMatrix = new Matrix3();
+    parent: Object3D | null;
+    children: Object3D[];
 
-	matrix = new Matrix4();
-	matrixWorld = new Matrix4();
-	matrixAutoUpdate = DefaultMatrixAutoUpdate;
-	matrixWorldNeedsUpdate = false;
-	instanceMatrix: BufferAttribute;
+    up: Vector3 = null;
+    position: Vector3 = null;
+    rotation: Euler = null;
+    quaternion: Quaternion = null;
+    scale: Vector3 = null;
 
-	layers = new Layers();
-	visible = true;
-	castShadow = false;
-	receiveShadow = false;
-	frustumCulled = true;
+    modelViewMatrix = new Matrix4();
+    normalMatrix = new Matrix3();
 
-	renderOrder = 0;
-	animations = [];
-	userData = {};
-	geometry: BufferGeometry;
+    matrix = new Matrix4();
+    matrixWorld = new Matrix4();
+    matrixAutoUpdate = DefaultMatrixAutoUpdate;
+    matrixWorldNeedsUpdate = false;
+    instanceMatrix: BufferAttribute;
 
-	count: number;
+    layers = new Layers();
+    visible = true;
+    castShadow = false;
+    receiveShadow = false;
+    frustumCulled = true;
 
-	bindMode: string;
-	bindMatrix: Matrix4;
+    renderOrder = 0;
+    animations = [];
+    userData = {};
+    geometry: BufferGeometry;
 
-	skeleton: Skeleton;
-	material: Material;
+    count: number;
 
-	customDepthMaterial?: Material;
-	customDistanceMaterial?: Material;
+    bindMode: string;
+    bindMatrix: Matrix4;
 
-	morphTargetInfluences: number[];
-	morphTargetDictionary: {
-		[name: string]: number;
-	};
+    skeleton: Skeleton;
+    material: Material;
 
-	isBone: boolean;
-	isCamera: boolean;
-	isLight: boolean;
-	isInstancedMesh: boolean;
-	isMesh: boolean;
-	isLine: boolean;
-	isPoints: boolean;
-	isSkinnedMesh: boolean;
-	isScene: boolean;
-	autoUpdate: boolean;
-	isImmediateRenderObject: boolean;
-	isGroup: boolean;
-	isLOD: boolean;
-	isSprite: boolean;
-	isSkeletonHelper: boolean;
+    customDepthMaterial?: Material;
+    customDistanceMaterial?: Material;
 
-	constructor() {
-		super();
-		this.isObject3D = true;
+    morphTargetInfluences: number[];
+    morphTargetDictionary: {
+        [name: string]: number;
+    };
 
-		Object.defineProperty(this, "id", { value: _object3DId++ });
+    isBone: boolean;
+    isCamera: boolean;
+    isLight: boolean;
+    isInstancedMesh: boolean;
+    isMesh: boolean;
+    isLine: boolean;
+    isPoints: boolean;
+    isSkinnedMesh: boolean;
+    isScene: boolean;
+    autoUpdate: boolean;
+    isImmediateRenderObject: boolean;
+    isGroup: boolean;
+    isLOD: boolean;
+    isSprite: boolean;
+    isSkeletonHelper: boolean;
 
-		this.uuid = generateUUID();
+    constructor() {
+        super();
+        this.isObject3D = true;
 
-		this.name = "";
-		this.type = "Object3D";
+        Object.defineProperty(this, 'id', {
+            value: _object3DId++
+        });
 
-		this.parent = null;
-		this.children = [];
+        this.uuid = generateUUID();
 
-		this.up = DefaultUp.clone();
+        this.name = '';
+        this.type = 'Object3D';
 
-		this.position = new Vector3();
+        this.parent = null;
+        this.children = [];
 
-		this.rotation = new Euler();
-		this.rotation._onChange(this._onRotationChange.bind(this));
+        this.up = DefaultUp.clone();
 
-		this.quaternion = new Quaternion();
-		this.quaternion._onChange(this._onQuaternionChange.bind(this));
+        this.position = new Vector3();
 
-		this.scale = new Vector3(1, 1, 1);
-	}
+        this.rotation = new Euler();
+        this.rotation._onChange(this._onRotationChange.bind(this));
 
-	_onRotationChange() {
-		this.quaternion.setFromEuler(this.rotation, false);
-	}
+        this.quaternion = new Quaternion();
+        this.quaternion._onChange(this._onQuaternionChange.bind(this));
 
-	_onQuaternionChange() {
-		this.rotation.setFromQuaternion(this.quaternion, null, false);
-	}
+        this.scale = new Vector3(1, 1, 1);
+    }
 
-	/* renderer, scene, camera, geometry, material, group */
-	onBeforeRender(...args) {}
+    _onRotationChange() {
+        this.quaternion.setFromEuler(this.rotation, false);
+    }
 
-	/* renderer, scene, camera, geometry, material, group */
-	onAfterRender(...args) {}
+    _onQuaternionChange() {
+        this.rotation.setFromQuaternion(this.quaternion, null, false);
+    }
 
-	update(...args) {}
+    /* renderer, scene, camera, geometry, material, group */
+    onBeforeRender(..._args) {}
 
-	applyMatrix4(matrix: Matrix4) {
-		if (this.matrixAutoUpdate) this.updateMatrix();
+    /* renderer, scene, camera, geometry, material, group */
+    onAfterRender(..._args) {}
 
-		this.matrix.premultiply(matrix);
+    update(..._args) {}
 
-		this.matrix.decompose(this.position, this.quaternion, this.scale);
-	}
+    applyMatrix4(matrix: Matrix4) {
+        if (this.matrixAutoUpdate) { this.updateMatrix(); }
 
-	applyQuaternion(q: Quaternion) {
-		this.quaternion.premultiply(q);
+        this.matrix.premultiply(matrix);
 
-		return this;
-	}
+        this.matrix.decompose(this.position, this.quaternion, this.scale);
+    }
 
-	setRotationFromAxisAngle(axis, angle) {
-		// assumes axis is normalized
+    applyQuaternion(q: Quaternion) {
+        this.quaternion.premultiply(q);
 
-		this.quaternion.setFromAxisAngle(axis, angle);
-	}
+        return this;
+    }
 
-	setRotationFromEuler(euler: Euler) {
-		this.quaternion.setFromEuler(euler, true);
-	}
+    setRotationFromAxisAngle(axis, angle) {
+        // assumes axis is normalized
 
-	setRotationFromMatrix(m: Matrix4) {
-		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
+        this.quaternion.setFromAxisAngle(axis, angle);
+    }
 
-		this.quaternion.setFromRotationMatrix(m);
-	}
+    setRotationFromEuler(euler: Euler) {
+        this.quaternion.setFromEuler(euler, true);
+    }
 
-	setRotationFromQuaternion(q: Quaternion) {
-		// assumes q is normalized
+    setRotationFromMatrix(m: Matrix4) {
+        // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
-		this.quaternion.copy(q);
-	}
+        this.quaternion.setFromRotationMatrix(m);
+    }
 
-	rotateOnAxis(axis: Vector3, angle) {
-		// rotate object on axis in object space
-		// axis is assumed to be normalized
+    setRotationFromQuaternion(q: Quaternion) {
+        // assumes q is normalized
 
-		_q1.setFromAxisAngle(axis, angle);
+        this.quaternion.copy(q);
+    }
 
-		this.quaternion.multiply(_q1);
+    rotateOnAxis(axis: Vector3, angle) {
+        // rotate object on axis in object space
+        // axis is assumed to be normalized
 
-		return this;
-	}
+        _q1.setFromAxisAngle(axis, angle);
 
-	rotateOnWorldAxis(axis, angle) {
-		// rotate object on axis in world space
-		// axis is assumed to be normalized
-		// method assumes no rotated parent
+        this.quaternion.multiply(_q1);
 
-		_q1.setFromAxisAngle(axis, angle);
+        return this;
+    }
 
-		this.quaternion.premultiply(_q1);
+    rotateOnWorldAxis(axis, angle) {
+        // rotate object on axis in world space
+        // axis is assumed to be normalized
+        // method assumes no rotated parent
 
-		return this;
-	}
+        _q1.setFromAxisAngle(axis, angle);
 
-	rotateX(angle) {
-		return this.rotateOnAxis(_xAxis, angle);
-	}
+        this.quaternion.premultiply(_q1);
 
-	rotateY(angle) {
-		return this.rotateOnAxis(_yAxis, angle);
-	}
+        return this;
+    }
 
-	rotateZ(angle) {
-		return this.rotateOnAxis(_zAxis, angle);
-	}
+    rotateX(angle) {
+        return this.rotateOnAxis(_xAxis, angle);
+    }
 
-	translateOnAxis(axis, distance) {
-		// translate object by distance along axis in object space
-		// axis is assumed to be normalized
+    rotateY(angle) {
+        return this.rotateOnAxis(_yAxis, angle);
+    }
 
-		_v1.copy(axis).applyQuaternion(this.quaternion);
+    rotateZ(angle) {
+        return this.rotateOnAxis(_zAxis, angle);
+    }
 
-		this.position.add(_v1.multiplyScalar(distance));
+    translateOnAxis(axis, distance) {
+        // translate object by distance along axis in object space
+        // axis is assumed to be normalized
 
-		return this;
-	}
+        _v1.copy(axis).applyQuaternion(this.quaternion);
 
-	translateX(distance) {
-		return this.translateOnAxis(_xAxis, distance);
-	}
+        this.position.add(_v1.multiplyScalar(distance));
 
-	translateY(distance) {
-		return this.translateOnAxis(_yAxis, distance);
-	}
+        return this;
+    }
 
-	translateZ(distance) {
-		return this.translateOnAxis(_zAxis, distance);
-	}
+    translateX(distance) {
+        return this.translateOnAxis(_xAxis, distance);
+    }
 
-	localToWorld(vector: Vector3) {
-		return vector.applyMatrix4(this.matrixWorld);
-	}
+    translateY(distance) {
+        return this.translateOnAxis(_yAxis, distance);
+    }
 
-	worldToLocal(vector: Vector3) {
-		return vector.applyMatrix4(_m1.copy(this.matrixWorld).invert());
-	}
+    translateZ(distance) {
+        return this.translateOnAxis(_zAxis, distance);
+    }
 
-	lookAt(x, y?, z?) {
-		// This method does not support objects having non-uniformly-scaled parent(s)
+    localToWorld(vector: Vector3) {
+        return vector.applyMatrix4(this.matrixWorld);
+    }
 
-		if (x.isVector3) {
-			_target.copy(x);
-		} else {
-			_target.set(x, y, z);
-		}
+    worldToLocal(vector: Vector3) {
+        return vector.applyMatrix4(_m1.copy(this.matrixWorld).invert());
+    }
 
-		const parent = this.parent;
+    lookAt(x, y?, z?) {
+        // This method does not support objects having non-uniformly-scaled parent(s)
 
-		this.updateWorldMatrix(true, false);
+        if (x.isVector3) {
+            _target.copy(x);
+        } else {
+            _target.set(x, y, z);
+        }
 
-		_position.setFromMatrixPosition(this.matrixWorld);
+        const { parent } = this;
 
-		if (this.isCamera || this.isLight) {
-			_m1.lookAt(_position, _target, this.up);
-		} else {
-			_m1.lookAt(_target, _position, this.up);
-		}
+        this.updateWorldMatrix(true, false);
 
-		this.quaternion.setFromRotationMatrix(_m1);
+        _position.setFromMatrixPosition(this.matrixWorld);
 
-		if (parent) {
-			_m1.extractRotation(parent.matrixWorld);
-			_q1.setFromRotationMatrix(_m1);
-			this.quaternion.premultiply(_q1.invert());
-		}
-	}
+        if (this.isCamera || this.isLight) {
+            _m1.lookAt(_position, _target, this.up);
+        } else {
+            _m1.lookAt(_target, _position, this.up);
+        }
 
-	add(...args: Object3D[]) {
-		const object = args[0];
+        this.quaternion.setFromRotationMatrix(_m1);
 
-		if (args.length > 1) {
-			for (let i = 0; i < args.length; i++) {
-				this.add(args[i]);
-			}
+        if (parent) {
+            _m1.extractRotation(parent.matrixWorld);
+            _q1.setFromRotationMatrix(_m1);
+            this.quaternion.premultiply(_q1.invert());
+        }
+    }
 
-			return this;
-		}
+    add(...args: Object3D[]) {
+        const object = args[0];
 
-		if (object === this) {
-			console.error(
-				"Object3D.add: object can't be added as a child of itself.",
-				object
-			);
-			return this;
-		}
+        if (args.length > 1) {
+            for (let i = 0; i < args.length; i++) {
+                this.add(args[i]);
+            }
 
-		if (object && object.isObject3D) {
-			if (object.parent !== null) {
-				object.parent.remove(object);
-			}
+            return this;
+        }
 
-			object.parent = this;
-			this.children.push(object);
+        if (object === this) {
+            console.error(
+                'Object3D.add: object can\'t be added as a child of itself.',
+                object
+            );
 
-			object.dispatchEvent(_addedEvent);
-		} else {
-			console.error(
-				"Object3D.add: object not an instance of Object3D.",
-				object
-			);
-		}
+            return this;
+        }
 
-		return this;
-	}
+        if (object && object.isObject3D) {
+            if (object.parent !== null) {
+                object.parent.remove(object);
+            }
 
-	remove(...args: Object3D[]) {
-		const object = args[0];
+            object.parent = this;
+            this.children.push(object);
 
-		if (args.length > 1) {
-			for (let i = 0; i < args.length; i++) {
-				this.remove(args[i]);
-			}
+            object.dispatchEvent(_addedEvent);
+        } else {
+            console.error(
+                'Object3D.add: object not an instance of Object3D.',
+                object
+            );
+        }
 
-			return this;
-		}
+        return this;
+    }
 
-		const index = this.children.indexOf(object);
+    remove(...args: Object3D[]) {
+        const object = args[0];
 
-		if (index !== -1) {
-			object.parent = null;
-			this.children.splice(index, 1);
+        if (args.length > 1) {
+            for (let i = 0; i < args.length; i++) {
+                this.remove(args[i]);
+            }
 
-			object.dispatchEvent(_removedEvent);
-		}
+            return this;
+        }
 
-		return this;
-	}
+        const index = this.children.indexOf(object);
 
-	clear() {
-		for (let i = 0; i < this.children.length; i++) {
-			const object = this.children[i];
+        if (index !== -1) {
+            object.parent = null;
+            this.children.splice(index, 1);
 
-			object.parent = null;
+            object.dispatchEvent(_removedEvent);
+        }
 
-			object.dispatchEvent(_removedEvent);
-		}
+        return this;
+    }
 
-		this.children.length = 0;
+    clear() {
+        for (let i = 0; i < this.children.length; i++) {
+            const object = this.children[i];
 
-		return this;
-	}
+            object.parent = null;
 
-	attach(object: Object3D) {
-		// adds object as a child of this, while maintaining the object's world transform
+            object.dispatchEvent(_removedEvent);
+        }
 
-		this.updateWorldMatrix(true, false);
+        this.children.length = 0;
 
-		_m1.copy(this.matrixWorld).invert();
+        return this;
+    }
 
-		if (object.parent !== null) {
-			object.parent.updateWorldMatrix(true, false);
+    attach(object: Object3D) {
+        // adds object as a child of this, while maintaining the object's world transform
 
-			_m1.multiply(object.parent.matrixWorld);
-		}
+        this.updateWorldMatrix(true, false);
 
-		object.applyMatrix4(_m1);
+        _m1.copy(this.matrixWorld).invert();
 
-		this.add(object);
+        if (object.parent !== null) {
+            object.parent.updateWorldMatrix(true, false);
 
-		object.updateWorldMatrix(false, true);
+            _m1.multiply(object.parent.matrixWorld);
+        }
 
-		return this;
-	}
+        object.applyMatrix4(_m1);
 
-	getObjectById(id) {
-		return this.getObjectByProperty("id", id);
-	}
+        this.add(object);
 
-	getObjectByName(name) {
-		return this.getObjectByProperty("name", name);
-	}
+        object.updateWorldMatrix(false, true);
 
-	getObjectByProperty(name, value) {
-		if (this[name] === value) return this;
+        return this;
+    }
 
-		for (let i = 0, l = this.children.length; i < l; i++) {
-			const child = this.children[i];
-			const object = child.getObjectByProperty(name, value);
+    getObjectById(id) {
+        return this.getObjectByProperty('id', id);
+    }
 
-			if (object !== undefined) {
-				return object;
-			}
-		}
+    getObjectByName(name) {
+        return this.getObjectByProperty('name', name);
+    }
 
-		return undefined;
-	}
+    getObjectByProperty(name, value) {
+        if (this[name] === value) { return this; }
 
-	getWorldPosition(target: Vector3) {
-		this.updateWorldMatrix(true, false);
+        for (let i = 0, l = this.children.length; i < l; i++) {
+            const child = this.children[i];
+            const object = child.getObjectByProperty(name, value);
 
-		return target.setFromMatrixPosition(this.matrixWorld);
-	}
+            if (object !== undefined) {
+                return object;
+            }
+        }
 
-	getWorldQuaternion(target: Quaternion) {
-		this.updateWorldMatrix(true, false);
+        return undefined;
+    }
 
-		this.matrixWorld.decompose(_position, target, _scale);
+    getWorldPosition(target: Vector3) {
+        this.updateWorldMatrix(true, false);
 
-		return target;
-	}
+        return target.setFromMatrixPosition(this.matrixWorld);
+    }
 
-	getWorldScale(target: Vector3) {
-		this.updateWorldMatrix(true, false);
+    getWorldQuaternion(target: Quaternion) {
+        this.updateWorldMatrix(true, false);
 
-		this.matrixWorld.decompose(_position, _quaternion, target);
+        this.matrixWorld.decompose(_position, target, _scale);
 
-		return target;
-	}
+        return target;
+    }
 
-	getWorldDirection(target: Vector3) {
-		this.updateWorldMatrix(true, false);
+    getWorldScale(target: Vector3) {
+        this.updateWorldMatrix(true, false);
 
-		const e = this.matrixWorld.elements;
+        this.matrixWorld.decompose(_position, _quaternion, target);
 
-		return target.set(e[8], e[9], e[10]).normalize();
-	}
+        return target;
+    }
 
-	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
-		// TODO fix impl arguments
-	}
+    getWorldDirection(target: Vector3) {
+        this.updateWorldMatrix(true, false);
 
-	traverse(callback: (object: Object3D) => void) {
-		callback(this);
+        const e = this.matrixWorld.elements;
 
-		const children = this.children;
+        return target.set(e[8], e[9], e[10]).normalize();
+    }
 
-		for (let i = 0, l = children.length; i < l; i++) {
-			children[i].traverse(callback);
-		}
-	}
+    raycast(_raycaster: Raycaster, _intersects: IIntersection[]) {
+        // TODO fix impl arguments
+    }
 
-	traverseVisible(callback: (object: Object3D) => void) {
-		if (this.visible === false) return;
+    traverse(callback: (object: Object3D) => void) {
+        callback(this);
 
-		callback(this);
+        const { children } = this;
 
-		const children = this.children;
+        for (let i = 0, l = children.length; i < l; i++) {
+            children[i].traverse(callback);
+        }
+    }
 
-		for (let i = 0, l = children.length; i < l; i++) {
-			children[i].traverseVisible(callback);
-		}
-	}
+    traverseVisible(callback: (object: Object3D) => void) {
+        if (this.visible === false) { return; }
 
-	traverseAncestors(callback: (object: Object3D) => void) {
-		const parent = this.parent;
+        callback(this);
 
-		if (parent !== null) {
-			callback(parent);
+        const { children } = this;
 
-			parent.traverseAncestors(callback);
-		}
-	}
+        for (let i = 0, l = children.length; i < l; i++) {
+            children[i].traverseVisible(callback);
+        }
+    }
 
-	updateMatrix() {
-		this.matrix.compose(this.position, this.quaternion, this.scale);
+    traverseAncestors(callback: (object: Object3D) => void) {
+        const { parent } = this;
 
-		this.matrixWorldNeedsUpdate = true;
-	}
+        if (parent !== null) {
+            callback(parent);
 
-	updateMatrixWorld(force?) {
-		if (this.matrixAutoUpdate) this.updateMatrix();
+            parent.traverseAncestors(callback);
+        }
+    }
 
-		if (this.matrixWorldNeedsUpdate || force) {
-			if (this.parent === null) {
-				this.matrixWorld.copy(this.matrix);
-			} else {
-				this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
-			}
+    updateMatrix() {
+        this.matrix.compose(this.position, this.quaternion, this.scale);
 
-			this.matrixWorldNeedsUpdate = false;
+        this.matrixWorldNeedsUpdate = true;
+    }
 
-			force = true;
-		}
+    updateMatrixWorld(force?) {
+        if (this.matrixAutoUpdate) { this.updateMatrix(); }
 
-		// update children
+        if (this.matrixWorldNeedsUpdate || force) {
+            if (this.parent === null) {
+                this.matrixWorld.copy(this.matrix);
+            } else {
+                this.matrixWorld.multiplyMatrices(
+                    this.parent.matrixWorld,
+                    this.matrix
+                );
+            }
 
-		const children = this.children;
+            this.matrixWorldNeedsUpdate = false;
 
-		for (let i = 0, l = children.length; i < l; i++) {
-			children[i].updateMatrixWorld(force);
-		}
-	}
+            force = true;
+        }
 
-	updateWorldMatrix(updateParents, updateChildren) {
-		const parent = this.parent;
+        // update children
 
-		if (updateParents === true && parent !== null) {
-			parent.updateWorldMatrix(true, false);
-		}
+        const { children } = this;
 
-		if (this.matrixAutoUpdate) this.updateMatrix();
+        for (let i = 0, l = children.length; i < l; i++) {
+            children[i].updateMatrixWorld(force);
+        }
+    }
 
-		if (this.parent === null) {
-			this.matrixWorld.copy(this.matrix);
-		} else {
-			this.matrixWorld.multiplyMatrices(this.parent.matrixWorld, this.matrix);
-		}
+    updateWorldMatrix(updateParents, updateChildren) {
+        const { parent } = this;
 
-		// update children
+        if (updateParents === true && parent !== null) {
+            parent.updateWorldMatrix(true, false);
+        }
 
-		if (updateChildren === true) {
-			const children = this.children;
+        if (this.matrixAutoUpdate) { this.updateMatrix(); }
 
-			for (let i = 0, l = children.length; i < l; i++) {
-				children[i].updateWorldMatrix(false, true);
-			}
-		}
-	}
+        if (this.parent === null) {
+            this.matrixWorld.copy(this.matrix);
+        } else {
+            this.matrixWorld.multiplyMatrices(
+                this.parent.matrixWorld,
+                this.matrix
+            );
+        }
 
-	clone(recursive?) {
-		return new Object3D().copy(this, recursive);
-	}
+        // update children
 
-	copy(source: Object3D, recursive = true) {
-		this.name = source.name;
+        if (updateChildren === true) {
+            const { children } = this;
 
-		this.up.copy(source.up);
+            for (let i = 0, l = children.length; i < l; i++) {
+                children[i].updateWorldMatrix(false, true);
+            }
+        }
+    }
 
-		this.position.copy(source.position);
-		this.rotation.order = source.rotation.order;
-		this.quaternion.copy(source.quaternion);
-		this.scale.copy(source.scale);
+    clone(recursive?) {
+        return new Object3D().copy(this, recursive);
+    }
 
-		this.matrix.copy(source.matrix);
-		this.matrixWorld.copy(source.matrixWorld);
+    copy(source: Object3D, recursive = true) {
+        this.name = source.name;
 
-		this.matrixAutoUpdate = source.matrixAutoUpdate;
-		this.matrixWorldNeedsUpdate = source.matrixWorldNeedsUpdate;
+        this.up.copy(source.up);
 
-		this.layers.mask = source.layers.mask;
-		this.visible = source.visible;
+        this.position.copy(source.position);
+        this.rotation.order = source.rotation.order;
+        this.quaternion.copy(source.quaternion);
+        this.scale.copy(source.scale);
 
-		this.castShadow = source.castShadow;
-		this.receiveShadow = source.receiveShadow;
+        this.matrix.copy(source.matrix);
+        this.matrixWorld.copy(source.matrixWorld);
 
-		this.frustumCulled = source.frustumCulled;
-		this.renderOrder = source.renderOrder;
+        this.matrixAutoUpdate = source.matrixAutoUpdate;
+        this.matrixWorldNeedsUpdate = source.matrixWorldNeedsUpdate;
 
-		this.userData = JSON.parse(JSON.stringify(source.userData));
+        this.layers.mask = source.layers.mask;
+        this.visible = source.visible;
 
-		if (recursive === true) {
-			for (let i = 0; i < source.children.length; i++) {
-				const child = source.children[i];
-				this.add(child.clone());
-			}
-		}
+        this.castShadow = source.castShadow;
+        this.receiveShadow = source.receiveShadow;
 
-		return this;
-	}
+        this.frustumCulled = source.frustumCulled;
+        this.renderOrder = source.renderOrder;
+
+        this.userData = JSON.parse(JSON.stringify(source.userData));
+
+        if (recursive === true) {
+            for (let i = 0; i < source.children.length; i++) {
+                const child = source.children[i];
+
+                this.add(child.clone());
+            }
+        }
+
+        return this;
+    }
+
 }

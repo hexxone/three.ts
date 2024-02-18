@@ -1,325 +1,339 @@
-
 // TODO typing
 
-import { AdditiveAnimationBlendMode } from "../constants";
-import { Quaternion } from "../math/Quaternion";
-import { AnimationClip } from "./AnimationClip";
+import { AdditiveAnimationBlendMode } from '../constants';
+import { Quaternion } from '../math/Quaternion';
+import { AnimationClip } from './AnimationClip';
 
 /**
  * @public
  */
 const AnimationUtils = {
-	// same as Array.prototype.slice, but also works on typed arrays
-	arraySlice: function (array: any, from = 0, to?) {
-		if (AnimationUtils.isTypedArray(array)) {
-			// in ios9 array.subarray(from, undefined) will return empty array
-			// but array.subarray(from) or array.subarray(from, len) is correct
-			return new array.constructor(
-				array.subarray(from, to !== undefined ? to : array.length)
-			);
-		}
+    // same as Array.prototype.slice, but also works on typed arrays
+    arraySlice(array: any, from = 0, to?) {
+        if (AnimationUtils.isTypedArray(array)) {
+            // in ios9 array.subarray(from, undefined) will return empty array
+            // but array.subarray(from) or array.subarray(from, len) is correct
+            return new array.constructor(
+                array.subarray(from, to !== undefined ? to : array.length)
+            );
+        }
 
-		return array.slice(from, to);
-	},
+        return array.slice(from, to);
+    },
 
-	// converts an array to a specific type
-	convertArray: function (
-		myArray: any[],
-		MyType: any,
-		forceClone?: boolean
-	): any[] & Float32Array {
-		if (
-			!myArray || // let 'undefined' and 'null' pass
-			(!forceClone && myArray.constructor === MyType)
-		)
-			return myArray as any;
+    // converts an array to a specific type
+    convertArray(
+        myArray: any[],
+        MyType: any,
+        forceClone?: boolean
+    ): any[] & Float32Array {
+        if (
+            !myArray // let 'undefined' and 'null' pass
+            || (!forceClone && myArray.constructor === MyType)
+        ) { return myArray as any; }
 
-		if (typeof MyType["BYTES_PER_ELEMENT"] === "number") {
-			return new MyType(myArray); // create typed array
-		}
+        if (typeof MyType.BYTES_PER_ELEMENT === 'number') {
+            return new MyType(myArray); // create typed array
+        }
 
-		return Array.prototype.slice.call(myArray); // create Array
-	},
+        return Array.prototype.slice.call(myArray); // create Array
+    },
 
-	isTypedArray: function (object) {
-		return ArrayBuffer.isView(object) && !(object instanceof DataView);
-	},
+    isTypedArray(object) {
+        return ArrayBuffer.isView(object) && !(object instanceof DataView);
+    },
 
-	// returns an array by which times and values can be sorted
-	getKeyframeOrder: function (times) {
-		function compareTime(i, j) {
-			return times[i] - times[j];
-		}
+    // returns an array by which times and values can be sorted
+    getKeyframeOrder(times) {
+        function compareTime(i, j) {
+            return times[i] - times[j];
+        }
 
-		const n = times.length;
-		const result = new Array(n);
-		for (let i = 0; i !== n; ++i) result[i] = i;
+        const n = times.length;
+        const result = new Array(n);
 
-		result.sort(compareTime);
+        for (let i = 0; i !== n; ++i) { result[i] = i; }
 
-		return result;
-	},
+        result.sort(compareTime);
 
-	// uses the array previously returned by 'getKeyframeOrder' to sort data
-	sortedArray: function (values, stride, order) {
-		const nValues = values.length;
-		const result = new values.constructor(nValues);
+        return result;
+    },
 
-		for (let i = 0, dstOffset = 0; dstOffset !== nValues; ++i) {
-			const srcOffset = order[i] * stride;
+    // uses the array previously returned by 'getKeyframeOrder' to sort data
+    sortedArray(values, stride, order) {
+        const nValues = values.length;
+        const result = new values.constructor(nValues);
 
-			for (let j = 0; j !== stride; ++j) {
-				result[dstOffset++] = values[srcOffset + j];
-			}
-		}
+        for (let dstOffset = 0, i = 0; dstOffset !== nValues; ++i) {
+            const srcOffset = order[i] * stride;
 
-		return result;
-	},
+            for (let j = 0; j !== stride; ++j) {
+                result[dstOffset++] = values[srcOffset + j];
+            }
+        }
 
-	// function for parsing AOS keyframe formats
-	flattenJSON: function (
-		jsonKeys,
-		times: any[],
-		values: any[],
-		valuePropertyName
-	) {
-		let i = 1;
-		let key = jsonKeys[0];
-		while (key !== undefined && key[valuePropertyName] === undefined) {
-			key = jsonKeys[i++];
-		}
+        return result;
+    },
 
-		if (key === undefined) return; // no data
+    // function for parsing AOS keyframe formats
+    flattenJSON(
+        jsonKeys,
+        times: any[],
+        values: any[],
+        valuePropertyName
+    ) {
+        let i = 1;
+        let key = jsonKeys[0];
 
-		let value = key[valuePropertyName];
-		if (value === undefined) return; // no data
+        while (key !== undefined && key[valuePropertyName] === undefined) {
+            key = jsonKeys[i++];
+        }
 
-		if (Array.isArray(value)) {
-			do {
-				value = key[valuePropertyName];
+        if (key === undefined) { return; } // no data
 
-				if (value !== undefined) {
-					times.push(key.time);
-					values.push(value); // push all elements
-				}
+        let value = key[valuePropertyName];
 
-				key = jsonKeys[i++];
-			} while (key !== undefined);
-		} else if (value.toArray !== undefined) {
-			// ...assume Math-ish
-			do {
-				value = key[valuePropertyName];
-				if (value !== undefined) {
-					times.push(key.time);
-					value.toArray(values, values.length);
-				}
+        if (value === undefined) { return; } // no data
 
-				key = jsonKeys[i++];
-			} while (key !== undefined);
-		} else {
-			// otherwise push as-is
-			do {
-				value = key[valuePropertyName];
-				if (value !== undefined) {
-					times.push(key.time);
-					values.push(value);
-				}
+        if (Array.isArray(value)) {
+            do {
+                value = key[valuePropertyName];
 
-				key = jsonKeys[i++];
-			} while (key !== undefined);
-		}
-	},
+                if (value !== undefined) {
+                    times.push(key.time);
+                    values.push(value); // push all elements
+                }
 
-	subclip: function (
-		sourceClip: AnimationClip,
-		name: string,
-		startFrame: number,
-		endFrame: number,
-		fps = 30
-	) {
-		const clip = sourceClip.clone();
+                key = jsonKeys[i++];
+            } while (key !== undefined);
+        } else if (value.toArray !== undefined) {
+            // ...assume Math-ish
+            do {
+                value = key[valuePropertyName];
+                if (value !== undefined) {
+                    times.push(key.time);
+                    value.toArray(values, values.length);
+                }
 
-		clip.name = name;
+                key = jsonKeys[i++];
+            } while (key !== undefined);
+        } else {
+            // otherwise push as-is
+            do {
+                value = key[valuePropertyName];
+                if (value !== undefined) {
+                    times.push(key.time);
+                    values.push(value);
+                }
 
-		const tracks = [];
+                key = jsonKeys[i++];
+            } while (key !== undefined);
+        }
+    },
 
-		for (let i = 0; i < clip.tracks.length; ++i) {
-			const track = clip.tracks[i];
-			const valueSize = track.getValueSize();
+    subclip(
+        sourceClip: AnimationClip,
+        name: string,
+        startFrame: number,
+        endFrame: number,
+        fps = 30
+    ) {
+        const clip = sourceClip.clone();
 
-			const times: number[] = [];
-			const values: number[] = [];
+        clip.name = name;
 
-			for (let j = 0; j < track.times.length; ++j) {
-				const frame = track.times[j] * fps;
+        const tracks = [];
 
-				if (frame < startFrame || frame >= endFrame) continue;
+        for (let i = 0; i < clip.tracks.length; ++i) {
+            const track = clip.tracks[i];
+            const valueSize = track.getValueSize();
 
-				times.push(track.times[j]);
+            const times: number[] = [];
+            const values: number[] = [];
 
-				for (let k = 0; k < valueSize; ++k) {
-					values.push(track.values[j * valueSize + k]);
-				}
-			}
+            for (let j = 0; j < track.times.length; ++j) {
+                const frame = track.times[j] * fps;
 
-			if (times.length === 0) continue;
+                if (frame < startFrame || frame >= endFrame) { continue; }
 
-			track.times = AnimationUtils.convertArray(times, track.times.constructor);
-			track.values = AnimationUtils.convertArray(
-				values,
-				track.values.constructor
-			);
+                times.push(track.times[j]);
 
-			tracks.push(track);
-		}
+                for (let k = 0; k < valueSize; ++k) {
+                    values.push(track.values[j * valueSize + k]);
+                }
+            }
 
-		clip.tracks = tracks;
+            if (times.length === 0) { continue; }
 
-		// find minimum .times value across all tracks in the trimmed clip
+            track.times = AnimationUtils.convertArray(
+                times,
+                track.times.constructor
+            );
+            track.values = AnimationUtils.convertArray(
+                values,
+                track.values.constructor
+            );
 
-		let minStartTime = Infinity;
+            tracks.push(track);
+        }
 
-		for (let i = 0; i < clip.tracks.length; ++i) {
-			if (minStartTime > clip.tracks[i].times[0]) {
-				minStartTime = clip.tracks[i].times[0];
-			}
-		}
+        clip.tracks = tracks;
 
-		// shift all tracks such that clip begins at t=0
+        // find minimum .times value across all tracks in the trimmed clip
 
-		for (let i = 0; i < clip.tracks.length; ++i) {
-			clip.tracks[i].shift(-1 * minStartTime);
-		}
+        let minStartTime = Infinity;
 
-		clip.resetDuration();
+        for (let i = 0; i < clip.tracks.length; ++i) {
+            if (minStartTime > clip.tracks[i].times[0]) {
+                minStartTime = clip.tracks[i].times[0];
+            }
+        }
 
-		return clip;
-	},
+        // shift all tracks such that clip begins at t=0
 
-	makeClipAdditive: function (
-		targetClip,
-		referenceFrame = 0,
-		referenceClip = targetClip,
-		fps = 30
-	) {
-		if (fps <= 0) fps = 30;
+        for (let i = 0; i < clip.tracks.length; ++i) {
+            clip.tracks[i].shift(-1 * minStartTime);
+        }
 
-		const numTracks = referenceClip.tracks.length;
-		const referenceTime = referenceFrame / fps;
+        clip.resetDuration();
 
-		// Make each track's values relative to the values at the reference frame
-		for (let i = 0; i < numTracks; ++i) {
-			const referenceTrack = referenceClip.tracks[i];
-			const referenceTrackType = referenceTrack.ValueTypeName;
+        return clip;
+    },
 
-			// Skip this track if it's non-numeric
-			if (referenceTrackType === "bool" || referenceTrackType === "string")
-				continue;
+    makeClipAdditive(
+        targetClip,
+        referenceFrame = 0,
+        referenceClip = targetClip,
+        fps = 30
+    ) {
+        if (fps <= 0) { fps = 30; }
 
-			// Find the track in the target clip whose name and type matches the reference track
-			const targetTrack = targetClip.tracks.find(function (track) {
-				return (
-					track.name === referenceTrack.name &&
-					track.ValueTypeName === referenceTrackType
-				);
-			});
+        const numTracks = referenceClip.tracks.length;
+        const referenceTime = referenceFrame / fps;
 
-			if (targetTrack === undefined) continue;
+        // Make each track's values relative to the values at the reference frame
+        for (let i = 0; i < numTracks; ++i) {
+            const referenceTrack = referenceClip.tracks[i];
+            const referenceTrackType = referenceTrack.ValueTypeName;
 
-			let referenceOffset = 0;
-			const referenceValueSize = referenceTrack.getValueSize();
+            // Skip this track if it's non-numeric
+            if (
+                referenceTrackType === 'bool'
+                || referenceTrackType === 'string'
+            ) { continue; }
 
-			if (
-				referenceTrack.createInterpolant
-					.isInterpolantFactoryMethodGLTFCubicSpline
-			) {
-				referenceOffset = referenceValueSize / 3;
-			}
+            // Find the track in the target clip whose name and type matches the reference track
+            const targetTrack = targetClip.tracks.find((track) => {
+                return (
+                    track.name === referenceTrack.name
+                    && track.ValueTypeName === referenceTrackType
+                );
+            });
 
-			let targetOffset = 0;
-			const targetValueSize = targetTrack.getValueSize();
+            if (targetTrack === undefined) { continue; }
 
-			if (
-				targetTrack.createInterpolant.isInterpolantFactoryMethodGLTFCubicSpline
-			) {
-				targetOffset = targetValueSize / 3;
-			}
+            let referenceOffset = 0;
+            const referenceValueSize = referenceTrack.getValueSize();
 
-			const lastIndex = referenceTrack.times.length - 1;
-			let referenceValue;
+            if (
+                referenceTrack.createInterpolant
+                    .isInterpolantFactoryMethodGLTFCubicSpline
+            ) {
+                referenceOffset = referenceValueSize / 3;
+            }
 
-			// Find the value to subtract out of the track
-			if (referenceTime <= referenceTrack.times[0]) {
-				// Reference frame is earlier than the first keyframe, so just use the first keyframe
-				const startIndex = referenceOffset;
-				const endIndex = referenceValueSize - referenceOffset;
-				referenceValue = AnimationUtils.arraySlice(
-					referenceTrack.values,
-					startIndex,
-					endIndex
-				);
-			} else if (referenceTime >= referenceTrack.times[lastIndex]) {
-				// Reference frame is after the last keyframe, so just use the last keyframe
-				const startIndex = lastIndex * referenceValueSize + referenceOffset;
-				const endIndex = startIndex + referenceValueSize - referenceOffset;
-				referenceValue = AnimationUtils.arraySlice(
-					referenceTrack.values,
-					startIndex,
-					endIndex
-				);
-			} else {
-				// Interpolate to the reference value
-				const interpolant = referenceTrack.createInterpolant();
-				const startIndex = referenceOffset;
-				const endIndex = referenceValueSize - referenceOffset;
-				interpolant.evaluate(referenceTime);
-				referenceValue = AnimationUtils.arraySlice(
-					interpolant.resultBuffer,
-					startIndex,
-					endIndex
-				);
-			}
+            let targetOffset = 0;
+            const targetValueSize = targetTrack.getValueSize();
 
-			// Conjugate the quaternion
-			if (referenceTrackType === "quaternion") {
-				const referenceQuat = new Quaternion()
-					.fromArray(referenceValue)
-					.normalize()
-					.conjugate();
-				referenceQuat.toArray(referenceValue);
-			}
+            if (
+                targetTrack.createInterpolant
+                    .isInterpolantFactoryMethodGLTFCubicSpline
+            ) {
+                targetOffset = targetValueSize / 3;
+            }
 
-			// Subtract the reference value from all of the track values
+            const lastIndex = referenceTrack.times.length - 1;
+            let referenceValue;
 
-			const numTimes = targetTrack.times.length;
-			for (let j = 0; j < numTimes; ++j) {
-				const valueStart = j * targetValueSize + targetOffset;
+            // Find the value to subtract out of the track
+            if (referenceTime <= referenceTrack.times[0]) {
+                // Reference frame is earlier than the first keyframe, so just use the first keyframe
+                const startIndex = referenceOffset;
+                const endIndex = referenceValueSize - referenceOffset;
 
-				if (referenceTrackType === "quaternion") {
-					// Multiply the conjugate for quaternion track types
-					Quaternion.multiplyQuaternionsFlat(
-						targetTrack.values,
-						valueStart,
-						referenceValue,
-						0,
-						targetTrack.values,
-						valueStart
-					);
-				} else {
-					const valueEnd = targetValueSize - targetOffset * 2;
+                referenceValue = AnimationUtils.arraySlice(
+                    referenceTrack.values,
+                    startIndex,
+                    endIndex
+                );
+            } else if (referenceTime >= referenceTrack.times[lastIndex]) {
+                // Reference frame is after the last keyframe, so just use the last keyframe
+                const startIndex
+                    = lastIndex * referenceValueSize + referenceOffset;
+                const endIndex
+                    = startIndex + referenceValueSize - referenceOffset;
 
-					// Subtract each value for all other numeric track types
-					for (let k = 0; k < valueEnd; ++k) {
-						targetTrack.values[valueStart + k] -= referenceValue[k];
-					}
-				}
-			}
-		}
+                referenceValue = AnimationUtils.arraySlice(
+                    referenceTrack.values,
+                    startIndex,
+                    endIndex
+                );
+            } else {
+                // Interpolate to the reference value
+                const interpolant = referenceTrack.createInterpolant();
+                const startIndex = referenceOffset;
+                const endIndex = referenceValueSize - referenceOffset;
 
-		targetClip.blendMode = AdditiveAnimationBlendMode;
+                interpolant.evaluate(referenceTime);
+                referenceValue = AnimationUtils.arraySlice(
+                    interpolant.resultBuffer,
+                    startIndex,
+                    endIndex
+                );
+            }
 
-		return targetClip;
-	},
+            // Conjugate the quaternion
+            if (referenceTrackType === 'quaternion') {
+                const referenceQuat = new Quaternion()
+                    .fromArray(referenceValue)
+                    .normalize()
+                    .conjugate();
+
+                referenceQuat.toArray(referenceValue);
+            }
+
+            // Subtract the reference value from all of the track values
+
+            const numTimes = targetTrack.times.length;
+
+            for (let j = 0; j < numTimes; ++j) {
+                const valueStart = j * targetValueSize + targetOffset;
+
+                if (referenceTrackType === 'quaternion') {
+                    // Multiply the conjugate for quaternion track types
+                    Quaternion.multiplyQuaternionsFlat(
+                        targetTrack.values,
+                        valueStart,
+                        referenceValue,
+                        0,
+                        targetTrack.values,
+                        valueStart
+                    );
+                } else {
+                    const valueEnd = targetValueSize - targetOffset * 2;
+
+                    // Subtract each value for all other numeric track types
+                    for (let k = 0; k < valueEnd; ++k) {
+                        targetTrack.values[valueStart + k] -= referenceValue[k];
+                    }
+                }
+            }
+        }
+
+        targetClip.blendMode = AdditiveAnimationBlendMode;
+
+        return targetClip;
+    }
 };
 
 export { AnimationUtils };

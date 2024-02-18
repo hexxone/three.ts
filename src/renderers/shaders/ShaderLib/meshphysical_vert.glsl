@@ -42,12 +42,12 @@ void main() {
 
 #ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED
 
-	vNormal = normalize(transformedNormal);
+    vNormal = normalize(transformedNormal);
 
 	#ifdef USE_TANGENT
 
-	vTangent = normalize(transformedTangent);
-	vBitangent = normalize(cross(vNormal, vTangent) * tangent.w);
+    vTangent = normalize(transformedTangent);
+    vBitangent = normalize(cross(vNormal, vTangent) * tangent.w);
 
 	#endif
 
@@ -61,7 +61,7 @@ void main() {
 	#include <logdepthbuf_vertex>
 	#include <clipping_planes_vertex>
 
-	vViewPosition = -mvPosition.xyz;
+    vViewPosition = -mvPosition.xyz;
 
 	#include <worldpos_vertex>
 	#include <shadowmap_vertex>

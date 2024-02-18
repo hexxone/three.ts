@@ -1,31 +1,33 @@
-import { BufferAttribute } from "./BufferAttribute";
+import { BufferAttribute } from './BufferAttribute';
 
 class InstancedBufferAttribute extends BufferAttribute {
-	meshPerAttribute: number;
 
-	constructor(array, itemSize, normalized, meshPerAttribute = 1) {
-		if (typeof normalized === "number") {
-			meshPerAttribute = normalized;
-			normalized = false;
-			console.error(
-				"InstancedBufferAttribute: The constructor now expects normalized as the third argument."
-			);
-		}
+    meshPerAttribute: number;
 
-		super(array, itemSize, normalized);
+    constructor(array, itemSize, normalized, meshPerAttribute = 1) {
+        if (typeof normalized === 'number') {
+            meshPerAttribute = normalized;
+            normalized = false;
+            console.error(
+                'InstancedBufferAttribute: The constructor now expects normalized as the third argument.'
+            );
+        }
 
-		this.isInstancedBufferAttribute = true;
+        super(array, itemSize, normalized);
 
-		this.meshPerAttribute = meshPerAttribute;
-	}
+        this.isInstancedBufferAttribute = true;
 
-	copy(source: InstancedBufferAttribute) {
-		super.copy(source);
+        this.meshPerAttribute = meshPerAttribute;
+    }
 
-		this.meshPerAttribute = source.meshPerAttribute;
+    copy(source: InstancedBufferAttribute) {
+        super.copy(source);
 
-		return this;
-	}
+        this.meshPerAttribute = source.meshPerAttribute;
+
+        return this;
+    }
+
 }
 
 export { InstancedBufferAttribute };

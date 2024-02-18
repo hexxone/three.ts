@@ -12,17 +12,17 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	vec3 outgoingLight = vec3(0.0);
-	vec4 diffuseColor = vec4(diffuse, opacity);
+    vec3 outgoingLight = vec3(0.0);
+    vec4 diffuseColor = vec4(diffuse, opacity);
 
 	#include <logdepthbuf_fragment>
 	#include <map_particle_fragment>
 	#include <color_fragment>
 	#include <alphatest_fragment>
 
-	outgoingLight = diffuseColor.rgb;
+    outgoingLight = diffuseColor.rgb;
 
-	gl_FragColor = vec4(outgoingLight, diffuseColor.a);
+    gl_FragColor = vec4(outgoingLight, diffuseColor.a);
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>

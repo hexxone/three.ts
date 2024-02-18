@@ -1,106 +1,110 @@
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Vector2 } from "../math/Vector2";
-import { Vector3 } from "../math/Vector3";
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
 
 class RingGeometry extends BufferGeometry {
-	constructor(
-		innerRadius = 0.5,
-		outerRadius = 1,
-		thetaSegments = 8,
-		phiSegments = 1,
-		thetaStart = 0,
-		thetaLength = Math.PI * 2
-	) {
-		super();
 
-		this.type = "RingGeometry";
+    constructor(
+        innerRadius = 0.5,
+        outerRadius = 1,
+        thetaSegments = 8,
+        phiSegments = 1,
+        thetaStart = 0,
+        thetaLength = Math.PI * 2
+    ) {
+        super();
 
-		this.parameters = {
-			innerRadius: innerRadius,
-			outerRadius: outerRadius,
-			thetaSegments: thetaSegments,
-			phiSegments: phiSegments,
-			thetaStart: thetaStart,
-			thetaLength: thetaLength,
-		};
+        this.type = 'RingGeometry';
 
-		thetaSegments = Math.max(3, thetaSegments);
-		phiSegments = Math.max(1, phiSegments);
+        this.parameters = {
+            innerRadius,
+            outerRadius,
+            thetaSegments,
+            phiSegments,
+            thetaStart,
+            thetaLength
+        };
 
-		// buffers
+        thetaSegments = Math.max(3, thetaSegments);
+        phiSegments = Math.max(1, phiSegments);
 
-		const indices = [];
-		const vertices = [];
-		const normals = [];
-		const uvs = [];
+        // buffers
 
-		// some helper variables
+        const indices = [];
+        const vertices = [];
+        const normals = [];
+        const uvs = [];
 
-		let radius = innerRadius;
-		const radiusStep = (outerRadius - innerRadius) / phiSegments;
-		const vertex = new Vector3();
-		const uv = new Vector2();
+        // some helper variables
 
-		// generate vertices, normals and uvs
+        let radius = innerRadius;
+        const radiusStep = (outerRadius - innerRadius) / phiSegments;
+        const vertex = new Vector3();
+        const uv = new Vector2();
 
-		for (let j = 0; j <= phiSegments; j++) {
-			for (let i = 0; i <= thetaSegments; i++) {
-				// values are generate from the inside of the ring to the outside
+        // generate vertices, normals and uvs
 
-				const segment = thetaStart + (i / thetaSegments) * thetaLength;
+        for (let j = 0; j <= phiSegments; j++) {
+            for (let i = 0; i <= thetaSegments; i++) {
+                // values are generate from the inside of the ring to the outside
 
-				// vertex
+                const segment = thetaStart + (i / thetaSegments) * thetaLength;
 
-				vertex.x = radius * Math.cos(segment);
-				vertex.y = radius * Math.sin(segment);
+                // vertex
 
-				vertices.push(vertex.x, vertex.y, vertex.z);
+                vertex.x = radius * Math.cos(segment);
+                vertex.y = radius * Math.sin(segment);
 
-				// normal
+                vertices.push(vertex.x, vertex.y, vertex.z);
 
-				normals.push(0, 0, 1);
+                // normal
 
-				// uv
+                normals.push(0, 0, 1);
 
-				uv.x = (vertex.x / outerRadius + 1) / 2;
-				uv.y = (vertex.y / outerRadius + 1) / 2;
+                // uv
 
-				uvs.push(uv.x, uv.y);
-			}
+                uv.x = (vertex.x / outerRadius + 1) / 2;
+                uv.y = (vertex.y / outerRadius + 1) / 2;
 
-			// increase the radius for next row of vertices
+                uvs.push(uv.x, uv.y);
+            }
 
-			radius += radiusStep;
-		}
+            // increase the radius for next row of vertices
 
-		// indices
+            radius += radiusStep;
+        }
 
-		for (let j = 0; j < phiSegments; j++) {
-			const thetaSegmentLevel = j * (thetaSegments + 1);
+        // indices
 
-			for (let i = 0; i < thetaSegments; i++) {
-				const segment = i + thetaSegmentLevel;
+        for (let j = 0; j < phiSegments; j++) {
+            const thetaSegmentLevel = j * (thetaSegments + 1);
 
-				const a = segment;
-				const b = segment + thetaSegments + 1;
-				const c = segment + thetaSegments + 2;
-				const d = segment + 1;
+            for (let i = 0; i < thetaSegments; i++) {
+                const segment = i + thetaSegmentLevel;
 
-				// faces
+                const a = segment;
+                const b = segment + thetaSegments + 1;
+                const c = segment + thetaSegments + 2;
+                const d = segment + 1;
 
-				indices.push(a, b, d);
-				indices.push(b, c, d);
-			}
-		}
+                // faces
 
-		// build geometry
+                indices.push(a, b, d);
+                indices.push(b, c, d);
+            }
+        }
 
-		this.setIndex(indices);
-		this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
-		this.setAttribute("normal", new Float32BufferAttribute(normals, 3));
-		this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
-	}
+        // build geometry
+
+        this.setIndex(indices);
+        this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
+    }
+
 }
 
-export { RingGeometry, RingGeometry as RingBufferGeometry };
+export {
+    RingGeometry, RingGeometry as RingBufferGeometry
+};

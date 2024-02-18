@@ -1,42 +1,44 @@
-import { Light } from "./Light";
-import { PointLightShadow } from "./PointLightShadow";
+import { Light } from './Light';
+import { PointLightShadow } from './PointLightShadow';
 
 class PointLight extends Light {
-	constructor(color, intensity, distance = 0, decay = 1) {
-		super(color, intensity);
 
-		this.isPointLight = true;
+    constructor(color, intensity, distance = 0, decay = 1) {
+        super(color, intensity);
 
-		this.type = "PointLight";
+        this.isPointLight = true;
 
-		this.distance = distance;
-		this.decay = decay; // for physically correct lights, should be 2.
+        this.type = 'PointLight';
 
-		this.shadow = new PointLightShadow();
-	}
+        this.distance = distance;
+        this.decay = decay; // for physically correct lights, should be 2.
 
-	get power() {
-		// intensity = power per solid angle.
-		// ref: equation (15) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
-		return this.intensity * 4 * Math.PI;
-	}
+        this.shadow = new PointLightShadow();
+    }
 
-	set power(power) {
-		// intensity = power per solid angle.
-		// ref: equation (15) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
-		this.intensity = power / (4 * Math.PI);
-	}
+    get power() {
+        // intensity = power per solid angle.
+        // ref: equation (15) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
+        return this.intensity * 4 * Math.PI;
+    }
 
-	copy(source: PointLight) {
-		super.copy(source);
+    set power(power) {
+        // intensity = power per solid angle.
+        // ref: equation (15) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
+        this.intensity = power / (4 * Math.PI);
+    }
 
-		this.distance = source.distance;
-		this.decay = source.decay;
+    copy(source: PointLight) {
+        super.copy(source);
 
-		this.shadow = source.shadow.clone();
+        this.distance = source.distance;
+        this.decay = source.decay;
 
-		return this;
-	}
+        this.shadow = source.shadow.clone();
+
+        return this;
+    }
+
 }
 
 export { PointLight };

@@ -1,1 +1,1 @@
-export * from "./ImmediateRenderObject";
+export * from './ImmediateRenderObject';

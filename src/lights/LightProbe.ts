@@ -1,32 +1,34 @@
-import { SphericalHarmonics3 } from "../math/SphericalHarmonics3";
-import { Light } from "./Light";
+import { SphericalHarmonics3 } from '../math/SphericalHarmonics3';
+import { Light } from './Light';
 
 class LightProbe extends Light {
-	sh: SphericalHarmonics3;
 
-	constructor(sh = new SphericalHarmonics3(), intensity = 1) {
-		super(undefined, intensity);
+    sh: SphericalHarmonics3;
 
-		this.isLightProbe = true;
+    constructor(sh = new SphericalHarmonics3(), intensity = 1) {
+        super(undefined, intensity);
 
-		this.sh = sh;
-	}
+        this.isLightProbe = true;
 
-	copy(source: LightProbe) {
-		super.copy(source);
+        this.sh = sh;
+    }
 
-		this.sh.copy(source.sh);
+    copy(source: LightProbe) {
+        super.copy(source);
 
-		return this;
-	}
+        this.sh.copy(source.sh);
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        return this;
+    }
 
-		this.sh.fromArray(json.sh);
+    fromJSON(json) {
+        super.fromJSON(json);
 
-		return this;
-	}
+        this.sh.fromArray(json.sh);
+
+        return this;
+    }
+
 }
 
 export { LightProbe };

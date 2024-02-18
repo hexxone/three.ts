@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *  color: <hex>,
@@ -9,45 +8,47 @@
  * }
  */
 
-import { Color } from "../math/Color";
-import { Material } from "./Material";
+import { Color } from '../math/Color';
+import { Material } from './Material';
 
 class SpriteMaterial extends Material {
-	constructor() {
-		super();
 
-		this.isSpriteMaterial = true;
+    constructor() {
+        super();
 
-		this.type = "SpriteMaterial";
+        this.isSpriteMaterial = true;
 
-		this.color = new Color(0xffffff);
+        this.type = 'SpriteMaterial';
 
-		this.map = null;
+        this.color = new Color(0xffffff);
 
-		this.alphaMap = null;
+        this.map = null;
 
-		this.rotation = 0;
+        this.alphaMap = null;
 
-		this.sizeAttenuation = true;
+        this.rotation = 0;
 
-		this.transparent = true;
-	}
+        this.sizeAttenuation = true;
 
-	copy(source: SpriteMaterial) {
-		super.copy(source);
+        this.transparent = true;
+    }
 
-		this.color.copy(source.color);
+    copy(source: SpriteMaterial) {
+        super.copy(source);
 
-		this.map = source.map;
+        this.color.copy(source.color);
 
-		this.alphaMap = source.alphaMap;
+        this.map = source.map;
 
-		this.rotation = source.rotation;
+        this.alphaMap = source.alphaMap;
 
-		this.sizeAttenuation = source.sizeAttenuation;
+        this.rotation = source.rotation;
 
-		return this;
-	}
+        this.sizeAttenuation = source.sizeAttenuation;
+
+        return this;
+    }
+
 }
 
 export { SpriteMaterial };

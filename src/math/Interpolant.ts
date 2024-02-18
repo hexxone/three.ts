@@ -15,186 +15,199 @@
  *
  * References:
  *
- * 		http://www.oodesign.com/template-method-pattern.html
+ *         http://www.oodesign.com/template-method-pattern.html
  *
  */
 
 class Interpolant {
-	_cachedIndex: number = 0;
 
-	parameterPositions: Float32Array | number[];
-	resultBuffer: Float32Array;
-	sampleValues: Float32Array | number[];
-	valueSize: any;
+    _cachedIndex: number = 0;
 
-	settings: any = null;
-	DefaultSettings_ = {};
+    parameterPositions: Float32Array | number[];
+    resultBuffer: Float32Array;
+    sampleValues: Float32Array | number[];
+    valueSize: any;
 
-	constructor(parameterPositions: Float32Array | number[], sampleValues: Float32Array | number[], sampleSize: number, resultBuffer?: Float32Array) {
-		this.parameterPositions = parameterPositions;
+    settings: any = null;
+    DefaultSettings_ = {};
 
-		this.resultBuffer = resultBuffer !== undefined ? resultBuffer
-				: new (sampleValues.constructor as any)(sampleSize);
+    constructor(
+        parameterPositions: Float32Array | number[],
+        sampleValues: Float32Array | number[],
+        sampleSize: number,
+        resultBuffer?: Float32Array
+    ) {
+        this.parameterPositions = parameterPositions;
 
-		this.sampleValues = sampleValues;
-		this.valueSize = sampleSize;
-	}
+        this.resultBuffer
+            = resultBuffer !== undefined
+                ? resultBuffer
+                : new (sampleValues.constructor as any)(sampleSize);
 
-	evaluate(t: number) {
-		const pp = this.parameterPositions;
-		let i1 = this._cachedIndex;
-		let t1 = pp[i1];
-		let t0 = pp[i1 - 1];
+        this.sampleValues = sampleValues;
+        this.valueSize = sampleSize;
+    }
 
-		validate_interval: {
-			seek: {
-				let right;
+    evaluate(t: number) {
+        const pp = this.parameterPositions;
+        let i1 = this._cachedIndex;
+        let t1 = pp[i1];
+        let t0 = pp[i1 - 1];
 
-				linear_scan: {
-					// - See http://jsperf.com/comparison-to-undefined/3
-					// - slower code:
-					// -
-					// - 				if ( t >= t1 || t1 === undefined ) {
-					forward_scan: if (!(t < t1)) {
-						for (let giveUpAt = i1 + 2; ; ) {
-							if (t1 === undefined) {
-								if (t < t0) break forward_scan;
+        validate_interval: {
+            seek: {
+                let right;
 
-								// after end
+                linear_scan: {
+                    // - See http://jsperf.com/comparison-to-undefined/3
+                    // - slower code:
+                    // -
+                    // -                 if ( t >= t1 || t1 === undefined ) {
+                    forward_scan: if (!(t < t1)) {
+                        for (let giveUpAt = i1 + 2; ;) {
+                            if (t1 === undefined) {
+                                if (t < t0) { break forward_scan; }
 
-								i1 = pp.length;
-								this._cachedIndex = i1;
-								return this.copySampleValue_(i1 - 1, t, t0);
-							}
+                                // after end
 
-							if (i1 === giveUpAt) break; // this loop
+                                i1 = pp.length;
+                                this._cachedIndex = i1;
 
-							t0 = t1;
-							t1 = pp[++i1];
+                                return this.copySampleValue_(i1 - 1, t, t0);
+                            }
 
-							if (t < t1) {
-								// we have arrived at the sought interval
-								break seek;
-							}
-						}
+                            if (i1 === giveUpAt) { break; } // this loop
 
-						// prepare binary search on the right side of the index
-						right = pp.length;
-						break linear_scan;
-					}
+                            t0 = t1;
+                            t1 = pp[++i1];
 
-					// - slower code:
-					// -					if ( t < t0 || t0 === undefined ) {
-					if (!(t >= t0)) {
-						// looping?
+                            if (t < t1) {
+                                // we have arrived at the sought interval
+                                break seek;
+                            }
+                        }
 
-						const t1global = pp[1];
+                        // prepare binary search on the right side of the index
+                        right = pp.length;
+                        break linear_scan;
+                    }
 
-						if (t < t1global) {
-							i1 = 2; // + 1, using the scan for the details
-							t0 = t1global;
-						}
+                    // - slower code:
+                    // -                    if ( t < t0 || t0 === undefined ) {
+                    if (!(t >= t0)) {
+                        // looping?
 
-						// linear reverse scan
+                        const t1global = pp[1];
 
-						for (let giveUpAt = i1 - 2; ; ) {
-							if (t0 === undefined) {
-								// before start
+                        if (t < t1global) {
+                            i1 = 2; // + 1, using the scan for the details
+                            t0 = t1global;
+                        }
 
-								this._cachedIndex = 0;
-								return this.copySampleValue_(0, t, t1);
-							}
+                        // linear reverse scan
 
-							if (i1 === giveUpAt) break; // this loop
+                        for (let giveUpAt = i1 - 2; ;) {
+                            if (t0 === undefined) {
+                                // before start
 
-							t1 = t0;
-							t0 = pp[--i1 - 1];
+                                this._cachedIndex = 0;
 
-							if (t >= t0) {
-								// we have arrived at the sought interval
-								break seek;
-							}
-						}
+                                return this.copySampleValue_(0, t, t1);
+                            }
 
-						// prepare binary search on the left side of the index
-						right = i1;
-						i1 = 0;
-						break linear_scan;
-					}
+                            if (i1 === giveUpAt) { break; } // this loop
 
-					// the interval is valid
+                            t1 = t0;
+                            t0 = pp[--i1 - 1];
 
-					break validate_interval;
-				} // linear scan
+                            if (t >= t0) {
+                                // we have arrived at the sought interval
+                                break seek;
+                            }
+                        }
 
-				// binary search
+                        // prepare binary search on the left side of the index
+                        right = i1;
+                        i1 = 0;
+                        break linear_scan;
+                    }
 
-				while (i1 < right) {
-					const mid = (i1 + right) >>> 1;
+                    // the interval is valid
 
-					if (t < pp[mid]) {
-						right = mid;
-					} else {
-						i1 = mid + 1;
-					}
-				}
+                    break validate_interval;
+                } // linear scan
 
-				t1 = pp[i1];
-				t0 = pp[i1 - 1];
+                // binary search
 
-				// check boundary cases, again
+                while (i1 < right) {
+                    const mid = (i1 + right) >>> 1;
 
-				if (t0 === undefined) {
-					this._cachedIndex = 0;
-					return this.copySampleValue_(0, t, t1);
-				}
+                    if (t < pp[mid]) {
+                        right = mid;
+                    } else {
+                        i1 = mid + 1;
+                    }
+                }
 
-				if (t1 === undefined) {
-					i1 = pp.length;
-					this._cachedIndex = i1;
-					return this.copySampleValue_(i1 - 1, t0, t);
-				}
-			} // seek
+                t1 = pp[i1];
+                t0 = pp[i1 - 1];
 
-			this._cachedIndex = i1;
+                // check boundary cases, again
 
-			this.intervalChanged_(i1, t0, t1);
-		} // validate_interval
+                if (t0 === undefined) {
+                    this._cachedIndex = 0;
 
-		return this.interpolate_(i1, t0, t, t1);
-	}
+                    return this.copySampleValue_(0, t, t1);
+                }
 
-	getSettings_() {
-		return this.settings || this.DefaultSettings_;
-	}
+                if (t1 === undefined) {
+                    i1 = pp.length;
+                    this._cachedIndex = i1;
 
-	// TODO
-	copySampleValue_(index, to?, d?) {
-		// copies a sample value to the result buffer
+                    return this.copySampleValue_(i1 - 1, t0, t);
+                }
+            } // seek
 
-		const result = this.resultBuffer;
-		const values = this.sampleValues;
-		const stride = this.valueSize;
-		const offset = index * stride;
+            this._cachedIndex = i1;
 
-		for (let i = 0; i !== stride; ++i) {
-			result[i] = values[offset + i];
-		}
+            this.intervalChanged_(i1, t0, t1);
+        } // validate_interval
 
-		return result;
-	}
+        return this.interpolate_(i1, t0, t, t1);
+    }
 
-	// Template methods for derived classes:
+    getSettings_() {
+        return this.settings || this.DefaultSettings_;
+    }
 
-	interpolate_(...args) {
-		throw new Error("call to abstract method");
-		// implementations shall return this.resultBuffer
-	}
+    // TODO
+    copySampleValue_(index, to?, d?) {
+        // copies a sample value to the result buffer
 
-	intervalChanged_(...args) {
-		throw new Error("call to abstract method");
-		// empty
-	}
+        const result = this.resultBuffer;
+        const values = this.sampleValues;
+        const stride = this.valueSize;
+        const offset = index * stride;
+
+        for (let i = 0; i !== stride; ++i) {
+            result[i] = values[offset + i];
+        }
+
+        return result;
+    }
+
+    // Template methods for derived classes:
+
+    interpolate_(...args) {
+        throw new Error('call to abstract method');
+        // implementations shall return this.resultBuffer
+    }
+
+    intervalChanged_(...args) {
+        throw new Error('call to abstract method');
+        // empty
+    }
+
 }
 
 export { Interpolant };

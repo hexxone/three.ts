@@ -1,235 +1,259 @@
-import { Color } from "../../math/Color";
-import { ShapeUtils } from "../ShapeUtils";
-import { Path } from "./Path";
-import { Shape } from "./Shape";
+import { Color } from '../../math/Color';
+import { ShapeUtils } from '../ShapeUtils';
+import { Path } from './Path';
+import { Shape } from './Shape';
 
 class ShapePath {
-	type: string;
-	color: Color;
-	subPaths: Path[];
-	currentPath: Path;
 
-	constructor() {
-		this.type = "ShapePath";
+    type: string;
+    color: Color;
+    subPaths: Path[];
+    currentPath: Path;
 
-		this.color = new Color(0, 0, 0);
+    constructor() {
+        this.type = 'ShapePath';
 
-		this.subPaths = [];
-		this.currentPath = null;
-	}
+        this.color = new Color(0, 0, 0);
 
-	moveTo(x, y) {
-		this.currentPath = new Path([]);
-		this.subPaths.push(this.currentPath);
-		this.currentPath.moveTo(x, y);
-		return this;
-	}
+        this.subPaths = [];
+        this.currentPath = null;
+    }
 
-	lineTo(x, y) {
-		this.currentPath.lineTo(x, y);
-		return this;
-	}
+    moveTo(x, y) {
+        this.currentPath = new Path([]);
+        this.subPaths.push(this.currentPath);
+        this.currentPath.moveTo(x, y);
 
-	quadraticCurveTo(aCPx, aCPy, aX, aY) {
-		this.currentPath.quadraticCurveTo(aCPx, aCPy, aX, aY);
-		return this;
-	}
+        return this;
+    }
 
-	bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
-		this.currentPath.bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY);
-		return this;
-	}
+    lineTo(x, y) {
+        this.currentPath.lineTo(x, y);
 
-	splineThru(pts) {
-		this.currentPath.splineThru(pts);
-		return this;
-	}
+        return this;
+    }
 
-	toShapes(isCCW?, noHoles?): Shape[] {
-		function toShapesNoHoles(inSubpaths) {
-			const shapes = [] as Shape[];
+    quadraticCurveTo(aCPx, aCPy, aX, aY) {
+        this.currentPath.quadraticCurveTo(aCPx, aCPy, aX, aY);
 
-			for (let i = 0, l = inSubpaths.length; i < l; i++) {
-				const tmpPath = inSubpaths[i];
+        return this;
+    }
 
-				const tmpShape = new Shape();
-				tmpShape.curves = tmpPath.curves;
+    bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY) {
+        this.currentPath.bezierCurveTo(aCP1x, aCP1y, aCP2x, aCP2y, aX, aY);
 
-				shapes.push(tmpShape);
-			}
+        return this;
+    }
 
-			return shapes;
-		}
+    splineThru(pts) {
+        this.currentPath.splineThru(pts);
 
-		function isPointInsidePolygon(inPt, inPolygon) {
-			const polyLen = inPolygon.length;
+        return this;
+    }
 
-			// inPt on polygon contour => immediate success    or
-			// toggling of inside/outside at every single! intersection point of an edge
-			//  with the horizontal line through inPt, left of inPt
-			//  not counting lowerY endpoints of edges and whole edges on that line
-			let inside = false;
-			for (let p = polyLen - 1, q = 0; q < polyLen; p = q++) {
-				let edgeLowPt = inPolygon[p];
-				let edgeHighPt = inPolygon[q];
+    toShapes(isCCW?, noHoles?): Shape[] {
+        function toShapesNoHoles(inSubpaths) {
+            const shapes = [] as Shape[];
 
-				let edgeDx = edgeHighPt.x - edgeLowPt.x;
-				let edgeDy = edgeHighPt.y - edgeLowPt.y;
+            for (let i = 0, l = inSubpaths.length; i < l; i++) {
+                const tmpPath = inSubpaths[i];
 
-				if (Math.abs(edgeDy) > Number.EPSILON) {
-					// not parallel
-					if (edgeDy < 0) {
-						edgeLowPt = inPolygon[q];
-						edgeDx = -edgeDx;
-						edgeHighPt = inPolygon[p];
-						edgeDy = -edgeDy;
-					}
+                const tmpShape = new Shape();
 
-					if (inPt.y < edgeLowPt.y || inPt.y > edgeHighPt.y) continue;
+                tmpShape.curves = tmpPath.curves;
 
-					if (inPt.y === edgeLowPt.y) {
-						if (inPt.x === edgeLowPt.x) return true; // inPt is on contour ?
-						// continue;				// no intersection or edgeLowPt => doesn't count !!!
-					} else {
-						const perpEdge =
-							edgeDy * (inPt.x - edgeLowPt.x) - edgeDx * (inPt.y - edgeLowPt.y);
-						if (perpEdge === 0) return true; // inPt is on contour ?
-						if (perpEdge < 0) continue;
-						inside = !inside; // true intersection left of inPt
-					}
-				} else {
-					// parallel or collinear
-					if (inPt.y !== edgeLowPt.y) continue; // parallel
-					// edge lies on the same horizontal line as inPt
-					if (
-						(edgeHighPt.x <= inPt.x && inPt.x <= edgeLowPt.x) ||
-						(edgeLowPt.x <= inPt.x && inPt.x <= edgeHighPt.x)
-					)
-						return true; // inPt: Point on contour !
-					// continue;
-				}
-			}
+                shapes.push(tmpShape);
+            }
 
-			return inside;
-		}
+            return shapes;
+        }
 
-		const isClockWise = ShapeUtils.isClockWise;
+        function isPointInsidePolygon(inPt, inPolygon) {
+            const polyLen = inPolygon.length;
 
-		const subPaths = this.subPaths;
-		if (subPaths.length === 0) return [];
+            // inPt on polygon contour => immediate success    or
+            // toggling of inside/outside at every single! intersection point of an edge
+            //  with the horizontal line through inPt, left of inPt
+            //  not counting lowerY endpoints of edges and whole edges on that line
+            let inside = false;
 
-		if (noHoles === true) return toShapesNoHoles(subPaths);
+            for (let p = polyLen - 1, q = 0; q < polyLen; p = q++) {
+                let edgeLowPt = inPolygon[p];
+                let edgeHighPt = inPolygon[q];
 
-		let solid: boolean;
-		let tmpPath: Path;
-		let tmpShape: Shape;
-		const shapes = [] as Shape[];
+                let edgeDx = edgeHighPt.x - edgeLowPt.x;
+                let edgeDy = edgeHighPt.y - edgeLowPt.y;
 
-		if (subPaths.length === 1) {
-			tmpPath = subPaths[0];
-			tmpShape = new Shape();
-			tmpShape.curves = tmpPath.curves;
-			shapes.push(tmpShape);
-			return shapes;
-		}
+                if (Math.abs(edgeDy) > Number.EPSILON) {
+                    // not parallel
+                    if (edgeDy < 0) {
+                        edgeLowPt = inPolygon[q];
+                        edgeDx = -edgeDx;
+                        edgeHighPt = inPolygon[p];
+                        edgeDy = -edgeDy;
+                    }
 
-		let holesFirst = !isClockWise(subPaths[0].getPoints());
-		holesFirst = isCCW ? !holesFirst : holesFirst;
+                    if (inPt.y < edgeLowPt.y || inPt.y > edgeHighPt.y) { continue; }
 
-		// console.log("Holes first", holesFirst);
+                    if (inPt.y === edgeLowPt.y) {
+                        if (inPt.x === edgeLowPt.x) { return true; } // inPt is on contour ?
+                        // continue;                // no intersection or edgeLowPt => doesn't count !!!
+                    } else {
+                        const perpEdge
+                            = edgeDy * (inPt.x - edgeLowPt.x)
+                            - edgeDx * (inPt.y - edgeLowPt.y);
 
-		const betterShapeHoles = [];
-		const newShapes = [] as { s: Shape; p: boolean }[];
-		let newShapeHoles = [];
-		let mainIdx = 0;
-		let tmpPoints;
+                        if (perpEdge === 0) { return true; } // inPt is on contour ?
+                        if (perpEdge < 0) { continue; }
+                        inside = !inside; // true intersection left of inPt
+                    }
+                } else {
+                    // parallel or collinear
+                    if (inPt.y !== edgeLowPt.y) { continue; } // parallel
+                    // edge lies on the same horizontal line as inPt
+                    if (
+                        (edgeHighPt.x <= inPt.x && inPt.x <= edgeLowPt.x)
+                        || (edgeLowPt.x <= inPt.x && inPt.x <= edgeHighPt.x)
+                    ) { return true; } // inPt: Point on contour !
+                    // continue;
+                }
+            }
 
-		newShapes[mainIdx] = undefined;
-		newShapeHoles[mainIdx] = [];
+            return inside;
+        }
 
-		for (let i = 0, l = subPaths.length; i < l; i++) {
-			tmpPath = subPaths[i];
-			tmpPoints = tmpPath.getPoints();
-			solid = isClockWise(tmpPoints);
-			solid = isCCW ? !solid : solid;
+        const { isClockWise } = ShapeUtils;
 
-			if (solid) {
-				if (!holesFirst && newShapes[mainIdx]) mainIdx++;
+        const { subPaths } = this;
 
-				newShapes[mainIdx] = { s: new Shape(), p: tmpPoints };
-				newShapes[mainIdx].s.curves = tmpPath.curves;
+        if (subPaths.length === 0) { return []; }
 
-				if (holesFirst) mainIdx++;
-				newShapeHoles[mainIdx] = [];
+        if (noHoles === true) { return toShapesNoHoles(subPaths); }
 
-				// console.log('cw', i);
-			} else {
-				newShapeHoles[mainIdx].push({ h: tmpPath, p: tmpPoints[0] });
+        let solid: boolean;
+        let tmpPath: Path;
+        let tmpShape: Shape;
+        const shapes = [] as Shape[];
 
-				// console.log('ccw', i);
-			}
-		}
+        if (subPaths.length === 1) {
+            tmpPath = subPaths[0];
+            tmpShape = new Shape();
+            tmpShape.curves = tmpPath.curves;
+            shapes.push(tmpShape);
 
-		// only Holes? -> probably all Shapes with wrong orientation
-		if (!newShapes[0]) return toShapesNoHoles(subPaths);
+            return shapes;
+        }
 
-		if (newShapes.length > 1) {
-			let ambiguous = false;
-			const toChange = [];
+        let holesFirst = !isClockWise(subPaths[0].getPoints());
 
-			for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
-				betterShapeHoles[sIdx] = [];
-			}
+        holesFirst = isCCW ? !holesFirst : holesFirst;
 
-			for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
-				const sho = newShapeHoles[sIdx];
+        // console.log("Holes first", holesFirst);
 
-				for (let hIdx = 0; hIdx < sho.length; hIdx++) {
-					const ho = sho[hIdx];
-					let hole_unassigned = true;
+        const betterShapeHoles = [];
+        const newShapes = [] as { s: Shape; p: boolean }[];
+        let newShapeHoles = [];
+        let mainIdx = 0;
+        let tmpPoints;
 
-					for (let s2Idx = 0; s2Idx < newShapes.length; s2Idx++) {
-						if (isPointInsidePolygon(ho.p, newShapes[s2Idx].p)) {
-							if (sIdx !== s2Idx)
-								toChange.push({ froms: sIdx, tos: s2Idx, hole: hIdx });
-							if (hole_unassigned) {
-								hole_unassigned = false;
-								betterShapeHoles[s2Idx].push(ho);
-							} else {
-								ambiguous = true;
-							}
-						}
-					}
+        newShapes[mainIdx] = undefined;
+        newShapeHoles[mainIdx] = [];
 
-					if (hole_unassigned) {
-						betterShapeHoles[sIdx].push(ho);
-					}
-				}
-			}
-			// console.log("ambiguous: ", ambiguous);
+        for (let i = 0, l = subPaths.length; i < l; i++) {
+            tmpPath = subPaths[i];
+            tmpPoints = tmpPath.getPoints();
+            solid = isClockWise(tmpPoints);
+            solid = isCCW ? !solid : solid;
 
-			if (toChange.length > 0) {
-				// console.log("to change: ", toChange);
-				if (!ambiguous) newShapeHoles = betterShapeHoles;
-			}
-		}
+            if (solid) {
+                if (!holesFirst && newShapes[mainIdx]) { mainIdx++; }
 
-		let tmpHoles;
+                newShapes[mainIdx] = {
+                    s: new Shape(),
+                    p: tmpPoints
+                };
+                newShapes[mainIdx].s.curves = tmpPath.curves;
 
-		for (let i = 0, il = newShapes.length; i < il; i++) {
-			tmpShape = newShapes[i].s;
-			shapes.push(tmpShape);
-			tmpHoles = newShapeHoles[i];
+                if (holesFirst) { mainIdx++; }
+                newShapeHoles[mainIdx] = [];
 
-			for (let j = 0, jl = tmpHoles.length; j < jl; j++) {
-				tmpShape.holes.push(tmpHoles[j].h);
-			}
-		}
+                // console.log('cw', i);
+            } else {
+                newShapeHoles[mainIdx].push({
+                    h: tmpPath,
+                    p: tmpPoints[0]
+                });
 
-		// console.log("shape", shapes);
+                // console.log('ccw', i);
+            }
+        }
 
-		return shapes;
-	}
+        // only Holes? -> probably all Shapes with wrong orientation
+        if (!newShapes[0]) { return toShapesNoHoles(subPaths); }
+
+        if (newShapes.length > 1) {
+            let ambiguous = false;
+            const toChange = [];
+
+            for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
+                betterShapeHoles[sIdx] = [];
+            }
+
+            for (let sIdx = 0, sLen = newShapes.length; sIdx < sLen; sIdx++) {
+                const sho = newShapeHoles[sIdx];
+
+                for (let hIdx = 0; hIdx < sho.length; hIdx++) {
+                    const ho = sho[hIdx];
+                    let hole_unassigned = true;
+
+                    for (let s2Idx = 0; s2Idx < newShapes.length; s2Idx++) {
+                        if (isPointInsidePolygon(ho.p, newShapes[s2Idx].p)) {
+                            if (sIdx !== s2Idx) {
+                                toChange.push({
+                                    froms: sIdx,
+                                    tos: s2Idx,
+                                    hole: hIdx
+                                });
+                            }
+                            if (hole_unassigned) {
+                                hole_unassigned = false;
+                                betterShapeHoles[s2Idx].push(ho);
+                            } else {
+                                ambiguous = true;
+                            }
+                        }
+                    }
+
+                    if (hole_unassigned) {
+                        betterShapeHoles[sIdx].push(ho);
+                    }
+                }
+            }
+            // console.log("ambiguous: ", ambiguous);
+
+            if (toChange.length > 0) {
+                // console.log("to change: ", toChange);
+                if (!ambiguous) { newShapeHoles = betterShapeHoles; }
+            }
+        }
+
+        let tmpHoles;
+
+        for (let i = 0, il = newShapes.length; i < il; i++) {
+            tmpShape = newShapes[i].s;
+            shapes.push(tmpShape);
+            tmpHoles = newShapeHoles[i];
+
+            for (let j = 0, jl = tmpHoles.length; j < jl; j++) {
+                tmpShape.holes.push(tmpHoles[j].h);
+            }
+        }
+
+        // console.log("shape", shapes);
+
+        return shapes;
+    }
+
 }
 
 export { ShapePath };

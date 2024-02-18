@@ -1,75 +1,77 @@
-import { Object3D } from "../core/Object3D";
-import { Matrix4 } from "../math/Matrix4";
-import { Vector3 } from "../math/Vector3";
+import { Object3D } from '../core/Object3D';
+import { Matrix4 } from '../math/Matrix4';
+import { Vector3 } from '../math/Vector3';
 
 /**
  * @public
  */
 export class Camera extends Object3D {
-	isCamera = true;
-	isOrthographicCamera: boolean;
-	isPerspectiveCamera: boolean;
-	isArrayCamera: boolean;
 
-	zoom: number;
-	view: any;
-	near: number;
-	far: number;
+    isCamera = true;
+    isOrthographicCamera: boolean;
+    isPerspectiveCamera: boolean;
+    isArrayCamera: boolean;
 
-	matrixWorldInverse: Matrix4;
-	projectionMatrix: Matrix4;
-	projectionMatrixInverse: Matrix4;
+    zoom: number;
+    view: any;
+    near: number;
+    far: number;
 
-	constructor() {
-		super();
+    matrixWorldInverse: Matrix4;
+    projectionMatrix: Matrix4;
+    projectionMatrixInverse: Matrix4;
 
-		this.type = "Camera";
+    constructor() {
+        super();
 
-		this.matrixWorldInverse = new Matrix4();
+        this.type = 'Camera';
 
-		this.projectionMatrix = new Matrix4();
-		this.projectionMatrixInverse = new Matrix4();
-	}
+        this.matrixWorldInverse = new Matrix4();
 
-	copy(source, recursive?) {
-		super.copy(source, recursive);
+        this.projectionMatrix = new Matrix4();
+        this.projectionMatrixInverse = new Matrix4();
+    }
 
-		this.matrixWorldInverse.copy(source.matrixWorldInverse);
+    copy(source, recursive?) {
+        super.copy(source, recursive);
 
-		this.projectionMatrix.copy(source.projectionMatrix);
-		this.projectionMatrixInverse.copy(source.projectionMatrixInverse);
+        this.matrixWorldInverse.copy(source.matrixWorldInverse);
 
-		return this;
-	}
+        this.projectionMatrix.copy(source.projectionMatrix);
+        this.projectionMatrixInverse.copy(source.projectionMatrixInverse);
 
-	getWorldDirection(target) {
-		if (target === undefined) {
-			console.warn("Camera: .getWorldDirection() target is now required");
-			target = new Vector3();
-		}
+        return this;
+    }
 
-		this.updateWorldMatrix(true, false);
+    getWorldDirection(target) {
+        if (target === undefined) {
+            console.warn('Camera: .getWorldDirection() target is now required');
+            target = new Vector3();
+        }
 
-		const e = this.matrixWorld.elements;
+        this.updateWorldMatrix(true, false);
 
-		return target.set(-e[8], -e[9], -e[10]).normalize();
-	}
+        const e = this.matrixWorld.elements;
 
-	updateMatrixWorld(force?) {
-		super.updateMatrixWorld(force);
+        return target.set(-e[8], -e[9], -e[10]).normalize();
+    }
 
-		this.matrixWorldInverse.copy(this.matrixWorld).invert();
-	}
+    updateMatrixWorld(force?) {
+        super.updateMatrixWorld(force);
 
-	updateWorldMatrix(updateParents, updateChildren) {
-		super.updateWorldMatrix(updateParents, updateChildren);
+        this.matrixWorldInverse.copy(this.matrixWorld).invert();
+    }
 
-		this.matrixWorldInverse.copy(this.matrixWorld).invert();
-	}
+    updateWorldMatrix(updateParents, updateChildren) {
+        super.updateWorldMatrix(updateParents, updateChildren);
 
-	updateProjectionMatrix() {}
+        this.matrixWorldInverse.copy(this.matrixWorld).invert();
+    }
 
-	clone() {
-		return new Camera().copy(this);
-	}
+    updateProjectionMatrix() {}
+
+    clone() {
+        return new Camera().copy(this);
+    }
+
 }

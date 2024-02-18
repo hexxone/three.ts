@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *
@@ -20,58 +19,60 @@
  * }
  */
 
-import { Vector3 } from "../math/Vector3";
-import { Material } from "./Material";
+import { Vector3 } from '../math/Vector3';
+import { Material } from './Material';
 
 class MeshDistanceMaterial extends Material {
-	referencePosition: Vector3;
-	nearDistance: number;
-	farDistance: number;
 
-	constructor() {
-		super();
+    referencePosition: Vector3;
+    nearDistance: number;
+    farDistance: number;
 
-		this.isMeshDistanceMaterial = true;
-		this.type = "MeshDistanceMaterial";
+    constructor() {
+        super();
 
-		this.referencePosition = new Vector3();
-		this.nearDistance = 1;
-		this.farDistance = 1000;
+        this.isMeshDistanceMaterial = true;
+        this.type = 'MeshDistanceMaterial';
 
-		this.skinning = false;
-		this.morphTargets = false;
+        this.referencePosition = new Vector3();
+        this.nearDistance = 1;
+        this.farDistance = 1000;
 
-		this.map = null;
+        this.skinning = false;
+        this.morphTargets = false;
 
-		this.alphaMap = null;
+        this.map = null;
 
-		this.displacementMap = null;
-		this.displacementScale = 1;
-		this.displacementBias = 0;
+        this.alphaMap = null;
 
-		this.fog = false;
-	}
+        this.displacementMap = null;
+        this.displacementScale = 1;
+        this.displacementBias = 0;
 
-	copy(source: MeshDistanceMaterial) {
-		super.copy(source);
+        this.fog = false;
+    }
 
-		this.referencePosition.copy(source.referencePosition);
-		this.nearDistance = source.nearDistance;
-		this.farDistance = source.farDistance;
+    copy(source: MeshDistanceMaterial) {
+        super.copy(source);
 
-		this.skinning = source.skinning;
-		this.morphTargets = source.morphTargets;
+        this.referencePosition.copy(source.referencePosition);
+        this.nearDistance = source.nearDistance;
+        this.farDistance = source.farDistance;
 
-		this.map = source.map;
+        this.skinning = source.skinning;
+        this.morphTargets = source.morphTargets;
 
-		this.alphaMap = source.alphaMap;
+        this.map = source.map;
 
-		this.displacementMap = source.displacementMap;
-		this.displacementScale = source.displacementScale;
-		this.displacementBias = source.displacementBias;
+        this.alphaMap = source.alphaMap;
 
-		return this;
-	}
+        this.displacementMap = source.displacementMap;
+        this.displacementScale = source.displacementScale;
+        this.displacementBias = source.displacementBias;
+
+        return this;
+    }
+
 }
 
 export { MeshDistanceMaterial };

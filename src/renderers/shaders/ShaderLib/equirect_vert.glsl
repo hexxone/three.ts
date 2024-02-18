@@ -4,7 +4,7 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vWorldDirection = transformDirection(position, modelMatrix);
+    vWorldDirection = transformDirection(position, modelMatrix);
 
 	#include <begin_vertex>
 	#include <project_vertex>

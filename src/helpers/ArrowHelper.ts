@@ -1,14 +1,13 @@
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Object3D } from "../core/Object3D";
-import { CylinderGeometry } from "../geometries/CylinderGeometry";
-import { LineBasicMaterial } from "../materials/LineBasicMaterial";
-import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
-import { Color } from "../math/Color";
-import { Vector3 } from "../math/Vector3";
-import { Line } from "../objects/Line";
-import { Mesh } from "../objects/Mesh";
-
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Object3D } from '../core/Object3D';
+import { CylinderGeometry } from '../geometries/CylinderGeometry';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
+import { Color } from '../math/Color';
+import { Vector3 } from '../math/Vector3';
+import { Line } from '../objects/Line';
+import { Mesh } from '../objects/Mesh';
 
 const _axis = /* @__PURE__*/ new Vector3();
 let _lineGeometry;
@@ -18,91 +17,95 @@ let _coneGeometry;
  * @public
  */
 class ArrowHelper extends Object3D {
-	line: Line;
-	cone: Mesh;
 
-	// dir is assumed to be normalized
-	constructor(
-		dir = new Vector3(0, 0, 1),
-		origin = new Vector3(0, 0, 0),
-		length = 1,
-		color = 0xffff00,
-		headLength = length * 0.2,
-		headWidth = headLength * 0.2
-	) {
-		super();
+    line: Line;
+    cone: Mesh;
 
-		this.type = "ArrowHelper";
+    // dir is assumed to be normalized
+    constructor(
+        dir = new Vector3(0, 0, 1),
+        origin = new Vector3(0, 0, 0),
+        length = 1,
+        color = 0xffff00,
+        headLength = length * 0.2,
+        headWidth = headLength * 0.2
+    ) {
+        super();
 
-		if (_lineGeometry === undefined) {
-			_lineGeometry = new BufferGeometry();
-			_lineGeometry.setAttribute(
-				"position",
-				new Float32BufferAttribute([0, 0, 0, 0, 1, 0], 3)
-			);
+        this.type = 'ArrowHelper';
 
-			_coneGeometry = new CylinderGeometry(0, 0.5, 1, 5, 1);
-			_coneGeometry.translate(0, -0.5, 0);
-		}
+        if (_lineGeometry === undefined) {
+            _lineGeometry = new BufferGeometry();
+            _lineGeometry.setAttribute(
+                'position',
+                new Float32BufferAttribute([0, 0, 0, 0, 1, 0], 3)
+            );
 
-		this.position.copy(origin);
+            _coneGeometry = new CylinderGeometry(0, 0.5, 1, 5, 1);
+            _coneGeometry.translate(0, -0.5, 0);
+        }
 
-		const lineMat = new LineBasicMaterial();
-		lineMat.color = new Color(color);
-		lineMat.toneMapped = false;
-		this.line = new Line(_lineGeometry, lineMat);
-		this.line.matrixAutoUpdate = false;
-		this.add(this.line);
+        this.position.copy(origin);
 
-		const coneMat = new MeshBasicMaterial();
-		coneMat.color = new Color(color);
-		coneMat.toneMapped = false;
-		this.cone = new Mesh(_coneGeometry, coneMat);
-		this.cone.matrixAutoUpdate = false;
-		this.add(this.cone);
+        const lineMat = new LineBasicMaterial();
 
-		this.setDirection(dir);
-		this.setLength(length, headLength, headWidth);
-	}
+        lineMat.color = new Color(color);
+        lineMat.toneMapped = false;
+        this.line = new Line(_lineGeometry, lineMat);
+        this.line.matrixAutoUpdate = false;
+        this.add(this.line);
 
-	setDirection(dir) {
-		// dir is assumed to be normalized
+        const coneMat = new MeshBasicMaterial();
 
-		if (dir.y > 0.99999) {
-			this.quaternion.set(0, 0, 0, 1);
-		} else if (dir.y < -0.99999) {
-			this.quaternion.set(1, 0, 0, 0);
-		} else {
-			_axis.set(dir.z, 0, -dir.x).normalize();
+        coneMat.color = new Color(color);
+        coneMat.toneMapped = false;
+        this.cone = new Mesh(_coneGeometry, coneMat);
+        this.cone.matrixAutoUpdate = false;
+        this.add(this.cone);
 
-			const radians = Math.acos(dir.y);
+        this.setDirection(dir);
+        this.setLength(length, headLength, headWidth);
+    }
 
-			this.quaternion.setFromAxisAngle(_axis, radians);
-		}
-	}
+    setDirection(dir) {
+        // dir is assumed to be normalized
 
-	setLength(length, headLength = length * 0.2, headWidth = headLength * 0.2) {
-		this.line.scale.set(1, Math.max(0.0001, length - headLength), 1); // see #17458
-		this.line.updateMatrix();
+        if (dir.y > 0.99999) {
+            this.quaternion.set(0, 0, 0, 1);
+        } else if (dir.y < -0.99999) {
+            this.quaternion.set(1, 0, 0, 0);
+        } else {
+            _axis.set(dir.z, 0, -dir.x).normalize();
 
-		this.cone.scale.set(headWidth, headLength, headWidth);
-		this.cone.position.y = length;
-		this.cone.updateMatrix();
-	}
+            const radians = Math.acos(dir.y);
 
-	setColor(color) {
-		this.line.material.color.set(color);
-		this.cone.material.color.set(color);
-	}
+            this.quaternion.setFromAxisAngle(_axis, radians);
+        }
+    }
 
-	copy(source: ArrowHelper) {
-		super.copy(source, false);
+    setLength(length, headLength = length * 0.2, headWidth = headLength * 0.2) {
+        this.line.scale.set(1, Math.max(0.0001, length - headLength), 1); // see #17458
+        this.line.updateMatrix();
 
-		this.line.copy(source.line);
-		this.cone.copy(source.cone);
+        this.cone.scale.set(headWidth, headLength, headWidth);
+        this.cone.position.y = length;
+        this.cone.updateMatrix();
+    }
 
-		return this;
-	}
+    setColor(color) {
+        this.line.material.color.set(color);
+        this.cone.material.color.set(color);
+    }
+
+    copy(source: ArrowHelper) {
+        super.copy(source, false);
+
+        this.line.copy(source.line);
+        this.cone.copy(source.cone);
+
+        return this;
+    }
+
 }
 
 export { ArrowHelper };

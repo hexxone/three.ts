@@ -1,20 +1,21 @@
-import { Color } from "../math/Color";
-import { LightProbe } from "./LightProbe";
-
+import { Color } from '../math/Color';
+import { LightProbe } from './LightProbe';
 
 class AmbientLightProbe extends LightProbe {
-	constructor(color, intensity = 1) {
-		super(undefined, intensity);
 
-		this.isAmbientLightProbe = true;
+    constructor(color, intensity = 1) {
+        super(undefined, intensity);
 
-		const color1 = new Color().set(color);
+        this.isAmbientLightProbe = true;
 
-		// without extra factor of PI in the shader, would be 2 / Math.sqrt( Math.PI );
-		this.sh.coefficients[0]
-			.set(color1.r, color1.g, color1.b)
-			.multiplyScalar(2 * Math.sqrt(Math.PI));
-	}
+        const color1 = new Color().set(color);
+
+        // without extra factor of PI in the shader, would be 2 / Math.sqrt( Math.PI );
+        this.sh.coefficients[0]
+            .set(color1.r, color1.g, color1.b)
+            .multiplyScalar(2 * Math.sqrt(Math.PI));
+    }
+
 }
 
 export { AmbientLightProbe };

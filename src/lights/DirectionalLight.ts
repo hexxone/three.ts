@@ -1,33 +1,34 @@
-import { DefaultUp, Object3D } from "../core/Object3D";
-import { DirectionalLightShadow } from "./DirectionalLightShadow";
-import { Light } from "./Light";
-
+import { DefaultUp, Object3D } from '../core/Object3D';
+import { DirectionalLightShadow } from './DirectionalLightShadow';
+import { Light } from './Light';
 
 class DirectionalLight extends Light {
-	target: Object3D;
 
-	constructor(color, intensity) {
-		super(color, intensity);
+    target: Object3D;
 
-		this.isDirectionalLight = true;
-		this.type = "DirectionalLight";
+    constructor(color, intensity) {
+        super(color, intensity);
 
-		this.position.copy(DefaultUp);
-		this.updateMatrix();
+        this.isDirectionalLight = true;
+        this.type = 'DirectionalLight';
 
-		this.target = new Object3D();
+        this.position.copy(DefaultUp);
+        this.updateMatrix();
 
-		this.shadow = new DirectionalLightShadow();
-	}
+        this.target = new Object3D();
 
-	copy(source: DirectionalLight) {
-		super.copy(source);
+        this.shadow = new DirectionalLightShadow();
+    }
 
-		this.target = source.target.clone();
-		this.shadow = source.shadow.clone();
+    copy(source: DirectionalLight) {
+        super.copy(source);
 
-		return this;
-	}
+        this.target = source.target.clone();
+        this.shadow = source.shadow.clone();
+
+        return this;
+    }
+
 }
 
 export { DirectionalLight };

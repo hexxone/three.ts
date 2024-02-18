@@ -1,62 +1,66 @@
 class Clock {
-	autoStart: any;
-	startTime: number;
-	oldTime: number;
-	elapsedTime: number;
-	running: boolean;
 
-	constructor(autoStart?) {
-		this.autoStart = autoStart !== undefined ? autoStart : true;
+    autoStart: any;
+    startTime: number;
+    oldTime: number;
+    elapsedTime: number;
+    running: boolean;
 
-		this.startTime = 0;
-		this.oldTime = 0;
-		this.elapsedTime = 0;
+    constructor(autoStart?) {
+        this.autoStart = autoStart !== undefined ? autoStart : true;
 
-		this.running = false;
-	}
+        this.startTime = 0;
+        this.oldTime = 0;
+        this.elapsedTime = 0;
 
-	start() {
-		this.startTime = now();
+        this.running = false;
+    }
 
-		this.oldTime = this.startTime;
-		this.elapsedTime = 0;
-		this.running = true;
-	}
+    start() {
+        this.startTime = now();
 
-	stop() {
-		this.getElapsedTime();
-		this.running = false;
-		this.autoStart = false;
-	}
+        this.oldTime = this.startTime;
+        this.elapsedTime = 0;
+        this.running = true;
+    }
 
-	getElapsedTime() {
-		this.getDelta();
-		return this.elapsedTime;
-	}
+    stop() {
+        this.getElapsedTime();
+        this.running = false;
+        this.autoStart = false;
+    }
 
-	getDelta() {
-		let diff = 0;
+    getElapsedTime() {
+        this.getDelta();
 
-		if (this.autoStart && !this.running) {
-			this.start();
-			return 0;
-		}
+        return this.elapsedTime;
+    }
 
-		if (this.running) {
-			const newTime = now();
+    getDelta() {
+        let diff = 0;
 
-			diff = (newTime - this.oldTime) / 1000;
-			this.oldTime = newTime;
+        if (this.autoStart && !this.running) {
+            this.start();
 
-			this.elapsedTime += diff;
-		}
+            return 0;
+        }
 
-		return diff;
-	}
+        if (this.running) {
+            const newTime = now();
+
+            diff = (newTime - this.oldTime) / 1000;
+            this.oldTime = newTime;
+
+            this.elapsedTime += diff;
+        }
+
+        return diff;
+    }
+
 }
 
 function now() {
-	return (typeof performance === "undefined" ? Date : performance).now(); // see #10732
+    return (typeof performance === 'undefined' ? Date : performance).now(); // see #10732
 }
 
 export { Clock };

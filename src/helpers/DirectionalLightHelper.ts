@@ -1,9 +1,9 @@
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Object3D } from "../core/Object3D";
-import { LineBasicMaterial } from "../materials/LineBasicMaterial";
-import { Vector3 } from "../math/Vector3";
-import { Line } from "../objects/Line";
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Object3D } from '../core/Object3D';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { Vector3 } from '../math/Vector3';
+import { Line } from '../objects/Line';
 
 const _v1 = /* @__PURE__*/ new Vector3();
 const _v2 = /* @__PURE__*/ new Vector3();
@@ -13,92 +13,96 @@ const _v3 = /* @__PURE__*/ new Vector3();
  * @public
  */
 class DirectionalLightHelper extends Object3D {
-	light: any;
-	color: any;
-	lightPlane: Line;
-	targetLine: Line;
 
-	constructor(light, size, color) {
-		super();
-		this.light = light;
-		this.light.updateMatrixWorld();
+    light: any;
+    color: any;
+    lightPlane: Line;
+    targetLine: Line;
 
-		this.matrix = light.matrixWorld;
-		this.matrixAutoUpdate = false;
+    constructor(light, size, color) {
+        super();
+        this.light = light;
+        this.light.updateMatrixWorld();
 
-		this.color = color;
+        this.matrix = light.matrixWorld;
+        this.matrixAutoUpdate = false;
 
-		if (size === undefined) size = 1;
+        this.color = color;
 
-		let geometry = new BufferGeometry();
-		geometry.setAttribute(
-			"position",
-			new Float32BufferAttribute(
-				[
-					-size,
-					size,
-					0,
-					size,
-					size,
-					0,
-					size,
-					-size,
-					0,
-					-size,
-					-size,
-					0,
-					-size,
-					size,
-					0,
-				],
-				3
-			)
-		);
+        if (size === undefined) { size = 1; }
 
-		const material = new LineBasicMaterial();
-		material.fog = false;
-		material.toneMapped = false;
+        let geometry = new BufferGeometry();
 
-		this.lightPlane = new Line(geometry, material);
-		this.add(this.lightPlane);
+        geometry.setAttribute(
+            'position',
+            new Float32BufferAttribute(
+                [
+                    -size,
+                    size,
+                    0,
+                    size,
+                    size,
+                    0,
+                    size,
+                    -size,
+                    0,
+                    -size,
+                    -size,
+                    0,
+                    -size,
+                    size,
+                    0
+                ],
+                3
+            )
+        );
 
-		geometry = new BufferGeometry();
-		geometry.setAttribute(
-			"position",
-			new Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3)
-		);
+        const material = new LineBasicMaterial();
 
-		this.targetLine = new Line(geometry, material);
-		this.add(this.targetLine);
+        material.fog = false;
+        material.toneMapped = false;
 
-		this.update();
-	}
+        this.lightPlane = new Line(geometry, material);
+        this.add(this.lightPlane);
 
-	dispose() {
-		this.lightPlane.geometry.dispose();
-		this.lightPlane.material.dispose();
-		this.targetLine.geometry.dispose();
-		this.targetLine.material.dispose();
-	}
+        geometry = new BufferGeometry();
+        geometry.setAttribute(
+            'position',
+            new Float32BufferAttribute([0, 0, 0, 0, 0, 1], 3)
+        );
 
-	update() {
-		_v1.setFromMatrixPosition(this.light.matrixWorld);
-		_v2.setFromMatrixPosition(this.light.target.matrixWorld);
-		_v3.subVectors(_v2, _v1);
+        this.targetLine = new Line(geometry, material);
+        this.add(this.targetLine);
 
-		this.lightPlane.lookAt(_v2);
+        this.update();
+    }
 
-		if (this.color !== undefined) {
-			this.lightPlane.material.color.set(this.color);
-			this.targetLine.material.color.set(this.color);
-		} else {
-			this.lightPlane.material.color.copy(this.light.color);
-			this.targetLine.material.color.copy(this.light.color);
-		}
+    dispose() {
+        this.lightPlane.geometry.dispose();
+        this.lightPlane.material.dispose();
+        this.targetLine.geometry.dispose();
+        this.targetLine.material.dispose();
+    }
 
-		this.targetLine.lookAt(_v2);
-		this.targetLine.scale.z = _v3.length();
-	}
+    update() {
+        _v1.setFromMatrixPosition(this.light.matrixWorld);
+        _v2.setFromMatrixPosition(this.light.target.matrixWorld);
+        _v3.subVectors(_v2, _v1);
+
+        this.lightPlane.lookAt(_v2);
+
+        if (this.color !== undefined) {
+            this.lightPlane.material.color.set(this.color);
+            this.targetLine.material.color.set(this.color);
+        } else {
+            this.lightPlane.material.color.copy(this.light.color);
+            this.targetLine.material.color.copy(this.light.color);
+        }
+
+        this.targetLine.lookAt(_v2);
+        this.targetLine.scale.z = _v3.length();
+    }
+
 }
 
 export { DirectionalLightHelper };

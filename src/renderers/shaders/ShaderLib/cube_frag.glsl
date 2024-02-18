@@ -8,11 +8,11 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vec3 vReflect = vWorldDirection;
+    vec3 vReflect = vWorldDirection;
 	#include <envmap_fragment>
 
-	gl_FragColor = envColor;
-	gl_FragColor.a *= opacity;
+    gl_FragColor = envColor;
+    gl_FragColor.a *= opacity;
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>

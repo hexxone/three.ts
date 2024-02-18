@@ -1,200 +1,220 @@
-import { BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { InstancedBufferAttribute } from "../core/InstancedBufferAttribute";
-import { InstancedBufferGeometry } from "../core/InstancedBufferGeometry";
-import { InterleavedBuffer } from "../core/InterleavedBuffer";
-import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
-import { Sphere } from "../math/Sphere";
-import { Vector3 } from "../math/Vector3";
-import { getTypedArray } from "../utils";
-import { FileLoader } from "./FileLoader";
-import { Loader } from "./Loader";
+import { BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { InstancedBufferAttribute } from '../core/InstancedBufferAttribute';
+import { InstancedBufferGeometry } from '../core/InstancedBufferGeometry';
+import { InterleavedBuffer } from '../core/InterleavedBuffer';
+import { InterleavedBufferAttribute } from '../core/InterleavedBufferAttribute';
+import { Sphere } from '../math/Sphere';
+import { Vector3 } from '../math/Vector3';
+import { getTypedArray } from '../utils';
+import { FileLoader } from './FileLoader';
+import { Loader } from './Loader';
 
 class BufferGeometryLoader extends Loader {
-	constructor(manager?) {
-		super(manager);
-	}
 
-	load(url, onLoad, onProgress, onError) {
-		const scope = this;
+    constructor(manager?) {
+        super(manager);
+    }
 
-		const loader = new FileLoader(scope.manager);
-		loader.setPath(scope.path);
-		loader.setRequestHeader(scope.requestHeader);
-		loader.setWithCredentials(scope.withCredentials);
-		loader.load(
-			url,
-			function (text) {
-				try {
-					onLoad(scope.parse(JSON.parse(text)));
-				} catch (e) {
-					if (onError) {
-						onError(e);
-					} else {
-						console.error(e);
-					}
+    load(url, onLoad, onProgress, onError) {
+        // eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias
+        const scope = this;
 
-					scope.manager.itemError(url);
-				}
-			},
-			onProgress,
-			onError
-		);
-	}
+        const loader = new FileLoader(scope.manager);
 
-	parse(json) {
-		const interleavedBufferMap = {};
-		const arrayBufferMap = {};
+        loader.setPath(scope.path);
+        loader.setRequestHeader(scope.requestHeader);
+        loader.setWithCredentials(scope.withCredentials);
+        loader.load(
+            url,
+            (text) => {
+                try {
+                    onLoad(scope.parse(JSON.parse(text)));
+                } catch (e) {
+                    if (onError) {
+                        onError(e);
+                    } else {
+                        console.error(e);
+                    }
 
-		function getInterleavedBuffer(json, uuid) {
-			if (interleavedBufferMap[uuid] !== undefined)
-				return interleavedBufferMap[uuid];
+                    scope.manager.itemError(url);
+                }
+            },
+            onProgress,
+            onError
+        );
+    }
 
-			const interleavedBuffers = json.interleavedBuffers;
-			const interleavedBuffer = interleavedBuffers[uuid];
+    parse(json) {
+        const interleavedBufferMap = {};
+        const arrayBufferMap = {};
 
-			const buffer = getArrayBuffer(json, interleavedBuffer.buffer);
+        function getInterleavedBuffer(json, uuid) {
+            if (interleavedBufferMap[uuid] !== undefined) { return interleavedBufferMap[uuid]; }
 
-			const array = getTypedArray(interleavedBuffer.type, buffer);
-			const ib = new InterleavedBuffer(array, interleavedBuffer.stride);
-			ib.uuid = interleavedBuffer.uuid;
+            const { interleavedBuffers } = json;
+            const interleavedBuffer = interleavedBuffers[uuid];
 
-			interleavedBufferMap[uuid] = ib;
+            const buffer = getArrayBuffer(json, interleavedBuffer.buffer);
 
-			return ib;
-		}
+            const array = getTypedArray(interleavedBuffer.type, buffer);
+            const ib = new InterleavedBuffer(array, interleavedBuffer.stride);
 
-		function getArrayBuffer(json, uuid) {
-			if (arrayBufferMap[uuid] !== undefined) return arrayBufferMap[uuid];
+            ib.uuid = interleavedBuffer.uuid;
 
-			const arrayBuffers = json.arrayBuffers;
-			const arrayBuffer = arrayBuffers[uuid];
+            interleavedBufferMap[uuid] = ib;
 
-			const ab = new Uint32Array(arrayBuffer).buffer;
+            return ib;
+        }
 
-			arrayBufferMap[uuid] = ab;
+        function getArrayBuffer(json, uuid) {
+            if (arrayBufferMap[uuid] !== undefined) { return arrayBufferMap[uuid]; }
 
-			return ab;
-		}
+            const { arrayBuffers } = json;
+            const arrayBuffer = arrayBuffers[uuid];
 
-		const geometry = json.isInstancedBufferGeometry
-			? new InstancedBufferGeometry()
-			: new BufferGeometry();
+            const ab = new Uint32Array(arrayBuffer).buffer;
 
-		const index = json.data.index;
+            arrayBufferMap[uuid] = ab;
 
-		if (index !== undefined) {
-			const typedArray = getTypedArray(index.type, index.array);
-			geometry.setIndex(new BufferAttribute(typedArray, 1));
-		}
+            return ab;
+        }
 
-		const attributes = json.data.attributes;
+        const geometry = json.isInstancedBufferGeometry
+            ? new InstancedBufferGeometry()
+            : new BufferGeometry();
 
-		for (const key in attributes) {
-			const attribute = attributes[key];
-			let bufferAttribute;
+        const { index } = json.data;
 
-			if (attribute.isInterleavedBufferAttribute) {
-				const interleavedBuffer = getInterleavedBuffer(
-					json.data,
-					attribute.data
-				);
-				bufferAttribute = new InterleavedBufferAttribute(
-					interleavedBuffer,
-					attribute.itemSize,
-					attribute.offset,
-					attribute.normalized
-				);
-			} else {
-				const typedArray = getTypedArray(attribute.type, attribute.array);
-				const BufferAttributeConstr = attribute.isInstancedBufferAttribute
-					? InstancedBufferAttribute
-					: BufferAttribute;
-				bufferAttribute = new BufferAttributeConstr(
-					typedArray,
-					attribute.itemSize,
-					attribute.normalized
-				);
-			}
+        if (index !== undefined) {
+            const typedArray = getTypedArray(index.type, index.array);
 
-			if (attribute.name !== undefined) bufferAttribute.name = attribute.name;
-			geometry.setAttribute(key, bufferAttribute);
-		}
+            geometry.setIndex(new BufferAttribute(typedArray, 1));
+        }
 
-		const morphAttributes = json.data.morphAttributes;
+        const { attributes } = json.data;
 
-		if (morphAttributes) {
-			for (const key in morphAttributes) {
-				const attributeArray = morphAttributes[key];
+        for (const key in attributes) {
+            const attribute = attributes[key];
+            let bufferAttribute;
 
-				const array = [];
+            if (attribute.isInterleavedBufferAttribute) {
+                const interleavedBuffer = getInterleavedBuffer(
+                    json.data,
+                    attribute.data
+                );
 
-				for (let i = 0, il = attributeArray.length; i < il; i++) {
-					const attribute = attributeArray[i];
-					let bufferAttribute;
+                bufferAttribute = new InterleavedBufferAttribute(
+                    interleavedBuffer,
+                    attribute.itemSize,
+                    attribute.offset,
+                    attribute.normalized
+                );
+            } else {
+                const typedArray = getTypedArray(
+                    attribute.type,
+                    attribute.array
+                );
+                const BufferAttributeConstr
+                    = attribute.isInstancedBufferAttribute
+                        ? InstancedBufferAttribute
+                        : BufferAttribute;
 
-					if (attribute.isInterleavedBufferAttribute) {
-						const interleavedBuffer = getInterleavedBuffer(
-							json.data,
-							attribute.data
-						);
-						bufferAttribute = new InterleavedBufferAttribute(
-							interleavedBuffer,
-							attribute.itemSize,
-							attribute.offset,
-							attribute.normalized
-						);
-					} else {
-						const typedArray = getTypedArray(attribute.type, attribute.array);
-						bufferAttribute = new BufferAttribute(
-							typedArray,
-							attribute.itemSize,
-							attribute.normalized
-						);
-					}
+                bufferAttribute = new BufferAttributeConstr(
+                    typedArray,
+                    attribute.itemSize,
+                    attribute.normalized
+                );
+            }
 
-					if (attribute.name !== undefined)
-						bufferAttribute.name = attribute.name;
-					array.push(bufferAttribute);
-				}
+            if (attribute.name !== undefined) { bufferAttribute.name = attribute.name; }
+            geometry.setAttribute(key, bufferAttribute);
+        }
 
-				geometry.morphAttributes[key] = array;
-			}
-		}
+        const { morphAttributes } = json.data;
 
-		const morphTargetsRelative = json.data.morphTargetsRelative;
+        if (morphAttributes) {
+            for (const key in morphAttributes) {
+                const attributeArray = morphAttributes[key];
 
-		if (morphTargetsRelative) {
-			geometry.morphTargetsRelative = true;
-		}
+                const array = [];
 
-		const groups = json.data.groups || json.data.drawcalls || json.data.offsets;
+                for (let i = 0, il = attributeArray.length; i < il; i++) {
+                    const attribute = attributeArray[i];
+                    let bufferAttribute;
 
-		if (groups !== undefined) {
-			for (let i = 0, n = groups.length; i !== n; ++i) {
-				const group = groups[i];
+                    if (attribute.isInterleavedBufferAttribute) {
+                        const interleavedBuffer = getInterleavedBuffer(
+                            json.data,
+                            attribute.data
+                        );
 
-				geometry.addGroup(group.start, group.count, group.materialIndex);
-			}
-		}
+                        bufferAttribute = new InterleavedBufferAttribute(
+                            interleavedBuffer,
+                            attribute.itemSize,
+                            attribute.offset,
+                            attribute.normalized
+                        );
+                    } else {
+                        const typedArray = getTypedArray(
+                            attribute.type,
+                            attribute.array
+                        );
 
-		const boundingSphere = json.data.boundingSphere;
+                        bufferAttribute = new BufferAttribute(
+                            typedArray,
+                            attribute.itemSize,
+                            attribute.normalized
+                        );
+                    }
 
-		if (boundingSphere !== undefined) {
-			const center = new Vector3();
+                    if (attribute.name !== undefined) { bufferAttribute.name = attribute.name; }
+                    array.push(bufferAttribute);
+                }
 
-			if (boundingSphere.center !== undefined) {
-				center.fromArray(boundingSphere.center);
-			}
+                geometry.morphAttributes[key] = array;
+            }
+        }
 
-			geometry.boundingSphere = new Sphere(center, boundingSphere.radius);
-		}
+        const { morphTargetsRelative } = json.data;
 
-		if (json.name) geometry.name = json.name;
-		if (json.userData) geometry.userData = json.userData;
+        if (morphTargetsRelative) {
+            geometry.morphTargetsRelative = true;
+        }
 
-		return geometry;
-	}
+        const groups
+            = json.data.groups || json.data.drawcalls || json.data.offsets;
+
+        if (groups !== undefined) {
+            for (let i = 0, n = groups.length; i !== n; ++i) {
+                const group = groups[i];
+
+                geometry.addGroup(
+                    group.start,
+                    group.count,
+                    group.materialIndex
+                );
+            }
+        }
+
+        const { boundingSphere } = json.data;
+
+        if (boundingSphere !== undefined) {
+            const center = new Vector3();
+
+            if (boundingSphere.center !== undefined) {
+                center.fromArray(boundingSphere.center);
+            }
+
+            geometry.boundingSphere = new Sphere(center, boundingSphere.radius);
+        }
+
+        if (json.name) { geometry.name = json.name; }
+        if (json.userData) { geometry.userData = json.userData; }
+
+        return geometry;
+    }
+
 }
 
 export { BufferGeometryLoader };

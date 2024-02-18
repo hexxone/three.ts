@@ -1,169 +1,173 @@
-
-import { generateUUID } from "../math/MathUtils";
-import { Matrix4 } from "../math/Matrix4";
-import { Bone } from "./Bone";
+import { generateUUID } from '../math/MathUtils';
+import { Matrix4 } from '../math/Matrix4';
+import { Bone } from './Bone';
 
 const _offsetMatrix = /* @__PURE__*/ new Matrix4();
 const _identityMatrix = /* @__PURE__*/ new Matrix4();
 
 export class Skeleton {
-	uuid: any;
-	bones: Bone[];
-	boneInverses: any[];
-	boneMatrices: any;
-	boneTexture: any;
-	boneTextureSize: number;
-	frame: number;
 
-	constructor(bones = [], boneInverses = []) {
-		this.uuid = generateUUID();
+    uuid: any;
+    bones: Bone[];
+    boneInverses: any[];
+    boneMatrices: any;
+    boneTexture: any;
+    boneTextureSize: number;
+    frame: number;
 
-		this.bones = bones.slice(0);
-		this.boneInverses = boneInverses;
-		this.boneMatrices = null;
+    constructor(bones = [], boneInverses = []) {
+        this.uuid = generateUUID();
 
-		this.boneTexture = null;
-		this.boneTextureSize = 0;
+        this.bones = bones.slice(0);
+        this.boneInverses = boneInverses;
+        this.boneMatrices = null;
 
-		this.frame = -1;
+        this.boneTexture = null;
+        this.boneTextureSize = 0;
 
-		this.init();
-	}
+        this.frame = -1;
 
-	init() {
-		const bones = this.bones;
-		const boneInverses = this.boneInverses;
+        this.init();
+    }
 
-		this.boneMatrices = new Float32Array(bones.length * 16);
+    init() {
+        const { bones } = this;
+        const { boneInverses } = this;
 
-		// calculate inverse bone matrices if necessary
+        this.boneMatrices = new Float32Array(bones.length * 16);
 
-		if (boneInverses.length === 0) {
-			this.calculateInverses();
-		} else {
-			// handle special case
+        // calculate inverse bone matrices if necessary
 
-			if (bones.length !== boneInverses.length) {
-				console.warn(
-					"Skeleton: Number of inverse bone matrices does not match amount of bones."
-				);
+        if (boneInverses.length === 0) {
+            this.calculateInverses();
+        } else if (bones.length !== boneInverses.length) {
+            // handle special case
+            console.warn(
+                'Skeleton: Number of inverse bone matrices does not match amount of bones.'
+            );
 
-				this.boneInverses = [];
+            this.boneInverses = [];
 
-				for (let i = 0, il = this.bones.length; i < il; i++) {
-					this.boneInverses.push(new Matrix4());
-				}
-			}
-		}
-	}
+            for (let i = 0, il = this.bones.length; i < il; i++) {
+                this.boneInverses.push(new Matrix4());
+            }
+        }
+    }
 
-	calculateInverses() {
-		this.boneInverses.length = 0;
+    calculateInverses() {
+        this.boneInverses.length = 0;
 
-		for (let i = 0, il = this.bones.length; i < il; i++) {
-			const inverse = new Matrix4();
+        for (let i = 0, il = this.bones.length; i < il; i++) {
+            const inverse = new Matrix4();
 
-			if (this.bones[i]) {
-				inverse.copy(this.bones[i].matrixWorld).invert();
-			}
+            if (this.bones[i]) {
+                inverse.copy(this.bones[i].matrixWorld).invert();
+            }
 
-			this.boneInverses.push(inverse);
-		}
-	}
+            this.boneInverses.push(inverse);
+        }
+    }
 
-	pose() {
-		// recover the bind-time world matrices
+    pose() {
+        // recover the bind-time world matrices
 
-		for (let i = 0, il = this.bones.length; i < il; i++) {
-			const bone = this.bones[i];
+        for (let i = 0, il = this.bones.length; i < il; i++) {
+            const bone = this.bones[i];
 
-			if (bone) {
-				bone.matrixWorld.copy(this.boneInverses[i]).invert();
-			}
-		}
+            if (bone) {
+                bone.matrixWorld.copy(this.boneInverses[i]).invert();
+            }
+        }
 
-		// compute the local matrices, positions, rotations and scales
+        // compute the local matrices, positions, rotations and scales
 
-		for (let i = 0, il = this.bones.length; i < il; i++) {
-			const bone = this.bones[i];
+        for (let i = 0, il = this.bones.length; i < il; i++) {
+            const bone = this.bones[i];
 
-			if (bone) {
-				if (bone.parent && bone.parent.isBone) {
-					bone.matrix.copy(bone.parent.matrixWorld).invert();
-					bone.matrix.multiply(bone.matrixWorld);
-				} else {
-					bone.matrix.copy(bone.matrixWorld);
-				}
+            if (bone) {
+                if (bone.parent && bone.parent.isBone) {
+                    bone.matrix.copy(bone.parent.matrixWorld).invert();
+                    bone.matrix.multiply(bone.matrixWorld);
+                } else {
+                    bone.matrix.copy(bone.matrixWorld);
+                }
 
-				bone.matrix.decompose(bone.position, bone.quaternion, bone.scale);
-			}
-		}
-	}
+                bone.matrix.decompose(
+                    bone.position,
+                    bone.quaternion,
+                    bone.scale
+                );
+            }
+        }
+    }
 
-	update() {
-		const bones = this.bones;
-		const boneInverses = this.boneInverses;
-		const boneMatrices = this.boneMatrices;
-		const boneTexture = this.boneTexture;
+    update() {
+        const { bones } = this;
+        const { boneInverses } = this;
+        const { boneMatrices } = this;
+        const { boneTexture } = this;
 
-		// flatten bone matrices to array
+        // flatten bone matrices to array
 
-		for (let i = 0, il = bones.length; i < il; i++) {
-			// compute the offset between the current and the original transform
+        for (let i = 0, il = bones.length; i < il; i++) {
+            // compute the offset between the current and the original transform
 
-			const matrix = bones[i] ? bones[i].matrixWorld : _identityMatrix;
+            const matrix = bones[i] ? bones[i].matrixWorld : _identityMatrix;
 
-			_offsetMatrix.multiplyMatrices(matrix, boneInverses[i]);
-			_offsetMatrix.toArray(boneMatrices, i * 16);
-		}
+            _offsetMatrix.multiplyMatrices(matrix, boneInverses[i]);
+            _offsetMatrix.toArray(boneMatrices, i * 16);
+        }
 
-		if (boneTexture !== null) {
-			boneTexture.needsUpdate = true;
-		}
-	}
+        if (boneTexture !== null) {
+            boneTexture.needsUpdate = true;
+        }
+    }
 
-	clone() {
-		return new Skeleton(this.bones, this.boneInverses);
-	}
+    clone() {
+        return new Skeleton(this.bones, this.boneInverses);
+    }
 
-	getBoneByName(name) {
-		for (let i = 0, il = this.bones.length; i < il; i++) {
-			const bone = this.bones[i];
+    getBoneByName(name) {
+        for (let i = 0, il = this.bones.length; i < il; i++) {
+            const bone = this.bones[i];
 
-			if (bone.name === name) {
-				return bone;
-			}
-		}
+            if (bone.name === name) {
+                return bone;
+            }
+        }
 
-		return undefined;
-	}
+        return undefined;
+    }
 
-	dispose() {
-		if (this.boneTexture !== null) {
-			this.boneTexture.dispose();
+    dispose() {
+        if (this.boneTexture !== null) {
+            this.boneTexture.dispose();
 
-			this.boneTexture = null;
-		}
-	}
+            this.boneTexture = null;
+        }
+    }
 
-	fromJSON(json, bones) {
-		this.uuid = json.uuid;
+    fromJSON(json, bones) {
+        this.uuid = json.uuid;
 
-		for (let i = 0, l = json.bones.length; i < l; i++) {
-			const uuid = json.bones[i];
-			let bone = bones[uuid];
+        for (let i = 0, l = json.bones.length; i < l; i++) {
+            const uuid = json.bones[i];
+            let bone = bones[uuid];
 
-			if (bone === undefined) {
-				console.warn("Skeleton: No bone found with UUID:", uuid);
-				bone = new Bone();
-			}
+            if (bone === undefined) {
+                console.warn('Skeleton: No bone found with UUID:', uuid);
+                bone = new Bone();
+            }
 
-			this.bones.push(bone);
-			this.boneInverses.push(new Matrix4().fromArray(json.boneInverses[i]));
-		}
+            this.bones.push(bone);
+            this.boneInverses.push(
+                new Matrix4().fromArray(json.boneInverses[i])
+            );
+        }
 
-		this.init();
+        this.init();
 
-		return this;
-	}
+        return this;
+    }
+
 }

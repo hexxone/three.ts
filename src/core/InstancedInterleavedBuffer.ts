@@ -1,31 +1,33 @@
-import { InterleavedBuffer } from "./InterleavedBuffer";
+import { InterleavedBuffer } from './InterleavedBuffer';
 
 class InstancedInterleavedBuffer extends InterleavedBuffer {
-	meshPerAttribute: number;
 
-	isInstancedInterleavedBuffer = true;
+    meshPerAttribute: number;
 
-	constructor(array, stride, meshPerAttribute) {
-		super(array, stride);
+    isInstancedInterleavedBuffer = true;
 
-		this.meshPerAttribute = meshPerAttribute || 1;
-	}
+    constructor(array, stride, meshPerAttribute) {
+        super(array, stride);
 
-	copy(source: InstancedInterleavedBuffer) {
-		super.copy(source);
+        this.meshPerAttribute = meshPerAttribute || 1;
+    }
 
-		this.meshPerAttribute = source.meshPerAttribute;
+    copy(source: InstancedInterleavedBuffer) {
+        super.copy(source);
 
-		return this;
-	}
+        this.meshPerAttribute = source.meshPerAttribute;
 
-	clone(data) {
-		const ib = super.clone(data) as any;
+        return this;
+    }
 
-		ib.meshPerAttribute = this.meshPerAttribute;
+    clone(data) {
+        const ib = super.clone(data) as any;
 
-		return ib;
-	}
+        ib.meshPerAttribute = this.meshPerAttribute;
+
+        return ib;
+    }
+
 }
 
 export { InstancedInterleavedBuffer };

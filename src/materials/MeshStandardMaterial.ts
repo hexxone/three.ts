@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *  color: <hex>,
@@ -51,133 +50,139 @@
  * }
  */
 
-import { TangentSpaceNormalMap } from "../constants";
-import { Color } from "../math/Color";
-import { Vector2 } from "../math/Vector2";
-import { Material } from "./Material";
+import { TangentSpaceNormalMap } from '../constants';
+import { Color } from '../math/Color';
+import { Vector2 } from '../math/Vector2';
+import { Material } from './Material';
 
 class MeshStandardMaterial extends Material {
-	defines: any;
-	vertexTangents: boolean;
 
-	constructor() {
-		super();
+    defines: any;
+    vertexTangents: boolean;
 
-		this.isMeshStandardMaterial = true;
-		this.defines = { STANDARD: "" };
+    constructor() {
+        super();
 
-		this.type = "MeshStandardMaterial";
+        this.isMeshStandardMaterial = true;
+        this.defines = {
+            STANDARD: ''
+        };
 
-		this.color = new Color(0xffffff); // diffuse
-		this.roughness = 1.0;
-		this.metalness = 0.0;
+        this.type = 'MeshStandardMaterial';
 
-		this.map = null;
+        this.color = new Color(0xffffff); // diffuse
+        this.roughness = 1.0;
+        this.metalness = 0.0;
 
-		this.lightMap = null;
-		this.lightMapIntensity = 1.0;
+        this.map = null;
 
-		this.aoMap = null;
-		this.aoMapIntensity = 1.0;
+        this.lightMap = null;
+        this.lightMapIntensity = 1.0;
 
-		this.emissive = new Color(0x000000);
-		this.emissiveIntensity = 1.0;
-		this.emissiveMap = null;
+        this.aoMap = null;
+        this.aoMapIntensity = 1.0;
 
-		this.bumpMap = null;
-		this.bumpScale = 1;
+        this.emissive = new Color(0x000000);
+        this.emissiveIntensity = 1.0;
+        this.emissiveMap = null;
 
-		this.normalMap = null;
-		this.normalMapType = TangentSpaceNormalMap;
-		this.normalScale = new Vector2(1, 1);
+        this.bumpMap = null;
+        this.bumpScale = 1;
 
-		this.displacementMap = null;
-		this.displacementScale = 1;
-		this.displacementBias = 0;
+        this.normalMap = null;
+        this.normalMapType = TangentSpaceNormalMap;
+        this.normalScale = new Vector2(1, 1);
 
-		this.roughnessMap = null;
+        this.displacementMap = null;
+        this.displacementScale = 1;
+        this.displacementBias = 0;
 
-		this.metalnessMap = null;
+        this.roughnessMap = null;
 
-		this.alphaMap = null;
+        this.metalnessMap = null;
 
-		this.envMap = null;
-		this.envMapIntensity = 1.0;
+        this.alphaMap = null;
 
-		this.refractionRatio = 0.98;
+        this.envMap = null;
+        this.envMapIntensity = 1.0;
 
-		this.wireframe = false;
-		this.wireframeLinewidth = 1;
-		this.wireframeLinecap = "round";
-		this.wireframeLinejoin = "round";
+        this.refractionRatio = 0.98;
 
-		this.skinning = false;
-		this.morphTargets = false;
-		this.morphNormals = false;
+        this.wireframe = false;
+        this.wireframeLinewidth = 1;
+        this.wireframeLinecap = 'round';
+        this.wireframeLinejoin = 'round';
 
-		this.flatShading = false;
+        this.skinning = false;
+        this.morphTargets = false;
+        this.morphNormals = false;
 
-		this.vertexTangents = false;
-	}
+        this.flatShading = false;
 
-	copy(source: MeshStandardMaterial) {
-		super.copy(source);
+        this.vertexTangents = false;
+    }
 
-		this.defines = { STANDARD: "" };
+    copy(source: MeshStandardMaterial) {
+        super.copy(source);
 
-		this.color.copy(source.color);
-		this.roughness = source.roughness;
-		this.metalness = source.metalness;
+        this.defines = {
+            STANDARD: ''
+        };
 
-		this.map = source.map;
+        this.color.copy(source.color);
+        this.roughness = source.roughness;
+        this.metalness = source.metalness;
 
-		this.lightMap = source.lightMap;
-		this.lightMapIntensity = source.lightMapIntensity;
+        this.map = source.map;
 
-		this.aoMap = source.aoMap;
-		this.aoMapIntensity = source.aoMapIntensity;
+        this.lightMap = source.lightMap;
+        this.lightMapIntensity = source.lightMapIntensity;
 
-		this.emissive.copy(source.emissive);
-		this.emissiveMap = source.emissiveMap;
-		this.emissiveIntensity = source.emissiveIntensity;
+        this.aoMap = source.aoMap;
+        this.aoMapIntensity = source.aoMapIntensity;
 
-		this.bumpMap = source.bumpMap;
-		this.bumpScale = source.bumpScale;
+        this.emissive.copy(source.emissive);
+        this.emissiveMap = source.emissiveMap;
+        this.emissiveIntensity = source.emissiveIntensity;
 
-		this.normalMap = source.normalMap;
-		this.normalMapType = source.normalMapType;
-		this.normalScale.copy(source.normalScale);
+        this.bumpMap = source.bumpMap;
+        this.bumpScale = source.bumpScale;
 
-		this.displacementMap = source.displacementMap;
-		this.displacementScale = source.displacementScale;
-		this.displacementBias = source.displacementBias;
+        this.normalMap = source.normalMap;
+        this.normalMapType = source.normalMapType;
+        this.normalScale.copy(source.normalScale);
 
-		this.roughnessMap = source.roughnessMap;
+        this.displacementMap = source.displacementMap;
+        this.displacementScale = source.displacementScale;
+        this.displacementBias = source.displacementBias;
 
-		this.metalnessMap = source.metalnessMap;
+        this.roughnessMap = source.roughnessMap;
 
-		this.alphaMap = source.alphaMap;
+        this.metalnessMap = source.metalnessMap;
 
-		this.envMap = source.envMap;
-		this.envMapIntensity = source.envMapIntensity;
+        this.alphaMap = source.alphaMap;
 
-		this.refractionRatio = source.refractionRatio;
+        this.envMap = source.envMap;
+        this.envMapIntensity = source.envMapIntensity;
 
-		this.wireframe = source.wireframe;
-		this.wireframeLinewidth = source.wireframeLinewidth;
-		this.wireframeLinecap = source.wireframeLinecap;
-		this.wireframeLinejoin = source.wireframeLinejoin;
+        this.refractionRatio = source.refractionRatio;
 
-		this.skinning = source.skinning;
-		this.morphTargets = source.morphTargets;
-		this.morphNormals = source.morphNormals;
+        this.wireframe = source.wireframe;
+        this.wireframeLinewidth = source.wireframeLinewidth;
+        this.wireframeLinecap = source.wireframeLinecap;
+        this.wireframeLinejoin = source.wireframeLinejoin;
 
-		this.flatShading = source.flatShading;
+        this.skinning = source.skinning;
+        this.morphTargets = source.morphTargets;
+        this.morphNormals = source.morphNormals;
 
-		this.vertexTangents = source.vertexTangents;
+        this.flatShading = source.flatShading;
 
-		return this;
-	}
+        this.vertexTangents = source.vertexTangents;
+
+        return this;
+    }
+
 }
 
 export { MeshStandardMaterial };

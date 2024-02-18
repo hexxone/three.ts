@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *  color: <hex>,
@@ -12,29 +11,31 @@
  * }
  */
 
-import { LineBasicMaterial } from "./LineBasicMaterial";
+import { LineBasicMaterial } from './LineBasicMaterial';
 
 class LineDashedMaterial extends LineBasicMaterial {
-	constructor() {
-		super();
 
-		this.isLineDashedMaterial = true;
-		this.type = "LineDashedMaterial";
+    constructor() {
+        super();
 
-		this.scale = 1;
-		this.dashSize = 3;
-		this.gapSize = 1;
-	}
+        this.isLineDashedMaterial = true;
+        this.type = 'LineDashedMaterial';
 
-	copy(source: LineDashedMaterial) {
-		super.copy(source);
+        this.scale = 1;
+        this.dashSize = 3;
+        this.gapSize = 1;
+    }
 
-		this.scale = source.scale;
-		this.dashSize = source.dashSize;
-		this.gapSize = source.gapSize;
+    copy(source: LineDashedMaterial) {
+        super.copy(source);
 
-		return this;
-	}
+        this.scale = source.scale;
+        this.dashSize = source.dashSize;
+        this.gapSize = source.gapSize;
+
+        return this;
+    }
+
 }
 
 export { LineDashedMaterial };

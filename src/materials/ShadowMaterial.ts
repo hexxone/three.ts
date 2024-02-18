@@ -1,31 +1,32 @@
-
 /**
  * parameters = {
  *  color: <Color>
  * }
  */
 
-import { Color } from "../math/Color";
-import { Material } from "./Material";
+import { Color } from '../math/Color';
+import { Material } from './Material';
 
 class ShadowMaterial extends Material {
-	constructor() {
-		super();
 
-		this.isShadowMaterial = true;
-		this.type = "ShadowMaterial";
+    constructor() {
+        super();
 
-		this.color = new Color(0x000000);
-		this.transparent = true;
-	}
+        this.isShadowMaterial = true;
+        this.type = 'ShadowMaterial';
 
-	copy(source: ShadowMaterial) {
-		super.copy(source);
+        this.color = new Color(0x000000);
+        this.transparent = true;
+    }
 
-		this.color.copy(source.color);
+    copy(source: ShadowMaterial) {
+        super.copy(source);
 
-		return this;
-	}
+        this.color.copy(source.color);
+
+        return this;
+    }
+
 }
 
 export { ShadowMaterial };

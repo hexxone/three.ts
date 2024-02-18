@@ -1,32 +1,34 @@
 class AudioAnalyser {
-	analyser: any;
-	data: Uint8Array;
 
-	constructor(audio, fftSize = 2048) {
-		this.analyser = audio.context.createAnalyser();
-		this.analyser.fftSize = fftSize;
+    analyser: any;
+    data: Uint8Array;
 
-		this.data = new Uint8Array(this.analyser.frequencyBinCount);
+    constructor(audio, fftSize = 2048) {
+        this.analyser = audio.context.createAnalyser();
+        this.analyser.fftSize = fftSize;
 
-		audio.getOutput().connect(this.analyser);
-	}
+        this.data = new Uint8Array(this.analyser.frequencyBinCount);
 
-	getFrequencyData() {
-		this.analyser.getByteFrequencyData(this.data);
+        audio.getOutput().connect(this.analyser);
+    }
 
-		return this.data;
-	}
+    getFrequencyData() {
+        this.analyser.getByteFrequencyData(this.data);
 
-	getAverageFrequency() {
-		let value = 0;
-		const data = this.getFrequencyData();
+        return this.data;
+    }
 
-		for (let i = 0; i < data.length; i++) {
-			value += data[i];
-		}
+    getAverageFrequency() {
+        let value = 0;
+        const data = this.getFrequencyData();
 
-		return value / data.length;
-	}
+        for (let i = 0; i < data.length; i++) {
+            value += data[i];
+        }
+
+        return value / data.length;
+    }
+
 }
 
 export { AudioAnalyser };

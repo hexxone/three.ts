@@ -1,51 +1,53 @@
 class GLBufferAttribute {
-	isGLBufferAttribute = true;
 
-	buffer: any;
-	type: any;
-	itemSize: any;
-	elementSize: any;
-	count: any;
-	version: number;
+    isGLBufferAttribute = true;
 
-	constructor(buffer, type, itemSize, elementSize, count) {
-		this.buffer = buffer;
-		this.type = type;
-		this.itemSize = itemSize;
-		this.elementSize = elementSize;
-		this.count = count;
+    buffer: any;
+    type: any;
+    itemSize: any;
+    elementSize: any;
+    count: any;
+    version: number;
 
-		this.version = 0;
-	}
+    constructor(buffer, type, itemSize, elementSize, count) {
+        this.buffer = buffer;
+        this.type = type;
+        this.itemSize = itemSize;
+        this.elementSize = elementSize;
+        this.count = count;
 
-	set needsUpdate(value) {
-		if (value === true) this.version++;
-	}
+        this.version = 0;
+    }
 
-	setBuffer(buffer) {
-		this.buffer = buffer;
+    set needsUpdate(value) {
+        if (value === true) { this.version++; }
+    }
 
-		return this;
-	}
+    setBuffer(buffer) {
+        this.buffer = buffer;
 
-	setType(type, elementSize) {
-		this.type = type;
-		this.elementSize = elementSize;
+        return this;
+    }
 
-		return this;
-	}
+    setType(type, elementSize) {
+        this.type = type;
+        this.elementSize = elementSize;
 
-	setItemSize(itemSize) {
-		this.itemSize = itemSize;
+        return this;
+    }
 
-		return this;
-	}
+    setItemSize(itemSize) {
+        this.itemSize = itemSize;
 
-	setCount(count) {
-		this.count = count;
+        return this;
+    }
 
-		return this;
-	}
+    setCount(count) {
+        this.count = count;
+
+        return this;
+    }
+
 }
 
 export { GLBufferAttribute };

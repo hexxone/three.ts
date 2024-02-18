@@ -1,55 +1,57 @@
-import { Vector3 } from "../../math/Vector3";
-import { Curve } from "../core/Curve";
+import { Vector3 } from '../../math/Vector3';
+import { Curve } from '../core/Curve';
 
 class LineCurve3 extends Curve {
-	v1: Vector3;
-	v2: Vector3;
 
-	constructor(v1 = new Vector3(), v2 = new Vector3()) {
-		super();
+    v1: Vector3;
+    v2: Vector3;
 
-		this.isLineCurve3 = true;
-		this.type = "LineCurve3";
+    constructor(v1 = new Vector3(), v2 = new Vector3()) {
+        super();
 
-		this.v1 = v1;
-		this.v2 = v2;
-	}
+        this.isLineCurve3 = true;
+        this.type = 'LineCurve3';
 
-	getPoint(t: number, optionalTarget = new Vector3()) {
-		const point = optionalTarget;
+        this.v1 = v1;
+        this.v2 = v2;
+    }
 
-		if (t === 1) {
-			point.copy(this.v2);
-		} else {
-			point.copy(this.v2).sub(this.v1);
-			point.multiplyScalar(t).add(this.v1);
-		}
+    getPoint(t: number, optionalTarget = new Vector3()) {
+        const point = optionalTarget;
 
-		return point;
-	}
+        if (t === 1) {
+            point.copy(this.v2);
+        } else {
+            point.copy(this.v2).sub(this.v1);
+            point.multiplyScalar(t).add(this.v1);
+        }
 
-	// Line curve is linear, so we can overwrite default getPointAt
-	getPointAt(u, optionalTarget) {
-		return this.getPoint(u, optionalTarget);
-	}
+        return point;
+    }
 
-	copy(source: LineCurve3) {
-		super.copy(source);
+    // Line curve is linear, so we can overwrite default getPointAt
+    getPointAt(u, optionalTarget) {
+        return this.getPoint(u, optionalTarget);
+    }
 
-		this.v1.copy(source.v1);
-		this.v2.copy(source.v2);
+    copy(source: LineCurve3) {
+        super.copy(source);
 
-		return this;
-	}
+        this.v1.copy(source.v1);
+        this.v2.copy(source.v2);
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        return this;
+    }
 
-		this.v1.fromArray(json.v1);
-		this.v2.fromArray(json.v2);
+    fromJSON(json) {
+        super.fromJSON(json);
 
-		return this;
-	}
+        this.v1.fromArray(json.v1);
+        this.v2.fromArray(json.v2);
+
+        return this;
+    }
+
 }
 
 export { LineCurve3 };

@@ -1,39 +1,41 @@
-import { Object3D } from "../../core/Object3D";
-import { Material } from "../../materials/Material";
+import { Object3D } from '../../core/Object3D';
+import { Material } from '../../materials/Material';
 
 /**
  * @public
  */
 class ImmediateRenderObject extends Object3D {
-	render: (...args) => void;
 
-	hasPositions: boolean;
-	hasNormals: boolean;
-	hasColors: boolean;
-	hasUvs: boolean;
-	positionArray: any;
-	normalArray: any;
-	colorArray: any;
-	uvArray: any;
+    render: (...args) => void;
 
-	constructor(material: Material) {
-		super();
+    hasPositions: boolean;
+    hasNormals: boolean;
+    hasColors: boolean;
+    hasUvs: boolean;
+    positionArray: any;
+    normalArray: any;
+    colorArray: any;
+    uvArray: any;
 
-		this.material = material;
-		this.render = function (/* renderCallback */) {};
+    constructor(material: Material) {
+        super();
 
-		this.hasPositions = false;
-		this.hasNormals = false;
-		this.hasColors = false;
-		this.hasUvs = false;
+        this.material = material;
+        this.render = function(/* renderCallback */) {};
 
-		this.positionArray = null;
-		this.normalArray = null;
-		this.colorArray = null;
-		this.uvArray = null;
+        this.hasPositions = false;
+        this.hasNormals = false;
+        this.hasColors = false;
+        this.hasUvs = false;
 
-		this.count = 0;
-	}
+        this.positionArray = null;
+        this.normalArray = null;
+        this.colorArray = null;
+        this.uvArray = null;
+
+        this.count = 0;
+    }
+
 }
 
 export { ImmediateRenderObject };

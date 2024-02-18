@@ -1,12 +1,12 @@
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Object3D } from "../core/Object3D";
-import { Raycaster } from "../core/Raycaster";
-import { PointsMaterial } from "../materials/PointsMaterial";
-import { Matrix4 } from "../math/Matrix4";
-import { Ray } from "../math/Ray";
-import { Sphere } from "../math/Sphere";
-import { Vector3 } from "../math/Vector3";
-import { IIntersection } from "./IIntersection";
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Object3D } from '../core/Object3D';
+import { Raycaster } from '../core/Raycaster';
+import { PointsMaterial } from '../materials/PointsMaterial';
+import { Matrix4 } from '../math/Matrix4';
+import { Ray } from '../math/Ray';
+import { Sphere } from '../math/Sphere';
+import { Vector3 } from '../math/Vector3';
+import { IIntersection } from './IIntersection';
 
 const _inverseMatrix = new Matrix4();
 const _ray = new Ray();
@@ -17,152 +17,154 @@ const _position = new Vector3();
  * @public
  */
 export class Points extends Object3D {
-	constructor(
-		geometry = new BufferGeometry(),
-		material = new PointsMaterial()
-	) {
-		super();
 
-		this.isPoints = true;
+    constructor(
+        geometry = new BufferGeometry(),
+        material = new PointsMaterial()
+    ) {
+        super();
 
-		this.type = "Points";
+        this.isPoints = true;
 
-		this.geometry = geometry;
-		this.material = material;
+        this.type = 'Points';
 
-		this.updateMorphTargets();
-	}
+        this.geometry = geometry;
+        this.material = material;
 
-	copy(source: Points) {
-		super.copy(source);
+        this.updateMorphTargets();
+    }
 
-		this.material = source.material;
-		this.geometry = source.geometry;
+    copy(source: Points) {
+        super.copy(source);
 
-		return this;
-	}
+        this.material = source.material;
+        this.geometry = source.geometry;
 
-	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
-		const geometry = this.geometry as BufferGeometry;
-		const matrixWorld = this.matrixWorld;
-		const threshold = raycaster.params.Points.threshold;
+        return this;
+    }
 
-		// Checking boundingSphere distance to ray
+    raycast(raycaster: Raycaster, intersects: IIntersection[]) {
+        const geometry = this.geometry as BufferGeometry;
+        const { matrixWorld } = this;
+        const { threshold } = raycaster.params.Points;
 
-		if (geometry.boundingSphere === null) geometry.computeBoundingSphere();
+        // Checking boundingSphere distance to ray
 
-		_sphere.copy(geometry.boundingSphere);
-		_sphere.applyMatrix4(matrixWorld);
-		_sphere.radius += threshold;
+        if (geometry.boundingSphere === null) { geometry.computeBoundingSphere(); }
 
-		if (raycaster.ray.intersectsSphere(_sphere) === false) return;
+        _sphere.copy(geometry.boundingSphere);
+        _sphere.applyMatrix4(matrixWorld);
+        _sphere.radius += threshold;
 
-		//
+        if (raycaster.ray.intersectsSphere(_sphere) === false) { return; }
 
-		_inverseMatrix.copy(matrixWorld).invert();
-		_ray.copy(raycaster.ray).applyMatrix4(_inverseMatrix);
+        //
 
-		const localThreshold =
-			threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
-		const localThresholdSq = localThreshold * localThreshold;
+        _inverseMatrix.copy(matrixWorld).invert();
+        _ray.copy(raycaster.ray).applyMatrix4(_inverseMatrix);
 
-		if (geometry.isBufferGeometry) {
-			const index = geometry.index;
-			const attributes = geometry.attributes;
-			const positionAttribute = attributes.position;
+        const localThreshold
+            = threshold / ((this.scale.x + this.scale.y + this.scale.z) / 3);
+        const localThresholdSq = localThreshold * localThreshold;
 
-			if (index !== null) {
-				const indices = index.array;
+        if (geometry.isBufferGeometry) {
+            const { index } = geometry;
+            const { attributes } = geometry;
+            const positionAttribute = attributes.position;
 
-				for (let i = 0, il = indices.length; i < il; i++) {
-					const a = indices[i];
+            if (index !== null) {
+                const indices = index.array;
 
-					_position.fromBufferAttribute(positionAttribute, Number(a));
+                for (let i = 0, il = indices.length; i < il; i++) {
+                    const a = indices[i];
 
-					testPoint(
-						_position,
-						a,
-						localThresholdSq,
-						matrixWorld,
-						raycaster,
-						intersects,
-						this
-					);
-				}
-			} else {
-				for (let i = 0, l = positionAttribute.count; i < l; i++) {
-					_position.fromBufferAttribute(positionAttribute, i);
+                    _position.fromBufferAttribute(positionAttribute, Number(a));
 
-					testPoint(
-						_position,
-						i,
-						localThresholdSq,
-						matrixWorld,
-						raycaster,
-						intersects,
-						this
-					);
-				}
-			}
-		} else {
-			console.error(
-				"Points.raycast() no longer supports Geometry. Use BufferGeometry instead."
-			);
-		}
-	}
+                    testPoint(
+                        _position,
+                        a,
+                        localThresholdSq,
+                        matrixWorld,
+                        raycaster,
+                        intersects,
+                        this
+                    );
+                }
+            } else {
+                for (let i = 0, l = positionAttribute.count; i < l; i++) {
+                    _position.fromBufferAttribute(positionAttribute, i);
 
-	updateMorphTargets() {
-		if (this.geometry instanceof BufferGeometry) {
-			const morphAttributes = this.geometry.morphAttributes;
-			const keys = Object.keys(morphAttributes);
+                    testPoint(
+                        _position,
+                        i,
+                        localThresholdSq,
+                        matrixWorld,
+                        raycaster,
+                        intersects,
+                        this
+                    );
+                }
+            }
+        } else {
+            console.error(
+                'Points.raycast() no longer supports Geometry. Use BufferGeometry instead.'
+            );
+        }
+    }
 
-			if (keys.length > 0) {
-				const morphAttribute = morphAttributes[keys[0]];
+    updateMorphTargets() {
+        if (this.geometry instanceof BufferGeometry) {
+            const { morphAttributes } = this.geometry;
+            const keys = Object.keys(morphAttributes);
 
-				if (morphAttribute !== undefined) {
-					this.morphTargetInfluences = [];
-					this.morphTargetDictionary = {};
+            if (keys.length > 0) {
+                const morphAttribute = morphAttributes[keys[0]];
 
-					for (let m = 0, ml = morphAttribute.length; m < ml; m++) {
-						const name = morphAttribute[m].name || String(m);
+                if (morphAttribute !== undefined) {
+                    this.morphTargetInfluences = [];
+                    this.morphTargetDictionary = {};
 
-						this.morphTargetInfluences.push(0);
-						this.morphTargetDictionary[name] = m;
-					}
-				}
-			}
-		}
-	}
+                    for (let m = 0, ml = morphAttribute.length; m < ml; m++) {
+                        const name = morphAttribute[m].name || String(m);
+
+                        this.morphTargetInfluences.push(0);
+                        this.morphTargetDictionary[name] = m;
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 function testPoint(
-	point,
-	index,
-	localThresholdSq,
-	matrixWorld,
-	raycaster,
-	intersects,
-	object
+    point,
+    index,
+    localThresholdSq,
+    matrixWorld,
+    raycaster,
+    intersects,
+    object
 ) {
-	const rayPointDistanceSq = _ray.distanceSqToPoint(point);
+    const rayPointDistanceSq = _ray.distanceSqToPoint(point);
 
-	if (rayPointDistanceSq < localThresholdSq) {
-		const intersectPoint = new Vector3();
+    if (rayPointDistanceSq < localThresholdSq) {
+        const intersectPoint = new Vector3();
 
-		_ray.closestPointToPoint(point, intersectPoint);
-		intersectPoint.applyMatrix4(matrixWorld);
+        _ray.closestPointToPoint(point, intersectPoint);
+        intersectPoint.applyMatrix4(matrixWorld);
 
-		const distance = raycaster.ray.origin.distanceTo(intersectPoint);
+        const distance = raycaster.ray.origin.distanceTo(intersectPoint);
 
-		if (distance < raycaster.near || distance > raycaster.far) return;
+        if (distance < raycaster.near || distance > raycaster.far) { return; }
 
-		intersects.push({
-			distance: distance,
-			distanceToRay: Math.sqrt(rayPointDistanceSq),
-			point: intersectPoint,
-			index: index,
-			face: null,
-			object: object,
-		});
-	}
+        intersects.push({
+            distance,
+            distanceToRay: Math.sqrt(rayPointDistanceSq),
+            point: intersectPoint,
+            index,
+            face: null,
+            object
+        });
+    }
 }

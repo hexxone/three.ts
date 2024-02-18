@@ -1,44 +1,46 @@
-import { XRFrameRequestCallback } from "../../XRWebGL";
+import { XRFrameRequestCallback } from '../../XRWebGL';
 
 class WebGLAnimation {
-	context: XRSession | (Window & typeof globalThis) = null;
 
-	isAnimating: boolean = false;
-	requestId: number;
+    context: XRSession | (Window & typeof globalThis) = null;
 
-	constructor() {}
+    isAnimating: boolean = false;
+    requestId: number;
 
-	_animationLoop: XRFrameRequestCallback;
+    constructor() {}
 
-	_onAnimationFrame(time: DOMHighResTimeStamp, frame: XRFrame) {
-		this._animationLoop(time, frame);
-		this.requestId = this.context.requestAnimationFrame(
-			this._onAnimationFrame.bind(this)
-		);
-	}
+    _animationLoop: XRFrameRequestCallback;
 
-	start() {
-		if (this.isAnimating === true) return;
-		if (this._animationLoop === null) return;
+    _onAnimationFrame(time: DOMHighResTimeStamp, frame: XRFrame) {
+        this._animationLoop(time, frame);
+        this.requestId = this.context.requestAnimationFrame(
+            this._onAnimationFrame.bind(this)
+        );
+    }
 
-		this.requestId = this.context.requestAnimationFrame(
-			this._onAnimationFrame.bind(this)
-		);
-		this.isAnimating = true;
-	}
+    start() {
+        if (this.isAnimating === true) { return; }
+        if (this._animationLoop === null) { return; }
 
-	stop() {
-		this.context.cancelAnimationFrame(this.requestId);
-		this.isAnimating = false;
-	}
+        this.requestId = this.context.requestAnimationFrame(
+            this._onAnimationFrame.bind(this)
+        );
+        this.isAnimating = true;
+    }
 
-	setAnimationLoop(callback: XRFrameRequestCallback) {
-		this._animationLoop = callback;
-	}
+    stop() {
+        this.context.cancelAnimationFrame(this.requestId);
+        this.isAnimating = false;
+    }
 
-	setContext(value: XRSession | (Window & typeof globalThis)) {
-		this.context = value;
-	}
+    setAnimationLoop(callback: XRFrameRequestCallback) {
+        this._animationLoop = callback;
+    }
+
+    setContext(value: XRSession | (Window & typeof globalThis)) {
+        this.context = value;
+    }
+
 }
 
 export { WebGLAnimation };

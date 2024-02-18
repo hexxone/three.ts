@@ -1,57 +1,59 @@
-import { Object3D } from "../core/Object3D";
-import { Color } from "../math/Color";
-import { LightShadow } from "./LightShadow";
+import { Object3D } from '../core/Object3D';
+import { Color } from '../math/Color';
+import { LightShadow } from './LightShadow';
 
 /**
  * @public
  */
 class Light extends Object3D {
-	color: Color;
-	intensity: number;
-	groundColor: any;
-	distance: any;
-	angle: any;
-	decay: any;
-	penumbra: any;
-	shadow: LightShadow;
 
-	width: number;
-	height: number;
+    color: Color;
+    intensity: number;
+    groundColor: any;
+    distance: any;
+    angle: any;
+    decay: any;
+    penumbra: any;
+    shadow: LightShadow;
 
-	isLightProbe: boolean;
-	isAmbientLight: boolean;
-	isAmbientLightProbe: boolean;
-	isDirectionalLight: boolean;
-	isSpotLight: boolean;
-	isRectAreaLight: boolean;
-	isPointLight: boolean;
-	isHemisphereLight: boolean;
-	isHemisphereLightProbe: boolean;
+    width: number;
+    height: number;
 
-	constructor(color, intensity = 1) {
-		super();
+    isLightProbe: boolean;
+    isAmbientLight: boolean;
+    isAmbientLightProbe: boolean;
+    isDirectionalLight: boolean;
+    isSpotLight: boolean;
+    isRectAreaLight: boolean;
+    isPointLight: boolean;
+    isHemisphereLight: boolean;
+    isHemisphereLightProbe: boolean;
 
-		this.isLight = true;
-		this.type = "Light";
+    constructor(color, intensity = 1) {
+        super();
 
-		this.color = new Color(color);
-		this.intensity = intensity;
-	}
+        this.isLight = true;
+        this.type = 'Light';
 
-	copy(source: Light) {
-		super.copy(source);
+        this.color = new Color(color);
+        this.intensity = intensity;
+    }
 
-		this.color.copy(source.color);
-		this.intensity = source.intensity;
+    copy(source: Light) {
+        super.copy(source);
 
-		return this;
-	}
+        this.color.copy(source.color);
+        this.intensity = source.intensity;
 
-	fromJSON(json) {
-		this.intensity = json.intensity; // TODO: Move this bit to Light.fromJSON();
+        return this;
+    }
 
-		return this;
-	}
+    fromJSON(json) {
+        this.intensity = json.intensity; // TODO: Move this bit to Light.fromJSON();
+
+        return this;
+    }
+
 }
 
 export { Light };

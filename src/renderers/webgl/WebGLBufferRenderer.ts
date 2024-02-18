@@ -1,64 +1,67 @@
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
-import { WebGLInfo } from "./WebGLInfo";
+import { WebGLCapabilities } from './WebGLCapabilities';
+import { WebGLExtensions } from './WebGLExtensions';
+import { WebGLInfo } from './WebGLInfo';
 
 class WebGLBufferRenderer {
-	setMode: (value: any) => void;
-	render: (start: any, count: any) => void;
-	renderInstances: (start: any, count: any, primcount: any) => void;
 
-	constructor(
-		gl: GLESRenderingContext,
-		extensions: WebGLExtensions,
-		info: WebGLInfo,
-		capabilities: WebGLCapabilities
-	) {
-		const isWebGL2 = capabilities.isWebGL2;
+    setMode: (value: any) => void;
+    render: (start: any, count: any) => void;
+    renderInstances: (start: any, count: any, primcount: any) => void;
 
-		let mode;
+    constructor(
+        gl: GLESRenderingContext,
+        extensions: WebGLExtensions,
+        info: WebGLInfo,
+        capabilities: WebGLCapabilities
+    ) {
+        const { isWebGL2 } = capabilities;
 
-		function setMode(value) {
-			mode = value;
-		}
+        let mode;
 
-		function render(start, count) {
-			gl.drawArrays(mode, start, count);
+        function setMode(value) {
+            mode = value;
+        }
 
-			info.update(count, mode, 1);
-		}
+        function render(start, count) {
+            gl.drawArrays(mode, start, count);
 
-		function renderInstances(start, count, primcount) {
-			if (primcount === 0) return;
+            info.update(count, mode, 1);
+        }
 
-			let extension;
-			let methodName;
+        function renderInstances(start, count, primcount) {
+            if (primcount === 0) { return; }
 
-			if (isWebGL2) {
-				extension = gl;
-				methodName = "drawArraysInstanced";
-			} else {
-				extension = extensions.get("ANGLE_instanced_arrays");
-				methodName = "drawArraysInstancedANGLE";
+            let extension;
+            let methodName;
 
-				if (extension === null) {
-					console.error(
-						"WebGLBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays."
-					);
-					return;
-				}
-			}
+            if (isWebGL2) {
+                extension = gl;
+                methodName = 'drawArraysInstanced';
+            } else {
+                extension = extensions.get('ANGLE_instanced_arrays');
+                methodName = 'drawArraysInstancedANGLE';
 
-			extension[methodName](mode, start, count, primcount);
+                if (extension === null) {
+                    console.error(
+                        'WebGLBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.'
+                    );
 
-			info.update(count, mode, primcount);
-		}
+                    return;
+                }
+            }
 
-		//
+            extension[methodName](mode, start, count, primcount);
 
-		this.setMode = setMode;
-		this.render = render;
-		this.renderInstances = renderInstances;
-	}
+            info.update(count, mode, primcount);
+        }
+
+        //
+
+        this.setMode = setMode;
+        this.render = render;
+        this.renderInstances = renderInstances;
+    }
+
 }
 
 export { WebGLBufferRenderer };

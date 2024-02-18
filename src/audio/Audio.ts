@@ -1,332 +1,345 @@
-import { Object3D } from "../core/Object3D";
+import { Object3D } from '../core/Object3D';
 
 /**
  * @public
  */
 class Audio extends Object3D {
-	listener: any;
-	context: any;
-	gain: any;
-	autoplay: boolean;
-	buffer: any;
-	detune: number;
-	loop: boolean;
-	loopStart: number;
-	loopEnd: number;
-	offset: number;
-	duration: any;
-	playbackRate: number;
-	isPlaying: boolean;
-	hasPlaybackControl: boolean;
-	source: any;
-	sourceType: string;
-	_startedAt: number;
-	_progress: number;
-	_connected: boolean;
-	filters: any[];
-
-	constructor(listener) {
-		super();
-
-		this.type = "Audio";
-
-		this.listener = listener;
-		this.context = listener.context;
-
-		this.gain = this.context.createGain();
-		this.gain.connect(listener.getInput());
-
-		this.autoplay = false;
-
-		this.buffer = null;
-		this.detune = 0;
-		this.loop = false;
-		this.loopStart = 0;
-		this.loopEnd = 0;
-		this.offset = 0;
-		this.duration = undefined;
-		this.playbackRate = 1;
-		this.isPlaying = false;
-		this.hasPlaybackControl = true;
-		this.source = null;
-		this.sourceType = "empty";
-
-		this._startedAt = 0;
-		this._progress = 0;
-		this._connected = false;
-
-		this.filters = [];
-	}
-
-	getOutput() {
-		return this.gain;
-	}
-
-	setNodeSource(audioNode) {
-		this.hasPlaybackControl = false;
-		this.sourceType = "audioNode";
-		this.source = audioNode;
-		this.connect();
-
-		return this;
-	}
-
-	setMediaElementSource(mediaElement) {
-		this.hasPlaybackControl = false;
-		this.sourceType = "mediaNode";
-		this.source = this.context.createMediaElementSource(mediaElement);
-		this.connect();
-
-		return this;
-	}
-
-	setMediaStreamSource(mediaStream) {
-		this.hasPlaybackControl = false;
-		this.sourceType = "mediaStreamNode";
-		this.source = this.context.createMediaStreamSource(mediaStream);
-		this.connect();
-
-		return this;
-	}
-
-	setBuffer(audioBuffer) {
-		this.buffer = audioBuffer;
-		this.sourceType = "buffer";
-
-		if (this.autoplay) this.play();
-
-		return this;
-	}
-
-	play(delay = 0) {
-		if (this.isPlaying === true) {
-			console.warn("Audio: Audio is already playing.");
-			return;
-		}
-
-		if (this.hasPlaybackControl === false) {
-			console.warn("Audio: this Audio has no playback control.");
-			return;
-		}
 
-		this._startedAt = this.context.currentTime + delay;
+    listener: any;
+    context: any;
+    gain: any;
+    autoplay: boolean;
+    buffer: any;
+    detune: number;
+    loop: boolean;
+    loopStart: number;
+    loopEnd: number;
+    offset: number;
+    duration: any;
+    playbackRate: number;
+    isPlaying: boolean;
+    hasPlaybackControl: boolean;
+    source: any;
+    sourceType: string;
+    _startedAt: number;
+    _progress: number;
+    _connected: boolean;
+    filters: any[];
+
+    constructor(listener) {
+        super();
+
+        this.type = 'Audio';
+
+        this.listener = listener;
+        this.context = listener.context;
+
+        this.gain = this.context.createGain();
+        this.gain.connect(listener.getInput());
+
+        this.autoplay = false;
+
+        this.buffer = null;
+        this.detune = 0;
+        this.loop = false;
+        this.loopStart = 0;
+        this.loopEnd = 0;
+        this.offset = 0;
+        this.duration = undefined;
+        this.playbackRate = 1;
+        this.isPlaying = false;
+        this.hasPlaybackControl = true;
+        this.source = null;
+        this.sourceType = 'empty';
+
+        this._startedAt = 0;
+        this._progress = 0;
+        this._connected = false;
+
+        this.filters = [];
+    }
+
+    getOutput() {
+        return this.gain;
+    }
+
+    setNodeSource(audioNode) {
+        this.hasPlaybackControl = false;
+        this.sourceType = 'audioNode';
+        this.source = audioNode;
+        this.connect();
+
+        return this;
+    }
+
+    setMediaElementSource(mediaElement) {
+        this.hasPlaybackControl = false;
+        this.sourceType = 'mediaNode';
+        this.source = this.context.createMediaElementSource(mediaElement);
+        this.connect();
+
+        return this;
+    }
 
-		const source = this.context.createBufferSource();
-		source.buffer = this.buffer;
-		source.loop = this.loop;
-		source.loopStart = this.loopStart;
-		source.loopEnd = this.loopEnd;
-		source.onended = this.onEnded.bind(this);
-		source.start(this._startedAt, this._progress + this.offset, this.duration);
+    setMediaStreamSource(mediaStream) {
+        this.hasPlaybackControl = false;
+        this.sourceType = 'mediaStreamNode';
+        this.source = this.context.createMediaStreamSource(mediaStream);
+        this.connect();
 
-		this.isPlaying = true;
+        return this;
+    }
+
+    setBuffer(audioBuffer) {
+        this.buffer = audioBuffer;
+        this.sourceType = 'buffer';
+
+        if (this.autoplay) { this.play(); }
 
-		this.source = source;
+        return this;
+    }
 
-		this.setDetune(this.detune);
-		this.setPlaybackRate(this.playbackRate);
+    play(delay = 0) {
+        if (this.isPlaying === true) {
+            console.warn('Audio: Audio is already playing.');
 
-		return this.connect();
-	}
+            return;
+        }
 
-	pause() {
-		if (this.hasPlaybackControl === false) {
-			console.warn("Audio: this Audio has no playback control.");
-			return;
-		}
+        if (this.hasPlaybackControl === false) {
+            console.warn('Audio: this Audio has no playback control.');
 
-		if (this.isPlaying === true) {
-			// update current progress
+            return;
+        }
 
-			this._progress +=
-				Math.max(this.context.currentTime - this._startedAt, 0) *
-				this.playbackRate;
+        this._startedAt = this.context.currentTime + delay;
 
-			if (this.loop === true) {
-				// ensure _progress does not exceed duration with looped audios
+        const source = this.context.createBufferSource();
 
-				this._progress =
-					this._progress % (this.duration || this.buffer.duration);
-			}
+        source.buffer = this.buffer;
+        source.loop = this.loop;
+        source.loopStart = this.loopStart;
+        source.loopEnd = this.loopEnd;
+        source.onended = this.onEnded.bind(this);
+        source.start(
+            this._startedAt,
+            this._progress + this.offset,
+            this.duration
+        );
 
-			this.source.stop();
-			this.source.onended = null;
+        this.isPlaying = true;
 
-			this.isPlaying = false;
-		}
+        this.source = source;
 
-		return this;
-	}
+        this.setDetune(this.detune);
+        this.setPlaybackRate(this.playbackRate);
 
-	stop() {
-		if (this.hasPlaybackControl === false) {
-			console.warn("Audio: this Audio has no playback control.");
-			return;
-		}
+        return this.connect();
+    }
 
-		this._progress = 0;
+    pause() {
+        if (this.hasPlaybackControl === false) {
+            console.warn('Audio: this Audio has no playback control.');
 
-		this.source.stop();
-		this.source.onended = null;
-		this.isPlaying = false;
+            return;
+        }
 
-		return this;
-	}
+        if (this.isPlaying === true) {
+            // update current progress
 
-	connect() {
-		if (this.filters.length > 0) {
-			this.source.connect(this.filters[0]);
+            this._progress
+                += Math.max(this.context.currentTime - this._startedAt, 0)
+                * this.playbackRate;
 
-			for (let i = 1, l = this.filters.length; i < l; i++) {
-				this.filters[i - 1].connect(this.filters[i]);
-			}
+            if (this.loop === true) {
+                // ensure _progress does not exceed duration with looped audios
 
-			this.filters[this.filters.length - 1].connect(this.getOutput());
-		} else {
-			this.source.connect(this.getOutput());
-		}
+                this._progress %= (this.duration || this.buffer.duration);
+            }
 
-		this._connected = true;
+            this.source.stop();
+            this.source.onended = null;
 
-		return this;
-	}
+            this.isPlaying = false;
+        }
 
-	disconnect() {
-		if (this.filters.length > 0) {
-			this.source.disconnect(this.filters[0]);
+        return this;
+    }
 
-			for (let i = 1, l = this.filters.length; i < l; i++) {
-				this.filters[i - 1].disconnect(this.filters[i]);
-			}
+    stop() {
+        if (this.hasPlaybackControl === false) {
+            console.warn('Audio: this Audio has no playback control.');
 
-			this.filters[this.filters.length - 1].disconnect(this.getOutput());
-		} else {
-			this.source.disconnect(this.getOutput());
-		}
+            return;
+        }
 
-		this._connected = false;
+        this._progress = 0;
 
-		return this;
-	}
+        this.source.stop();
+        this.source.onended = null;
+        this.isPlaying = false;
 
-	getFilters() {
-		return this.filters;
-	}
+        return this;
+    }
 
-	setFilters(value) {
-		if (!value) value = [];
+    connect() {
+        if (this.filters.length > 0) {
+            this.source.connect(this.filters[0]);
 
-		if (this._connected === true) {
-			this.disconnect();
-			this.filters = value.slice();
-			this.connect();
-		} else {
-			this.filters = value.slice();
-		}
+            for (let i = 1, l = this.filters.length; i < l; i++) {
+                this.filters[i - 1].connect(this.filters[i]);
+            }
 
-		return this;
-	}
+            this.filters[this.filters.length - 1].connect(this.getOutput());
+        } else {
+            this.source.connect(this.getOutput());
+        }
 
-	setDetune(value) {
-		this.detune = value;
+        this._connected = true;
 
-		if (this.source.detune === undefined) return; // only set detune when available
+        return this;
+    }
 
-		if (this.isPlaying === true) {
-			this.source.detune.setTargetAtTime(
-				this.detune,
-				this.context.currentTime,
-				0.01
-			);
-		}
+    disconnect() {
+        if (this.filters.length > 0) {
+            this.source.disconnect(this.filters[0]);
 
-		return this;
-	}
+            for (let i = 1, l = this.filters.length; i < l; i++) {
+                this.filters[i - 1].disconnect(this.filters[i]);
+            }
 
-	getDetune() {
-		return this.detune;
-	}
+            this.filters[this.filters.length - 1].disconnect(this.getOutput());
+        } else {
+            this.source.disconnect(this.getOutput());
+        }
 
-	getFilter() {
-		return this.getFilters()[0];
-	}
+        this._connected = false;
 
-	setFilter(filter) {
-		return this.setFilters(filter ? [filter] : []);
-	}
+        return this;
+    }
 
-	setPlaybackRate(value) {
-		if (this.hasPlaybackControl === false) {
-			console.warn("Audio: this Audio has no playback control.");
-			return;
-		}
+    getFilters() {
+        return this.filters;
+    }
 
-		this.playbackRate = value;
+    setFilters(value) {
+        if (!value) { value = []; }
 
-		if (this.isPlaying === true) {
-			this.source.playbackRate.setTargetAtTime(
-				this.playbackRate,
-				this.context.currentTime,
-				0.01
-			);
-		}
+        if (this._connected === true) {
+            this.disconnect();
+            this.filters = value.slice();
+            this.connect();
+        } else {
+            this.filters = value.slice();
+        }
 
-		return this;
-	}
+        return this;
+    }
 
-	getPlaybackRate() {
-		return this.playbackRate;
-	}
+    setDetune(value) {
+        this.detune = value;
 
-	onEnded() {
-		this.isPlaying = false;
-	}
+        if (this.source.detune === undefined) { return; } // only set detune when available
 
-	getLoop() {
-		if (this.hasPlaybackControl === false) {
-			console.warn("Audio: this Audio has no playback control.");
-			return false;
-		}
+        if (this.isPlaying === true) {
+            this.source.detune.setTargetAtTime(
+                this.detune,
+                this.context.currentTime,
+                0.01
+            );
+        }
 
-		return this.loop;
-	}
+        return this;
+    }
 
-	setLoop(value) {
-		if (this.hasPlaybackControl === false) {
-			console.warn("Audio: this Audio has no playback control.");
-			return;
-		}
+    getDetune() {
+        return this.detune;
+    }
 
-		this.loop = value;
+    getFilter() {
+        return this.getFilters()[0];
+    }
 
-		if (this.isPlaying === true) {
-			this.source.loop = this.loop;
-		}
+    setFilter(filter) {
+        return this.setFilters(filter ? [filter] : []);
+    }
 
-		return this;
-	}
+    setPlaybackRate(value) {
+        if (this.hasPlaybackControl === false) {
+            console.warn('Audio: this Audio has no playback control.');
 
-	setLoopStart(value) {
-		this.loopStart = value;
+            return;
+        }
 
-		return this;
-	}
+        this.playbackRate = value;
 
-	setLoopEnd(value) {
-		this.loopEnd = value;
+        if (this.isPlaying === true) {
+            this.source.playbackRate.setTargetAtTime(
+                this.playbackRate,
+                this.context.currentTime,
+                0.01
+            );
+        }
 
-		return this;
-	}
+        return this;
+    }
 
-	getVolume() {
-		return this.gain.gain.value;
-	}
+    getPlaybackRate() {
+        return this.playbackRate;
+    }
 
-	setVolume(value) {
-		this.gain.gain.setTargetAtTime(value, this.context.currentTime, 0.01);
+    onEnded() {
+        this.isPlaying = false;
+    }
 
-		return this;
-	}
+    getLoop() {
+        if (this.hasPlaybackControl === false) {
+            console.warn('Audio: this Audio has no playback control.');
+
+            return false;
+        }
+
+        return this.loop;
+    }
+
+    setLoop(value) {
+        if (this.hasPlaybackControl === false) {
+            console.warn('Audio: this Audio has no playback control.');
+
+            return;
+        }
+
+        this.loop = value;
+
+        if (this.isPlaying === true) {
+            this.source.loop = this.loop;
+        }
+
+        return this;
+    }
+
+    setLoopStart(value) {
+        this.loopStart = value;
+
+        return this;
+    }
+
+    setLoopEnd(value) {
+        this.loopEnd = value;
+
+        return this;
+    }
+
+    getVolume() {
+        return this.gain.gain.value;
+    }
+
+    setVolume(value) {
+        this.gain.gain.setTargetAtTime(value, this.context.currentTime, 0.01);
+
+        return this;
+    }
+
 }
 
 export { Audio };

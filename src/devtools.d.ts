@@ -1,3 +1,3 @@
-declare var __THREE_DEVTOOLS__: {
-	dispatchEvent(event: Event): void;
+declare let __THREE_DEVTOOLS__: {
+    dispatchEvent(event: Event): void;
 };

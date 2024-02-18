@@ -32,6 +32,6 @@ void main() {
 	#include <worldpos_vertex>
 	#include <clipping_planes_vertex>
 
-	vWorldPosition = worldPosition.xyz;
+    vWorldPosition = worldPosition.xyz;
 
 }

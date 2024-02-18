@@ -1,64 +1,65 @@
-import { DefaultUp, Object3D } from "../core/Object3D";
-import { Light } from "./Light";
-import { SpotLightShadow } from "./SpotLightShadow";
-
+import { DefaultUp, Object3D } from '../core/Object3D';
+import { Light } from './Light';
+import { SpotLightShadow } from './SpotLightShadow';
 
 class SpotLight extends Light {
-	target: Object3D;
 
-	constructor(
-		color,
-		intensity,
-		distance = 0,
-		angle = Math.PI / 3,
-		penumbra = 0,
-		decay = 1
-	) {
-		super(color, intensity);
+    target: Object3D;
 
-		this.isSpotLight = true;
+    constructor(
+        color,
+        intensity,
+        distance = 0,
+        angle = Math.PI / 3,
+        penumbra = 0,
+        decay = 1
+    ) {
+        super(color, intensity);
 
-		this.type = "SpotLight";
+        this.isSpotLight = true;
 
-		this.position.copy(DefaultUp);
-		this.updateMatrix();
+        this.type = 'SpotLight';
 
-		this.target = new Object3D();
+        this.position.copy(DefaultUp);
+        this.updateMatrix();
 
-		this.distance = distance;
-		this.angle = angle;
-		this.penumbra = penumbra;
-		this.decay = decay; // for physically correct lights, should be 2.
+        this.target = new Object3D();
 
-		this.shadow = new SpotLightShadow();
-	}
+        this.distance = distance;
+        this.angle = angle;
+        this.penumbra = penumbra;
+        this.decay = decay; // for physically correct lights, should be 2.
 
-	get power() {
-		// intensity = power per solid angle.
-		// ref: equation (17) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
-		return this.intensity * Math.PI;
-	}
+        this.shadow = new SpotLightShadow();
+    }
 
-	set power(power) {
-		// intensity = power per solid angle.
-		// ref: equation (17) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
-		this.intensity = power / Math.PI;
-	}
+    get power() {
+        // intensity = power per solid angle.
+        // ref: equation (17) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
+        return this.intensity * Math.PI;
+    }
 
-	copy(source: SpotLight) {
-		super.copy(source);
+    set power(power) {
+        // intensity = power per solid angle.
+        // ref: equation (17) from https://seblagarde.files.wordpress.com/2015/07/course_notes_moving_frostbite_to_pbr_v32.pdf
+        this.intensity = power / Math.PI;
+    }
 
-		this.distance = source.distance;
-		this.angle = source.angle;
-		this.penumbra = source.penumbra;
-		this.decay = source.decay;
+    copy(source: SpotLight) {
+        super.copy(source);
 
-		this.target = source.target.clone();
+        this.distance = source.distance;
+        this.angle = source.angle;
+        this.penumbra = source.penumbra;
+        this.decay = source.decay;
 
-		this.shadow = source.shadow.clone();
+        this.target = source.target.clone();
 
-		return this;
-	}
+        this.shadow = source.shadow.clone();
+
+        return this;
+    }
+
 }
 
 export { SpotLight };

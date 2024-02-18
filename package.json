@@ -14,8 +14,7 @@
     "test": "test"
   },
   "eslintConfig": {
-    "root": true,
-    "extends": "mdcs",
+    "root": false,
     "plugins": [
       "html"
     ],
@@ -44,7 +43,7 @@
     }
   },
   "scripts": {
-    "lint": "eslint src --ext js",
+    "lint": "eslint src --ext ts",
     "lint-examples": "eslint examples/js examples/jsm --ext js --ignore-pattern libs --ignore-pattern ifc",
     "lint-fix": "npm run lint -- --fix && npm run lint-examples -- --fix",
     "lint-docs": "eslint docs --ext html"

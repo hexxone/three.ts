@@ -1,22 +1,24 @@
-import { WebGLRenderTarget } from "./WebGLRenderTarget";
+import { WebGLRenderTarget } from './WebGLRenderTarget';
 
 class WebGLMultisampleRenderTarget extends WebGLRenderTarget {
-	samples: number;
 
-	constructor(width, height, options) {
-		super(width, height, options);
+    samples: number;
 
-		this.isWebGLMultisampleRenderTarget = true;
-		this.samples = 4;
-	}
+    constructor(width, height, options) {
+        super(width, height, options);
 
-	copy(source: WebGLMultisampleRenderTarget) {
-		super.copy(source);
+        this.isWebGLMultisampleRenderTarget = true;
+        this.samples = 4;
+    }
 
-		this.samples = source.samples;
+    copy(source: WebGLMultisampleRenderTarget) {
+        super.copy(source);
 
-		return this;
-	}
+        this.samples = source.samples;
+
+        return this;
+    }
+
 }
 
 export { WebGLMultisampleRenderTarget };

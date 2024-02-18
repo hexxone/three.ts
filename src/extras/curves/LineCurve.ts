@@ -1,65 +1,68 @@
-import { Vector2 } from "../../math/Vector2";
-import { Curve } from "../core/Curve";
+import { Vector2 } from '../../math/Vector2';
+import { Curve } from '../core/Curve';
 
 class LineCurve extends Curve {
-	v1: Vector2;
-	v2: Vector2;
 
-	constructor(v1 = new Vector2(), v2 = new Vector2()) {
-		super();
+    v1: Vector2;
+    v2: Vector2;
 
-		this.isLineCurve = true;
-		this.type = "LineCurve";
+    constructor(v1 = new Vector2(), v2 = new Vector2()) {
+        super();
 
-		this.v1 = v1;
-		this.v2 = v2;
+        this.isLineCurve = true;
+        this.type = 'LineCurve';
 
-		this.isLineCurve = true;
-	}
+        this.v1 = v1;
+        this.v2 = v2;
 
-	getPoint(t: number, optionalTarget = new Vector2()) {
-		const point = optionalTarget;
+        this.isLineCurve = true;
+    }
 
-		if (t === 1) {
-			point.copy(this.v2);
-		} else {
-			point.copy(this.v2).sub(this.v1);
-			point.multiplyScalar(t).add(this.v1);
-		}
+    getPoint(t: number, optionalTarget = new Vector2()) {
+        const point = optionalTarget;
 
-		return point;
-	}
+        if (t === 1) {
+            point.copy(this.v2);
+        } else {
+            point.copy(this.v2).sub(this.v1);
+            point.multiplyScalar(t).add(this.v1);
+        }
 
-	// Line curve is linear, so we can overwrite default getPointAt
-	getPointAt(u, optionalTarget) {
-		return this.getPoint(u, optionalTarget);
-	}
+        return point;
+    }
 
-	getTangent(t, optionalTarget) {
-		const tangent = optionalTarget || new Vector2();
+    // Line curve is linear, so we can overwrite default getPointAt
+    getPointAt(u, optionalTarget) {
+        return this.getPoint(u, optionalTarget);
+    }
 
-		tangent.copy(this.v2).sub(this.v1).normalize();
+    getTangent(t, optionalTarget) {
+        const tangent = optionalTarget || new Vector2();
 
-		return tangent;
-	}
+        tangent.copy(this.v2).sub(this.v1)
+            .normalize();
 
-	copy(source: LineCurve) {
-		super.copy(source);
+        return tangent;
+    }
 
-		this.v1.copy(source.v1);
-		this.v2.copy(source.v2);
+    copy(source: LineCurve) {
+        super.copy(source);
 
-		return this;
-	}
+        this.v1.copy(source.v1);
+        this.v2.copy(source.v2);
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        return this;
+    }
 
-		this.v1.fromArray(json.v1);
-		this.v2.fromArray(json.v2);
+    fromJSON(json) {
+        super.fromJSON(json);
 
-		return this;
-	}
+        this.v1.fromArray(json.v1);
+        this.v2.fromArray(json.v2);
+
+        return this;
+    }
+
 }
 
 export { LineCurve };

@@ -6,9 +6,9 @@ varying vec3 vWorldDirection;
 
 void main() {
 
-	vec3 direction = normalize(vWorldDirection);
+    vec3 direction = normalize(vWorldDirection);
 
-	vec2 sampleUV = equirectUv(direction);
+    vec2 sampleUV = equirectUv(direction);
 
-	gl_FragColor = texture2D(tEquirect, sampleUV);
+    gl_FragColor = texture2D(tEquirect, sampleUV);
 }

@@ -1,57 +1,59 @@
-import { Vector2 } from "../../math/Vector2";
-import { Curve } from "../core/Curve";
-import { quadraticBezier } from "../core/Interpolations";
+import { Vector2 } from '../../math/Vector2';
+import { Curve } from '../core/Curve';
+import { quadraticBezier } from '../core/Interpolations';
 
 class QuadraticBezierCurve extends Curve {
-	v0: Vector2;
-	v1: Vector2;
-	v2: Vector2;
 
-	constructor(v0 = new Vector2(), v1 = new Vector2(), v2 = new Vector2()) {
-		super();
+    v0: Vector2;
+    v1: Vector2;
+    v2: Vector2;
 
-		this.isQuadraticBezierCurve = true;
-		this.type = "QuadraticBezierCurve";
+    constructor(v0 = new Vector2(), v1 = new Vector2(), v2 = new Vector2()) {
+        super();
 
-		this.v0 = v0;
-		this.v1 = v1;
-		this.v2 = v2;
-	}
+        this.isQuadraticBezierCurve = true;
+        this.type = 'QuadraticBezierCurve';
 
-	getPoint(t: number, optionalTarget = new Vector2()) {
-		const point = optionalTarget;
+        this.v0 = v0;
+        this.v1 = v1;
+        this.v2 = v2;
+    }
 
-		const v0 = this.v0;
-		const v1 = this.v1;
-		const v2 = this.v2;
+    getPoint(t: number, optionalTarget = new Vector2()) {
+        const point = optionalTarget;
 
-		point.set(
-			quadraticBezier(t, v0.x, v1.x, v2.x),
-			quadraticBezier(t, v0.y, v1.y, v2.y)
-		);
+        const { v0 } = this;
+        const { v1 } = this;
+        const { v2 } = this;
 
-		return point;
-	}
+        point.set(
+            quadraticBezier(t, v0.x, v1.x, v2.x),
+            quadraticBezier(t, v0.y, v1.y, v2.y)
+        );
 
-	copy(source: QuadraticBezierCurve) {
-		super.copy(source);
+        return point;
+    }
 
-		this.v0.copy(source.v0);
-		this.v1.copy(source.v1);
-		this.v2.copy(source.v2);
+    copy(source: QuadraticBezierCurve) {
+        super.copy(source);
 
-		return this;
-	}
+        this.v0.copy(source.v0);
+        this.v1.copy(source.v1);
+        this.v2.copy(source.v2);
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        return this;
+    }
 
-		this.v0.fromArray(json.v0);
-		this.v1.fromArray(json.v1);
-		this.v2.fromArray(json.v2);
+    fromJSON(json) {
+        super.fromJSON(json);
 
-		return this;
-	}
+        this.v0.fromArray(json.v0);
+        this.v1.fromArray(json.v1);
+        this.v2.fromArray(json.v2);
+
+        return this;
+    }
+
 }
 
 export { QuadraticBezierCurve };

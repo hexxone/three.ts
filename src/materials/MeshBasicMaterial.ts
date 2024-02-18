@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *  color: <hex>,
@@ -31,78 +30,80 @@
  * }
  */
 
-import { MultiplyOperation } from "../constants";
-import { Color } from "../math/Color";
-import { Material } from "./Material";
+import { MultiplyOperation } from '../constants';
+import { Color } from '../math/Color';
+import { Material } from './Material';
 
 class MeshBasicMaterial extends Material {
-	constructor() {
-		super();
 
-		this.isMeshBasicMaterial = true;
+    constructor() {
+        super();
 
-		this.type = "MeshBasicMaterial";
+        this.isMeshBasicMaterial = true;
 
-		this.color = new Color(0xffffff); // emissive
+        this.type = 'MeshBasicMaterial';
 
-		this.map = null;
+        this.color = new Color(0xffffff); // emissive
 
-		this.lightMap = null;
-		this.lightMapIntensity = 1.0;
+        this.map = null;
 
-		this.aoMap = null;
-		this.aoMapIntensity = 1.0;
+        this.lightMap = null;
+        this.lightMapIntensity = 1.0;
 
-		this.specularMap = null;
+        this.aoMap = null;
+        this.aoMapIntensity = 1.0;
 
-		this.alphaMap = null;
+        this.specularMap = null;
 
-		this.envMap = null;
-		this.combine = MultiplyOperation;
-		this.reflectivity = 1;
-		this.refractionRatio = 0.98;
+        this.alphaMap = null;
 
-		this.wireframe = false;
-		this.wireframeLinewidth = 1;
-		this.wireframeLinecap = "round";
-		this.wireframeLinejoin = "round";
+        this.envMap = null;
+        this.combine = MultiplyOperation;
+        this.reflectivity = 1;
+        this.refractionRatio = 0.98;
 
-		this.skinning = false;
-		this.morphTargets = false;
-	}
+        this.wireframe = false;
+        this.wireframeLinewidth = 1;
+        this.wireframeLinecap = 'round';
+        this.wireframeLinejoin = 'round';
 
-	copy(source: MeshBasicMaterial) {
-		super.copy(source);
+        this.skinning = false;
+        this.morphTargets = false;
+    }
 
-		this.color.copy(source.color);
+    copy(source: MeshBasicMaterial) {
+        super.copy(source);
 
-		this.map = source.map;
+        this.color.copy(source.color);
 
-		this.lightMap = source.lightMap;
-		this.lightMapIntensity = source.lightMapIntensity;
+        this.map = source.map;
 
-		this.aoMap = source.aoMap;
-		this.aoMapIntensity = source.aoMapIntensity;
+        this.lightMap = source.lightMap;
+        this.lightMapIntensity = source.lightMapIntensity;
 
-		this.specularMap = source.specularMap;
+        this.aoMap = source.aoMap;
+        this.aoMapIntensity = source.aoMapIntensity;
 
-		this.alphaMap = source.alphaMap;
+        this.specularMap = source.specularMap;
 
-		this.envMap = source.envMap;
-		this.combine = source.combine;
-		this.reflectivity = source.reflectivity;
-		this.refractionRatio = source.refractionRatio;
+        this.alphaMap = source.alphaMap;
 
-		this.wireframe = source.wireframe;
-		this.wireframeLinewidth = source.wireframeLinewidth;
-		this.wireframeLinecap = source.wireframeLinecap;
-		this.wireframeLinejoin = source.wireframeLinejoin;
+        this.envMap = source.envMap;
+        this.combine = source.combine;
+        this.reflectivity = source.reflectivity;
+        this.refractionRatio = source.refractionRatio;
 
-		this.skinning = source.skinning;
-		this.morphTargets = source.morphTargets;
+        this.wireframe = source.wireframe;
+        this.wireframeLinewidth = source.wireframeLinewidth;
+        this.wireframeLinecap = source.wireframeLinecap;
+        this.wireframeLinejoin = source.wireframeLinejoin;
 
-		return this;
-	}
+        this.skinning = source.skinning;
+        this.morphTargets = source.morphTargets;
+
+        return this;
+    }
+
 }
 
 export { MeshBasicMaterial };

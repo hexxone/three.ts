@@ -1,4 +1,3 @@
-
 /**
  * parameters = {
  *  clearcoat: <float>,
@@ -30,126 +29,128 @@
  * }
  */
 
-import { Color } from "../math/Color";
-import { clamp } from "../math/MathUtils";
-import { Vector2 } from "../math/Vector2";
-import { Texture } from "../textures/Texture";
-import { MeshStandardMaterial } from "./MeshStandardMaterial";
+import { Color } from '../math/Color';
+import { clamp } from '../math/MathUtils';
+import { Vector2 } from '../math/Vector2';
+import { Texture } from '../textures/Texture';
+import { MeshStandardMaterial } from './MeshStandardMaterial';
 
 /**
  * @public
  */
 class MeshPhysicalMaterial extends MeshStandardMaterial {
-	ior: number;
-	sheenTint: Color;
-	sheenRoughness: number;
-	transmissionMap: Texture;
-	thickness: number;
-	thicknessMap: Texture;
-	attenuationDistance: number;
-	attenuationTint: Color;
-	specularIntensity: number;
-	specularIntensityMap: Texture;
-	specularTint: Color;
-	specularTintMap: Texture;
-	_transmission: number;
 
-	constructor() {
-		super();
+    ior: number;
+    sheenTint: Color;
+    sheenRoughness: number;
+    transmissionMap: Texture;
+    thickness: number;
+    thicknessMap: Texture;
+    attenuationDistance: number;
+    attenuationTint: Color;
+    specularIntensity: number;
+    specularIntensityMap: Texture;
+    specularTint: Color;
+    specularTintMap: Texture;
+    _transmission: number;
 
-		this.defines = {
-			STANDARD: "",
-			PHYSICAL: "",
-		};
+    constructor() {
+        super();
 
-		this.isMeshPhysicalMaterial = true;
-		this.type = "MeshPhysicalMaterial";
+        this.defines = {
+            STANDARD: '',
+            PHYSICAL: ''
+        };
 
-		this.clearcoatMap = null;
-		this.clearcoatRoughness = 0.0;
-		this.clearcoatRoughnessMap = null;
-		this.clearcoatNormalScale = new Vector2(1, 1);
-		this.clearcoatNormalMap = null;
+        this.isMeshPhysicalMaterial = true;
+        this.type = 'MeshPhysicalMaterial';
 
-		this.ior = 1.5;
+        this.clearcoatMap = null;
+        this.clearcoatRoughness = 0.0;
+        this.clearcoatRoughnessMap = null;
+        this.clearcoatNormalScale = new Vector2(1, 1);
+        this.clearcoatNormalMap = null;
 
-		Object.defineProperty(this, "reflectivity", {
-			get: function () {
-				return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
-			},
-			set: function (reflectivity) {
-				this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
-			},
-		});
+        this.ior = 1.5;
 
-		this.sheenTint = new Color(0x000000);
-		this.sheenRoughness = 1.0;
+        Object.defineProperty(this, 'reflectivity', {
+            get() {
+                return clamp((2.5 * (this.ior - 1)) / (this.ior + 1), 0, 1);
+            },
+            set(reflectivity) {
+                this.ior = (1 + 0.4 * reflectivity) / (1 - 0.4 * reflectivity);
+            }
+        });
 
-		this.transmissionMap = null;
+        this.sheenTint = new Color(0x000000);
+        this.sheenRoughness = 1.0;
 
-		this.thickness = 0.01;
-		this.thicknessMap = null;
-		this.attenuationDistance = 0.0;
-		this.attenuationTint = new Color(1, 1, 1);
+        this.transmissionMap = null;
 
-		this.specularIntensity = 1.0;
-		this.specularIntensityMap = null;
-		this.specularTint = new Color(1, 1, 1);
-		this.specularTintMap = null;
+        this.thickness = 0.01;
+        this.thicknessMap = null;
+        this.attenuationDistance = 0.0;
+        this.attenuationTint = new Color(1, 1, 1);
 
-		this._sheen = 0.0;
-		this._clearcoat = 0;
-		this._transmission = 0;
-	}
+        this.specularIntensity = 1.0;
+        this.specularIntensityMap = null;
+        this.specularTint = new Color(1, 1, 1);
+        this.specularTintMap = null;
 
-	get transmission() {
-		return this._transmission;
-	}
+        this._sheen = 0.0;
+        this._clearcoat = 0;
+        this._transmission = 0;
+    }
 
-	set transmission(value) {
-		if (this._transmission > 0 !== value > 0) {
-			this.version++;
-		}
+    get transmission() {
+        return this._transmission;
+    }
 
-		this._transmission = value;
-	}
+    set transmission(value) {
+        if (this._transmission > 0 !== value > 0) {
+            this.version++;
+        }
 
-	copy(source: MeshPhysicalMaterial) {
-		super.copy(source); // todo use super.copy everywhere instead protofype.copy.call
+        this._transmission = value;
+    }
 
-		this.defines = {
-			STANDARD: "",
-			PHYSICAL: "",
-		};
+    copy(source: MeshPhysicalMaterial) {
+        super.copy(source); // todo use super.copy everywhere instead protofype.copy.call
 
-		this.clearcoat = source.clearcoat;
-		this.clearcoatMap = source.clearcoatMap;
-		this.clearcoatRoughness = source.clearcoatRoughness;
-		this.clearcoatRoughnessMap = source.clearcoatRoughnessMap;
-		this.clearcoatNormalMap = source.clearcoatNormalMap;
-		this.clearcoatNormalScale.copy(source.clearcoatNormalScale);
+        this.defines = {
+            STANDARD: '',
+            PHYSICAL: ''
+        };
 
-		this.ior = source.ior;
+        this.clearcoat = source.clearcoat;
+        this.clearcoatMap = source.clearcoatMap;
+        this.clearcoatRoughness = source.clearcoatRoughness;
+        this.clearcoatRoughnessMap = source.clearcoatRoughnessMap;
+        this.clearcoatNormalMap = source.clearcoatNormalMap;
+        this.clearcoatNormalScale.copy(source.clearcoatNormalScale);
 
-		this.sheen = source.sheen;
-		this.sheenTint.copy(source.sheenTint);
-		this.sheenRoughness = source.sheenRoughness;
+        this.ior = source.ior;
 
-		this.transmission = source.transmission;
-		this.transmissionMap = source.transmissionMap;
+        this.sheen = source.sheen;
+        this.sheenTint.copy(source.sheenTint);
+        this.sheenRoughness = source.sheenRoughness;
 
-		this.thickness = source.thickness;
-		this.thicknessMap = source.thicknessMap;
-		this.attenuationDistance = source.attenuationDistance;
-		this.attenuationTint.copy(source.attenuationTint);
+        this.transmission = source.transmission;
+        this.transmissionMap = source.transmissionMap;
 
-		this.specularIntensity = source.specularIntensity;
-		this.specularIntensityMap = source.specularIntensityMap;
-		this.specularTint.copy(source.specularTint);
-		this.specularTintMap = source.specularTintMap;
+        this.thickness = source.thickness;
+        this.thicknessMap = source.thicknessMap;
+        this.attenuationDistance = source.attenuationDistance;
+        this.attenuationTint.copy(source.attenuationTint);
 
-		return this;
-	}
+        this.specularIntensity = source.specularIntensity;
+        this.specularIntensityMap = source.specularIntensityMap;
+        this.specularTint.copy(source.specularTint);
+        this.specularTintMap = source.specularTintMap;
+
+        return this;
+    }
+
 }
 
 export { MeshPhysicalMaterial };

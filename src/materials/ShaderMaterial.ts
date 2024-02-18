@@ -1,120 +1,124 @@
+import default_vertex from '../renderers/shaders/ShaderChunk/default_vertex.glsl';
+import default_fragment from '../renderers/shaders/ShaderChunk/default_fragment.glsl';
+import { Material } from './Material';
+import { cloneUniforms } from '../renderers/shaders/UniformsUtils';
 
-import default_vertex from "../renderers/shaders/ShaderChunk/default_vertex.glsl";
-import default_fragment from "../renderers/shaders/ShaderChunk/default_fragment.glsl";
-import { Material } from "./Material";
-import { cloneUniforms } from "../renderers/shaders/UniformsUtils";
-
-export type IUniformPartial = { value: any; properties?: any; };
+export type IUniformPartial = { value: any; properties?: any };
 
 export type IUniformType = { [key: string]: IUniformPartial };
-
 
 /**
  * @public
  */
 class ShaderMaterial extends Material {
-	isRawShaderMaterial: boolean;
 
-	/** @public */
-	defines: any;
+    isRawShaderMaterial: boolean;
 
-	/** @public */
-	uniforms: IUniformType;
+    /** @public */
+    defines: any;
 
-	vertexShader: string;
-	fragmentShader: string;
-	lights: boolean;
+    /** @public */
+    uniforms: IUniformType;
 
-	/** @public */
-	extensions: {
-		derivatives?: string; // set to use derivatives
-		fragDepth?: string; // set to use fragment depth values
-		drawBuffers?: string; // set to use draw buffers
-		shaderTextureLOD?: string;
-	};
+    vertexShader: string;
+    fragmentShader: string;
+    lights: boolean;
 
-	defaultAttributeValues: { color: number[]; uv: number[]; uv2: number[] };
-	index0AttributeName: string;
-	glslVersion: string;
+    /** @public */
+    extensions: {
+        derivatives?: string; // set to use derivatives
+        fragDepth?: string; // set to use fragment depth values
+        drawBuffers?: string; // set to use draw buffers
+        shaderTextureLOD?: string;
+    };
 
-	constructor() {
-		super();
+    defaultAttributeValues: { color: number[]; uv: number[]; uv2: number[] };
+    index0AttributeName: string;
+    glslVersion: string;
 
-		this.isShaderMaterial = true;
+    constructor() {
+        super();
 
-		this.type = "ShaderMaterial";
+        this.isShaderMaterial = true;
 
-		this.defines = {};
-		this.uniforms = {};
+        this.type = 'ShaderMaterial';
 
-		this.vertexShader = default_vertex;
-		this.fragmentShader = default_fragment;
+        this.defines = {};
+        this.uniforms = {};
 
-		this.linewidth = 1;
+        this.vertexShader = default_vertex;
+        this.fragmentShader = default_fragment;
 
-		this.wireframe = false;
-		this.wireframeLinewidth = 1;
+        this.linewidth = 1;
 
-		this.fog = false; // set to use scene fog
-		this.lights = false; // set to use scene lights
-		this.clipping = false; // set to use user-defined clipping planes
+        this.wireframe = false;
+        this.wireframeLinewidth = 1;
 
-		this.skinning = false; // set to use skinning attribute streams
-		this.morphTargets = false; // set to use morph targets
-		this.morphNormals = false; // set to use morph normals
+        this.fog = false; // set to use scene fog
+        this.lights = false; // set to use scene lights
+        this.clipping = false; // set to use user-defined clipping planes
 
-		this.extensions = {
-			derivatives: undefined, // set to use derivatives
-			fragDepth: undefined, // set to use fragment depth values
-			drawBuffers: undefined, // set to use draw buffers
-			shaderTextureLOD: undefined, // set to use shader texture LOD
-		};
+        this.skinning = false; // set to use skinning attribute streams
+        this.morphTargets = false; // set to use morph targets
+        this.morphNormals = false; // set to use morph normals
 
-		// When rendered geometry doesn't include these attributes but the material does,
-		// use these default values in WebGL. This avoids errors when buffer data is missing.
-		this.defaultAttributeValues = {
-			color: [1, 1, 1],
-			uv: [0, 0],
-			uv2: [0, 0],
-		};
+        this.extensions = {
+            derivatives: undefined, // set to use derivatives
+            fragDepth: undefined, // set to use fragment depth values
+            drawBuffers: undefined, // set to use draw buffers
+            shaderTextureLOD: undefined // set to use shader texture LOD
+        };
 
-		this.index0AttributeName = undefined;
-		this.uniformsNeedUpdate = false;
+        // When rendered geometry doesn't include these attributes but the material does,
+        // use these default values in WebGL. This avoids errors when buffer data is missing.
+        this.defaultAttributeValues = {
+            color: [1, 1, 1],
+            uv: [0, 0],
+            uv2: [0, 0]
+        };
 
-		this.glslVersion = null;
-	}
+        this.index0AttributeName = undefined;
+        this.uniformsNeedUpdate = false;
 
-	clone() {
-		return new ShaderMaterial().copy(this);
-	}
+        this.glslVersion = null;
+    }
 
-	copy(source: ShaderMaterial) {
-		super.copy(source);
+    clone() {
+        return new ShaderMaterial().copy(this);
+    }
 
-		this.fragmentShader = source.fragmentShader;
-		this.vertexShader = source.vertexShader;
+    copy(source: ShaderMaterial) {
+        super.copy(source);
 
-		this.uniforms = cloneUniforms(source.uniforms);
+        this.fragmentShader = source.fragmentShader;
+        this.vertexShader = source.vertexShader;
 
-		this.defines = Object.assign({}, source.defines);
+        this.uniforms = cloneUniforms(source.uniforms);
 
-		this.wireframe = source.wireframe;
-		this.wireframeLinewidth = source.wireframeLinewidth;
+        this.defines = {
+            ...source.defines
+        };
 
-		this.lights = source.lights;
-		this.clipping = source.clipping;
+        this.wireframe = source.wireframe;
+        this.wireframeLinewidth = source.wireframeLinewidth;
 
-		this.skinning = source.skinning;
+        this.lights = source.lights;
+        this.clipping = source.clipping;
 
-		this.morphTargets = source.morphTargets;
-		this.morphNormals = source.morphNormals;
+        this.skinning = source.skinning;
 
-		this.extensions = Object.assign({}, source.extensions);
+        this.morphTargets = source.morphTargets;
+        this.morphNormals = source.morphNormals;
 
-		this.glslVersion = source.glslVersion;
+        this.extensions = {
+            ...source.extensions
+        };
 
-		return this;
-	}
+        this.glslVersion = source.glslVersion;
+
+        return this;
+    }
+
 }
 
 export { ShaderMaterial };

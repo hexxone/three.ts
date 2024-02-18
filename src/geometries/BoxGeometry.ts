@@ -1,241 +1,246 @@
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Vector3 } from "../math/Vector3";
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Vector3 } from '../math/Vector3';
 
 class BoxGeometry extends BufferGeometry {
-	constructor(
-		width = 1,
-		height = 1,
-		depth = 1,
-		widthSegments = 1,
-		heightSegments = 1,
-		depthSegments = 1
-	) {
-		super();
 
-		this.type = "BoxGeometry";
+    constructor(
+        width = 1,
+        height = 1,
+        depth = 1,
+        widthSegments = 1,
+        heightSegments = 1,
+        depthSegments = 1
+    ) {
+        super();
 
-		this.parameters = {
-			width: width,
-			height: height,
-			depth: depth,
-			widthSegments: widthSegments,
-			heightSegments: heightSegments,
-			depthSegments: depthSegments,
-		};
+        this.type = 'BoxGeometry';
 
-		const scope = this;
+        this.parameters = {
+            width,
+            height,
+            depth,
+            widthSegments,
+            heightSegments,
+            depthSegments
+        };
 
-		// segments
+        // eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias
+        const scope = this;
 
-		widthSegments = Math.floor(widthSegments);
-		heightSegments = Math.floor(heightSegments);
-		depthSegments = Math.floor(depthSegments);
+        // segments
 
-		// buffers
+        widthSegments = Math.floor(widthSegments);
+        heightSegments = Math.floor(heightSegments);
+        depthSegments = Math.floor(depthSegments);
 
-		const indices = [];
-		const vertices = [];
-		const normals = [];
-		const uvs = [];
+        // buffers
 
-		// helper variables
+        const indices = [];
+        const vertices = [];
+        const normals = [];
+        const uvs = [];
 
-		let numberOfVertices = 0;
-		let groupStart = 0;
+        // helper variables
 
-		// build each side of the box geometry
+        let numberOfVertices = 0;
+        let groupStart = 0;
 
-		buildPlane(
-			"z",
-			"y",
-			"x",
-			-1,
-			-1,
-			depth,
-			height,
-			width,
-			depthSegments,
-			heightSegments,
-			0
-		); // px
-		buildPlane(
-			"z",
-			"y",
-			"x",
-			1,
-			-1,
-			depth,
-			height,
-			-width,
-			depthSegments,
-			heightSegments,
-			1
-		); // nx
-		buildPlane(
-			"x",
-			"z",
-			"y",
-			1,
-			1,
-			width,
-			depth,
-			height,
-			widthSegments,
-			depthSegments,
-			2
-		); // py
-		buildPlane(
-			"x",
-			"z",
-			"y",
-			1,
-			-1,
-			width,
-			depth,
-			-height,
-			widthSegments,
-			depthSegments,
-			3
-		); // ny
-		buildPlane(
-			"x",
-			"y",
-			"z",
-			1,
-			-1,
-			width,
-			height,
-			depth,
-			widthSegments,
-			heightSegments,
-			4
-		); // pz
-		buildPlane(
-			"x",
-			"y",
-			"z",
-			-1,
-			-1,
-			width,
-			height,
-			-depth,
-			widthSegments,
-			heightSegments,
-			5
-		); // nz
+        // build each side of the box geometry
 
-		// build geometry
+        buildPlane(
+            'z',
+            'y',
+            'x',
+            -1,
+            -1,
+            depth,
+            height,
+            width,
+            depthSegments,
+            heightSegments,
+            0
+        ); // px
+        buildPlane(
+            'z',
+            'y',
+            'x',
+            1,
+            -1,
+            depth,
+            height,
+            -width,
+            depthSegments,
+            heightSegments,
+            1
+        ); // nx
+        buildPlane(
+            'x',
+            'z',
+            'y',
+            1,
+            1,
+            width,
+            depth,
+            height,
+            widthSegments,
+            depthSegments,
+            2
+        ); // py
+        buildPlane(
+            'x',
+            'z',
+            'y',
+            1,
+            -1,
+            width,
+            depth,
+            -height,
+            widthSegments,
+            depthSegments,
+            3
+        ); // ny
+        buildPlane(
+            'x',
+            'y',
+            'z',
+            1,
+            -1,
+            width,
+            height,
+            depth,
+            widthSegments,
+            heightSegments,
+            4
+        ); // pz
+        buildPlane(
+            'x',
+            'y',
+            'z',
+            -1,
+            -1,
+            width,
+            height,
+            -depth,
+            widthSegments,
+            heightSegments,
+            5
+        ); // nz
 
-		this.setIndex(indices);
-		this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
-		this.setAttribute("normal", new Float32BufferAttribute(normals, 3));
-		this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
+        // build geometry
 
-		function buildPlane(
-			u,
-			v,
-			w,
-			udir,
-			vdir,
-			width,
-			height,
-			depth,
-			gridX,
-			gridY,
-			materialIndex
-		) {
-			const segmentWidth = width / gridX;
-			const segmentHeight = height / gridY;
+        this.setIndex(indices);
+        this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
 
-			const widthHalf = width / 2;
-			const heightHalf = height / 2;
-			const depthHalf = depth / 2;
+        function buildPlane(
+            u,
+            v,
+            w,
+            udir,
+            vdir,
+            width,
+            height,
+            depth,
+            gridX,
+            gridY,
+            materialIndex
+        ) {
+            const segmentWidth = width / gridX;
+            const segmentHeight = height / gridY;
 
-			const gridX1 = gridX + 1;
-			const gridY1 = gridY + 1;
+            const widthHalf = width / 2;
+            const heightHalf = height / 2;
+            const depthHalf = depth / 2;
 
-			let vertexCounter = 0;
-			let groupCount = 0;
+            const gridX1 = gridX + 1;
+            const gridY1 = gridY + 1;
 
-			const vector = new Vector3();
+            let vertexCounter = 0;
+            let groupCount = 0;
 
-			// generate vertices, normals and uvs
+            const vector = new Vector3();
 
-			for (let iy = 0; iy < gridY1; iy++) {
-				const y = iy * segmentHeight - heightHalf;
+            // generate vertices, normals and uvs
 
-				for (let ix = 0; ix < gridX1; ix++) {
-					const x = ix * segmentWidth - widthHalf;
+            for (let iy = 0; iy < gridY1; iy++) {
+                const y = iy * segmentHeight - heightHalf;
 
-					// set values to correct vector component
+                for (let ix = 0; ix < gridX1; ix++) {
+                    const x = ix * segmentWidth - widthHalf;
 
-					vector[u] = x * udir;
-					vector[v] = y * vdir;
-					vector[w] = depthHalf;
+                    // set values to correct vector component
 
-					// now apply vector to vertex buffer
+                    vector[u] = x * udir;
+                    vector[v] = y * vdir;
+                    vector[w] = depthHalf;
 
-					vertices.push(vector.x, vector.y, vector.z);
+                    // now apply vector to vertex buffer
 
-					// set values to correct vector component
+                    vertices.push(vector.x, vector.y, vector.z);
 
-					vector[u] = 0;
-					vector[v] = 0;
-					vector[w] = depth > 0 ? 1 : -1;
+                    // set values to correct vector component
 
-					// now apply vector to normal buffer
+                    vector[u] = 0;
+                    vector[v] = 0;
+                    vector[w] = depth > 0 ? 1 : -1;
 
-					normals.push(vector.x, vector.y, vector.z);
+                    // now apply vector to normal buffer
 
-					// uvs
+                    normals.push(vector.x, vector.y, vector.z);
 
-					uvs.push(ix / gridX);
-					uvs.push(1 - iy / gridY);
+                    // uvs
 
-					// counters
+                    uvs.push(ix / gridX);
+                    uvs.push(1 - iy / gridY);
 
-					vertexCounter += 1;
-				}
-			}
+                    // counters
 
-			// indices
+                    vertexCounter += 1;
+                }
+            }
 
-			// 1. you need three indices to draw a single face
-			// 2. a single segment consists of two faces
-			// 3. so we need to generate six (2*3) indices per segment
+            // indices
 
-			for (let iy = 0; iy < gridY; iy++) {
-				for (let ix = 0; ix < gridX; ix++) {
-					const a = numberOfVertices + ix + gridX1 * iy;
-					const b = numberOfVertices + ix + gridX1 * (iy + 1);
-					const c = numberOfVertices + (ix + 1) + gridX1 * (iy + 1);
-					const d = numberOfVertices + (ix + 1) + gridX1 * iy;
+            // 1. you need three indices to draw a single face
+            // 2. a single segment consists of two faces
+            // 3. so we need to generate six (2*3) indices per segment
 
-					// faces
+            for (let iy = 0; iy < gridY; iy++) {
+                for (let ix = 0; ix < gridX; ix++) {
+                    const a = numberOfVertices + ix + gridX1 * iy;
+                    const b = numberOfVertices + ix + gridX1 * (iy + 1);
+                    const c = numberOfVertices + (ix + 1) + gridX1 * (iy + 1);
+                    const d = numberOfVertices + (ix + 1) + gridX1 * iy;
 
-					indices.push(a, b, d);
-					indices.push(b, c, d);
+                    // faces
 
-					// increase counter
+                    indices.push(a, b, d);
+                    indices.push(b, c, d);
 
-					groupCount += 6;
-				}
-			}
+                    // increase counter
 
-			// add a group to the geometry. this will ensure multi material support
+                    groupCount += 6;
+                }
+            }
 
-			scope.addGroup(groupStart, groupCount, materialIndex);
+            // add a group to the geometry. this will ensure multi material support
 
-			// calculate new start value for groups
+            scope.addGroup(groupStart, groupCount, materialIndex);
 
-			groupStart += groupCount;
+            // calculate new start value for groups
 
-			// update total number of vertices
+            groupStart += groupCount;
 
-			numberOfVertices += vertexCounter;
-		}
-	}
+            // update total number of vertices
+
+            numberOfVertices += vertexCounter;
+        }
+    }
+
 }
 
-export { BoxGeometry, BoxGeometry as BoxBufferGeometry };
+export {
+    BoxGeometry, BoxGeometry as BoxBufferGeometry
+};

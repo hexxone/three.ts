@@ -1,179 +1,199 @@
-import { Loader } from "./Loader";
-import { Cache } from "./Cache"
+import { Loader } from './Loader';
+import { Cache } from './Cache';
 
 const loading = {};
 
 export class FileLoader extends Loader {
-	responseType: string;
-	mimeType: DOMParserSupportedType;
 
-	constructor(manager) {
-		super(manager);
-	}
+    responseType: string;
+    mimeType: DOMParserSupportedType;
 
-	load(url: string, onLoad?, onProgress?, onError?) {
-		if (url === undefined) url = "";
+    constructor(manager) {
+        super(manager);
+    }
 
-		if (this.path !== undefined) url = this.path + url;
+    load(url: string, onLoad?, onProgress?, onError?) {
+        if (url === undefined) { url = ''; }
 
-		url = this.manager.resolveURL(url);
+        if (this.path !== undefined) { url = this.path + url; }
 
-		const cached = Cache.get(url);
+        url = this.manager.resolveURL(url);
 
-		if (cached !== undefined) {
-			this.manager.itemStart(url);
-			setTimeout(() => {
-				if (onLoad) onLoad(cached);
-				this.manager.itemEnd(url);
-			}, 0);
-			return cached;
-		}
+        const cached = Cache.get(url);
 
-		// Check if request is duplicate
+        if (cached !== undefined) {
+            this.manager.itemStart(url);
+            setTimeout(() => {
+                if (onLoad) { onLoad(cached); }
+                this.manager.itemEnd(url);
+            }, 0);
 
-		if (loading[url] !== undefined) {
-			loading[url].push({
-				onLoad: onLoad,
-				onProgress: onProgress,
-				onError: onError,
-			});
-			return;
-		}
+            return cached;
+        }
 
-		// Initialise array for duplicate requests
-		loading[url] = [];
+        // Check if request is duplicate
 
-		loading[url].push({
-			onLoad: onLoad,
-			onProgress: onProgress,
-			onError: onError,
-		});
+        if (loading[url] !== undefined) {
+            loading[url].push({
+                onLoad,
+                onProgress,
+                onError
+            });
 
-		// create request
-		const req = new Request(url, {
-			headers: new Headers(this.requestHeader),
-			credentials: this.withCredentials ? "include" : "same-origin",
-			// An abort controller could be added within a future PR
-		});
+            return;
+        }
 
-		// start the fetch
-		fetch(req)
-			.then((response) => {
-				if (response.status === 200 || response.status === 0) {
-					// Some browsers return HTTP Status 0 when using non-http protocol
-					// e.g. 'file://' or 'data://'. Handle as success.
-					if (response.status === 0) {
-						console.warn("FileLoader: HTTP Status 0 received.");
-					}
+        // Initialise array for duplicate requests
+        loading[url] = [];
 
-					const callbacks = loading[url];
-					const reader = response.body.getReader();
-					const contentLength = response.headers.get("Content-Length");
-					const total = contentLength ? parseInt(contentLength) : 0;
-					const lengthComputable = total !== 0;
-					let loaded = 0;
+        loading[url].push({
+            onLoad,
+            onProgress,
+            onError
+        });
 
-					const stream = new ReadableStream({
-						start(controller) {
-							readData();
+        // create request
+        const req = new Request(url, {
+            headers: new Headers(this.requestHeader),
+            credentials: this.withCredentials ? 'include' : 'same-origin'
+            // An abort controller could be added within a future PR
+        });
 
-							function readData() {
-								reader.read().then(({ done, value }) => {
-									if (done) {
-										controller.close();
-									} else {
-										loaded += value.byteLength;
-										const event = new ProgressEvent("progress", {
-											lengthComputable,
-											loaded,
-											total,
-										});
-										for (let i = 0, il = callbacks.length; i < il; i++) {
-											const callback = callbacks[i];
-											if (callback.onProgress) callback.onProgress(event);
-										}
+        // start the fetch
+        fetch(req)
+            .then((response) => {
+                if (response.status === 200 || response.status === 0) {
+                    // Some browsers return HTTP Status 0 when using non-http protocol
+                    // e.g. 'file://' or 'data://'. Handle as success.
+                    if (response.status === 0) {
+                        console.warn('FileLoader: HTTP Status 0 received.');
+                    }
 
-										controller.enqueue(value);
-										readData();
-									}
-								});
-							}
-						},
-					});
+                    const callbacks = loading[url];
+                    const reader = response.body.getReader();
+                    const contentLength
+                        = response.headers.get('Content-Length');
+                    const total = contentLength ? parseInt(contentLength) : 0;
+                    const lengthComputable = total !== 0;
+                    let loaded = 0;
 
-					// periodically read data into the new stream tracking while download progress
-					return {
-						stream,
-					};
-				} else {
-					throw Error(
-						`fetch for "${response.url}" responded with ${response.status}: ${response.statusText}`
-					);
-				}
-			})
-			.then(({ stream }) => {
-				const response = new Response(stream);
+                    const stream = new ReadableStream({
+                        start(controller) {
+                            readData();
 
-				switch (this.responseType) {
-					case "arraybuffer":
-						return response.arrayBuffer();
+                            function readData() {
+                                reader.read().then(({ done, value }) => {
+                                    if (done) {
+                                        controller.close();
+                                    } else {
+                                        loaded += value.byteLength;
+                                        const event = new ProgressEvent(
+                                            'progress',
+                                            {
+                                                lengthComputable,
+                                                loaded,
+                                                total
+                                            }
+                                        );
 
-					case "blob":
-						return response.blob();
+                                        for (
+                                            let i = 0, il = callbacks.length;
+                                            i < il;
+                                            i++
+                                        ) {
+                                            const callback = callbacks[i];
 
-					case "document":
-						return response.text().then((text) => {
-							const parser = new DOMParser();
-							return parser.parseFromString(text, this.mimeType);
-						});
+                                            if (callback.onProgress) { callback.onProgress(event); }
+                                        }
 
-					case "json":
-						return response.json();
+                                        controller.enqueue(value);
+                                        readData();
+                                    }
+                                });
+                            }
+                        }
+                    });
 
-					default:
-						return response.text();
-				}
-			})
-			.then((data) => {
-				// Add to cache only on HTTP success, so that we do not cache
-				// error response bodies as proper responses to requests.
-				Cache.add(url, data);
+                    // periodically read data into the new stream tracking while download progress
+                    return {
+                        stream
+                    };
+                }
+                throw Error(
+                    `fetch for "${response.url}" responded with ${response.status}: ${response.statusText}`
+                );
+            })
+            .then(({ stream }) => {
+                const response = new Response(stream);
 
-				const callbacks = loading[url];
-				delete loading[url];
+                switch (this.responseType) {
+                    case 'arraybuffer':
+                        return response.arrayBuffer();
 
-				for (let i = 0, il = callbacks.length; i < il; i++) {
-					const callback = callbacks[i];
-					if (callback.onLoad) callback.onLoad(data);
-				}
+                    case 'blob':
+                        return response.blob();
 
-				this.manager.itemEnd(url);
-			})
-			.catch((err) => {
-				// Abort errors and other errors are handled the same
+                    case 'document':
+                        return response.text().then((text) => {
+                            const parser = new DOMParser();
 
-				const callbacks = loading[url];
-				delete loading[url];
+                            return parser.parseFromString(text, this.mimeType);
+                        });
 
-				for (let i = 0, il = callbacks.length; i < il; i++) {
-					const callback = callbacks[i];
-					if (callback.onError) callback.onError(err);
-				}
+                    case 'json':
+                        return response.json();
 
-				this.manager.itemError(url);
-				this.manager.itemEnd(url);
-			});
+                    default:
+                        return response.text();
+                }
+            })
+            .then((data) => {
+                // Add to cache only on HTTP success, so that we do not cache
+                // error response bodies as proper responses to requests.
+                Cache.add(url, data);
 
-		this.manager.itemStart(url);
-	}
+                const callbacks = loading[url];
 
-	setResponseType(value) {
-		this.responseType = value;
-		return this;
-	}
+                delete loading[url];
 
-	setMimeType(value) {
-		this.mimeType = value;
-		return this;
-	}
+                for (let i = 0, il = callbacks.length; i < il; i++) {
+                    const callback = callbacks[i];
+
+                    if (callback.onLoad) { callback.onLoad(data); }
+                }
+
+                this.manager.itemEnd(url);
+            })
+            .catch((err) => {
+                // Abort errors and other errors are handled the same
+
+                const callbacks = loading[url];
+
+                delete loading[url];
+
+                for (let i = 0, il = callbacks.length; i < il; i++) {
+                    const callback = callbacks[i];
+
+                    if (callback.onError) { callback.onError(err); }
+                }
+
+                this.manager.itemError(url);
+                this.manager.itemEnd(url);
+            });
+
+        this.manager.itemStart(url);
+    }
+
+    setResponseType(value) {
+        this.responseType = value;
+
+        return this;
+    }
+
+    setMimeType(value) {
+        this.mimeType = value;
+
+        return this;
+    }
+
 }

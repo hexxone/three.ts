@@ -1,119 +1,125 @@
-import { Camera } from "./Camera";
+import { Camera } from './Camera';
 
 class OrthographicCamera extends Camera {
-	left: number;
-	right: number;
-	top: number;
-	bottom: number;
 
-	constructor(
-		left = -1,
-		right = 1,
-		top = 1,
-		bottom = -1,
-		near = 0.1,
-		far = 2000
-	) {
-		super();
+    left: number;
+    right: number;
+    top: number;
+    bottom: number;
 
-		this.isOrthographicCamera = true;
-		this.type = "OrthographicCamera";
+    constructor(
+        left = -1,
+        right = 1,
+        top = 1,
+        bottom = -1,
+        near = 0.1,
+        far = 2000
+    ) {
+        super();
 
-		this.zoom = 1;
-		this.view = null;
+        this.isOrthographicCamera = true;
+        this.type = 'OrthographicCamera';
 
-		this.left = left;
-		this.right = right;
-		this.top = top;
-		this.bottom = bottom;
+        this.zoom = 1;
+        this.view = null;
 
-		this.near = near;
-		this.far = far;
+        this.left = left;
+        this.right = right;
+        this.top = top;
+        this.bottom = bottom;
 
-		this.updateProjectionMatrix();
-	}
+        this.near = near;
+        this.far = far;
 
-	copy(source: OrthographicCamera, recursive: boolean) {
-		super.copy(source, recursive);
+        this.updateProjectionMatrix();
+    }
 
-		this.left = source.left;
-		this.right = source.right;
-		this.top = source.top;
-		this.bottom = source.bottom;
-		this.near = source.near;
-		this.far = source.far;
+    copy(source: OrthographicCamera, recursive: boolean) {
+        super.copy(source, recursive);
 
-		this.zoom = source.zoom;
-		this.view = source.view === null ? null : Object.assign({}, source.view);
+        this.left = source.left;
+        this.right = source.right;
+        this.top = source.top;
+        this.bottom = source.bottom;
+        this.near = source.near;
+        this.far = source.far;
 
-		return this;
-	}
+        this.zoom = source.zoom;
+        this.view
+            = source.view === null ? null : ({
+                ...source.view
+            });
 
-	setViewOffset(fullWidth, fullHeight, x, y, width, height) {
-		if (this.view === null) {
-			this.view = {
-				enabled: true,
-				fullWidth: 1,
-				fullHeight: 1,
-				offsetX: 0,
-				offsetY: 0,
-				width: 1,
-				height: 1,
-			};
-		}
+        return this;
+    }
 
-		this.view.enabled = true;
-		this.view.fullWidth = fullWidth;
-		this.view.fullHeight = fullHeight;
-		this.view.offsetX = x;
-		this.view.offsetY = y;
-		this.view.width = width;
-		this.view.height = height;
+    setViewOffset(fullWidth, fullHeight, x, y, width, height) {
+        if (this.view === null) {
+            this.view = {
+                enabled: true,
+                fullWidth: 1,
+                fullHeight: 1,
+                offsetX: 0,
+                offsetY: 0,
+                width: 1,
+                height: 1
+            };
+        }
 
-		this.updateProjectionMatrix();
-	}
+        this.view.enabled = true;
+        this.view.fullWidth = fullWidth;
+        this.view.fullHeight = fullHeight;
+        this.view.offsetX = x;
+        this.view.offsetY = y;
+        this.view.width = width;
+        this.view.height = height;
 
-	clearViewOffset() {
-		if (this.view !== null) {
-			this.view.enabled = false;
-		}
+        this.updateProjectionMatrix();
+    }
 
-		this.updateProjectionMatrix();
-	}
+    clearViewOffset() {
+        if (this.view !== null) {
+            this.view.enabled = false;
+        }
 
-	updateProjectionMatrix() {
-		const dx = (this.right - this.left) / (2 * this.zoom);
-		const dy = (this.top - this.bottom) / (2 * this.zoom);
-		const cx = (this.right + this.left) / 2;
-		const cy = (this.top + this.bottom) / 2;
+        this.updateProjectionMatrix();
+    }
 
-		let left = cx - dx;
-		let right = cx + dx;
-		let top = cy + dy;
-		let bottom = cy - dy;
+    updateProjectionMatrix() {
+        const dx = (this.right - this.left) / (2 * this.zoom);
+        const dy = (this.top - this.bottom) / (2 * this.zoom);
+        const cx = (this.right + this.left) / 2;
+        const cy = (this.top + this.bottom) / 2;
 
-		if (this.view !== null && this.view.enabled) {
-			const scaleW = (this.right - this.left) / this.view.fullWidth / this.zoom;
-			const scaleH =
-				(this.top - this.bottom) / this.view.fullHeight / this.zoom;
+        let left = cx - dx;
+        let right = cx + dx;
+        let top = cy + dy;
+        let bottom = cy - dy;
 
-			left += scaleW * this.view.offsetX;
-			right = left + scaleW * this.view.width;
-			top -= scaleH * this.view.offsetY;
-			bottom = top - scaleH * this.view.height;
-		}
+        if (this.view !== null && this.view.enabled) {
+            const scaleW
+                = (this.right - this.left) / this.view.fullWidth / this.zoom;
+            const scaleH
+                = (this.top - this.bottom) / this.view.fullHeight / this.zoom;
 
-		this.projectionMatrix.makeOrthographic(
-			left,
-			right,
-			top,
-			bottom,
-			this.near,
-			this.far
-		);
+            left += scaleW * this.view.offsetX;
+            right = left + scaleW * this.view.width;
+            top -= scaleH * this.view.offsetY;
+            bottom = top - scaleH * this.view.height;
+        }
 
-		this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
-	}
+        this.projectionMatrix.makeOrthographic(
+            left,
+            right,
+            top,
+            bottom,
+            this.near,
+            this.far
+        );
+
+        this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
+    }
+
 }
 
 export { OrthographicCamera };

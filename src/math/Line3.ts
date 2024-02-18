@@ -1,88 +1,93 @@
-import { clamp } from "./MathUtils";
-import { Matrix4 } from "./Matrix4";
-import { Vector3 } from "./Vector3";
+import { clamp } from './MathUtils';
+import { Matrix4 } from './Matrix4';
+import { Vector3 } from './Vector3';
 
 const _startP = /* @__PURE__*/ new Vector3();
 const _startEnd = /* @__PURE__*/ new Vector3();
 
 class Line3 {
-	start: Vector3;
-	end: Vector3;
 
-	constructor(start = new Vector3(), end = new Vector3()) {
-		this.start = start;
-		this.end = end;
-	}
+    start: Vector3;
+    end: Vector3;
 
-	set(start: Vector3, end: Vector3) {
-		this.start.copy(start);
-		this.end.copy(end);
+    constructor(start = new Vector3(), end = new Vector3()) {
+        this.start = start;
+        this.end = end;
+    }
 
-		return this;
-	}
+    set(start: Vector3, end: Vector3) {
+        this.start.copy(start);
+        this.end.copy(end);
 
-	copy(line: Line3) {
-		this.start.copy(line.start);
-		this.end.copy(line.end);
+        return this;
+    }
 
-		return this;
-	}
+    copy(line: Line3) {
+        this.start.copy(line.start);
+        this.end.copy(line.end);
 
-	getCenter(target: Vector3) {
-		return target.addVectors(this.start, this.end).multiplyScalar(0.5);
-	}
+        return this;
+    }
 
-	delta(target: Vector3) {
-		return target.subVectors(this.end, this.start);
-	}
+    getCenter(target: Vector3) {
+        return target.addVectors(this.start, this.end).multiplyScalar(0.5);
+    }
 
-	distanceSq() {
-		return this.start.distanceToSquared(this.end);
-	}
+    delta(target: Vector3) {
+        return target.subVectors(this.end, this.start);
+    }
 
-	distance() {
-		return this.start.distanceTo(this.end);
-	}
+    distanceSq() {
+        return this.start.distanceToSquared(this.end);
+    }
 
-	at(t: number, target: Vector3) {
-		return this.delta(target).multiplyScalar(t).add(this.start);
-	}
+    distance() {
+        return this.start.distanceTo(this.end);
+    }
 
-	closestPointToPointParameter(point: Vector3, clampToLine: boolean) {
-		_startP.subVectors(point, this.start);
-		_startEnd.subVectors(this.end, this.start);
+    at(t: number, target: Vector3) {
+        return this.delta(target).multiplyScalar(t)
+            .add(this.start);
+    }
 
-		const startEnd2 = _startEnd.dot(_startEnd);
-		const startEnd_startP = _startEnd.dot(_startP);
+    closestPointToPointParameter(point: Vector3, clampToLine: boolean) {
+        _startP.subVectors(point, this.start);
+        _startEnd.subVectors(this.end, this.start);
 
-		let t = startEnd_startP / startEnd2;
+        const startEnd2 = _startEnd.dot(_startEnd);
+        const startEnd_startP = _startEnd.dot(_startP);
 
-		if (clampToLine) {
-			t = clamp(t, 0, 1);
-		}
+        let t = startEnd_startP / startEnd2;
 
-		return t;
-	}
+        if (clampToLine) {
+            t = clamp(t, 0, 1);
+        }
 
-	closestPointToPoint(point: Vector3, clampToLine: boolean, target: Vector3) {
-		const t = this.closestPointToPointParameter(point, clampToLine);
-		return this.delta(target).multiplyScalar(t).add(this.start);
-	}
+        return t;
+    }
 
-	applyMatrix4(matrix: Matrix4) {
-		this.start.applyMatrix4(matrix);
-		this.end.applyMatrix4(matrix);
+    closestPointToPoint(point: Vector3, clampToLine: boolean, target: Vector3) {
+        const t = this.closestPointToPointParameter(point, clampToLine);
 
-		return this;
-	}
+        return this.delta(target).multiplyScalar(t)
+            .add(this.start);
+    }
 
-	equals(line: Line3) {
-		return line.start.equals(this.start) && line.end.equals(this.end);
-	}
+    applyMatrix4(matrix: Matrix4) {
+        this.start.applyMatrix4(matrix);
+        this.end.applyMatrix4(matrix);
 
-	clone() {
-		return new Line3().copy(this);
-	}
+        return this;
+    }
+
+    equals(line: Line3) {
+        return line.start.equals(this.start) && line.end.equals(this.end);
+    }
+
+    clone() {
+        return new Line3().copy(this);
+    }
+
 }
 
 export { Line3 };

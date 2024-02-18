@@ -1,14 +1,14 @@
-import { BufferGeometry } from "../core/BufferGeometry";
-import { InterleavedBuffer } from "../core/InterleavedBuffer";
-import { InterleavedBufferAttribute } from "../core/InterleavedBufferAttribute";
-import { Object3D } from "../core/Object3D";
-import { Raycaster } from "../core/Raycaster";
-import { SpriteMaterial } from "../materials/SpriteMaterial";
-import { Matrix4 } from "../math/Matrix4";
-import { Triangle } from "../math/Triangle";
-import { Vector2 } from "../math/Vector2";
-import { Vector3 } from "../math/Vector3";
-import { IIntersection } from "./IIntersection";
+import { BufferGeometry } from '../core/BufferGeometry';
+import { InterleavedBuffer } from '../core/InterleavedBuffer';
+import { InterleavedBufferAttribute } from '../core/InterleavedBufferAttribute';
+import { Object3D } from '../core/Object3D';
+import { Raycaster } from '../core/Raycaster';
+import { SpriteMaterial } from '../materials/SpriteMaterial';
+import { Matrix4 } from '../math/Matrix4';
+import { Triangle } from '../math/Triangle';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
+import { IIntersection } from './IIntersection';
 
 let _geometry;
 
@@ -32,191 +32,214 @@ const _uvC = /* @__PURE__*/ new Vector2();
  * @public
  */
 export class Sprite extends Object3D {
-	center: Vector2;
 
-	constructor(material) {
-		super();
+    center: Vector2;
 
-		this.isSprite = true;
+    constructor(material) {
+        super();
 
-		this.type = "Sprite";
+        this.isSprite = true;
 
-		if (_geometry === undefined) {
-			_geometry = new BufferGeometry();
+        this.type = 'Sprite';
 
-			const float32Array = new Float32Array([
-				-0.5, -0.5, 0, 0, 0, 0.5, -0.5, 0, 1, 0, 0.5, 0.5, 0, 1, 1, -0.5, 0.5,
-				0, 0, 1,
-			]);
+        if (_geometry === undefined) {
+            _geometry = new BufferGeometry();
 
-			const interleavedBuffer = new InterleavedBuffer(float32Array, 5);
+            const float32Array = new Float32Array([
+                -0.5,
+                -0.5,
+                0,
+                0,
+                0,
+                0.5,
+                -0.5,
+                0,
+                1,
+                0,
+                0.5,
+                0.5,
+                0,
+                1,
+                1,
+                -0.5,
+                0.5,
+                0,
+                0,
+                1
+            ]);
 
-			_geometry.setIndex([0, 1, 2, 0, 2, 3]);
-			_geometry.setAttribute(
-				"position",
-				new InterleavedBufferAttribute(interleavedBuffer, 3, 0, false)
-			);
-			_geometry.setAttribute(
-				"uv",
-				new InterleavedBufferAttribute(interleavedBuffer, 2, 3, false)
-			);
-		}
+            const interleavedBuffer = new InterleavedBuffer(float32Array, 5);
 
-		this.geometry = _geometry;
-		this.material = material !== undefined ? material : new SpriteMaterial();
+            _geometry.setIndex([0, 1, 2, 0, 2, 3]);
+            _geometry.setAttribute(
+                'position',
+                new InterleavedBufferAttribute(interleavedBuffer, 3, 0, false)
+            );
+            _geometry.setAttribute(
+                'uv',
+                new InterleavedBufferAttribute(interleavedBuffer, 2, 3, false)
+            );
+        }
 
-		this.center = new Vector2(0.5, 0.5);
-	}
+        this.geometry = _geometry;
+        this.material
+            = material !== undefined ? material : new SpriteMaterial();
 
-	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
-		if (raycaster.camera === null) {
-			console.error(
-				'Sprite: "Raycaster.camera" needs to be set in order to raycast against sprites.'
-			);
-		}
+        this.center = new Vector2(0.5, 0.5);
+    }
 
-		_worldScale.setFromMatrixScale(this.matrixWorld);
+    raycast(raycaster: Raycaster, intersects: IIntersection[]) {
+        if (raycaster.camera === null) {
+            console.error(
+                'Sprite: "Raycaster.camera" needs to be set in order to raycast against sprites.'
+            );
+        }
 
-		_viewWorldMatrix.copy(raycaster.camera.matrixWorld);
-		this.modelViewMatrix.multiplyMatrices(
-			raycaster.camera.matrixWorldInverse,
-			this.matrixWorld
-		);
+        _worldScale.setFromMatrixScale(this.matrixWorld);
 
-		_mvPosition.setFromMatrixPosition(this.modelViewMatrix);
+        _viewWorldMatrix.copy(raycaster.camera.matrixWorld);
+        this.modelViewMatrix.multiplyMatrices(
+            raycaster.camera.matrixWorldInverse,
+            this.matrixWorld
+        );
 
-		if (
-			raycaster.camera.isPerspectiveCamera &&
-			this.material.sizeAttenuation === false
-		) {
-			_worldScale.multiplyScalar(-_mvPosition.z);
-		}
+        _mvPosition.setFromMatrixPosition(this.modelViewMatrix);
 
-		const rotation = this.material.rotation;
-		let sin;
-		let cos;
+        if (
+            raycaster.camera.isPerspectiveCamera
+            && this.material.sizeAttenuation === false
+        ) {
+            _worldScale.multiplyScalar(-_mvPosition.z);
+        }
 
-		if (rotation !== 0) {
-			cos = Math.cos(rotation);
-			sin = Math.sin(rotation);
-		}
+        const { rotation } = this.material;
+        let sin;
+        let cos;
 
-		const center = this.center;
+        if (rotation !== 0) {
+            cos = Math.cos(rotation);
+            sin = Math.sin(rotation);
+        }
 
-		transformVertex(
-			_vA.set(-0.5, -0.5, 0),
-			_mvPosition,
-			center,
-			_worldScale,
-			sin,
-			cos
-		);
-		transformVertex(
-			_vB.set(0.5, -0.5, 0),
-			_mvPosition,
-			center,
-			_worldScale,
-			sin,
-			cos
-		);
-		transformVertex(
-			_vC.set(0.5, 0.5, 0),
-			_mvPosition,
-			center,
-			_worldScale,
-			sin,
-			cos
-		);
+        const { center } = this;
 
-		_uvA.set(0, 0);
-		_uvB.set(1, 0);
-		_uvC.set(1, 1);
+        transformVertex(
+            _vA.set(-0.5, -0.5, 0),
+            _mvPosition,
+            center,
+            _worldScale,
+            sin,
+            cos
+        );
+        transformVertex(
+            _vB.set(0.5, -0.5, 0),
+            _mvPosition,
+            center,
+            _worldScale,
+            sin,
+            cos
+        );
+        transformVertex(
+            _vC.set(0.5, 0.5, 0),
+            _mvPosition,
+            center,
+            _worldScale,
+            sin,
+            cos
+        );
 
-		// check first triangle
-		let intersect = raycaster.ray.intersectTriangle(
-			_vA,
-			_vB,
-			_vC,
-			false,
-			_intersectPoint
-		);
+        _uvA.set(0, 0);
+        _uvB.set(1, 0);
+        _uvC.set(1, 1);
 
-		if (intersect === null) {
-			// check second triangle
-			transformVertex(
-				_vB.set(-0.5, 0.5, 0),
-				_mvPosition,
-				center,
-				_worldScale,
-				sin,
-				cos
-			);
-			_uvB.set(0, 1);
+        // check first triangle
+        let intersect = raycaster.ray.intersectTriangle(
+            _vA,
+            _vB,
+            _vC,
+            false,
+            _intersectPoint
+        );
 
-			intersect = raycaster.ray.intersectTriangle(
-				_vA,
-				_vC,
-				_vB,
-				false,
-				_intersectPoint
-			);
-			if (intersect === null) {
-				return;
-			}
-		}
+        if (intersect === null) {
+            // check second triangle
+            transformVertex(
+                _vB.set(-0.5, 0.5, 0),
+                _mvPosition,
+                center,
+                _worldScale,
+                sin,
+                cos
+            );
+            _uvB.set(0, 1);
 
-		const distance = raycaster.ray.origin.distanceTo(_intersectPoint);
+            intersect = raycaster.ray.intersectTriangle(
+                _vA,
+                _vC,
+                _vB,
+                false,
+                _intersectPoint
+            );
+            if (intersect === null) {
+                return;
+            }
+        }
 
-		if (distance < raycaster.near || distance > raycaster.far) return;
+        const distance = raycaster.ray.origin.distanceTo(_intersectPoint);
 
-		intersects.push({
-			distance: distance,
-			point: _intersectPoint.clone(),
-			uv: Triangle.getUV(
-				_intersectPoint,
-				_vA,
-				_vB,
-				_vC,
-				_uvA,
-				_uvB,
-				_uvC,
-				new Vector2()
-			),
-			face: null,
-			object: this,
-		});
-	}
+        if (distance < raycaster.near || distance > raycaster.far) { return; }
 
-	copy(source: Sprite) {
-		super.copy(source);
+        intersects.push({
+            distance,
+            point: _intersectPoint.clone(),
+            uv: Triangle.getUV(
+                _intersectPoint,
+                _vA,
+                _vB,
+                _vC,
+                _uvA,
+                _uvB,
+                _uvC,
+                new Vector2()
+            ),
+            face: null,
+            object: this
+        });
+    }
 
-		if (source.center !== undefined) this.center.copy(source.center);
+    copy(source: Sprite) {
+        super.copy(source);
 
-		this.material = source.material;
+        if (source.center !== undefined) { this.center.copy(source.center); }
 
-		return this;
-	}
+        this.material = source.material;
+
+        return this;
+    }
+
 }
 
 function transformVertex(vertexPosition, mvPosition, center, scale, sin, cos) {
-	// compute position in camera space
-	_alignedPosition
-		.subVectors(vertexPosition, center)
-		.addScalar(0.5)
-		.multiply(scale);
+    // compute position in camera space
+    _alignedPosition
+        .subVectors(vertexPosition, center)
+        .addScalar(0.5)
+        .multiply(scale);
 
-	// to check if rotation is not zero
-	if (sin !== undefined) {
-		_rotatedPosition.x = cos * _alignedPosition.x - sin * _alignedPosition.y;
-		_rotatedPosition.y = sin * _alignedPosition.x + cos * _alignedPosition.y;
-	} else {
-		_rotatedPosition.copy(_alignedPosition);
-	}
+    // to check if rotation is not zero
+    if (sin !== undefined) {
+        _rotatedPosition.x
+            = cos * _alignedPosition.x - sin * _alignedPosition.y;
+        _rotatedPosition.y
+            = sin * _alignedPosition.x + cos * _alignedPosition.y;
+    } else {
+        _rotatedPosition.copy(_alignedPosition);
+    }
 
-	vertexPosition.copy(mvPosition);
-	vertexPosition.x += _rotatedPosition.x;
-	vertexPosition.y += _rotatedPosition.y;
+    vertexPosition.copy(mvPosition);
+    vertexPosition.x += _rotatedPosition.x;
+    vertexPosition.y += _rotatedPosition.y;
 
-	// transform to world space
-	vertexPosition.applyMatrix4(_viewWorldMatrix);
+    // transform to world space
+    vertexPosition.applyMatrix4(_viewWorldMatrix);
 }

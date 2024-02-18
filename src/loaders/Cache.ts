@@ -2,35 +2,39 @@
  * @public
  */
 class CacheClass {
-	enabled = false;
 
-	files = {};
+    enabled = false;
 
-	add(key, file) {
-		if (this.enabled === false) return;
+    files = {};
 
-		// console.log( 'Cache', 'Adding key:', key );
+    add(key, file) {
+        if (this.enabled === false) { return; }
 
-		this.files[key] = file;
-	}
+        // console.log( 'Cache', 'Adding key:', key );
 
-	get(key) {
-		if (this.enabled === false) return;
+        this.files[key] = file;
+    }
 
-		// console.log( 'Cache', 'Checking key:', key );
+    get(key) {
+        if (this.enabled === false) { return; }
 
-		return this.files[key];
-	}
+        // console.log( 'Cache', 'Checking key:', key );
 
-	remove(key) {
-		delete this.files[key];
-	}
+        return this.files[key];
+    }
 
-	clear() {
-		this.files = {};
-	}
+    remove(key) {
+        delete this.files[key];
+    }
+
+    clear() {
+        this.files = {};
+    }
+
 }
 
 const Cache = new CacheClass();
 
-export { Cache, CacheClass };
+export {
+    Cache, CacheClass
+};

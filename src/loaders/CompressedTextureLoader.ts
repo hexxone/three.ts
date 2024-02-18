@@ -1,116 +1,124 @@
-
 /**
  * Abstract Base class to block based textures loader (dds, pvr, ...)
  *
  * Sub classes have to implement the parse() method which will be used in load().
  */
 
-import { LinearFilter } from "../constants";
-import { CompressedTexture } from "../textures/CompressedTexture";
-import { FileLoader } from "./FileLoader";
-import { Loader } from "./Loader";
+import { LinearFilter } from '../constants';
+import { CompressedTexture } from '../textures/CompressedTexture';
+import { FileLoader } from './FileLoader';
+import { Loader } from './Loader';
 
 class CompressedTextureLoader extends Loader {
-	constructor(manager?) {
-		super(manager);
-	}
 
-	load(url, onLoad?: (ct: CompressedTexture) => void, onProgress?, onError?) {
-		const scope = this;
+    constructor(manager?) {
+        super(manager);
+    }
 
-		const images = [];
+    load(url, onLoad?: (ct: CompressedTexture) => void, onProgress?, onError?) {
+        // eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias
+        const scope = this;
 
-		const texture = new CompressedTexture();
+        const images = [];
 
-		const loader = new FileLoader(this.manager);
-		loader.setPath(this.path);
-		loader.setResponseType("arraybuffer");
-		loader.setRequestHeader(this.requestHeader);
-		loader.setWithCredentials(scope.withCredentials);
+        const texture = new CompressedTexture();
 
-		let loaded = 0;
+        const loader = new FileLoader(this.manager);
 
-		function loadTexture(i) {
-			loader.load(
-				url[i],
-				function (buffer) {
-					const texDatas = scope.parse(buffer, true);
+        loader.setPath(this.path);
+        loader.setResponseType('arraybuffer');
+        loader.setRequestHeader(this.requestHeader);
+        loader.setWithCredentials(scope.withCredentials);
 
-					images[i] = {
-						width: texDatas.width,
-						height: texDatas.height,
-						format: texDatas.format,
-						mipmaps: texDatas.mipmaps,
-					};
+        let loaded = 0;
 
-					loaded += 1;
+        function loadTexture(i) {
+            loader.load(
+                url[i],
+                (buffer) => {
+                    const texDatas = scope.parse(buffer, true);
 
-					if (loaded === 6) {
-						if (texDatas.mipmapCount === 1) texture.minFilter = LinearFilter;
+                    images[i] = {
+                        width: texDatas.width,
+                        height: texDatas.height,
+                        format: texDatas.format,
+                        mipmaps: texDatas.mipmaps
+                    };
 
-						texture.image = images as any;
-						texture.format = texDatas.format;
-						texture.needsUpdate = true;
+                    loaded += 1;
 
-						if (onLoad) onLoad(texture);
-					}
-				},
-				onProgress,
-				onError
-			);
-		}
+                    if (loaded === 6) {
+                        if (texDatas.mipmapCount === 1) { texture.minFilter = LinearFilter; }
 
-		if (Array.isArray(url)) {
-			for (let i = 0, il = url.length; i < il; ++i) {
-				loadTexture(i);
-			}
-		} else {
-			// compressed cubemap texture stored in a single DDS file
+                        texture.image = images as any;
+                        texture.format = texDatas.format;
+                        texture.needsUpdate = true;
 
-			loader.load(
-				url,
-				function (buffer) {
-					const texDatas = scope.parse(buffer, true);
+                        if (onLoad) { onLoad(texture); }
+                    }
+                },
+                onProgress,
+                onError
+            );
+        }
 
-					if (texDatas.isCubemap) {
-						const faces = texDatas.mipmaps.length / texDatas.mipmapCount;
+        if (Array.isArray(url)) {
+            for (let i = 0, il = url.length; i < il; ++i) {
+                loadTexture(i);
+            }
+        } else {
+            // compressed cubemap texture stored in a single DDS file
 
-						for (let f = 0; f < faces; f++) {
-							images[f] = { mipmaps: [] };
+            loader.load(
+                url,
+                (buffer) => {
+                    const texDatas = scope.parse(buffer, true);
 
-							for (let i = 0; i < texDatas.mipmapCount; i++) {
-								images[f].mipmaps.push(
-									texDatas.mipmaps[f * texDatas.mipmapCount + i]
-								);
-								images[f].format = texDatas.format;
-								images[f].width = texDatas.width;
-								images[f].height = texDatas.height;
-							}
-						}
+                    if (texDatas.isCubemap) {
+                        const faces
+                            = texDatas.mipmaps.length / texDatas.mipmapCount;
 
-						texture.image = images as any;
-					} else {
-						texture.image.width = texDatas.width;
-						texture.image.height = texDatas.height;
-						texture.mipmaps = texDatas.mipmaps;
-					}
+                        for (let f = 0; f < faces; f++) {
+                            images[f] = {
+                                mipmaps: []
+                            };
 
-					if (texDatas.mipmapCount === 1) {
-						texture.minFilter = LinearFilter;
-					}
+                            for (let i = 0; i < texDatas.mipmapCount; i++) {
+                                images[f].mipmaps.push(
+                                    texDatas.mipmaps[
+                                        f * texDatas.mipmapCount + i
+                                    ]
+                                );
+                                images[f].format = texDatas.format;
+                                images[f].width = texDatas.width;
+                                images[f].height = texDatas.height;
+                            }
+                        }
 
-					texture.format = texDatas.format;
-					texture.needsUpdate = true;
+                        texture.image = images as any;
+                    } else {
+                        texture.image.width = texDatas.width;
+                        texture.image.height = texDatas.height;
+                        texture.mipmaps = texDatas.mipmaps;
+                    }
 
-					if (onLoad) onLoad(texture);
-				},
-				onProgress,
-				onError
-			);
-		}
+                    if (texDatas.mipmapCount === 1) {
+                        texture.minFilter = LinearFilter;
+                    }
 
-		return texture;
-	}
+                    texture.format = texDatas.format;
+                    texture.needsUpdate = true;
+
+                    if (onLoad) { onLoad(texture); }
+                },
+                onProgress,
+                onError
+            );
+        }
+
+        return texture;
+    }
+
 }
 
 export { CompressedTextureLoader };

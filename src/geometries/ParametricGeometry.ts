@@ -3,116 +3,119 @@
  * based on the brilliant article by @prideout https://prideout.net/blog/old/blog/index.html@p=44.html
  */
 
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Vector3 } from "../math/Vector3";
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Vector3 } from '../math/Vector3';
 
-const DefaultFunc = (u, v, target) =>
-	target.set(u, v, Math.cos(u) * Math.sin(v));
+const DefaultFunc = (u, v, target) => { return target.set(u, v, Math.cos(u) * Math.sin(v)); };
 
 class ParametricGeometry extends BufferGeometry {
-	constructor(func = DefaultFunc, slices: number, stacks: number) {
-		super();
 
-		this.type = "ParametricGeometry";
+    constructor(func = DefaultFunc, slices: number, stacks: number) {
+        super();
 
-		this.parameters = {
-			func: func,
-			slices: slices,
-			stacks: stacks,
-		};
+        this.type = 'ParametricGeometry';
 
-		// buffers
+        this.parameters = {
+            func,
+            slices,
+            stacks
+        };
 
-		const indices = [];
-		const vertices = [];
-		const normals = [];
-		const uvs = [];
+        // buffers
 
-		const EPS = 0.00001;
+        const indices = [];
+        const vertices = [];
+        const normals = [];
+        const uvs = [];
 
-		const normal = new Vector3();
+        const EPS = 0.00001;
 
-		const p0 = new Vector3();
-		const p1 = new Vector3();
-		const pu = new Vector3();
-		const pv = new Vector3();
+        const normal = new Vector3();
 
-		if (func.length < 3) {
-			console.error(
-				"ParametricGeometry: Function must now modify a Vector3 as third parameter."
-			);
-		}
+        const p0 = new Vector3();
+        const p1 = new Vector3();
+        const pu = new Vector3();
+        const pv = new Vector3();
 
-		// generate vertices, normals and uvs
+        if (func.length < 3) {
+            console.error(
+                'ParametricGeometry: Function must now modify a Vector3 as third parameter.'
+            );
+        }
 
-		const sliceCount = slices + 1;
+        // generate vertices, normals and uvs
 
-		for (let i = 0; i <= stacks; i++) {
-			const v = i / stacks;
+        const sliceCount = slices + 1;
 
-			for (let j = 0; j <= slices; j++) {
-				const u = j / slices;
+        for (let i = 0; i <= stacks; i++) {
+            const v = i / stacks;
 
-				// vertex
+            for (let j = 0; j <= slices; j++) {
+                const u = j / slices;
 
-				func(u, v, p0);
-				vertices.push(p0.x, p0.y, p0.z);
+                // vertex
 
-				// normal
+                func(u, v, p0);
+                vertices.push(p0.x, p0.y, p0.z);
 
-				// approximate tangent vectors via finite differences
+                // normal
 
-				if (u - EPS >= 0) {
-					func(u - EPS, v, p1);
-					pu.subVectors(p0, p1);
-				} else {
-					func(u + EPS, v, p1);
-					pu.subVectors(p1, p0);
-				}
+                // approximate tangent vectors via finite differences
 
-				if (v - EPS >= 0) {
-					func(u, v - EPS, p1);
-					pv.subVectors(p0, p1);
-				} else {
-					func(u, v + EPS, p1);
-					pv.subVectors(p1, p0);
-				}
+                if (u - EPS >= 0) {
+                    func(u - EPS, v, p1);
+                    pu.subVectors(p0, p1);
+                } else {
+                    func(u + EPS, v, p1);
+                    pu.subVectors(p1, p0);
+                }
 
-				// cross product of tangent vectors returns surface normal
+                if (v - EPS >= 0) {
+                    func(u, v - EPS, p1);
+                    pv.subVectors(p0, p1);
+                } else {
+                    func(u, v + EPS, p1);
+                    pv.subVectors(p1, p0);
+                }
 
-				normal.crossVectors(pu, pv).normalize();
-				normals.push(normal.x, normal.y, normal.z);
+                // cross product of tangent vectors returns surface normal
 
-				// uv
+                normal.crossVectors(pu, pv).normalize();
+                normals.push(normal.x, normal.y, normal.z);
 
-				uvs.push(u, v);
-			}
-		}
+                // uv
 
-		// generate indices
+                uvs.push(u, v);
+            }
+        }
 
-		for (let i = 0; i < stacks; i++) {
-			for (let j = 0; j < slices; j++) {
-				const a = i * sliceCount + j;
-				const b = i * sliceCount + j + 1;
-				const c = (i + 1) * sliceCount + j + 1;
-				const d = (i + 1) * sliceCount + j;
+        // generate indices
 
-				// faces one and two
+        for (let i = 0; i < stacks; i++) {
+            for (let j = 0; j < slices; j++) {
+                const a = i * sliceCount + j;
+                const b = i * sliceCount + j + 1;
+                const c = (i + 1) * sliceCount + j + 1;
+                const d = (i + 1) * sliceCount + j;
 
-				indices.push(a, b, d);
-				indices.push(b, c, d);
-			}
-		}
+                // faces one and two
 
-		// build geometry
+                indices.push(a, b, d);
+                indices.push(b, c, d);
+            }
+        }
 
-		this.setIndex(indices);
-		this.setAttribute("position", new Float32BufferAttribute(vertices, 3));
-		this.setAttribute("normal", new Float32BufferAttribute(normals, 3));
-		this.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
-	}
+        // build geometry
+
+        this.setIndex(indices);
+        this.setAttribute('position', new Float32BufferAttribute(vertices, 3));
+        this.setAttribute('normal', new Float32BufferAttribute(normals, 3));
+        this.setAttribute('uv', new Float32BufferAttribute(uvs, 2));
+    }
+
 }
 
-export { ParametricGeometry, ParametricGeometry as ParametricBufferGeometry };
+export {
+    ParametricGeometry, ParametricGeometry as ParametricBufferGeometry
+};

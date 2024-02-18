@@ -1,5 +1,5 @@
-import { Color } from "../math/Color";
-import { Material } from "./Material";
+import { Color } from '../math/Color';
+import { Material } from './Material';
 
 /**
  * parameters = {
@@ -15,40 +15,42 @@ import { Material } from "./Material";
  * }
  */
 class PointsMaterial extends Material {
-	constructor() {
-		super();
 
-		this.isPointsMaterial = true;
-		this.type = "PointsMaterial";
+    constructor() {
+        super();
 
-		this.color = new Color(0xffffff);
+        this.isPointsMaterial = true;
+        this.type = 'PointsMaterial';
 
-		this.map = null;
+        this.color = new Color(0xffffff);
 
-		this.alphaMap = null;
+        this.map = null;
 
-		this.size = 1;
-		this.sizeAttenuation = true;
+        this.alphaMap = null;
 
-		this.morphTargets = false;
-	}
+        this.size = 1;
+        this.sizeAttenuation = true;
 
-	copy(source: PointsMaterial) {
-		super.copy(source);
+        this.morphTargets = false;
+    }
 
-		this.color.copy(source.color);
+    copy(source: PointsMaterial) {
+        super.copy(source);
 
-		this.map = source.map;
+        this.color.copy(source.color);
 
-		this.alphaMap = source.alphaMap;
+        this.map = source.map;
 
-		this.size = source.size;
-		this.sizeAttenuation = source.sizeAttenuation;
+        this.alphaMap = source.alphaMap;
 
-		this.morphTargets = source.morphTargets;
+        this.size = source.size;
+        this.sizeAttenuation = source.sizeAttenuation;
 
-		return this;
-	}
+        this.morphTargets = source.morphTargets;
+
+        return this;
+    }
+
 }
 
 export { PointsMaterial };

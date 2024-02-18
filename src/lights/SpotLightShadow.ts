@@ -1,36 +1,41 @@
-import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
-import { RAD2DEG } from "../math/MathUtils";
-import { Light } from "./Light";
-import { LightShadow } from "./LightShadow";
-
+import { PerspectiveCamera } from '../cameras/PerspectiveCamera';
+import { RAD2DEG } from '../math/MathUtils';
+import { Light } from './Light';
+import { LightShadow } from './LightShadow';
 
 class SpotLightShadow extends LightShadow {
-	focus: number;
 
-	constructor() {
-		super(new PerspectiveCamera(50, 1, 0.5, 500));
+    focus: number;
 
-		this.isSpotLightShadow = true;
+    constructor() {
+        super(new PerspectiveCamera(50, 1, 0.5, 500));
 
-		this.focus = 1;
-	}
+        this.isSpotLightShadow = true;
 
-	updateMatrices(light: Light) {
-		const camera = this.camera as PerspectiveCamera;
+        this.focus = 1;
+    }
 
-		const fov = RAD2DEG * 2 * light.angle * this.focus;
-		const aspect = this.mapSize.width / this.mapSize.height;
-		const far = light.distance || camera.far;
+    updateMatrices(light: Light) {
+        const camera = this.camera as PerspectiveCamera;
 
-		if (fov !== camera.fov || aspect !== camera.aspect || far !== camera.far) {
-			camera.fov = fov;
-			camera.aspect = aspect;
-			camera.far = far;
-			camera.updateProjectionMatrix();
-		}
+        const fov = RAD2DEG * 2 * light.angle * this.focus;
+        const aspect = this.mapSize.width / this.mapSize.height;
+        const far = light.distance || camera.far;
 
-		super.updateMatrices(light);
-	}
+        if (
+            fov !== camera.fov
+            || aspect !== camera.aspect
+            || far !== camera.far
+        ) {
+            camera.fov = fov;
+            camera.aspect = aspect;
+            camera.far = far;
+            camera.updateProjectionMatrix();
+        }
+
+        super.updateMatrices(light);
+    }
+
 }
 
 export { SpotLightShadow };

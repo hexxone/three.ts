@@ -1,392 +1,404 @@
-import { AddEquation, AlwaysStencilFunc, FrontSide, KeepStencilOp, LessEqualDepth, NormalBlending, OneMinusSrcAlphaFactor, SrcAlphaFactor } from "../constants";
-import { EventDispatcher } from "../core/EventDispatcher";
-import { Color } from "../math/Color";
-import { generateUUID } from "../math/MathUtils";
-import { Plane } from "../math/Plane";
-import { Vector2 } from "../math/Vector2";
-import { WebGlProgramsParameters } from "../renderers/webgl/WebGLPrograms";
-import { WebGLRenderer } from "../renderers/WebGLRenderer";
-import { Texture } from "../textures/Texture";
+import { AddEquation,
+    AlwaysStencilFunc,
+    FrontSide,
+    KeepStencilOp,
+    LessEqualDepth,
+    NormalBlending,
+    OneMinusSrcAlphaFactor,
+    SrcAlphaFactor } from '../constants';
+import { EventDispatcher } from '../core/EventDispatcher';
+import { Color } from '../math/Color';
+import { generateUUID } from '../math/MathUtils';
+import { Plane } from '../math/Plane';
+import { Vector2 } from '../math/Vector2';
+import { WebGlProgramsParameters } from '../renderers/webgl/WebGLPrograms';
+import { WebGLRenderer } from '../renderers/WebGLRenderer';
+import { Texture } from '../textures/Texture';
 
 let materialId = 0;
 
 export type MaterialParameters = {
-	alphaTest?: number;
-	blendDst?: number;
-	blendDstAlpha?: number;
-	blendEquation?: number;
-	blendEquationAlpha?: number;
-	blending?: number;
-	blendSrc?: number;
-	blendSrcAlpha?: number;
-	clipIntersection?: boolean;
-	clippingPlanes?: Plane[];
-	clipShadows?: boolean;
-	colorWrite?: boolean;
-	defines?: any;
-	depthFunc?: number;
-	depthTest?: boolean;
-	depthWrite?: boolean;
-	fog?: boolean;
-	name?: string;
-	opacity?: number;
-	polygonOffset?: boolean;
-	polygonOffsetFactor?: number;
-	polygonOffsetUnits?: number;
-	precision?: "highp" | "mediump" | "lowp" | null;
-	premultipliedAlpha?: boolean;
-	dithering?: boolean;
-	side?: number;
-	shadowSide?: number;
-	toneMapped?: boolean;
-	transparent?: boolean;
-	vertexColors?: boolean;
-	visible?: boolean;
-	stencilWrite?: boolean;
-	stencilFunc?: number;
-	stencilRef?: number;
-	stencilWriteMask?: number;
-	stencilFuncMask?: number;
-	stencilFail?: number;
-	stencilZFail?: number;
-	stencilZPass?: number;
-	userData?: any;
+    alphaTest?: number;
+    blendDst?: number;
+    blendDstAlpha?: number;
+    blendEquation?: number;
+    blendEquationAlpha?: number;
+    blending?: number;
+    blendSrc?: number;
+    blendSrcAlpha?: number;
+    clipIntersection?: boolean;
+    clippingPlanes?: Plane[];
+    clipShadows?: boolean;
+    colorWrite?: boolean;
+    defines?: any;
+    depthFunc?: number;
+    depthTest?: boolean;
+    depthWrite?: boolean;
+    fog?: boolean;
+    name?: string;
+    opacity?: number;
+    polygonOffset?: boolean;
+    polygonOffsetFactor?: number;
+    polygonOffsetUnits?: number;
+    precision?: 'highp' | 'mediump' | 'lowp' | null;
+    premultipliedAlpha?: boolean;
+    dithering?: boolean;
+    side?: number;
+    shadowSide?: number;
+    toneMapped?: boolean;
+    transparent?: boolean;
+    vertexColors?: boolean;
+    visible?: boolean;
+    stencilWrite?: boolean;
+    stencilFunc?: number;
+    stencilRef?: number;
+    stencilWriteMask?: number;
+    stencilFuncMask?: number;
+    stencilFail?: number;
+    stencilZFail?: number;
+    stencilZPass?: number;
+    userData?: any;
 
-	color?: any;
-	map?: Texture;
-	alphaMap?: Texture;
-	size?: number;
-	sizeAttenuation?: boolean;
-	morphTargets?: boolean;
+    color?: any;
+    map?: Texture;
+    alphaMap?: Texture;
+    size?: number;
+    sizeAttenuation?: boolean;
+    morphTargets?: boolean;
 };
 
 /**
  * @public
  */
 class Material extends EventDispatcher {
-	id: number;
-	uuid: string;
-	name: string;
-	type: string;
 
-	fog: boolean;
-	blending: number;
-	side: number;
-	vertexColors: boolean;
-	opacity: number;
-	transparent: boolean;
-	clipping: boolean;
+    id: number;
+    uuid: string;
+    name: string;
+    type: string;
 
-	blendSrc: number;
-	blendDst: number;
-	blendEquation: number;
-	blendSrcAlpha: any;
-	blendDstAlpha: any;
-	blendEquationAlpha: any;
+    fog: boolean;
+    blending: number;
+    side: number;
+    vertexColors: boolean;
+    opacity: number;
+    transparent: boolean;
+    clipping: boolean;
 
-	depthFunc: number;
-	depthTest: boolean;
-	depthWrite: boolean;
+    blendSrc: number;
+    blendDst: number;
+    blendEquation: number;
+    blendSrcAlpha: any;
+    blendDstAlpha: any;
+    blendEquationAlpha: any;
 
-	stencilWriteMask: number;
-	stencilFunc: number;
-	stencilRef: number;
-	stencilFuncMask: number;
-	stencilFail: number;
-	stencilZFail: number;
-	stencilZPass: number;
-	stencilWrite: boolean;
+    depthFunc: number;
+    depthTest: boolean;
+    depthWrite: boolean;
 
-	clippingPlanes: Plane[];
-	clipIntersection: boolean;
-	clipShadows: boolean;
-	shadowSide: any;
-	colorWrite: boolean;
-	precision: string;
-	polygonOffset: boolean;
-	polygonOffsetFactor: number;
-	polygonOffsetUnits: number;
-	dithering: boolean;
-	alphaTest: number;
-	premultipliedAlpha: boolean;
-	visible: boolean;
-	toneMapped: boolean;
-	userData: {};
-	version: number;
-	flatShading: boolean;
-	color: Color;
-	roughness: number;
-	metalness: number;
-	emissive: Color;
-	emissiveIntensity: number;
-	specular: Color;
-	shininess: number; // TODO or color?
-	clearcoatRoughness: number;
-	clearcoatMap: Texture;
-	clearcoatRoughnessMap: Texture;
-	clearcoatNormalMap: Texture;
-	clearcoatNormalScale: Vector2;
+    stencilWriteMask: number;
+    stencilFunc: number;
+    stencilRef: number;
+    stencilFuncMask: number;
+    stencilFail: number;
+    stencilZFail: number;
+    stencilZPass: number;
+    stencilWrite: boolean;
 
-	_sheen: number;
-	_clearcoat: number;
+    clippingPlanes: Plane[];
+    clipIntersection: boolean;
+    clipShadows: boolean;
+    shadowSide: any;
+    colorWrite: boolean;
+    precision: string;
+    polygonOffset: boolean;
+    polygonOffsetFactor: number;
+    polygonOffsetUnits: number;
+    dithering: boolean;
+    alphaTest: number;
+    premultipliedAlpha: boolean;
+    visible: boolean;
+    toneMapped: boolean;
+    userData: any;
+    version: number;
+    flatShading: boolean;
+    color: Color;
+    roughness: number;
+    metalness: number;
+    emissive: Color;
+    emissiveIntensity: number;
+    specular: Color;
+    shininess: number; // TODO or color?
+    clearcoatRoughness: number;
+    clearcoatMap: Texture;
+    clearcoatRoughnessMap: Texture;
+    clearcoatNormalMap: Texture;
+    clearcoatNormalScale: Vector2;
 
-	map: Texture;
-	matcap: Texture;
-	alphaMap: Texture;
-	lightMap: Texture;
-	lightMapIntensity: number;
-	aoMap: Texture;
-	aoMapIntensity: number;
-	bumpMap: Texture;
-	bumpScale: number;
-	normalMap: Texture;
-	normalMapType: number;
-	normalScale: Vector2;
-	displacementMap: Texture;
-	displacementScale: number;
-	displacementBias: number;
-	roughnessMap: Texture;
-	metalnessMap: Texture;
-	emissiveMap: Texture;
-	specularMap: Texture;
-	envMap: Texture;
-	reflectivity: number;
-	refractionRatio: number;
-	combine: number;
-	envMapIntensity: number;
-	gradientMap: Texture;
-	size: number;
-	sizeAttenuation: boolean;
-	rotation: number;
-	linewidth: number;
-	dashSize: number;
-	gapSize: number;
-	scale: number;
-	wireframe: boolean;
-	wireframeLinewidth: number;
-	wireframeLinecap: string;
-	wireframeLinejoin: string;
-	morphTargets: boolean;
-	morphNormals: boolean;
-	skinning: boolean;
+    _sheen: number;
+    _clearcoat: number;
 
-	needsUpdate: boolean;
-	uniformsNeedUpdate: boolean;
+    map: Texture;
+    matcap: Texture;
+    alphaMap: Texture;
+    lightMap: Texture;
+    lightMapIntensity: number;
+    aoMap: Texture;
+    aoMapIntensity: number;
+    bumpMap: Texture;
+    bumpScale: number;
+    normalMap: Texture;
+    normalMapType: number;
+    normalScale: Vector2;
+    displacementMap: Texture;
+    displacementScale: number;
+    displacementBias: number;
+    roughnessMap: Texture;
+    metalnessMap: Texture;
+    emissiveMap: Texture;
+    specularMap: Texture;
+    envMap: Texture;
+    reflectivity: number;
+    refractionRatio: number;
+    combine: number;
+    envMapIntensity: number;
+    gradientMap: Texture;
+    size: number;
+    sizeAttenuation: boolean;
+    rotation: number;
+    linewidth: number;
+    dashSize: number;
+    gapSize: number;
+    scale: number;
+    wireframe: boolean;
+    wireframeLinewidth: number;
+    wireframeLinecap: string;
+    wireframeLinejoin: string;
+    morphTargets: boolean;
+    morphNormals: boolean;
+    skinning: boolean;
 
-	isMaterial = true;
-	isMeshBasicMaterial: boolean;
-	isMeshLambertMaterial: boolean;
-	isMeshToonMaterial: boolean;
-	isMeshPhongMaterial: boolean;
-	isMeshStandardMaterial: boolean;
-	isMeshPhysicalMaterial: boolean;
-	isMeshMatcapMaterial: boolean;
-	isMeshDepthMaterial: boolean;
-	isMeshDistanceMaterial: boolean;
-	isMeshNormalMaterial: boolean;
-	isLineBasicMaterial: boolean;
-	isLineDashedMaterial: boolean;
-	isPointsMaterial: boolean;
-	isSpriteMaterial: boolean;
-	isShadowMaterial: boolean;
-	isShaderMaterial: boolean;
+    needsUpdate: boolean;
+    uniformsNeedUpdate: boolean;
 
-	constructor() {
-		super();
+    isMaterial = true;
+    isMeshBasicMaterial: boolean;
+    isMeshLambertMaterial: boolean;
+    isMeshToonMaterial: boolean;
+    isMeshPhongMaterial: boolean;
+    isMeshStandardMaterial: boolean;
+    isMeshPhysicalMaterial: boolean;
+    isMeshMatcapMaterial: boolean;
+    isMeshDepthMaterial: boolean;
+    isMeshDistanceMaterial: boolean;
+    isMeshNormalMaterial: boolean;
+    isLineBasicMaterial: boolean;
+    isLineDashedMaterial: boolean;
+    isPointsMaterial: boolean;
+    isSpriteMaterial: boolean;
+    isShadowMaterial: boolean;
+    isShaderMaterial: boolean;
 
-		Object.defineProperty(this, "id", {
-			value: materialId++,
-		});
-		Object.defineProperty(this, "needsUpdate", {
-			set(value) {
-				if (value === true) this.version++;
-			},
-		});
+    constructor() {
+        super();
 
-		this.uuid = generateUUID();
+        Object.defineProperty(this, 'id', {
+            value: materialId++
+        });
+        Object.defineProperty(this, 'needsUpdate', {
+            set(value) {
+                if (value === true) { this.version++; }
+            }
+        });
 
-		this.name = "";
-		this.type = "Material";
+        this.uuid = generateUUID();
 
-		this.fog = true;
+        this.name = '';
+        this.type = 'Material';
 
-		this.blending = NormalBlending;
-		this.side = FrontSide;
-		this.vertexColors = false;
+        this.fog = true;
 
-		this.opacity = 1;
-		this.transparent = false;
+        this.blending = NormalBlending;
+        this.side = FrontSide;
+        this.vertexColors = false;
 
-		this.blendSrc = SrcAlphaFactor;
-		this.blendDst = OneMinusSrcAlphaFactor;
-		this.blendEquation = AddEquation;
-		this.blendSrcAlpha = null;
-		this.blendDstAlpha = null;
-		this.blendEquationAlpha = null;
+        this.opacity = 1;
+        this.transparent = false;
 
-		this.depthFunc = LessEqualDepth;
-		this.depthTest = true;
-		this.depthWrite = true;
+        this.blendSrc = SrcAlphaFactor;
+        this.blendDst = OneMinusSrcAlphaFactor;
+        this.blendEquation = AddEquation;
+        this.blendSrcAlpha = null;
+        this.blendDstAlpha = null;
+        this.blendEquationAlpha = null;
 
-		this.stencilWriteMask = 0xff;
-		this.stencilFunc = AlwaysStencilFunc;
-		this.stencilRef = 0;
-		this.stencilFuncMask = 0xff;
-		this.stencilFail = KeepStencilOp;
-		this.stencilZFail = KeepStencilOp;
-		this.stencilZPass = KeepStencilOp;
-		this.stencilWrite = false;
+        this.depthFunc = LessEqualDepth;
+        this.depthTest = true;
+        this.depthWrite = true;
 
-		this.clippingPlanes = null;
-		this.clipIntersection = false;
-		this.clipShadows = false;
+        this.stencilWriteMask = 0xff;
+        this.stencilFunc = AlwaysStencilFunc;
+        this.stencilRef = 0;
+        this.stencilFuncMask = 0xff;
+        this.stencilFail = KeepStencilOp;
+        this.stencilZFail = KeepStencilOp;
+        this.stencilZPass = KeepStencilOp;
+        this.stencilWrite = false;
 
-		this.shadowSide = null;
+        this.clippingPlanes = null;
+        this.clipIntersection = false;
+        this.clipShadows = false;
 
-		this.colorWrite = true;
+        this.shadowSide = null;
 
-		this.precision = null; // override the renderer's default precision for this material
+        this.colorWrite = true;
 
-		this.polygonOffset = false;
-		this.polygonOffsetFactor = 0;
-		this.polygonOffsetUnits = 0;
+        this.precision = null; // override the renderer's default precision for this material
 
-		this.dithering = false;
+        this.polygonOffset = false;
+        this.polygonOffsetFactor = 0;
+        this.polygonOffsetUnits = 0;
 
-		this.alphaTest = 0;
-		this.premultipliedAlpha = false;
+        this.dithering = false;
 
-		this.visible = true;
+        this.alphaTest = 0;
+        this.premultipliedAlpha = false;
 
-		this.toneMapped = true;
+        this.visible = true;
 
-		this.userData = {};
+        this.toneMapped = true;
 
-		this.version = 0;
-	}
+        this.userData = {};
 
-	get sheen() {
-		return this._sheen;
-	}
+        this.version = 0;
+    }
 
-	set sheen(value) {
-		if (this._sheen > 0 !== value > 0) {
-			this.version++;
-		}
+    get sheen() {
+        return this._sheen;
+    }
 
-		this._sheen = value;
-	}
+    set sheen(value) {
+        if (this._sheen > 0 !== value > 0) {
+            this.version++;
+        }
 
-	get clearcoat() {
-		return this._clearcoat;
-	}
+        this._sheen = value;
+    }
 
-	set clearcoat(value) {
-		if (this._clearcoat > 0 !== value > 0) {
-			this.version++;
-		}
+    get clearcoat() {
+        return this._clearcoat;
+    }
 
-		this._clearcoat = value;
-	}
+    set clearcoat(value) {
+        if (this._clearcoat > 0 !== value > 0) {
+            this.version++;
+        }
 
-	/* shaderobject, renderer */
-	onBuild(...args) { }
+        this._clearcoat = value;
+    }
 
-	/* renderer, scene, camera, geometry, object, group */
-	onBeforeRender(...args) { }
+    /* shaderobject, renderer */
+    onBuild(...args) {}
 
-	/** function which runs before compilation */
-	onBeforeCompile(
-		shaderobject: WebGlProgramsParameters,
-		renderer: WebGLRenderer
-	) { }
+    /* renderer, scene, camera, geometry, object, group */
+    onBeforeRender(...args) {}
 
-	customProgramCacheKey() {
-		return this.onBeforeCompile.toString();
-	}
+    /** function which runs before compilation */
+    onBeforeCompile(
+        shaderobject: WebGlProgramsParameters,
+        renderer: WebGLRenderer
+    ) {}
 
-	clone() {
-		return new Material().copy(this);
-	}
+    customProgramCacheKey() {
+        return this.onBeforeCompile.toString();
+    }
 
-	copy(source: Material) {
-		this.name = source.name;
+    clone() {
+        return new Material().copy(this);
+    }
 
-		this.fog = source.fog;
+    copy(source: Material) {
+        this.name = source.name;
 
-		this.blending = source.blending;
-		this.side = source.side;
-		this.vertexColors = source.vertexColors;
+        this.fog = source.fog;
 
-		this.opacity = source.opacity;
-		this.transparent = source.transparent;
+        this.blending = source.blending;
+        this.side = source.side;
+        this.vertexColors = source.vertexColors;
 
-		this.blendSrc = source.blendSrc;
-		this.blendDst = source.blendDst;
-		this.blendEquation = source.blendEquation;
-		this.blendSrcAlpha = source.blendSrcAlpha;
-		this.blendDstAlpha = source.blendDstAlpha;
-		this.blendEquationAlpha = source.blendEquationAlpha;
+        this.opacity = source.opacity;
+        this.transparent = source.transparent;
 
-		this.depthFunc = source.depthFunc;
-		this.depthTest = source.depthTest;
-		this.depthWrite = source.depthWrite;
+        this.blendSrc = source.blendSrc;
+        this.blendDst = source.blendDst;
+        this.blendEquation = source.blendEquation;
+        this.blendSrcAlpha = source.blendSrcAlpha;
+        this.blendDstAlpha = source.blendDstAlpha;
+        this.blendEquationAlpha = source.blendEquationAlpha;
 
-		this.stencilWriteMask = source.stencilWriteMask;
-		this.stencilFunc = source.stencilFunc;
-		this.stencilRef = source.stencilRef;
-		this.stencilFuncMask = source.stencilFuncMask;
-		this.stencilFail = source.stencilFail;
-		this.stencilZFail = source.stencilZFail;
-		this.stencilZPass = source.stencilZPass;
-		this.stencilWrite = source.stencilWrite;
+        this.depthFunc = source.depthFunc;
+        this.depthTest = source.depthTest;
+        this.depthWrite = source.depthWrite;
 
-		const srcPlanes = source.clippingPlanes;
-		let dstPlanes = null;
+        this.stencilWriteMask = source.stencilWriteMask;
+        this.stencilFunc = source.stencilFunc;
+        this.stencilRef = source.stencilRef;
+        this.stencilFuncMask = source.stencilFuncMask;
+        this.stencilFail = source.stencilFail;
+        this.stencilZFail = source.stencilZFail;
+        this.stencilZPass = source.stencilZPass;
+        this.stencilWrite = source.stencilWrite;
 
-		if (srcPlanes !== null) {
-			const n = srcPlanes.length;
-			dstPlanes = new Array(n);
+        const srcPlanes = source.clippingPlanes;
+        let dstPlanes = null;
 
-			for (let i = 0; i !== n; ++i) {
-				dstPlanes[i] = srcPlanes[i].clone();
-			}
-		}
+        if (srcPlanes !== null) {
+            const n = srcPlanes.length;
 
-		this.clippingPlanes = dstPlanes;
-		this.clipIntersection = source.clipIntersection;
-		this.clipShadows = source.clipShadows;
+            dstPlanes = new Array(n);
 
-		this.shadowSide = source.shadowSide;
+            for (let i = 0; i !== n; ++i) {
+                dstPlanes[i] = srcPlanes[i].clone();
+            }
+        }
 
-		this.colorWrite = source.colorWrite;
+        this.clippingPlanes = dstPlanes;
+        this.clipIntersection = source.clipIntersection;
+        this.clipShadows = source.clipShadows;
 
-		this.precision = source.precision;
+        this.shadowSide = source.shadowSide;
 
-		this.polygonOffset = source.polygonOffset;
-		this.polygonOffsetFactor = source.polygonOffsetFactor;
-		this.polygonOffsetUnits = source.polygonOffsetUnits;
+        this.colorWrite = source.colorWrite;
 
-		this.dithering = source.dithering;
+        this.precision = source.precision;
 
-		this.alphaTest = source.alphaTest;
-		this.premultipliedAlpha = source.premultipliedAlpha;
+        this.polygonOffset = source.polygonOffset;
+        this.polygonOffsetFactor = source.polygonOffsetFactor;
+        this.polygonOffsetUnits = source.polygonOffsetUnits;
 
-		this.visible = source.visible;
+        this.dithering = source.dithering;
 
-		this.toneMapped = source.toneMapped;
+        this.alphaTest = source.alphaTest;
+        this.premultipliedAlpha = source.premultipliedAlpha;
 
-		this.userData = JSON.parse(JSON.stringify(source.userData));
+        this.visible = source.visible;
 
-		return this;
-	}
+        this.toneMapped = source.toneMapped;
 
-	dispose() {
-		this.dispatchEvent({ type: "dispose" });
-	}
-	dispatchEvent(arg0: { type: string }) {
-		throw new Error("Method not implemented.");
-	}
+        this.userData = JSON.parse(JSON.stringify(source.userData));
+
+        return this;
+    }
+
+    dispose() {
+        this.dispatchEvent({
+            type: 'dispose'
+        });
+    }
+    dispatchEvent(arg0: { type: string }) {
+        throw new Error('Method not implemented.');
+    }
+
 }
 
 export { Material };

@@ -1,88 +1,91 @@
-import { SphereGeometry } from "../geometries/SphereGeometry";
-import { Light } from "../lights/Light";
-import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
-import { Color } from "../math/Color";
-import { Mesh } from "../objects/Mesh";
+import { SphereGeometry } from '../geometries/SphereGeometry';
+import { Light } from '../lights/Light';
+import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
+import { Color } from '../math/Color';
+import { Mesh } from '../objects/Mesh';
 
 /**
  * @public
  */
 class PointLightHelper extends Mesh {
-	light: Light;
-	color: Color;
 
-	constructor(light: Light, sphereSize, color: Color) {
-		const geometry = new SphereGeometry(sphereSize, 4, 2);
-		const material = new MeshBasicMaterial();
-		material.wireframe = true;
-		material.fog = false;
-		material.toneMapped = false;
+    light: Light;
+    color: Color;
 
-		super(geometry, material);
+    constructor(light: Light, sphereSize, color: Color) {
+        const geometry = new SphereGeometry(sphereSize, 4, 2);
+        const material = new MeshBasicMaterial();
 
-		this.light = light;
-		this.light.updateMatrixWorld();
+        material.wireframe = true;
+        material.fog = false;
+        material.toneMapped = false;
 
-		this.color = color;
+        super(geometry, material);
 
-		this.type = "PointLightHelper";
+        this.light = light;
+        this.light.updateMatrixWorld();
 
-		this.matrix = this.light.matrixWorld;
-		this.matrixAutoUpdate = false;
+        this.color = color;
 
-		this.update();
+        this.type = 'PointLightHelper';
 
-		/*
-	// TODO: delete this comment?
-	const distanceGeometry = new IcosahedronBufferGeometry( 1, 2 );
-	const distanceMaterial = new MeshBasicMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
+        this.matrix = this.light.matrixWorld;
+        this.matrixAutoUpdate = false;
 
-	this.lightSphere = new Mesh( bulbGeometry, bulbMaterial );
-	this.lightDistance = new Mesh( distanceGeometry, distanceMaterial );
+        this.update();
 
-	const d = light.distance;
+        /*
+    // TODO: delete this comment?
+    const distanceGeometry = new IcosahedronBufferGeometry( 1, 2 );
+    const distanceMaterial = new MeshBasicMaterial( { color: hexColor, fog: false, wireframe: true, opacity: 0.1, transparent: true } );
 
-	if ( d === 0.0 ) {
+    this.lightSphere = new Mesh( bulbGeometry, bulbMaterial );
+    this.lightDistance = new Mesh( distanceGeometry, distanceMaterial );
 
-		this.lightDistance.visible = false;
+    const d = light.distance;
 
-	} else {
+    if ( d === 0.0 ) {
 
-		this.lightDistance.scale.set( d, d, d );
+        this.lightDistance.visible = false;
 
-	}
+    } else {
 
-	this.add( this.lightDistance );
-	*/
-	}
+        this.lightDistance.scale.set( d, d, d );
 
-	dispose() {
-		this.geometry.dispose();
-		this.material.dispose();
-	}
+    }
 
-	update() {
-		if (this.color !== undefined) {
-			this.material.color.set(this.color);
-		} else {
-			this.material.color.copy(this.light.color);
-		}
+    this.add( this.lightDistance );
+    */
+    }
 
-		/*
-		const d = this.light.distance;
+    dispose() {
+        this.geometry.dispose();
+        this.material.dispose();
+    }
 
-		if ( d === 0.0 ) {
+    update() {
+        if (this.color !== undefined) {
+            this.material.color.set(this.color);
+        } else {
+            this.material.color.copy(this.light.color);
+        }
 
-			this.lightDistance.visible = false;
+        /*
+        const d = this.light.distance;
 
-		} else {
+        if ( d === 0.0 ) {
 
-			this.lightDistance.visible = true;
-			this.lightDistance.scale.set( d, d, d );
+            this.lightDistance.visible = false;
 
-		}
-		*/
-	}
+        } else {
+
+            this.lightDistance.visible = true;
+            this.lightDistance.scale.set( d, d, d );
+
+        }
+        */
+    }
+
 }
 
 export { PointLightHelper };

@@ -77,12 +77,12 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	vec4 diffuseColor = vec4(diffuse, opacity);
-	ReflectedLight reflectedLight = ReflectedLight(vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
-	vec3 totalEmissiveRadiance = emissive;
+    vec4 diffuseColor = vec4(diffuse, opacity);
+    ReflectedLight reflectedLight = ReflectedLight(vec3(0.0), vec3(0.0), vec3(0.0), vec3(0.0));
+    vec3 totalEmissiveRadiance = emissive;
 
 	#ifdef TRANSMISSION
-	float totalTransmission = transmission;
+    float totalTransmission = transmission;
 	#endif
 
 	#include <logdepthbuf_fragment>
@@ -108,14 +108,14 @@ void main() {
 	// modulation
 	#include <aomap_fragment>
 
-	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
+    vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
 
 	// this is a stub for the transmission model
 	#ifdef TRANSMISSION
-	diffuseColor.a *= mix(saturate(1. - totalTransmission + linearToRelativeLuminance(reflectedLight.directSpecular + reflectedLight.indirectSpecular)), 1.0, metalness);
+    diffuseColor.a *= mix(saturate(1. - totalTransmission + linearToRelativeLuminance(reflectedLight.directSpecular + reflectedLight.indirectSpecular)), 1.0, metalness);
 	#endif
 
-	gl_FragColor = vec4(outgoingLight, diffuseColor.a);
+    gl_FragColor = vec4(outgoingLight, diffuseColor.a);
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/consistent-type-definitions */
 
 /* eslint-disable no-unused-vars */
@@ -16,370 +17,383 @@ type DOMString = string;
 
 // # WebXR
 
-export type XRSessionMode = "inline" | "immersive-vr" | "immersive-ar";
+export type XRSessionMode = 'inline' | 'immersive-vr' | 'immersive-ar';
 
 export type XRReferenceSpaceType =
-	| "viewer"
-	| "local"
-	| "local-floor"
-	| "bounded-floor"
-	| "unbounded";
+    | 'viewer'
+    | 'local'
+    | 'local-floor'
+    | 'bounded-floor'
+    | 'unbounded';
 
-export type XRVisibilityState = "visible" | "visible-blurred" | "hidden";
+export type XRVisibilityState = 'visible' | 'visible-blurred' | 'hidden';
 
-export type XREye = "none" | "left" | "right";
+export type XREye = 'none' | 'left' | 'right';
 
-export type XRHandedness = "none" | "left" | "right";
+export type XRHandedness = 'none' | 'left' | 'right';
 
-export type XRTargetRayMode = "gaze" | "tracked-pointer" | "screen";
+export type XRTargetRayMode = 'gaze' | 'tracked-pointer' | 'screen';
 
 export type XRWebGLRenderingContext =
-	| WebGLRenderingContext
-	| WebGL2RenderingContext;
+    | WebGLRenderingContext
+    | WebGL2RenderingContext;
 
 export interface XRSessionInit {
-	requiredFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
+    requiredFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
 
-	optionalFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
+    optionalFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
 }
 
 declare global {
-	export class XRRigidTransform {
-		constructor(position?: DOMPointInit, orientation?: DOMPointInit);
+    export class XRRigidTransform {
 
-		readonly position: DOMPointReadOnly;
+        constructor(position?: DOMPointInit, orientation?: DOMPointInit);
 
-		readonly orientation: DOMPointReadOnly;
+        readonly position: DOMPointReadOnly;
 
-		readonly matrix: Float32Array;
+        readonly orientation: DOMPointReadOnly;
 
-		readonly inverse: XRRigidTransform;
-	}
+        readonly matrix: Float32Array;
 
-	export interface XRViewport {
-		readonly x: number;
+        readonly inverse: XRRigidTransform;
 
-		readonly y: number;
+    }
 
-		readonly width: number;
+    export interface XRViewport {
+        readonly x: number;
 
-		readonly height: number;
-	}
+        readonly y: number;
+
+        readonly width: number;
+
+        readonly height: number;
+    }
 }
 
 // ## Events
 
 export interface XRSessionEventInit extends EventInit {
-	session: XRSession;
+    session: XRSession;
 }
 
 export interface XRInputSourceEventInit extends EventInit {
-	frame: XRFrame;
+    frame: XRFrame;
 
-	inputSource: XRInputSource;
+    inputSource: XRInputSource;
 }
 
 export interface XRInputSourcesChangeEventInit extends EventInit {
-	session: XRSession;
+    session: XRSession;
 
-	added: XRInputSource[]; // FrozenArray (TODO?)
+    added: XRInputSource[]; // FrozenArray (TODO?)
 
-	removed: XRInputSource[]; // FrozenArray (TODO?)
+    removed: XRInputSource[]; // FrozenArray (TODO?)
 }
 
 export interface XRReferenceSpaceEventInit extends EventInit {
-	referenceSpace: XRReferenceSpace;
+    referenceSpace: XRReferenceSpace;
 
-	transform?: XRRigidTransform | null;
+    transform?: XRRigidTransform | null;
 }
 
 declare global {
-	export class XRSessionEvent extends Event {
-		constructor(type: DOMString, eventInitDict: XRSessionEventInit);
+    export class XRSessionEvent extends Event {
 
-		readonly session: XRSession;
-	}
+        constructor(type: DOMString, eventInitDict: XRSessionEventInit);
 
-	export class XRInputSourceEvent extends Event {
-		constructor(type: DOMString, eventInitDict: XRInputSourceEventInit);
+        readonly session: XRSession;
 
-		readonly frame: XRFrame;
+    }
 
-		readonly inputSource: XRInputSource;
-	}
+    export class XRInputSourceEvent extends Event {
 
-	export class XRInputSourcesChangeEvent extends Event {
-		constructor(type: DOMString, eventInitDict: XRInputSourcesChangeEventInit);
+        constructor(type: DOMString, eventInitDict: XRInputSourceEventInit);
 
-		readonly session: XRSession;
+        readonly frame: XRFrame;
 
-		readonly added: XRInputSource[]; // FrozenArray (TODO?)
+        readonly inputSource: XRInputSource;
 
-		readonly removed: XRInputSource[]; // FrozenArray (TODO?)
-	}
+    }
 
-	export class XRReferenceSpaceEvent extends Event {
-		constructor(type: DOMString, eventInitDict: XRReferenceSpaceEventInit);
+    export class XRInputSourcesChangeEvent extends Event {
 
-		readonly referenceSpace: XRReferenceSpace;
+        constructor(
+            type: DOMString,
+            eventInitDict: XRInputSourcesChangeEventInit
+        );
 
-		readonly transform: XRRigidTransform | null;
-	}
+        readonly session: XRSession;
+
+        readonly added: XRInputSource[]; // FrozenArray (TODO?)
+
+        readonly removed: XRInputSource[]; // FrozenArray (TODO?)
+
+    }
+
+    export class XRReferenceSpaceEvent extends Event {
+
+        constructor(type: DOMString, eventInitDict: XRReferenceSpaceEventInit);
+
+        readonly referenceSpace: XRReferenceSpace;
+
+        readonly transform: XRRigidTransform | null;
+
+    }
 }
 
 // ## Permissions
 
 export interface XRPermissionDescriptor extends PermissionDescriptor {
-	mode?: XRSessionMode;
+    mode?: XRSessionMode;
 
-	requiredFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
+    requiredFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
 
-	optionalFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
+    optionalFeatures?: XRReferenceSpaceType[]; // sequence<any> (TODO?)
 }
 
 declare global {
-	export interface XRPermissionStatus extends PermissionStatus {
-		granted: []; // FrozenArray (TODO?) ; (TODO) Also is this really `any`?
-	}
+    export interface XRPermissionStatus extends PermissionStatus {
+        granted: []; // FrozenArray (TODO?) ; (TODO) Also is this really `any`?
+    }
 
-	// ## Input sources
+    // ## Input sources
 
-	export interface XRInputSource {
-		readonly handedness: XRHandedness;
+    export interface XRInputSource {
+        readonly handedness: XRHandedness;
 
-		readonly targetRayMode: XRTargetRayMode;
+        readonly targetRayMode: XRTargetRayMode;
 
-		readonly targetRaySpace: XRSpace;
+        readonly targetRaySpace: XRSpace;
 
-		readonly gripSpace: XRSpace | null;
+        readonly gripSpace: XRSpace | null;
 
-		readonly profiles: DOMString[]; // FrozenArray in the doc (TODO?)
-	}
+        readonly profiles: DOMString[]; // FrozenArray in the doc (TODO?)
+    }
 
-	// This is actually a novel data structure which emulates a JS array (e.g. getter + `.length`)
+    // This is actually a novel data structure which emulates a JS array (e.g. getter + `.length`)
 
-	// but it is not an array (TODO)
+    // but it is not an array (TODO)
 
-	export type XRInputSourceArray = XRInputSource[];
+    export type XRInputSourceArray = XRInputSource[];
 
-	// ## View
+    // ## View
 
-	export interface XRView {
-		readonly eye: XREye;
+    export interface XRView {
+        readonly eye: XREye;
 
-		readonly projectionMatrix: Float32Array;
+        readonly projectionMatrix: Float32Array;
 
-		readonly transform: XRRigidTransform;
-	}
+        readonly transform: XRRigidTransform;
+    }
 
-	// ## Spaces
+    // ## Spaces
 
-	// eslint-disable-next-line @typescript-eslint/no-empty-interface
-	export interface XRSpace extends EventTarget {}
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface XRSpace extends EventTarget {}
 
-	export interface XRReferenceSpace extends XRSpace {
-		getOffsetReferenceSpace(originOffset: XRRigidTransform): XRReferenceSpace;
+    export interface XRReferenceSpace extends XRSpace {
+        getOffsetReferenceSpace(
+            originOffset: XRRigidTransform
+        ): XRReferenceSpace;
 
-		onreset: EventHandler;
-	}
+        onreset: EventHandler;
+    }
 
-	export interface XRBoundedReferenceSpace extends XRReferenceSpace {
-		readonly boundsGeometry: DOMPointReadOnly[]; // FrozenArray (TODO?)
-	}
+    export interface XRBoundedReferenceSpace extends XRReferenceSpace {
+        readonly boundsGeometry: DOMPointReadOnly[]; // FrozenArray (TODO?)
+    }
 
-	// ## Poses
+    // ## Poses
 
-	export interface XRPose {
-		readonly transform: XRRigidTransform;
+    export interface XRPose {
+        readonly transform: XRRigidTransform;
 
-		readonly emulatedPosition: boolean;
-	}
+        readonly emulatedPosition: boolean;
+    }
 
-	export interface XRViewerPose extends XRPose {
-		readonly views: XRView[]; // FrozenArray in the docs (TODO?)
-	}
+    export interface XRViewerPose extends XRPose {
+        readonly views: XRView[]; // FrozenArray in the docs (TODO?)
+    }
 
-	// ## Frames
+    // ## Frames
 
-	export interface XRFrame {
-		readonly session: XRSession;
+    export interface XRFrame {
+        readonly session: XRSession;
 
-		getViewerPose(referenceSpace: XRReferenceSpace): XRViewerPose | null;
+        getViewerPose(referenceSpace: XRReferenceSpace): XRViewerPose | null;
 
-		getPose(space: XRSpace, baseSpace: XRSpace): XRPose | null;
-	}
+        getPose(space: XRSpace, baseSpace: XRSpace): XRPose | null;
+    }
 }
 
 export type XRFrameRequestCallback = (
-	time: DOMHighResTimeStamp,
+    time: DOMHighResTimeStamp,
 
-	frame: XRFrame
+    frame: XRFrame
 ) => void;
 
 // ## WebGL interop
 
 export interface XRWebGLLayerInit {
-	antialias?: boolean;
+    antialias?: boolean;
 
-	depth?: boolean;
+    depth?: boolean;
 
-	stencil?: boolean;
+    stencil?: boolean;
 
-	alpha?: boolean;
+    alpha?: boolean;
 
-	ignoreDepthValues?: boolean;
+    ignoreDepthValues?: boolean;
 
-	framebufferScaleFactor?: number;
+    framebufferScaleFactor?: number;
 }
 
 declare global {
-	export class XRWebGLLayer {
-		constructor(
-			session: XRSession,
+    export class XRWebGLLayer {
 
-			context: XRWebGLRenderingContext,
+        constructor(
+            session: XRSession,
 
-			layerInit?: XRWebGLLayerInit
-		);
+            context: XRWebGLRenderingContext,
 
-		readonly antialias: boolean;
+            layerInit?: XRWebGLLayerInit
+        );
 
-		readonly ignoreDepthValues: boolean;
+        readonly antialias: boolean;
 
-		readonly framebuffer?: WebGLFramebuffer;
+        readonly ignoreDepthValues: boolean;
 
-		readonly framebufferWidth: number;
+        readonly framebuffer?: WebGLFramebuffer;
 
-		readonly framebufferHeight: number;
+        readonly framebufferWidth: number;
 
-		getViewport(view: XRView): XRViewport | null;
+        readonly framebufferHeight: number;
 
-		static getNativeFramebufferScaleFactor(session: XRSession): number;
-	}
+        getViewport(view: XRView): XRViewport | null;
+
+        static getNativeFramebufferScaleFactor(session: XRSession): number;
+
+    }
 }
 
 // ## Session
 
 export interface XRRenderStateInit {
-	depthNear?: number;
+    depthNear?: number;
 
-	depthFar?: number;
+    depthFar?: number;
 
-	inlineVerticalFieldOfView?: number;
+    inlineVerticalFieldOfView?: number;
 
-	baseLayer?: XRWebGLLayer | null;
+    baseLayer?: XRWebGLLayer | null;
 }
 
 declare global {
-	export interface XRRenderState {
-		readonly depthNear: number;
+    export interface XRRenderState {
+        readonly depthNear: number;
 
-		readonly depthFar: number;
+        readonly depthFar: number;
 
-		readonly inlineVerticalFieldOfView?: number;
+        readonly inlineVerticalFieldOfView?: number;
 
-		readonly baseLayer?: XRWebGLLayer;
-	}
+        readonly baseLayer?: XRWebGLLayer;
+    }
 
-	export interface XRSession extends EventTarget {
-		readonly visibilityState: XRVisibilityState;
+    export interface XRSession extends EventTarget {
+        readonly visibilityState: XRVisibilityState;
 
-		readonly renderState: XRRenderState;
+        readonly renderState: XRRenderState;
 
-		readonly inputSources: XRInputSourceArray;
+        readonly inputSources: XRInputSourceArray;
 
-		// Methods
+        // Methods
 
-		updateRenderState(state?: XRRenderStateInit): void;
+        updateRenderState(state?: XRRenderStateInit): void;
 
-		requestReferenceSpace(
-			type: XRReferenceSpaceType
-		): Promise<XRReferenceSpace>;
+        requestReferenceSpace(
+            type: XRReferenceSpaceType
+        ): Promise<XRReferenceSpace>;
 
-		requestAnimationFrame(callback: XRFrameRequestCallback): number;
+        requestAnimationFrame(callback: XRFrameRequestCallback): number;
 
-		cancelAnimationFrame(handle: number): void;
+        cancelAnimationFrame(handle: number): void;
 
-		end(): Promise<void>;
+        end(): Promise<void>;
 
-		environmentBlendMode: string;
+        environmentBlendMode: string;
 
-		// Events
+        // Events
 
-		onend: EventHandler;
+        onend: EventHandler;
 
-		oninputsourceschange: EventHandler;
+        oninputsourceschange: EventHandler;
 
-		onselect: EventHandler;
+        onselect: EventHandler;
 
-		onselectstart: EventHandler;
+        onselectstart: EventHandler;
 
-		onselectend: EventHandler;
+        onselectend: EventHandler;
 
-		onsqueeze: EventHandler;
+        onsqueeze: EventHandler;
 
-		onsqueezestart: EventHandler;
+        onsqueezestart: EventHandler;
 
-		onsqueezeend: EventHandler;
+        onsqueezeend: EventHandler;
 
-		onvisibilitychange: EventHandler;
-	}
+        onvisibilitychange: EventHandler;
+    }
 
-	// ## System
+    // ## System
 
-	export interface XRSystem extends EventTarget {
-		isSessionSupported(mode: XRSessionMode): Promise<boolean>;
+    export interface XRSystem extends EventTarget {
+        isSessionSupported(mode: XRSessionMode): Promise<boolean>;
 
-		requestSession(
-			mode: XRSessionMode,
+        requestSession(
+            mode: XRSessionMode,
 
-			options?: XRSessionInit
-		): Promise<XRSession>;
+            options?: XRSessionInit
+        ): Promise<XRSession>;
 
-		ondevicechange: EventHandler;
+        ondevicechange: EventHandler;
 
-		addEventListener(
-			type: "devicechange",
+        addEventListener(
+            type: 'devicechange',
 
-			listener: EventListenerOrEventListenerObject,
+            listener: EventListenerOrEventListenerObject,
 
-			options?: boolean | AddEventListenerOptions
-		): void;
-	}
+            options?: boolean | AddEventListenerOptions
+        ): void;
+    }
 
-	// ## Updates to existing objects
+    // ## Updates to existing objects
 
-	interface Navigator {
-		/**
+    interface Navigator {
 
-		 * Optional because WebXR support is limited across browsers
+        /**
+         * Optional because WebXR support is limited across browsers
+         */
+        xr?: XRSystem;
+    }
 
-		 */
+    interface GLESRenderingContext {
 
-		xr?: XRSystem;
-	}
+        /**
+         * Optional because WebXR support is limited across browsers
+         */
+        makeXRCompatible?(): Promise<void>;
+    }
 
-	interface GLESRenderingContext {
-		/**
+    interface Window {
+        XRRigidTransform?: typeof XRRigidTransform;
 
-		 * Optional because WebXR support is limited across browsers
+        XRWebGLLayer?: typeof XRWebGLLayer;
 
-		 */
+        XRSessionEvent?: typeof XRSessionEvent;
 
-		makeXRCompatible?(): Promise<void>;
-	}
+        XRInputSourceEvent?: typeof XRInputSourceEvent;
 
-	interface Window {
-		XRRigidTransform?: typeof XRRigidTransform;
+        XRInputSourcesChangeEvent?: typeof XRInputSourcesChangeEvent;
 
-		XRWebGLLayer?: typeof XRWebGLLayer;
-
-		XRSessionEvent?: typeof XRSessionEvent;
-
-		XRInputSourceEvent?: typeof XRInputSourceEvent;
-
-		XRInputSourcesChangeEvent?: typeof XRInputSourcesChangeEvent;
-
-		XRReferenceSpaceEvent?: typeof XRReferenceSpaceEvent;
-	}
+        XRReferenceSpaceEvent?: typeof XRReferenceSpaceEvent;
+    }
 }

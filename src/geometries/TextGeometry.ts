@@ -15,51 +15,59 @@
  * }
  */
 
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Font } from "../extras/core/Font";
-import { ExtrudeGeometry } from "./ExtrudeGeometry";
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Font } from '../extras/core/Font';
+import { ExtrudeGeometry } from './ExtrudeGeometry';
 
 /**
  * @public
  */
 export type TextGeometryParameters = {
-	font?: Font;
+    font?: Font;
 
-	size?: number;
-	depth?: number;
-	curveSegments?: number;
+    size?: number;
+    depth?: number;
+    curveSegments?: number;
 
-	bevelThickness?: number;
-	bevelSize?: number;
-	bevelEnabled?: boolean;
-	bevelOffset?: number;
+    bevelThickness?: number;
+    bevelSize?: number;
+    bevelEnabled?: boolean;
+    bevelOffset?: number;
 };
 
 class TextGeometry extends ExtrudeGeometry {
-	constructor(text, parameters: TextGeometryParameters = {}) {
-		const font = parameters.font as Font;
 
-		if (!(font && font.isFont)) {
-			console.error("TextGeometry: font parameter is not an instance of Font.");
-			return new BufferGeometry();
-		}
+    constructor(text, parameters: TextGeometryParameters = {}) {
+        const font = parameters.font as Font;
 
-		const shapes = font.generateShapes(text, parameters.size);
+        if (!(font && font.isFont)) {
+            console.error(
+                'TextGeometry: font parameter is not an instance of Font.'
+            );
 
-		// translate parameters to ExtrudeGeometry API
+            return new BufferGeometry();
+        }
 
-		parameters.depth = parameters.depth !== undefined ? parameters.depth : 50;
+        const shapes = font.generateShapes(text, parameters.size);
 
-		// defaults
+        // translate parameters to ExtrudeGeometry API
 
-		if (parameters.bevelThickness === undefined) parameters.bevelThickness = 10;
-		if (parameters.bevelSize === undefined) parameters.bevelSize = 8;
-		if (parameters.bevelEnabled === undefined) parameters.bevelEnabled = false;
+        parameters.depth
+            = parameters.depth !== undefined ? parameters.depth : 50;
 
-		super(shapes, parameters);
+        // defaults
 
-		this.type = "TextGeometry";
-	}
+        if (parameters.bevelThickness === undefined) { parameters.bevelThickness = 10; }
+        if (parameters.bevelSize === undefined) { parameters.bevelSize = 8; }
+        if (parameters.bevelEnabled === undefined) { parameters.bevelEnabled = false; }
+
+        super(shapes, parameters);
+
+        this.type = 'TextGeometry';
+    }
+
 }
 
-export { TextGeometry, TextGeometry as TextBufferGeometry };
+export {
+    TextGeometry, TextGeometry as TextBufferGeometry
+};

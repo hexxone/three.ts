@@ -1,23 +1,37 @@
-import { OrthographicCamera } from "../cameras/OrthographicCamera";
-import { PerspectiveCamera } from "../cameras/PerspectiveCamera";
-import { BackSide, CubeUVReflectionMapping, GammaEncoding, LinearEncoding, NearestFilter, NoBlending, NoToneMapping, RGBDEncoding, RGBEEncoding, RGBEFormat, RGBM16Encoding, RGBM7Encoding, sRGBEncoding, UnsignedByteType } from "../constants";
-import { BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { BoxBufferGeometry } from "../geometries/BoxGeometry";
-import { Material } from "../materials/Material";
-import { MeshBasicMaterial } from "../materials/MeshBasicMaterial";
-import { RawShaderMaterial } from "../materials/RawShaderMaterial";
-import { Color } from "../math/Color";
-import { Vector2 } from "../math/Vector2";
-import { Vector3 } from "../math/Vector3";
-import { Mesh } from "../objects/Mesh";
-import { WebGLRenderer } from "../renderers/WebGLRenderer";
-import { WebGLRenderTarget } from "../renderers/WebGLRenderTarget";
-import { Scene } from "../scenes/Scene";
+import { OrthographicCamera } from '../cameras/OrthographicCamera';
+import { PerspectiveCamera } from '../cameras/PerspectiveCamera';
+import { BackSide,
+    CubeUVReflectionMapping,
+    GammaEncoding,
+    LinearEncoding,
+    NearestFilter,
+    NoBlending,
+    NoToneMapping,
+    RGBDEncoding,
+    RGBEEncoding,
+    RGBEFormat,
+    RGBM16Encoding,
+    RGBM7Encoding,
+    sRGBEncoding,
+    UnsignedByteType } from '../constants';
+import { BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { BoxBufferGeometry } from '../geometries/BoxGeometry';
+import { Material } from '../materials/Material';
+import { MeshBasicMaterial } from '../materials/MeshBasicMaterial';
+import { RawShaderMaterial } from '../materials/RawShaderMaterial';
+import { Color } from '../math/Color';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
+import { Mesh } from '../objects/Mesh';
+import { WebGLRenderer } from '../renderers/WebGLRenderer';
+import { WebGLRenderTarget } from '../renderers/WebGLRenderTarget';
+import { Scene } from '../scenes/Scene';
+import { Texture } from '../textures';
 
 const LOD_MIN = 4;
 const LOD_MAX = 8;
-const SIZE_MAX = Math.pow(2, LOD_MAX);
+const SIZE_MAX = 2 ** LOD_MAX;
 
 // The standard deviations (radians) associated with the extra mips. These are
 // chosen to approximate a Trowbridge-Reitz distribution function times the
@@ -32,16 +46,17 @@ const TOTAL_LODS = LOD_MAX - LOD_MIN + 1 + EXTRA_LOD_SIGMA.length;
 const MAX_SAMPLES = 20;
 
 const ENCODINGS = {
-	[LinearEncoding]: 0,
-	[sRGBEncoding]: 1,
-	[RGBEEncoding]: 2,
-	[RGBM7Encoding]: 3,
-	[RGBM16Encoding]: 4,
-	[RGBDEncoding]: 5,
-	[GammaEncoding]: 6,
+    [LinearEncoding]: 0,
+    [sRGBEncoding]: 1,
+    [RGBEEncoding]: 2,
+    [RGBM7Encoding]: 3,
+    [RGBM16Encoding]: 4,
+    [RGBDEncoding]: 5,
+    [GammaEncoding]: 6
 };
 
 const backgroundMaterial = new MeshBasicMaterial();
+
 backgroundMaterial.side = BackSide;
 backgroundMaterial.depthWrite = false;
 backgroundMaterial.depthTest = false;
@@ -60,16 +75,16 @@ const INV_PHI = 1 / PHI;
 // Vertices of a dodecahedron (except the opposites, which represent the
 // same axis), used as axis directions evenly spread on a sphere.
 const _axisDirections = [
-	/* @__PURE__*/ new Vector3(1, 1, 1),
-	/* @__PURE__*/ new Vector3(-1, 1, 1),
-	/* @__PURE__*/ new Vector3(1, 1, -1),
-	/* @__PURE__*/ new Vector3(-1, 1, -1),
-	/* @__PURE__*/ new Vector3(0, PHI, INV_PHI),
-	/* @__PURE__*/ new Vector3(0, PHI, -INV_PHI),
-	/* @__PURE__*/ new Vector3(INV_PHI, 0, PHI),
-	/* @__PURE__*/ new Vector3(-INV_PHI, 0, PHI),
-	/* @__PURE__*/ new Vector3(PHI, INV_PHI, 0),
-	/* @__PURE__*/ new Vector3(-PHI, INV_PHI, 0),
+    /* @__PURE__*/ new Vector3(1, 1, 1),
+    /* @__PURE__*/ new Vector3(-1, 1, 1),
+    /* @__PURE__*/ new Vector3(1, 1, -1),
+    /* @__PURE__*/ new Vector3(-1, 1, -1),
+    /* @__PURE__*/ new Vector3(0, PHI, INV_PHI),
+    /* @__PURE__*/ new Vector3(0, PHI, -INV_PHI),
+    /* @__PURE__*/ new Vector3(INV_PHI, 0, PHI),
+    /* @__PURE__*/ new Vector3(-INV_PHI, 0, PHI),
+    /* @__PURE__*/ new Vector3(PHI, INV_PHI, 0),
+    /* @__PURE__*/ new Vector3(-PHI, INV_PHI, 0)
 ];
 
 /**
@@ -85,846 +100,950 @@ const _axisDirections = [
  */
 
 function convertLinearToRGBE(color) {
-	const maxComponent = Math.max(color.r, color.g, color.b);
-	const fExp = Math.min(
-		Math.max(Math.ceil(Math.log2(maxComponent)), -128.0),
-		127.0
-	);
-	color.multiplyScalar(Math.pow(2.0, -fExp));
+    const maxComponent = Math.max(color.r, color.g, color.b);
+    const fExp = Math.min(
+        Math.max(Math.ceil(Math.log2(maxComponent)), -128.0),
+        127.0
+    );
 
-	const alpha = (fExp + 128.0) / 255.0;
-	return alpha;
+    color.multiplyScalar(2.0 ** -fExp);
+
+    const alpha = (fExp + 128.0) / 255.0;
+
+    return alpha;
 }
 
 class PMREMGenerator {
-	_renderer: WebGLRenderer;
-
-	_pingPongRenderTarget: any;
-	_blurMaterial: RawShaderMaterial;
-	_equirectShader: any;
-	_cubemapShader: any;
-
-	constructor(renderer: WebGLRenderer) {
-		this._renderer = renderer;
-
-		this._pingPongRenderTarget = null;
-
-		this._blurMaterial = _getBlurShader(MAX_SAMPLES);
-		this._equirectShader = null;
-		this._cubemapShader = null;
-
-		this._compileMaterial(this._blurMaterial);
-	}
-
-	/**
-	 * Generates a PMREM from a supplied Scene, which can be faster than using an
-	 * image if networking bandwidth is low. Optional sigma specifies a blur radius
-	 * in radians to be applied to the scene before PMREM generation. Optional near
-	 * and far planes ensure the scene is rendered in its entirety (the cubeCamera
-	 * is placed at the origin).
-	 */
-	fromScene(scene: Scene, sigma = 0, near = 0.1, far = 100) {
-		_oldTarget = this._renderer.getRenderTarget();
-		const cubeUVRenderTarget = this._allocateTargets();
-
-		this._sceneToCubeUV(scene, near, far, cubeUVRenderTarget);
-		if (sigma > 0) {
-			this._blur(cubeUVRenderTarget, 0, 0, sigma);
-		}
-
-		this._applyPMREM(cubeUVRenderTarget);
-		this._cleanup(cubeUVRenderTarget);
-
-		return cubeUVRenderTarget;
-	}
-
-	/**
-	 * Generates a PMREM from an equirectangular texture, which can be either LDR
-	 * (RGBFormat) or HDR (RGBEFormat). The ideal input image size is 1k (1024 x 512),
-	 * as this matches best with the 256 x 256 cubemap output.
-	 */
-	fromEquirectangular(equirectangular) {
-		return this._fromTexture(equirectangular);
-	}
-
-	/**
-	 * Generates a PMREM from an cubemap texture, which can be either LDR
-	 * (RGBFormat) or HDR (RGBEFormat). The ideal input cube size is 256 x 256,
-	 * as this matches best with the 256 x 256 cubemap output.
-	 */
-	fromCubemap(cubemap) {
-		return this._fromTexture(cubemap);
-	}
-
-	/**
-	 * Pre-compiles the cubemap shader. You can get faster start-up by invoking this method during
-	 * your texture's network fetch for increased concurrency.
-	 */
-	compileCubemapShader() {
-		if (this._cubemapShader === null) {
-			this._cubemapShader = _getCubemapShader();
-			this._compileMaterial(this._cubemapShader);
-		}
-	}
-
-	/**
-	 * Pre-compiles the equirectangular shader. You can get faster start-up by invoking this method during
-	 * your texture's network fetch for increased concurrency.
-	 */
-	compileEquirectangularShader() {
-		if (this._equirectShader === null) {
-			this._equirectShader = _getEquirectShader();
-			this._compileMaterial(this._equirectShader);
-		}
-	}
-
-	/**
-	 * Disposes of the PMREMGenerator's internal memory. Note that PMREMGenerator is a static class,
-	 * so you should not need more than one PMREMGenerator object. If you do, calling dispose() on
-	 * one of them will cause any others to also become unusable.
-	 */
-	dispose() {
-		this._blurMaterial.dispose();
-
-		if (this._cubemapShader !== null) this._cubemapShader.dispose();
-		if (this._equirectShader !== null) this._equirectShader.dispose();
-
-		for (let i = 0; i < _lodPlanes.length; i++) {
-			_lodPlanes[i].dispose();
-		}
-	}
-
-	// private interface
-
-	_cleanup(outputTarget) {
-		this._pingPongRenderTarget.dispose();
-		this._renderer.setRenderTarget(_oldTarget);
-		outputTarget.scissorTest = false;
-		_setViewport(outputTarget, 0, 0, outputTarget.width, outputTarget.height);
-	}
-
-	_fromTexture(texture) {
-		_oldTarget = this._renderer.getRenderTarget();
-		const cubeUVRenderTarget = this._allocateTargets(texture);
-		this._textureToCubeUV(texture, cubeUVRenderTarget);
-		this._applyPMREM(cubeUVRenderTarget);
-		this._cleanup(cubeUVRenderTarget);
-
-		return cubeUVRenderTarget;
-	}
-
-	_allocateTargets(texture?) {
-		// warning: null texture is valid
-		const params = {
-			magFilter: NearestFilter,
-			minFilter: NearestFilter,
-			generateMipmaps: false,
-			type: UnsignedByteType,
-			format: RGBEFormat,
-			encoding: _isLDR(texture) ? texture.encoding : RGBEEncoding,
-			depthBuffer: false,
-		};
-
-		const cubeUVRenderTarget = _createRenderTarget(params);
-		cubeUVRenderTarget.depthBuffer = texture ? false : true;
-		this._pingPongRenderTarget = _createRenderTarget(params);
-		return cubeUVRenderTarget;
-	}
-
-	_compileMaterial(material: Material) {
-		const tmpMesh = new Mesh(_lodPlanes[0], material);
-		this._renderer.compile(tmpMesh, _flatCamera);
-	}
-
-	_sceneToCubeUV(scene, near, far, cubeUVRenderTarget) {
-		const fov = 90;
-		const aspect = 1;
-		const cubeCamera = new PerspectiveCamera(fov, aspect, near, far);
-		const upSign = [1, -1, 1, 1, 1, 1];
-		const forwardSign = [1, 1, 1, -1, -1, -1];
-		const renderer = this._renderer;
-
-		const originalAutoClear = renderer.autoClear;
-		const outputEncoding = renderer.outputEncoding;
-		const toneMapping = renderer.toneMapping;
-		renderer.getClearColor(_clearColor);
-
-		renderer.toneMapping = NoToneMapping;
-		renderer.outputEncoding = LinearEncoding;
-		renderer.autoClear = false;
-
-		let useSolidColor = false;
-		const background = scene.background;
-		if (background) {
-			if (background.isColor) {
-				backgroundMaterial.color.copy(background).convertSRGBToLinear();
-				scene.background = null;
-
-				const alpha = convertLinearToRGBE(backgroundMaterial.color);
-				backgroundMaterial.opacity = alpha;
-				useSolidColor = true;
-			}
-		} else {
-			backgroundMaterial.color.copy(_clearColor).convertSRGBToLinear();
-
-			const alpha = convertLinearToRGBE(backgroundMaterial.color);
-			backgroundMaterial.opacity = alpha;
-			useSolidColor = true;
-		}
-
-		for (let i = 0; i < 6; i++) {
-			const col = i % 3;
-			if (col == 0) {
-				cubeCamera.up.set(0, upSign[i], 0);
-				cubeCamera.lookAt(forwardSign[i], 0, 0);
-			} else if (col == 1) {
-				cubeCamera.up.set(0, 0, upSign[i]);
-				cubeCamera.lookAt(0, forwardSign[i], 0);
-			} else {
-				cubeCamera.up.set(0, upSign[i], 0);
-				cubeCamera.lookAt(0, 0, forwardSign[i]);
-			}
-
-			_setViewport(
-				cubeUVRenderTarget,
-				col * SIZE_MAX,
-				i > 2 ? SIZE_MAX : 0,
-				SIZE_MAX,
-				SIZE_MAX
-			);
-			renderer.setRenderTarget(cubeUVRenderTarget);
-
-			if (useSolidColor) {
-				renderer.render(backgroundBox, cubeCamera);
-			}
-
-			renderer.render(scene, cubeCamera);
-		}
-
-		renderer.toneMapping = toneMapping;
-		renderer.outputEncoding = outputEncoding;
-		renderer.autoClear = originalAutoClear;
-	}
-
-	_textureToCubeUV(texture, cubeUVRenderTarget) {
-		const renderer = this._renderer;
-
-		if (texture.isCubeTexture) {
-			if (this._cubemapShader == null) {
-				this._cubemapShader = _getCubemapShader();
-			}
-		} else {
-			if (this._equirectShader == null) {
-				this._equirectShader = _getEquirectShader();
-			}
-		}
-
-		const material = texture.isCubeTexture
-			? this._cubemapShader
-			: this._equirectShader;
-		const mesh = new Mesh(_lodPlanes[0], material);
-
-		const uniforms = material.uniforms;
-
-		uniforms["envMap"].value = texture;
-
-		if (!texture.isCubeTexture) {
-			uniforms["texelSize"].value.set(
-				1.0 / texture.image.width,
-				1.0 / texture.image.height
-			);
-		}
-
-		uniforms["inputEncoding"].value = ENCODINGS[texture.encoding];
-		uniforms["outputEncoding"].value =
-			ENCODINGS[cubeUVRenderTarget.texture.encoding];
-
-		_setViewport(cubeUVRenderTarget, 0, 0, 3 * SIZE_MAX, 2 * SIZE_MAX);
-
-		renderer.setRenderTarget(cubeUVRenderTarget);
-		renderer.render(mesh, _flatCamera);
-	}
-
-	_applyPMREM(cubeUVRenderTarget) {
-		const renderer = this._renderer;
-		const autoClear = renderer.autoClear;
-		renderer.autoClear = false;
-
-		for (let i = 1; i < TOTAL_LODS; i++) {
-			const sigma = Math.sqrt(
-				_sigmas[i] * _sigmas[i] - _sigmas[i - 1] * _sigmas[i - 1]
-			);
-
-			const poleAxis = _axisDirections[(i - 1) % _axisDirections.length];
-
-			this._blur(cubeUVRenderTarget, i - 1, i, sigma, poleAxis);
-		}
-
-		renderer.autoClear = autoClear;
-	}
-
-	/**
-	 * This is a two-pass Gaussian blur for a cubemap. Normally this is done
-	 * vertically and horizontally, but this breaks down on a cube. Here we apply
-	 * the blur latitudinally (around the poles), and then longitudinally (towards
-	 * the poles) to approximate the orthogonally-separable blur. It is least
-	 * accurate at the poles, but still does a decent job.
-	 */
-	_blur(cubeUVRenderTarget, lodIn, lodOut, sigma, poleAxis?) {
-		const pingPongRenderTarget = this._pingPongRenderTarget;
-
-		this._halfBlur(
-			cubeUVRenderTarget,
-			pingPongRenderTarget,
-			lodIn,
-			lodOut,
-			sigma,
-			"latitudinal",
-			poleAxis
-		);
-
-		this._halfBlur(
-			pingPongRenderTarget,
-			cubeUVRenderTarget,
-			lodOut,
-			lodOut,
-			sigma,
-			"longitudinal",
-			poleAxis
-		);
-	}
-
-	_halfBlur(
-		targetIn,
-		targetOut,
-		lodIn,
-		lodOut,
-		sigmaRadians,
-		direction,
-		poleAxis
-	) {
-		const renderer = this._renderer;
-		const blurMaterial = this._blurMaterial;
-
-		if (direction !== "latitudinal" && direction !== "longitudinal") {
-			console.error(
-				"blur direction must be either latitudinal or longitudinal!"
-			);
-		}
-
-		// Number of standard deviations at which to cut off the discrete approximation.
-		const STANDARD_DEVIATIONS = 3;
-
-		const blurMesh = new Mesh(_lodPlanes[lodOut], blurMaterial);
-		const blurUniforms = blurMaterial.uniforms;
-
-		const pixels = _sizeLods[lodIn] - 1;
-		const radiansPerPixel = isFinite(sigmaRadians)
-			? Math.PI / (2 * pixels)
-			: (2 * Math.PI) / (2 * MAX_SAMPLES - 1);
-		const sigmaPixels = sigmaRadians / radiansPerPixel;
-		const samples = isFinite(sigmaRadians)
-			? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels)
-			: MAX_SAMPLES;
-
-		if (samples > MAX_SAMPLES) {
-			console.warn(
-				`sigmaRadians, ${sigmaRadians}, is too large and will clip, as it requested ${samples} samples when the maximum is set to ${MAX_SAMPLES}`
-			);
-		}
-
-		const weights = [];
-		let sum = 0;
-
-		for (let i = 0; i < MAX_SAMPLES; ++i) {
-			const x = i / sigmaPixels;
-			const weight = Math.exp((-x * x) / 2);
-			weights.push(weight);
-
-			if (i == 0) {
-				sum += weight;
-			} else if (i < samples) {
-				sum += 2 * weight;
-			}
-		}
-
-		for (let i = 0; i < weights.length; i++) {
-			weights[i] = weights[i] / sum;
-		}
-
-		blurUniforms["envMap"].value = targetIn.texture;
-		blurUniforms["samples"].value = samples;
-		blurUniforms["weights"].value = weights;
-		blurUniforms["latitudinal"].value = direction === "latitudinal";
-
-		if (poleAxis) {
-			blurUniforms["poleAxis"].value = poleAxis;
-		}
-
-		blurUniforms["dTheta"].value = radiansPerPixel;
-		blurUniforms["mipInt"].value = LOD_MAX - lodIn;
-		blurUniforms["inputEncoding"].value = ENCODINGS[targetIn.texture.encoding];
-		blurUniforms["outputEncoding"].value = ENCODINGS[targetIn.texture.encoding];
-
-		const outputSize = _sizeLods[lodOut];
-		const x = 3 * Math.max(0, SIZE_MAX - 2 * outputSize);
-		const y =
-			(lodOut === 0 ? 0 : 2 * SIZE_MAX) +
-			2 *
-				outputSize *
-				(lodOut > LOD_MAX - LOD_MIN ? lodOut - LOD_MAX + LOD_MIN : 0);
-
-		_setViewport(targetOut, x, y, 3 * outputSize, 2 * outputSize);
-		renderer.setRenderTarget(targetOut);
-		renderer.render(blurMesh, _flatCamera);
-	}
+
+    _renderer: WebGLRenderer;
+
+    // used for bouncing back and forth between two surfaces.
+    _pingPongRenderTarget: WebGLRenderTarget;
+
+    _blurMaterial: RawShaderMaterial;
+
+    _equirectShader: any;
+    _cubemapShader: any;
+
+    constructor(renderer: WebGLRenderer) {
+        this._renderer = renderer;
+
+        this._pingPongRenderTarget = null;
+
+        this._blurMaterial = _getBlurShader(MAX_SAMPLES);
+        this._equirectShader = null;
+        this._cubemapShader = null;
+
+        this._compileMaterial(this._blurMaterial);
+    }
+
+    /**
+     * Generates a PMREM from a supplied Scene, which can be faster than using an
+     * image if networking bandwidth is low. Optional sigma specifies a blur radius
+     * in radians to be applied to the scene before PMREM generation. Optional near
+     * and far planes ensure the scene is rendered in its entirety (the cubeCamera
+     * is placed at the origin).
+     * @param {Scene} scene source
+     * @param {number} sigma blur?
+     * @param {number} near plane distance
+     * @param {number} far plance distance
+     * @returns {WebGLRenderTarget} target
+     */
+    fromScene(scene: Scene, sigma = 0, near = 0.1, far = 100) {
+        _oldTarget = this._renderer.getRenderTarget();
+        const cubeUVRenderTarget = this._allocateTargets();
+
+        this._sceneToCubeUV(scene, near, far, cubeUVRenderTarget);
+        if (sigma > 0) {
+            this._blur(cubeUVRenderTarget, 0, 0, sigma);
+        }
+
+        this._applyPMREM(cubeUVRenderTarget);
+        this._cleanup(cubeUVRenderTarget);
+
+        return cubeUVRenderTarget;
+    }
+
+    /**
+     * Generates a PMREM from an equirectangular texture, which can be either LDR
+     * (RGBFormat) or HDR (RGBEFormat). The ideal input image size is 1k (1024 x 512),
+     * as this matches best with the 256 x 256 cubemap output.
+     * @param {Texture} equirectangular source
+     * @returns {WebGLRenderTarget} target
+     */
+    fromEquirectangular(equirectangular: Texture) {
+        return this._fromTexture(equirectangular);
+    }
+
+    /**
+     * Generates a PMREM from an cubemap texture, which can be either LDR
+     * (RGBFormat) or HDR (RGBEFormat). The ideal input cube size is 256 x 256,
+     * as this matches best with the 256 x 256 cubemap output.
+     * @param {Texture} cubemap source
+     * @returns {WebGLRenderTarget} target
+     */
+    fromCubemap(cubemap: Texture) {
+        return this._fromTexture(cubemap);
+    }
+
+    /**
+     * Pre-compiles the cubemap shader. You can get faster start-up by invoking this method during
+     * your texture's network fetch for increased concurrency.
+     * @returns {void}
+     */
+    compileCubemapShader() {
+        if (this._cubemapShader === null) {
+            this._cubemapShader = _getCubemapShader();
+            this._compileMaterial(this._cubemapShader);
+        }
+    }
+
+    /**
+     * Pre-compiles the equirectangular shader. You can get faster start-up by invoking this method during
+     * your texture's network fetch for increased concurrency.
+     * @returns {void}
+     */
+    compileEquirectangularShader() {
+        if (this._equirectShader === null) {
+            this._equirectShader = _getEquirectShader();
+            this._compileMaterial(this._equirectShader);
+        }
+    }
+
+    /**
+     * Disposes of the PMREMGenerator's internal memory. Note that PMREMGenerator is a static class,
+     * so you should not need more than one PMREMGenerator object. If you do, calling dispose() on
+     * one of them will cause any others to also become unusable.
+     * @returns {void}
+     */
+    dispose() {
+        this._blurMaterial.dispose();
+
+        if (this._cubemapShader !== null) { this._cubemapShader.dispose(); }
+        if (this._equirectShader !== null) { this._equirectShader.dispose(); }
+
+        for (let i = 0; i < _lodPlanes.length; i++) {
+            _lodPlanes[i].dispose();
+        }
+    }
+
+    // private interface
+
+    _cleanup(outputTarget: WebGLRenderTarget) {
+        this._pingPongRenderTarget.dispose();
+        this._renderer.setRenderTarget(_oldTarget);
+        outputTarget.scissorTest = false;
+        _setViewport(
+            outputTarget,
+            0,
+            0,
+            outputTarget.width,
+            outputTarget.height
+        );
+    }
+
+    _fromTexture(texture: Texture) {
+        _oldTarget = this._renderer.getRenderTarget();
+        const cubeUVRenderTarget = this._allocateTargets(texture);
+
+        this._textureToCubeUV(texture, cubeUVRenderTarget);
+        this._applyPMREM(cubeUVRenderTarget);
+        this._cleanup(cubeUVRenderTarget);
+
+        return cubeUVRenderTarget;
+    }
+
+    _allocateTargets(texture?: Texture) {
+        // warning: null texture is valid
+        const params = {
+            magFilter: NearestFilter,
+            minFilter: NearestFilter,
+            generateMipmaps: false,
+            type: UnsignedByteType,
+            format: RGBEFormat,
+            encoding: _isLDR(texture) ? texture.encoding : RGBEEncoding,
+            depthBuffer: false
+        };
+
+        const cubeUVRenderTarget = _createRenderTarget(params);
+
+        cubeUVRenderTarget.depthBuffer = !texture;
+        this._pingPongRenderTarget = _createRenderTarget(params);
+
+        return cubeUVRenderTarget;
+    }
+
+    _compileMaterial(material: Material) {
+        const tmpMesh = new Mesh(_lodPlanes[0], material);
+
+        this._renderer.compile(tmpMesh, _flatCamera);
+    }
+
+    _sceneToCubeUV(scene, near, far, cubeUVRenderTarget) {
+        const fov = 90;
+        const aspect = 1;
+        const cubeCamera = new PerspectiveCamera(fov, aspect, near, far);
+        const upSign = [1, -1, 1, 1, 1, 1];
+        const forwardSign = [1, 1, 1, -1, -1, -1];
+        const renderer = this._renderer;
+
+        const originalAutoClear = renderer.autoClear;
+        const { outputEncoding } = renderer;
+        const { toneMapping } = renderer;
+
+        renderer.getClearColor(_clearColor);
+
+        renderer.toneMapping = NoToneMapping;
+        renderer.outputEncoding = LinearEncoding;
+        renderer.autoClear = false;
+
+        let useSolidColor = false;
+        const { background } = scene;
+
+        if (background) {
+            if (background.isColor) {
+                backgroundMaterial.color.copy(background).convertSRGBToLinear();
+                scene.background = null;
+
+                const alpha = convertLinearToRGBE(backgroundMaterial.color);
+
+                backgroundMaterial.opacity = alpha;
+                useSolidColor = true;
+            }
+        } else {
+            backgroundMaterial.color.copy(_clearColor).convertSRGBToLinear();
+
+            const alpha = convertLinearToRGBE(backgroundMaterial.color);
+
+            backgroundMaterial.opacity = alpha;
+            useSolidColor = true;
+        }
+
+        for (let i = 0; i < 6; i++) {
+            const col = i % 3;
+
+            if (col === 0) {
+                cubeCamera.up.set(0, upSign[i], 0);
+                cubeCamera.lookAt(forwardSign[i], 0, 0);
+            } else if (col === 1) {
+                cubeCamera.up.set(0, 0, upSign[i]);
+                cubeCamera.lookAt(0, forwardSign[i], 0);
+            } else {
+                cubeCamera.up.set(0, upSign[i], 0);
+                cubeCamera.lookAt(0, 0, forwardSign[i]);
+            }
+
+            _setViewport(
+                cubeUVRenderTarget,
+                col * SIZE_MAX,
+                i > 2 ? SIZE_MAX : 0,
+                SIZE_MAX,
+                SIZE_MAX
+            );
+            renderer.setRenderTarget(cubeUVRenderTarget);
+
+            if (useSolidColor) {
+                renderer.render(backgroundBox, cubeCamera);
+            }
+
+            renderer.render(scene, cubeCamera);
+        }
+
+        renderer.toneMapping = toneMapping;
+        renderer.outputEncoding = outputEncoding;
+        renderer.autoClear = originalAutoClear;
+    }
+
+    _textureToCubeUV(texture, cubeUVRenderTarget) {
+        const renderer = this._renderer;
+
+        if (texture.isCubeTexture) {
+            if (this._cubemapShader === null) {
+                this._cubemapShader = _getCubemapShader();
+            }
+        } else if (this._equirectShader === null) {
+            this._equirectShader = _getEquirectShader();
+        }
+
+        const material = texture.isCubeTexture
+            ? this._cubemapShader
+            : this._equirectShader;
+        const mesh = new Mesh(_lodPlanes[0], material);
+
+        const { uniforms } = material;
+
+        uniforms.envMap.value = texture;
+
+        if (!texture.isCubeTexture) {
+            uniforms.texelSize.value.set(
+                1.0 / texture.image.width,
+                1.0 / texture.image.height
+            );
+        }
+
+        uniforms.inputEncoding.value = ENCODINGS[texture.encoding];
+        uniforms.outputEncoding.value
+            = ENCODINGS[cubeUVRenderTarget.texture.encoding];
+
+        _setViewport(cubeUVRenderTarget, 0, 0, 3 * SIZE_MAX, 2 * SIZE_MAX);
+
+        renderer.setRenderTarget(cubeUVRenderTarget);
+        renderer.render(mesh, _flatCamera);
+    }
+
+    _applyPMREM(cubeUVRenderTarget: WebGLRenderTarget) {
+        const renderer = this._renderer;
+        const { autoClear } = renderer;
+
+        renderer.autoClear = false;
+
+        for (let i = 1; i < TOTAL_LODS; i++) {
+            const sigma = Math.sqrt(
+                _sigmas[i] * _sigmas[i] - _sigmas[i - 1] * _sigmas[i - 1]
+            );
+
+            const poleAxis = _axisDirections[(i - 1) % _axisDirections.length];
+
+            this._blur(cubeUVRenderTarget, i - 1, i, sigma, poleAxis);
+        }
+
+        renderer.autoClear = autoClear;
+    }
+
+    /**
+     * This is a two-pass Gaussian blur for a cubemap. Normally this is done
+     * vertically and horizontally, but this breaks down on a cube. Here we apply
+     * the blur latitudinally (around the poles), and then longitudinally (towards
+     * the poles) to approximate the orthogonally-separable blur. It is least
+     * accurate at the poles, but still does a decent job.
+     * @param {WebGLRenderTarget} cubeUVRenderTarget target
+     * @param {number} lodIn lodIn
+     * @param {number} lodOut lodOut
+     * @param {number} sigma sigma
+     * @param {Vector3} poleAxis poleAxis?
+     * @returns {void}
+     */
+    _blur(cubeUVRenderTarget: WebGLRenderTarget, lodIn: number, lodOut: number, sigma: number, poleAxis?: Vector3) {
+        const pingPongRenderTarget = this._pingPongRenderTarget;
+
+        this._halfBlur(
+            cubeUVRenderTarget,
+            pingPongRenderTarget,
+            lodIn,
+            lodOut,
+            sigma,
+            'latitudinal',
+            poleAxis
+        );
+
+        this._halfBlur(
+            pingPongRenderTarget,
+            cubeUVRenderTarget,
+            lodOut,
+            lodOut,
+            sigma,
+            'longitudinal',
+            poleAxis
+        );
+    }
+
+    _halfBlur(
+        targetIn: WebGLRenderTarget,
+        targetOut: WebGLRenderTarget,
+        lodIn: number,
+        lodOut: number,
+        sigmaRadians: number,
+        direction: 'latitudinal' | 'longitudinal',
+        poleAxis: Vector3
+    ) {
+        const renderer = this._renderer;
+        const blurMaterial = this._blurMaterial;
+
+        if (direction !== 'latitudinal' && direction !== 'longitudinal') {
+            console.error(
+                'blur direction must be either latitudinal or longitudinal!'
+            );
+        }
+
+        // Number of standard deviations at which to cut off the discrete approximation.
+        const STANDARD_DEVIATIONS = 3;
+
+        const blurMesh = new Mesh(_lodPlanes[lodOut], blurMaterial);
+        const blurUniforms = blurMaterial.uniforms;
+
+        const pixels = _sizeLods[lodIn] - 1;
+        const radiansPerPixel = isFinite(sigmaRadians)
+            ? Math.PI / (2 * pixels)
+            : (2 * Math.PI) / (2 * MAX_SAMPLES - 1);
+        const sigmaPixels = sigmaRadians / radiansPerPixel;
+        const samples = isFinite(sigmaRadians)
+            ? 1 + Math.floor(STANDARD_DEVIATIONS * sigmaPixels)
+            : MAX_SAMPLES;
+
+        if (samples > MAX_SAMPLES) {
+            console.warn(
+                `sigmaRadians, ${sigmaRadians}, is too large and will clip, as it requested ${samples} samples when the maximum is set to ${MAX_SAMPLES}`
+            );
+        }
+
+        const weights = [];
+        let sum = 0;
+
+        for (let i = 0; i < MAX_SAMPLES; ++i) {
+            const x = i / sigmaPixels;
+            const weight = Math.exp((-x * x) / 2);
+
+            weights.push(weight);
+
+            if (i === 0) {
+                sum += weight;
+            } else if (i < samples) {
+                sum += 2 * weight;
+            }
+        }
+
+        for (let i = 0; i < weights.length; i++) {
+            weights[i] /= sum;
+        }
+
+        blurUniforms.envMap.value = targetIn.texture;
+        blurUniforms.samples.value = samples;
+        blurUniforms.weights.value = weights;
+        blurUniforms.latitudinal.value = direction === 'latitudinal';
+
+        if (poleAxis) {
+            blurUniforms.poleAxis.value = poleAxis;
+        }
+
+        blurUniforms.dTheta.value = radiansPerPixel;
+        blurUniforms.mipInt.value = LOD_MAX - lodIn;
+        blurUniforms.inputEncoding.value
+            = ENCODINGS[targetIn.texture.encoding];
+        blurUniforms.outputEncoding.value
+            = ENCODINGS[targetIn.texture.encoding];
+
+        const outputSize = _sizeLods[lodOut];
+        const x = 3 * Math.max(0, SIZE_MAX - 2 * outputSize);
+        const y
+            = (lodOut === 0 ? 0 : 2 * SIZE_MAX)
+            + 2
+                * outputSize
+                * (lodOut > LOD_MAX - LOD_MIN ? lodOut - LOD_MAX + LOD_MIN : 0);
+
+        _setViewport(targetOut, x, y, 3 * outputSize, 2 * outputSize);
+        renderer.setRenderTarget(targetOut);
+        renderer.render(blurMesh, _flatCamera);
+    }
+
 }
 
-function _isLDR(texture) {
-	if (texture === undefined || texture.type !== UnsignedByteType) return false;
+function _isLDR(texture: Texture) {
+    if (texture === undefined || texture.type !== UnsignedByteType) { return false; }
 
-	return (
-		texture.encoding === LinearEncoding ||
-		texture.encoding === sRGBEncoding ||
-		texture.encoding === GammaEncoding
-	);
+    return (
+        texture.encoding === LinearEncoding
+        || texture.encoding === sRGBEncoding
+        || texture.encoding === GammaEncoding
+    );
 }
 
 function _createPlanes() {
-	const _lodPlanes = [];
-	const _sizeLods = [];
-	const _sigmas = [];
+    const _lodPlanes: BufferGeometry[] = [];
+    const _sizeLods: number[] = [];
+    const _sigmas: number[] = [];
 
-	let lod = LOD_MAX;
+    let lod = LOD_MAX;
 
-	for (let i = 0; i < TOTAL_LODS; i++) {
-		const sizeLod = Math.pow(2, lod);
-		_sizeLods.push(sizeLod);
-		let sigma = 1.0 / sizeLod;
+    for (let i = 0; i < TOTAL_LODS; i++) {
+        const sizeLod = 2 ** lod;
 
-		if (i > LOD_MAX - LOD_MIN) {
-			sigma = EXTRA_LOD_SIGMA[i - LOD_MAX + LOD_MIN - 1];
-		} else if (i == 0) {
-			sigma = 0;
-		}
+        _sizeLods.push(sizeLod);
+        let sigma = 1.0 / sizeLod;
 
-		_sigmas.push(sigma);
+        if (i > LOD_MAX - LOD_MIN) {
+            sigma = EXTRA_LOD_SIGMA[i - LOD_MAX + LOD_MIN - 1];
+        } else if (i === 0) {
+            sigma = 0;
+        }
 
-		const texelSize = 1.0 / (sizeLod - 1);
-		const min = -texelSize / 2;
-		const max = 1 + texelSize / 2;
-		const uv1 = [min, min, max, min, max, max, min, min, max, max, min, max];
+        _sigmas.push(sigma);
 
-		const cubeFaces = 6;
-		const vertices = 6;
-		const positionSize = 3;
-		const uvSize = 2;
-		const faceIndexSize = 1;
+        const texelSize = 1.0 / (sizeLod - 1);
+        const min = -texelSize / 2;
+        const max = 1 + texelSize / 2;
+        const uv1 = [
+            min,
+            min,
+            max,
+            min,
+            max,
+            max,
+            min,
+            min,
+            max,
+            max,
+            min,
+            max
+        ];
 
-		const position = new Float32Array(positionSize * vertices * cubeFaces);
-		const uv = new Float32Array(uvSize * vertices * cubeFaces);
-		const faceIndex = new Float32Array(faceIndexSize * vertices * cubeFaces);
+        const cubeFaces = 6;
+        const vertices = 6;
+        const positionSize = 3;
+        const uvSize = 2;
+        const faceIndexSize = 1;
 
-		for (let face = 0; face < cubeFaces; face++) {
-			const x = ((face % 3) * 2) / 3 - 1;
-			const y = face > 2 ? 0 : -1;
-			const coordinates = [
-				x,
-				y,
-				0,
-				x + 2 / 3,
-				y,
-				0,
-				x + 2 / 3,
-				y + 1,
-				0,
-				x,
-				y,
-				0,
-				x + 2 / 3,
-				y + 1,
-				0,
-				x,
-				y + 1,
-				0,
-			];
-			position.set(coordinates, positionSize * vertices * face);
-			uv.set(uv1, uvSize * vertices * face);
-			const fill = [face, face, face, face, face, face];
-			faceIndex.set(fill, faceIndexSize * vertices * face);
-		}
+        const position = new Float32Array(positionSize * vertices * cubeFaces);
+        const uv = new Float32Array(uvSize * vertices * cubeFaces);
+        const faceIndex = new Float32Array(
+            faceIndexSize * vertices * cubeFaces
+        );
 
-		const planes = new BufferGeometry();
-		planes.setAttribute(
-			"position",
-			new BufferAttribute(position, positionSize)
-		);
-		planes.setAttribute("uv", new BufferAttribute(uv, uvSize));
-		planes.setAttribute(
-			"faceIndex",
-			new BufferAttribute(faceIndex, faceIndexSize)
-		);
-		_lodPlanes.push(planes);
+        for (let face = 0; face < cubeFaces; face++) {
+            const x = ((face % 3) * 2) / 3 - 1;
+            const y = face > 2 ? 0 : -1;
+            const coordinates = [
+                x,
+                y,
+                0,
+                x + 2 / 3,
+                y,
+                0,
+                x + 2 / 3,
+                y + 1,
+                0,
+                x,
+                y,
+                0,
+                x + 2 / 3,
+                y + 1,
+                0,
+                x,
+                y + 1,
+                0
+            ];
 
-		if (lod > LOD_MIN) {
-			lod--;
-		}
-	}
+            position.set(coordinates, positionSize * vertices * face);
+            uv.set(uv1, uvSize * vertices * face);
+            const fill = [face, face, face, face, face, face];
 
-	return { _lodPlanes, _sizeLods, _sigmas };
+            faceIndex.set(fill, faceIndexSize * vertices * face);
+        }
+
+        const planes = new BufferGeometry();
+
+        planes.setAttribute(
+            'position',
+            new BufferAttribute(position, positionSize)
+        );
+        planes.setAttribute('uv', new BufferAttribute(uv, uvSize));
+        planes.setAttribute(
+            'faceIndex',
+            new BufferAttribute(faceIndex, faceIndexSize)
+        );
+        _lodPlanes.push(planes);
+
+        if (lod > LOD_MIN) {
+            lod--;
+        }
+    }
+
+    return {
+        _lodPlanes,
+        _sizeLods,
+        _sigmas
+    };
 }
 
 function _createRenderTarget(params): WebGLRenderTarget {
-	const cubeUVRenderTarget = new WebGLRenderTarget(
-		3 * SIZE_MAX,
-		3 * SIZE_MAX,
-		params
-	);
-	cubeUVRenderTarget.texture.mapping = CubeUVReflectionMapping;
-	cubeUVRenderTarget.texture.name = "PMREM.cubeUv";
-	cubeUVRenderTarget.scissorTest = true;
-	return cubeUVRenderTarget;
+    const cubeUVRenderTarget = new WebGLRenderTarget(
+        3 * SIZE_MAX,
+        3 * SIZE_MAX,
+        params
+    );
+
+    cubeUVRenderTarget.texture.mapping = CubeUVReflectionMapping;
+    cubeUVRenderTarget.texture.name = 'PMREM.cubeUv';
+    cubeUVRenderTarget.scissorTest = true;
+
+    return cubeUVRenderTarget;
 }
 
-function _setViewport(target, x, y, width, height) {
-	target.viewport.set(x, y, width, height);
-	target.scissor.set(x, y, width, height);
+function _setViewport(target: WebGLRenderTarget, x: number, y: number, width: number, height: number) {
+    target.viewport.set(x, y, width, height);
+    target.scissor.set(x, y, width, height);
 }
 
-function _getBlurShader(maxSamples) {
-	const weights = new Float32Array(maxSamples);
-	const poleAxis = new Vector3(0, 1, 0);
-	const shaderMaterial = new RawShaderMaterial();
-	shaderMaterial.name = "SphericalGaussianBlur";
-	shaderMaterial.defines = { n: maxSamples };
-	shaderMaterial.uniforms = {
-		envMap: { value: null },
-		samples: { value: 1 },
-		weights: { value: weights },
-		latitudinal: { value: false },
-		dTheta: { value: 0 },
-		mipInt: { value: 0 },
-		poleAxis: { value: poleAxis },
-		inputEncoding: { value: ENCODINGS[LinearEncoding] },
-		outputEncoding: { value: ENCODINGS[LinearEncoding] },
-	};
-	shaderMaterial.vertexShader = _getCommonVertexShader();
-	shaderMaterial.fragmentShader = /* glsl */ `
+function _getBlurShader(maxSamples: number) {
+    const weights = new Float32Array(maxSamples);
+    const poleAxis = new Vector3(0, 1, 0);
+    const shaderMaterial = new RawShaderMaterial();
 
-			precision mediump float;
-			precision mediump int;
+    shaderMaterial.name = 'SphericalGaussianBlur';
+    shaderMaterial.defines = {
+        n: maxSamples
+    };
+    shaderMaterial.uniforms = {
+        envMap: {
+            value: null
+        },
+        samples: {
+            value: 1
+        },
+        weights: {
+            value: weights
+        },
+        latitudinal: {
+            value: false
+        },
+        dTheta: {
+            value: 0
+        },
+        mipInt: {
+            value: 0
+        },
+        poleAxis: {
+            value: poleAxis
+        },
+        inputEncoding: {
+            value: ENCODINGS[LinearEncoding]
+        },
+        outputEncoding: {
+            value: ENCODINGS[LinearEncoding]
+        }
+    };
+    shaderMaterial.vertexShader = _getCommonVertexShader();
+    shaderMaterial.fragmentShader = /* glsl */ `
 
-			varying vec3 vOutputDirection;
+            precision mediump float;
+            precision mediump int;
 
-			uniform sampler2D envMap;
-			uniform int samples;
-			uniform float weights[ n ];
-			uniform bool latitudinal;
-			uniform float dTheta;
-			uniform float mipInt;
-			uniform vec3 poleAxis;
+            varying vec3 vOutputDirection;
 
-			${_getEncodings()}
+            uniform sampler2D envMap;
+            uniform int samples;
+            uniform float weights[ n ];
+            uniform bool latitudinal;
+            uniform float dTheta;
+            uniform float mipInt;
+            uniform vec3 poleAxis;
 
-			#define ENVMAP_TYPE_CUBE_UV
-			#include <cube_uv_reflection_fragment>
+            ${_getEncodings()}
 
-			vec3 getSample( float theta, vec3 axis ) {
+            #define ENVMAP_TYPE_CUBE_UV
+            #include <cube_uv_reflection_fragment>
 
-				float cosTheta = cos( theta );
-				// Rodrigues' axis-angle rotation
-				vec3 sampleDirection = vOutputDirection * cosTheta
-					+ cross( axis, vOutputDirection ) * sin( theta )
-					+ axis * dot( axis, vOutputDirection ) * ( 1.0 - cosTheta );
+            vec3 getSample( float theta, vec3 axis ) {
 
-				return bilinearCubeUV( envMap, sampleDirection, mipInt );
+                float cosTheta = cos( theta );
+                // Rodrigues' axis-angle rotation
+                vec3 sampleDirection = vOutputDirection * cosTheta
+                    + cross( axis, vOutputDirection ) * sin( theta )
+                    + axis * dot( axis, vOutputDirection ) * ( 1.0 - cosTheta );
 
-			}
+                return bilinearCubeUV( envMap, sampleDirection, mipInt );
 
-			void main() {
+            }
 
-				vec3 axis = latitudinal ? poleAxis : cross( poleAxis, vOutputDirection );
+            void main() {
 
-				if ( all( equal( axis, vec3( 0.0 ) ) ) ) {
+                vec3 axis = latitudinal ? poleAxis : cross( poleAxis, vOutputDirection );
 
-					axis = vec3( vOutputDirection.z, 0.0, - vOutputDirection.x );
+                if ( all( equal( axis, vec3( 0.0 ) ) ) ) {
 
-				}
+                    axis = vec3( vOutputDirection.z, 0.0, - vOutputDirection.x );
 
-				axis = normalize( axis );
+                }
 
-				gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
-				gl_FragColor.rgb += weights[ 0 ] * getSample( 0.0, axis );
+                axis = normalize( axis );
 
-				for ( int i = 1; i < n; i++ ) {
+                gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+                gl_FragColor.rgb += weights[ 0 ] * getSample( 0.0, axis );
 
-					if ( i >= samples ) {
+                for ( int i = 1; i < n; i++ ) {
 
-						break;
+                    if ( i >= samples ) {
 
-					}
+                        break;
 
-					float theta = dTheta * float( i );
-					gl_FragColor.rgb += weights[ i ] * getSample( -1.0 * theta, axis );
-					gl_FragColor.rgb += weights[ i ] * getSample( theta, axis );
+                    }
 
-				}
+                    float theta = dTheta * float( i );
+                    gl_FragColor.rgb += weights[ i ] * getSample( -1.0 * theta, axis );
+                    gl_FragColor.rgb += weights[ i ] * getSample( theta, axis );
 
-				gl_FragColor = linearToOutputTexel( gl_FragColor );
+                }
 
-			}
-		`;
+                gl_FragColor = linearToOutputTexel( gl_FragColor );
 
-	shaderMaterial.blending = NoBlending;
-	shaderMaterial.depthTest = false;
-	shaderMaterial.depthWrite = false;
+            }
+        `;
 
-	return shaderMaterial;
+    shaderMaterial.blending = NoBlending;
+    shaderMaterial.depthTest = false;
+    shaderMaterial.depthWrite = false;
+
+    return shaderMaterial;
 }
 
 function _getEquirectShader() {
-	const texelSize = new Vector2(1, 1);
-	const shaderMaterial = new RawShaderMaterial();
-	shaderMaterial.name = "EquirectangularToCubeUV";
+    const texelSize = new Vector2(1, 1);
+    const shaderMaterial = new RawShaderMaterial();
 
-	shaderMaterial.uniforms = {
-		envMap: { value: null },
-		texelSize: { value: texelSize },
-		inputEncoding: { value: ENCODINGS[LinearEncoding] },
-		outputEncoding: { value: ENCODINGS[LinearEncoding] },
-	};
+    shaderMaterial.name = 'EquirectangularToCubeUV';
 
-	shaderMaterial.vertexShader = _getCommonVertexShader();
+    shaderMaterial.uniforms = {
+        envMap: {
+            value: null
+        },
+        texelSize: {
+            value: texelSize
+        },
+        inputEncoding: {
+            value: ENCODINGS[LinearEncoding]
+        },
+        outputEncoding: {
+            value: ENCODINGS[LinearEncoding]
+        }
+    };
 
-	shaderMaterial.fragmentShader = /* glsl */ `
+    shaderMaterial.vertexShader = _getCommonVertexShader();
 
-			precision mediump float;
-			precision mediump int;
+    shaderMaterial.fragmentShader = /* glsl */ `
 
-			varying vec3 vOutputDirection;
+            precision mediump float;
+            precision mediump int;
 
-			uniform sampler2D envMap;
-			uniform vec2 texelSize;
+            varying vec3 vOutputDirection;
 
-			${_getEncodings()}
+            uniform sampler2D envMap;
+            uniform vec2 texelSize;
 
-			#include <common>
+            ${_getEncodings()}
 
-			void main() {
+            #include <common>
 
-				gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+            void main() {
 
-				vec3 outputDirection = normalize( vOutputDirection );
-				vec2 uv = equirectUv( outputDirection );
+                gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
 
-				vec2 f = fract( uv / texelSize - 0.5 );
-				uv -= f * texelSize;
-				vec3 tl = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
-				uv.x += texelSize.x;
-				vec3 tr = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
-				uv.y += texelSize.y;
-				vec3 br = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
-				uv.x -= texelSize.x;
-				vec3 bl = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
+                vec3 outputDirection = normalize( vOutputDirection );
+                vec2 uv = equirectUv( outputDirection );
 
-				vec3 tm = mix( tl, tr, f.x );
-				vec3 bm = mix( bl, br, f.x );
-				gl_FragColor.rgb = mix( tm, bm, f.y );
+                vec2 f = fract( uv / texelSize - 0.5 );
+                uv -= f * texelSize;
+                vec3 tl = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
+                uv.x += texelSize.x;
+                vec3 tr = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
+                uv.y += texelSize.y;
+                vec3 br = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
+                uv.x -= texelSize.x;
+                vec3 bl = envMapTexelToLinear( texture2D ( envMap, uv ) ).rgb;
 
-				gl_FragColor = linearToOutputTexel( gl_FragColor );
+                vec3 tm = mix( tl, tr, f.x );
+                vec3 bm = mix( bl, br, f.x );
+                gl_FragColor.rgb = mix( tm, bm, f.y );
 
-			}
-		`;
+                gl_FragColor = linearToOutputTexel( gl_FragColor );
 
-	shaderMaterial.blending = NoBlending;
-	shaderMaterial.depthTest = false;
-	shaderMaterial.depthWrite = false;
+            }
+        `;
 
-	return shaderMaterial;
+    shaderMaterial.blending = NoBlending;
+    shaderMaterial.depthTest = false;
+    shaderMaterial.depthWrite = false;
+
+    return shaderMaterial;
 }
 
 function _getCubemapShader() {
-	const shaderMaterial = new RawShaderMaterial();
-	shaderMaterial.name = "CubemapToCubeUV";
+    const shaderMaterial = new RawShaderMaterial();
 
-	shaderMaterial.uniforms = {
-		envMap: { value: null },
-		inputEncoding: { value: ENCODINGS[LinearEncoding] },
-		outputEncoding: { value: ENCODINGS[LinearEncoding] },
-	};
+    shaderMaterial.name = 'CubemapToCubeUV';
 
-	shaderMaterial.vertexShader = _getCommonVertexShader();
+    shaderMaterial.uniforms = {
+        envMap: {
+            value: null
+        },
+        inputEncoding: {
+            value: ENCODINGS[LinearEncoding]
+        },
+        outputEncoding: {
+            value: ENCODINGS[LinearEncoding]
+        }
+    };
 
-	shaderMaterial.fragmentShader = /* glsl */ `
+    shaderMaterial.vertexShader = _getCommonVertexShader();
 
-			precision mediump float;
-			precision mediump int;
+    shaderMaterial.fragmentShader = /* glsl */ `
 
-			varying vec3 vOutputDirection;
+            precision mediump float;
+            precision mediump int;
 
-			uniform samplerCube envMap;
+            varying vec3 vOutputDirection;
 
-			${_getEncodings()}
+            uniform samplerCube envMap;
 
-			void main() {
+            ${_getEncodings()}
 
-				gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
-				gl_FragColor.rgb = envMapTexelToLinear( textureCube( envMap, vec3( - vOutputDirection.x, vOutputDirection.yz ) ) ).rgb;
-				gl_FragColor = linearToOutputTexel( gl_FragColor );
+            void main() {
 
-			}
-		`;
+                gl_FragColor = vec4( 0.0, 0.0, 0.0, 1.0 );
+                gl_FragColor.rgb = envMapTexelToLinear( textureCube( envMap, vec3( - vOutputDirection.x, vOutputDirection.yz ) ) ).rgb;
+                gl_FragColor = linearToOutputTexel( gl_FragColor );
 
-	shaderMaterial.blending = NoBlending;
-	shaderMaterial.depthTest = false;
-	shaderMaterial.depthWrite = false;
+            }
+        `;
 
-	return shaderMaterial;
+    shaderMaterial.blending = NoBlending;
+    shaderMaterial.depthTest = false;
+    shaderMaterial.depthWrite = false;
+
+    return shaderMaterial;
 }
 
 function _getCommonVertexShader() {
-	return /* glsl */ `
+    return /* glsl */ `
 
-		precision mediump float;
-		precision mediump int;
+        precision mediump float;
+        precision mediump int;
 
-		attribute vec3 position;
-		attribute vec2 uv;
-		attribute float faceIndex;
+        attribute vec3 position;
+        attribute vec2 uv;
+        attribute float faceIndex;
 
-		varying vec3 vOutputDirection;
+        varying vec3 vOutputDirection;
 
-		// RH coordinate system; PMREM face-indexing convention
-		vec3 getDirection( vec2 uv, float face ) {
+        // RH coordinate system; PMREM face-indexing convention
+        vec3 getDirection( vec2 uv, float face ) {
 
-			uv = 2.0 * uv - 1.0;
+            uv = 2.0 * uv - 1.0;
 
-			vec3 direction = vec3( uv, 1.0 );
+            vec3 direction = vec3( uv, 1.0 );
 
-			if ( face == 0.0 ) {
+            if ( face == 0.0 ) {
 
-				direction = direction.zyx; // ( 1, v, u ) pos x
+                direction = direction.zyx; // ( 1, v, u ) pos x
 
-			} else if ( face == 1.0 ) {
+            } else if ( face == 1.0 ) {
 
-				direction = direction.xzy;
-				direction.xz *= -1.0; // ( -u, 1, -v ) pos y
+                direction = direction.xzy;
+                direction.xz *= -1.0; // ( -u, 1, -v ) pos y
 
-			} else if ( face == 2.0 ) {
+            } else if ( face == 2.0 ) {
 
-				direction.x *= -1.0; // ( -u, v, 1 ) pos z
+                direction.x *= -1.0; // ( -u, v, 1 ) pos z
 
-			} else if ( face == 3.0 ) {
+            } else if ( face == 3.0 ) {
 
-				direction = direction.zyx;
-				direction.xz *= -1.0; // ( -1, v, -u ) neg x
+                direction = direction.zyx;
+                direction.xz *= -1.0; // ( -1, v, -u ) neg x
 
-			} else if ( face == 4.0 ) {
+            } else if ( face == 4.0 ) {
 
-				direction = direction.xzy;
-				direction.xy *= -1.0; // ( -u, -1, v ) neg y
+                direction = direction.xzy;
+                direction.xy *= -1.0; // ( -u, -1, v ) neg y
 
-			} else if ( face == 5.0 ) {
+            } else if ( face == 5.0 ) {
 
-				direction.z *= -1.0; // ( u, v, -1 ) neg z
+                direction.z *= -1.0; // ( u, v, -1 ) neg z
 
-			}
+            }
 
-			return direction;
+            return direction;
 
-		}
+        }
 
-		void main() {
+        void main() {
 
-			vOutputDirection = getDirection( uv, faceIndex );
-			gl_Position = vec4( position, 1.0 );
+            vOutputDirection = getDirection( uv, faceIndex );
+            gl_Position = vec4( position, 1.0 );
 
-		}
-	`;
+        }
+    `;
 }
 
 function _getEncodings() {
-	return /* glsl */ `
+    return /* glsl */ `
 
-		uniform int inputEncoding;
-		uniform int outputEncoding;
+        uniform int inputEncoding;
+        uniform int outputEncoding;
 
-		#include <encodings_pars_fragment>
+        #include <encodings_pars_fragment>
 
-		vec4 inputTexelToLinear( vec4 value ) {
+        vec4 inputTexelToLinear( vec4 value ) {
 
-			if ( inputEncoding == 0 ) {
+            if ( inputEncoding == 0 ) {
 
-				return value;
+                return value;
 
-			} else if ( inputEncoding == 1 ) {
+            } else if ( inputEncoding == 1 ) {
 
-				return sRGBToLinear( value );
+                return sRGBToLinear( value );
 
-			} else if ( inputEncoding == 2 ) {
+            } else if ( inputEncoding == 2 ) {
 
-				return RGBEToLinear( value );
+                return RGBEToLinear( value );
 
-			} else if ( inputEncoding == 3 ) {
+            } else if ( inputEncoding == 3 ) {
 
-				return RGBMToLinear( value, 7.0 );
+                return RGBMToLinear( value, 7.0 );
 
-			} else if ( inputEncoding == 4 ) {
+            } else if ( inputEncoding == 4 ) {
 
-				return RGBMToLinear( value, 16.0 );
+                return RGBMToLinear( value, 16.0 );
 
-			} else if ( inputEncoding == 5 ) {
+            } else if ( inputEncoding == 5 ) {
 
-				return RGBDToLinear( value, 256.0 );
+                return RGBDToLinear( value, 256.0 );
 
-			} else {
+            } else {
 
-				return GammaToLinear( value, 2.2 );
+                return GammaToLinear( value, 2.2 );
 
-			}
+            }
 
-		}
+        }
 
-		vec4 linearToOutputTexel( vec4 value ) {
+        vec4 linearToOutputTexel( vec4 value ) {
 
-			if ( outputEncoding == 0 ) {
+            if ( outputEncoding == 0 ) {
 
-				return value;
+                return value;
 
-			} else if ( outputEncoding == 1 ) {
+            } else if ( outputEncoding == 1 ) {
 
-				return LinearTosRGB( value );
+                return LinearTosRGB( value );
 
-			} else if ( outputEncoding == 2 ) {
+            } else if ( outputEncoding == 2 ) {
 
-				return LinearToRGBE( value );
+                return LinearToRGBE( value );
 
-			} else if ( outputEncoding == 3 ) {
+            } else if ( outputEncoding == 3 ) {
 
-				return LinearToRGBM( value, 7.0 );
+                return LinearToRGBM( value, 7.0 );
 
-			} else if ( outputEncoding == 4 ) {
+            } else if ( outputEncoding == 4 ) {
 
-				return LinearToRGBM( value, 16.0 );
+                return LinearToRGBM( value, 16.0 );
 
-			} else if ( outputEncoding == 5 ) {
+            } else if ( outputEncoding == 5 ) {
 
-				return LinearToRGBD( value, 256.0 );
+                return LinearToRGBD( value, 256.0 );
 
-			} else {
+            } else {
 
-				return LinearToGamma( value, 2.2 );
+                return LinearToGamma( value, 2.2 );
 
-			}
+            }
 
-		}
+        }
 
-		vec4 envMapTexelToLinear( vec4 color ) {
+        vec4 envMapTexelToLinear( vec4 color ) {
 
-			return inputTexelToLinear( color );
+            return inputTexelToLinear( color );
 
-		}
-	`;
+        }
+    `;
 }
 
 export { PMREMGenerator };

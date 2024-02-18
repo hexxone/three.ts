@@ -1,239 +1,253 @@
-
 /** ************************************************************
- *	Curved Path - a curve path is simply a array of connected
+ *    Curved Path - a curve path is simply a array of connected
  *  curves, but retains the api of a curve
  **************************************************************/
 
-import { Vector2 } from "../../math/Vector2";
-import { ArcCurve } from "../curves/ArcCurve";
-import { CatmullRomCurve3 } from "../curves/CatmullRomCurve3";
-import { CubicBezierCurve } from "../curves/CubicBezierCurve";
-import { CubicBezierCurve3 } from "../curves/CubicBezierCurve3";
-import { EllipseCurve } from "../curves/EllipseCurve";
-import { LineCurve } from "../curves/LineCurve";
-import { LineCurve3 } from "../curves/LineCurve3";
-import { QuadraticBezierCurve } from "../curves/QuadraticBezierCurve";
-import { QuadraticBezierCurve3 } from "../curves/QuadraticBezierCurve3";
-import { SplineCurve } from "../curves/SplineCurve";
-import { Curve } from "./Curve";
+import { Vector2 } from '../../math/Vector2';
+import { ArcCurve } from '../curves/ArcCurve';
+import { CatmullRomCurve3 } from '../curves/CatmullRomCurve3';
+import { CubicBezierCurve } from '../curves/CubicBezierCurve';
+import { CubicBezierCurve3 } from '../curves/CubicBezierCurve3';
+import { EllipseCurve } from '../curves/EllipseCurve';
+import { LineCurve } from '../curves/LineCurve';
+import { LineCurve3 } from '../curves/LineCurve3';
+import { QuadraticBezierCurve } from '../curves/QuadraticBezierCurve';
+import { QuadraticBezierCurve3 } from '../curves/QuadraticBezierCurve3';
+import { SplineCurve } from '../curves/SplineCurve';
+import { Curve } from './Curve';
 
 class CurvePath extends Curve {
-	curves: Curve[];
-	autoClose: boolean;
-	cacheLengths: any;
 
-	constructor() {
-		super();
+    curves: Curve[];
+    autoClose: boolean;
+    cacheLengths: any;
 
-		this.isCurvePath = true;
-		this.type = "CurvePath";
+    constructor() {
+        super();
 
-		this.curves = [];
-		this.autoClose = false; // Automatically closes the path
-	}
+        this.isCurvePath = true;
+        this.type = 'CurvePath';
 
-	add(curve) {
-		this.curves.push(curve);
-	}
+        this.curves = [];
+        this.autoClose = false; // Automatically closes the path
+    }
 
-	closePath() {
-		// Add a line curve if start and end of lines are not connected
-		const startPoint = this.curves[0].getPoint(0) as Vector2;
-		const endPoint = this.curves[this.curves.length - 1].getPoint(1) as Vector2;
+    add(curve) {
+        this.curves.push(curve);
+    }
 
-		if (!startPoint.equals(endPoint)) {
-			this.curves.push(new LineCurve(endPoint, startPoint));
-		}
-	}
+    closePath() {
+        // Add a line curve if start and end of lines are not connected
+        const startPoint = this.curves[0].getPoint(0) as Vector2;
+        const endPoint = this.curves[this.curves.length - 1].getPoint(
+            1
+        ) as Vector2;
 
-	// To get accurate point with reference to
-	// entire path distance at time t,
-	// following has to be done:
+        if (!startPoint.equals(endPoint)) {
+            this.curves.push(new LineCurve(endPoint, startPoint));
+        }
+    }
 
-	// 1. Length of each sub path have to be known
-	// 2. Locate and identify type of curve
-	// 3. Get t for the curve
-	// 4. Return curve.getPointAt(t')
+    // To get accurate point with reference to
+    // entire path distance at time t,
+    // following has to be done:
 
-	getPoint(t: number) {
-		const d = t * this.getLength();
-		const curveLengths = this.getCurveLengths();
-		let i = 0;
+    // 1. Length of each sub path have to be known
+    // 2. Locate and identify type of curve
+    // 3. Get t for the curve
+    // 4. Return curve.getPointAt(t')
 
-		// To think about boundaries points.
+    getPoint(t: number) {
+        const d = t * this.getLength();
+        const curveLengths = this.getCurveLengths();
+        let i = 0;
 
-		while (i < curveLengths.length) {
-			if (curveLengths[i] >= d) {
-				const diff = curveLengths[i] - d;
-				const curve = this.curves[i];
+        // To think about boundaries points.
 
-				const segmentLength = curve.getLength();
-				const u = segmentLength === 0 ? 0 : 1 - diff / segmentLength;
+        while (i < curveLengths.length) {
+            if (curveLengths[i] >= d) {
+                const diff = curveLengths[i] - d;
+                const curve = this.curves[i];
 
-				return curve.getPointAt(u);
-			}
+                const segmentLength = curve.getLength();
+                const u = segmentLength === 0 ? 0 : 1 - diff / segmentLength;
 
-			i++;
-		}
+                return curve.getPointAt(u);
+            }
 
-		return null;
+            i++;
+        }
 
-		// loop where sum != 0, sum > d , sum+1 <d
-	}
+        return null;
 
-	// We cannot use the default Curve getPoint() with getLength() because in
-	// Curve, getLength() depends on getPoint() but in CurvePath
-	// getPoint() depends on getLength
+        // loop where sum != 0, sum > d , sum+1 <d
+    }
 
-	getLength() {
-		const lens = this.getCurveLengths();
-		return lens[lens.length - 1];
-	}
+    // We cannot use the default Curve getPoint() with getLength() because in
+    // Curve, getLength() depends on getPoint() but in CurvePath
+    // getPoint() depends on getLength
 
-	// cacheLengths must be recalculated.
-	updateArcLengths() {
-		this.needsUpdate = true;
-		this.cacheLengths = null;
-		this.getCurveLengths();
-	}
+    getLength() {
+        const lens = this.getCurveLengths();
 
-	// Compute lengths and cache them
-	// We cannot overwrite getLengths() because UtoT mapping uses it.
+        return lens[lens.length - 1];
+    }
 
-	getCurveLengths() {
-		// We use cache values if curves and cache array are same length
+    // cacheLengths must be recalculated.
+    updateArcLengths() {
+        this.needsUpdate = true;
+        this.cacheLengths = null;
+        this.getCurveLengths();
+    }
 
-		if (this.cacheLengths && this.cacheLengths.length === this.curves.length) {
-			return this.cacheLengths;
-		}
+    // Compute lengths and cache them
+    // We cannot overwrite getLengths() because UtoT mapping uses it.
 
-		// Get length of sub-curve
-		// Push sums into cached array
+    getCurveLengths() {
+        // We use cache values if curves and cache array are same length
 
-		const lengths = [];
-		let sums = 0;
+        if (
+            this.cacheLengths
+            && this.cacheLengths.length === this.curves.length
+        ) {
+            return this.cacheLengths;
+        }
 
-		for (let i = 0, l = this.curves.length; i < l; i++) {
-			sums += this.curves[i].getLength();
-			lengths.push(sums);
-		}
+        // Get length of sub-curve
+        // Push sums into cached array
 
-		this.cacheLengths = lengths;
+        const lengths = [];
+        let sums = 0;
 
-		return lengths;
-	}
+        for (let i = 0, l = this.curves.length; i < l; i++) {
+            sums += this.curves[i].getLength();
+            lengths.push(sums);
+        }
 
-	getSpacedPoints(divisions = 40) {
-		const points = [];
+        this.cacheLengths = lengths;
 
-		for (let i = 0; i <= divisions; i++) {
-			points.push(this.getPoint(i / divisions));
-		}
+        return lengths;
+    }
 
-		if (this.autoClose) {
-			points.push(points[0]);
-		}
+    getSpacedPoints(divisions = 40) {
+        const points = [];
 
-		return points;
-	}
+        for (let i = 0; i <= divisions; i++) {
+            points.push(this.getPoint(i / divisions));
+        }
 
-	getPoints(divisions = 12) {
-		const points = [];
-		let last;
+        if (this.autoClose) {
+            points.push(points[0]);
+        }
 
-		for (let i = 0, curves = this.curves; i < curves.length; i++) {
-			const curve = curves[i];
-			const resolution =
-				curve && curve.isEllipseCurve
-					? divisions * 2
-					: curve && (curve.isLineCurve || curve.isLineCurve3)
-					? 1
-					: curve && curve.isSplineCurve
-					? divisions * (curve as SplineCurve).points.length
-					: divisions;
+        return points;
+    }
 
-			const pts = curve.getPoints(resolution);
+    getPoints(divisions = 12) {
+        const points = [];
+        let last;
 
-			for (let j = 0; j < pts.length; j++) {
-				const point = pts[j];
+        for (let i = 0, { curves } = this; i < curves.length; i++) {
+            const curve = curves[i];
+            const resolution
+                = curve && curve.isEllipseCurve
+                    ? divisions * 2
+                    : curve && (curve.isLineCurve || curve.isLineCurve3)
+                        ? 1
+                        : curve && curve.isSplineCurve
+                            ? divisions * (curve as SplineCurve).points.length
+                            : divisions;
 
-				if (last && last.equals(point)) continue; // ensures no consecutive points are duplicates
+            const pts = curve.getPoints(resolution);
 
-				points.push(point);
-				last = point;
-			}
-		}
+            for (let j = 0; j < pts.length; j++) {
+                const point = pts[j];
 
-		if (
-			this.autoClose &&
-			points.length > 1 &&
-			!points[points.length - 1].equals(points[0])
-		) {
-			points.push(points[0]);
-		}
+                if (last && last.equals(point)) { continue; } // ensures no consecutive points are duplicates
 
-		return points;
-	}
+                points.push(point);
+                last = point;
+            }
+        }
 
-	copy(source: CurvePath) {
-		super.copy(source);
+        if (
+            this.autoClose
+            && points.length > 1
+            && !points[points.length - 1].equals(points[0])
+        ) {
+            points.push(points[0]);
+        }
 
-		this.curves = [];
+        return points;
+    }
 
-		for (let i = 0, l = source.curves.length; i < l; i++) {
-			const curve = source.curves[i];
+    copy(source: CurvePath) {
+        super.copy(source);
 
-			this.curves.push(curve.clone());
-		}
+        this.curves = [];
 
-		this.autoClose = source.autoClose;
+        for (let i = 0, l = source.curves.length; i < l; i++) {
+            const curve = source.curves[i];
 
-		return this;
-	}
+            this.curves.push(curve.clone());
+        }
 
-	fromJSON(json) {
-		super.fromJSON(json);
+        this.autoClose = source.autoClose;
 
-		this.autoClose = json.autoClose;
-		this.curves = [];
+        return this;
+    }
 
-		for (let i = 0, l = json.curves.length; i < l; i++) {
-			const curve = json.curves[i];
-			switch (curve.type) {
-				case "catmullrom":
-					this.curves.push(new CatmullRomCurve3().fromJSON(curve));
-					break;
-				case "cubicbezier":
-					this.curves.push(new CubicBezierCurve().fromJSON(curve));
-					break;
-				case "quadraticbezier":
-					this.curves.push(new QuadraticBezierCurve().fromJSON(curve));
-					break;
-				case "line":
-					this.curves.push(new LineCurve().fromJSON(curve));
-					break;
-				case "line3":
-					this.curves.push(new LineCurve3().fromJSON(curve));
-					break;
-				case "quadraticbezier3":
-					this.curves.push(new QuadraticBezierCurve3().fromJSON(curve));
-					break;
-				case "cubicbezier3":
-					this.curves.push(new CubicBezierCurve3().fromJSON(curve));
-					break;
-				case "arc":
-					this.curves.push(new ArcCurve().fromJSON(curve));
-					break;
-				case "ellipse":
-					this.curves.push(new EllipseCurve().fromJSON(curve));
-					break;
-				default:
-					console.warn("CurvePath: Unsupported curve type " + curve.type);
-			}
-		}
+    fromJSON(json) {
+        super.fromJSON(json);
 
-		return this;
-	}
+        this.autoClose = json.autoClose;
+        this.curves = [];
+
+        for (let i = 0, l = json.curves.length; i < l; i++) {
+            const curve = json.curves[i];
+
+            switch (curve.type) {
+                case 'catmullrom':
+                    this.curves.push(new CatmullRomCurve3().fromJSON(curve));
+                    break;
+                case 'cubicbezier':
+                    this.curves.push(new CubicBezierCurve().fromJSON(curve));
+                    break;
+                case 'quadraticbezier':
+                    this.curves.push(
+                        new QuadraticBezierCurve().fromJSON(curve)
+                    );
+                    break;
+                case 'line':
+                    this.curves.push(new LineCurve().fromJSON(curve));
+                    break;
+                case 'line3':
+                    this.curves.push(new LineCurve3().fromJSON(curve));
+                    break;
+                case 'quadraticbezier3':
+                    this.curves.push(
+                        new QuadraticBezierCurve3().fromJSON(curve)
+                    );
+                    break;
+                case 'cubicbezier3':
+                    this.curves.push(new CubicBezierCurve3().fromJSON(curve));
+                    break;
+                case 'arc':
+                    this.curves.push(new ArcCurve().fromJSON(curve));
+                    break;
+                case 'ellipse':
+                    this.curves.push(new EllipseCurve().fromJSON(curve));
+                    break;
+                default:
+                    console.warn(
+                        `CurvePath: Unsupported curve type ${curve.type}`
+                    );
+            }
+        }
+
+        return this;
+    }
+
 }
 
 export { CurvePath };

@@ -1,171 +1,172 @@
-import { Vector3 } from "../math/Vector3";
-import { getTypedArray } from "../utils";
-import { BufferAttribute } from "./BufferAttribute";
-import { InterleavedBuffer } from "./InterleavedBuffer";
+import { Vector3 } from '../math/Vector3';
+import { getTypedArray } from '../utils';
+import { BufferAttribute } from './BufferAttribute';
+import { InterleavedBuffer } from './InterleavedBuffer';
 
 const _vector = new Vector3();
 
 class InterleavedBufferAttribute {
-	name: string;
-	data: InterleavedBuffer;
-	itemSize: any;
 
-	offset: any;
-	normalized: boolean;
+    name: string;
+    data: InterleavedBuffer;
+    itemSize: any;
 
-	count: number;
-	interleavedBuffers: any;
-	isInterleavedBufferAttribute = true;
+    offset: any;
+    normalized: boolean;
 
-	constructor(
-		interleavedBuffer: InterleavedBuffer,
-		itemSize,
-		offset,
-		normalized?: boolean
-	) {
-		this.name = "";
+    count: number;
+    interleavedBuffers: any;
+    isInterleavedBufferAttribute = true;
 
-		this.data = interleavedBuffer;
-		this.itemSize = itemSize;
-		this.offset = offset;
+    constructor(
+        interleavedBuffer: InterleavedBuffer,
+        itemSize,
+        offset,
+        normalized?: boolean
+    ) {
+        this.name = '';
 
-		this.normalized = normalized === true;
-	}
+        this.data = interleavedBuffer;
+        this.itemSize = itemSize;
+        this.offset = offset;
 
-	get gount() {
-		return this.data.count;
-	}
+        this.normalized = normalized === true;
+    }
 
-	get array() {
-		return this.data.array;
-	}
+    get gount() {
+        return this.data.count;
+    }
 
-	set needsUpdate(value) {
-		this.data.needsUpdate = value;
-	}
+    get array() {
+        return this.data.array;
+    }
 
-	applyMatrix4(m) {
-		for (let i = 0, l = this.data.count; i < l; i++) {
-			_vector.x = Number(this.getX(i));
-			_vector.y = Number(this.getY(i));
-			_vector.z = Number(this.getZ(i));
+    set needsUpdate(value) {
+        this.data.needsUpdate = value;
+    }
 
-			_vector.applyMatrix4(m);
+    applyMatrix4(m) {
+        for (let i = 0, l = this.data.count; i < l; i++) {
+            _vector.x = Number(this.getX(i));
+            _vector.y = Number(this.getY(i));
+            _vector.z = Number(this.getZ(i));
 
-			this.setXYZ(i, _vector.x, _vector.y, _vector.z);
-		}
+            _vector.applyMatrix4(m);
 
-		return this;
-	}
+            this.setXYZ(i, _vector.x, _vector.y, _vector.z);
+        }
 
-	setX(index, x) {
-		this.data.array[index * this.data.stride + this.offset] = x;
+        return this;
+    }
 
-		return this;
-	}
+    setX(index, x) {
+        this.data.array[index * this.data.stride + this.offset] = x;
 
-	setY(index, y) {
-		this.data.array[index * this.data.stride + this.offset + 1] = y;
+        return this;
+    }
 
-		return this;
-	}
+    setY(index, y) {
+        this.data.array[index * this.data.stride + this.offset + 1] = y;
 
-	setZ(index, z) {
-		this.data.array[index * this.data.stride + this.offset + 2] = z;
+        return this;
+    }
 
-		return this;
-	}
+    setZ(index, z) {
+        this.data.array[index * this.data.stride + this.offset + 2] = z;
 
-	setW(index, w) {
-		this.data.array[index * this.data.stride + this.offset + 3] = w;
+        return this;
+    }
 
-		return this;
-	}
+    setW(index, w) {
+        this.data.array[index * this.data.stride + this.offset + 3] = w;
 
-	getX(index) {
-		return this.data.array[index * this.data.stride + this.offset];
-	}
+        return this;
+    }
 
-	getY(index) {
-		return this.data.array[index * this.data.stride + this.offset + 1];
-	}
+    getX(index) {
+        return this.data.array[index * this.data.stride + this.offset];
+    }
 
-	getZ(index) {
-		return this.data.array[index * this.data.stride + this.offset + 2];
-	}
+    getY(index) {
+        return this.data.array[index * this.data.stride + this.offset + 1];
+    }
 
-	getW(index) {
-		return this.data.array[index * this.data.stride + this.offset + 3];
-	}
+    getZ(index) {
+        return this.data.array[index * this.data.stride + this.offset + 2];
+    }
 
-	setXY(index, x, y) {
-		index = index * this.data.stride + this.offset;
+    getW(index) {
+        return this.data.array[index * this.data.stride + this.offset + 3];
+    }
 
-		this.data.array[index + 0] = x;
-		this.data.array[index + 1] = y;
+    setXY(index, x, y) {
+        index = index * this.data.stride + this.offset;
 
-		return this;
-	}
+        this.data.array[index + 0] = x;
+        this.data.array[index + 1] = y;
 
-	setXYZ(index, x, y, z) {
-		index = index * this.data.stride + this.offset;
+        return this;
+    }
 
-		this.data.array[index + 0] = x;
-		this.data.array[index + 1] = y;
-		this.data.array[index + 2] = z;
+    setXYZ(index, x, y, z) {
+        index = index * this.data.stride + this.offset;
 
-		return this;
-	}
+        this.data.array[index + 0] = x;
+        this.data.array[index + 1] = y;
+        this.data.array[index + 2] = z;
 
-	setXYZW(index, x, y, z, w) {
-		index = index * this.data.stride + this.offset;
+        return this;
+    }
 
-		this.data.array[index + 0] = x;
-		this.data.array[index + 1] = y;
-		this.data.array[index + 2] = z;
-		this.data.array[index + 3] = w;
+    setXYZW(index, x, y, z, w) {
+        index = index * this.data.stride + this.offset;
 
-		return this;
-	}
+        this.data.array[index + 0] = x;
+        this.data.array[index + 1] = y;
+        this.data.array[index + 2] = z;
+        this.data.array[index + 3] = w;
 
-	clone(data) {
-		if (data === undefined) {
-			console.log(
-				"InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data."
-			);
+        return this;
+    }
 
-			const array = [];
+    clone(data) {
+        if (data === undefined) {
+            console.log(
+                'InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data.'
+            );
 
-			for (let i = 0; i < this.count; i++) {
-				const index = i * this.data.stride + this.offset;
+            const array = [];
 
-				for (let j = 0; j < this.itemSize; j++) {
-					array.push(this.data.array[index + j]);
-				}
-			}
+            for (let i = 0; i < this.count; i++) {
+                const index = i * this.data.stride + this.offset;
 
-			return new BufferAttribute(
-				getTypedArray((this.array as any).constructor.name, array),
-				this.itemSize,
-				this.normalized
-			);
-		} else {
-			if (data.interleavedBuffers === undefined) {
-				data.interleavedBuffers = {};
-			}
+                for (let j = 0; j < this.itemSize; j++) {
+                    array.push(this.data.array[index + j]);
+                }
+            }
 
-			if (data.interleavedBuffers[this.data.uuid] === undefined) {
-				data.interleavedBuffers[this.data.uuid] = this.data.clone(data);
-			}
+            return new BufferAttribute(
+                getTypedArray((this.array as any).constructor.name, array),
+                this.itemSize,
+                this.normalized
+            );
+        }
+        if (data.interleavedBuffers === undefined) {
+            data.interleavedBuffers = {};
+        }
 
-			return new InterleavedBufferAttribute(
-				data.interleavedBuffers[this.data.uuid],
-				this.itemSize,
-				this.offset,
-				this.normalized
-			);
-		}
-	}
+        if (data.interleavedBuffers[this.data.uuid] === undefined) {
+            data.interleavedBuffers[this.data.uuid] = this.data.clone(data);
+        }
+
+        return new InterleavedBufferAttribute(
+            data.interleavedBuffers[this.data.uuid],
+            this.itemSize,
+            this.offset,
+            this.normalized
+        );
+    }
+
 }
 
 export { InterleavedBufferAttribute };

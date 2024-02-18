@@ -34,6 +34,6 @@ void main() {
 	#include <logdepthbuf_vertex>
 	#include <clipping_planes_vertex>
 
-	vHighPrecisionZW = gl_Position.zw;
+    vHighPrecisionZW = gl_Position.zw;
 
 }

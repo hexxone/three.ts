@@ -30,7 +30,7 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-	vec4 diffuseColor = vec4(diffuse, opacity);
+    vec4 diffuseColor = vec4(diffuse, opacity);
 
 	#include <logdepthbuf_fragment>
 	#include <map_fragment>
@@ -40,25 +40,25 @@ void main() {
 	#include <normal_fragment_begin>
 	#include <normal_fragment_maps>
 
-	vec3 viewDir = normalize(vViewPosition);
-	vec3 x = normalize(vec3(viewDir.z, 0.0, -viewDir.x));
-	vec3 y = cross(viewDir, x);
-	vec2 uv = vec2(dot(x, normal), dot(y, normal)) * 0.495 + 0.5; // 0.495 to remove artifacts caused by undersized matcap disks
+    vec3 viewDir = normalize(vViewPosition);
+    vec3 x = normalize(vec3(viewDir.z, 0.0, -viewDir.x));
+    vec3 y = cross(viewDir, x);
+    vec2 uv = vec2(dot(x, normal), dot(y, normal)) * 0.495 + 0.5; // 0.495 to remove artifacts caused by undersized matcap disks
 
 	#ifdef USE_MATCAP
 
-	vec4 matcapColor = texture2D(matcap, uv);
-	matcapColor = matcapTexelToLinear(matcapColor);
+    vec4 matcapColor = texture2D(matcap, uv);
+    matcapColor = matcapTexelToLinear(matcapColor);
 
 	#else
 
-	vec4 matcapColor = vec4(1.0);
+    vec4 matcapColor = vec4(1.0);
 
 	#endif
 
-	vec3 outgoingLight = diffuseColor.rgb * matcapColor.rgb;
+    vec3 outgoingLight = diffuseColor.rgb * matcapColor.rgb;
 
-	gl_FragColor = vec4(outgoingLight, diffuseColor.a);
+    gl_FragColor = vec4(outgoingLight, diffuseColor.a);
 
 	#include <tonemapping_fragment>
 	#include <encodings_fragment>

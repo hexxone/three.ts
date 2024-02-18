@@ -1,232 +1,264 @@
-import { Vector3 } from "../../math/Vector3";
-import { Group } from "../../objects/Group";
+import { Vector3 } from '../../math/Vector3';
+import { Group } from '../../objects/Group';
 
-const _moveEvent = { type: "move" };
+const _moveEvent = {
+    type: 'move'
+};
 
 class WebXRController {
-	_targetRay: any;
-	_grip: any;
-	_hand: any;
 
-	constructor() {
-		this._targetRay = null;
-		this._grip = null;
-		this._hand = null;
-	}
+    _targetRay: any;
+    _grip: any;
+    _hand: any;
 
-	getHandSpace() {
-		if (this._hand === null) {
-			this._hand = new Group();
-			this._hand.matrixAutoUpdate = false;
-			this._hand.visible = false;
+    constructor() {
+        this._targetRay = null;
+        this._grip = null;
+        this._hand = null;
+    }
 
-			this._hand.joints = {};
-			this._hand.inputState = { pinching: false };
-		}
+    getHandSpace() {
+        if (this._hand === null) {
+            this._hand = new Group();
+            this._hand.matrixAutoUpdate = false;
+            this._hand.visible = false;
 
-		return this._hand;
-	}
+            this._hand.joints = {};
+            this._hand.inputState = {
+                pinching: false
+            };
+        }
 
-	getTargetRaySpace() {
-		if (this._targetRay === null) {
-			this._targetRay = new Group();
-			this._targetRay.matrixAutoUpdate = false;
-			this._targetRay.visible = false;
-			this._targetRay.hasLinearVelocity = false;
-			this._targetRay.linearVelocity = new Vector3();
-			this._targetRay.hasAngularVelocity = false;
-			this._targetRay.angularVelocity = new Vector3();
-		}
+        return this._hand;
+    }
 
-		return this._targetRay;
-	}
+    getTargetRaySpace() {
+        if (this._targetRay === null) {
+            this._targetRay = new Group();
+            this._targetRay.matrixAutoUpdate = false;
+            this._targetRay.visible = false;
+            this._targetRay.hasLinearVelocity = false;
+            this._targetRay.linearVelocity = new Vector3();
+            this._targetRay.hasAngularVelocity = false;
+            this._targetRay.angularVelocity = new Vector3();
+        }
 
-	getGripSpace() {
-		if (this._grip === null) {
-			this._grip = new Group();
-			this._grip.matrixAutoUpdate = false;
-			this._grip.visible = false;
-			this._grip.hasLinearVelocity = false;
-			this._grip.linearVelocity = new Vector3();
-			this._grip.hasAngularVelocity = false;
-			this._grip.angularVelocity = new Vector3();
-		}
+        return this._targetRay;
+    }
 
-		return this._grip;
-	}
+    getGripSpace() {
+        if (this._grip === null) {
+            this._grip = new Group();
+            this._grip.matrixAutoUpdate = false;
+            this._grip.visible = false;
+            this._grip.hasLinearVelocity = false;
+            this._grip.linearVelocity = new Vector3();
+            this._grip.hasAngularVelocity = false;
+            this._grip.angularVelocity = new Vector3();
+        }
 
-	dispatchEvent(event) {
-		if (this._targetRay !== null) {
-			this._targetRay.dispatchEvent(event);
-		}
+        return this._grip;
+    }
 
-		if (this._grip !== null) {
-			this._grip.dispatchEvent(event);
-		}
+    dispatchEvent(event) {
+        if (this._targetRay !== null) {
+            this._targetRay.dispatchEvent(event);
+        }
 
-		if (this._hand !== null) {
-			this._hand.dispatchEvent(event);
-		}
+        if (this._grip !== null) {
+            this._grip.dispatchEvent(event);
+        }
 
-		return this;
-	}
+        if (this._hand !== null) {
+            this._hand.dispatchEvent(event);
+        }
 
-	disconnect(inputSource) {
-		this.dispatchEvent({ type: "disconnected", data: inputSource });
+        return this;
+    }
 
-		if (this._targetRay !== null) {
-			this._targetRay.visible = false;
-		}
+    disconnect(inputSource) {
+        this.dispatchEvent({
+            type: 'disconnected',
+            data: inputSource
+        });
 
-		if (this._grip !== null) {
-			this._grip.visible = false;
-		}
+        if (this._targetRay !== null) {
+            this._targetRay.visible = false;
+        }
 
-		if (this._hand !== null) {
-			this._hand.visible = false;
-		}
+        if (this._grip !== null) {
+            this._grip.visible = false;
+        }
 
-		return this;
-	}
+        if (this._hand !== null) {
+            this._hand.visible = false;
+        }
 
-	update(inputSource, frame, referenceSpace) {
-		let inputPose = null;
-		let gripPose = null;
-		let handPose = null;
+        return this;
+    }
 
-		const targetRay = this._targetRay;
-		const grip = this._grip;
-		const hand = this._hand;
+    update(inputSource, frame, referenceSpace) {
+        let inputPose = null;
+        let gripPose = null;
+        let handPose = null;
 
-		if (inputSource && frame.session.visibilityState !== "visible-blurred") {
-			if (targetRay !== null) {
-				inputPose = frame.getPose(inputSource.targetRaySpace, referenceSpace);
+        const targetRay = this._targetRay;
+        const grip = this._grip;
+        const hand = this._hand;
 
-				if (inputPose !== null) {
-					targetRay.matrix.fromArray(inputPose.transform.matrix);
-					targetRay.matrix.decompose(
-						targetRay.position,
-						targetRay.rotation,
-						targetRay.scale
-					);
+        if (
+            inputSource
+            && frame.session.visibilityState !== 'visible-blurred'
+        ) {
+            if (targetRay !== null) {
+                inputPose = frame.getPose(
+                    inputSource.targetRaySpace,
+                    referenceSpace
+                );
 
-					if (inputPose.linearVelocity) {
-						targetRay.hasLinearVelocity = true;
-						targetRay.linearVelocity.copy(inputPose.linearVelocity);
-					} else {
-						targetRay.hasLinearVelocity = false;
-					}
+                if (inputPose !== null) {
+                    targetRay.matrix.fromArray(inputPose.transform.matrix);
+                    targetRay.matrix.decompose(
+                        targetRay.position,
+                        targetRay.rotation,
+                        targetRay.scale
+                    );
 
-					if (inputPose.angularVelocity) {
-						targetRay.hasAngularVelocity = true;
-						targetRay.angularVelocity.copy(inputPose.angularVelocity);
-					} else {
-						targetRay.hasAngularVelocity = false;
-					}
+                    if (inputPose.linearVelocity) {
+                        targetRay.hasLinearVelocity = true;
+                        targetRay.linearVelocity.copy(inputPose.linearVelocity);
+                    } else {
+                        targetRay.hasLinearVelocity = false;
+                    }
 
-					this.dispatchEvent(_moveEvent);
-				}
-			}
+                    if (inputPose.angularVelocity) {
+                        targetRay.hasAngularVelocity = true;
+                        targetRay.angularVelocity.copy(
+                            inputPose.angularVelocity
+                        );
+                    } else {
+                        targetRay.hasAngularVelocity = false;
+                    }
 
-			if (hand && inputSource.hand) {
-				handPose = true;
+                    this.dispatchEvent(_moveEvent);
+                }
+            }
 
-				for (const inputjoint of inputSource.hand.values()) {
-					// Update the joints groups with the XRJoint poses
-					const jointPose = frame.getJointPose(inputjoint, referenceSpace);
+            if (hand && inputSource.hand) {
+                handPose = true;
 
-					if (hand.joints[inputjoint.jointName] === undefined) {
-						// The transform of this joint will be updated with the joint pose on each frame
-						const joint = new Group();
-						joint.matrixAutoUpdate = false;
-						joint.visible = false;
-						hand.joints[inputjoint.jointName] = joint;
-						// ??
-						hand.add(joint);
-					}
+                for (const inputjoint of inputSource.hand.values()) {
+                    // Update the joints groups with the XRJoint poses
+                    const jointPose = frame.getJointPose(
+                        inputjoint,
+                        referenceSpace
+                    );
 
-					const joint = hand.joints[inputjoint.jointName];
+                    if (hand.joints[inputjoint.jointName] === undefined) {
+                        // The transform of this joint will be updated with the joint pose on each frame
+                        const joint = new Group();
 
-					if (jointPose !== null) {
-						joint.matrix.fromArray(jointPose.transform.matrix);
-						joint.matrix.decompose(joint.position, joint.rotation, joint.scale);
-						joint.jointRadius = jointPose.radius;
-					}
+                        joint.matrixAutoUpdate = false;
+                        joint.visible = false;
+                        hand.joints[inputjoint.jointName] = joint;
+                        // ??
+                        hand.add(joint);
+                    }
 
-					joint.visible = jointPose !== null;
-				}
+                    const joint = hand.joints[inputjoint.jointName];
 
-				// Custom events
+                    if (jointPose !== null) {
+                        joint.matrix.fromArray(jointPose.transform.matrix);
+                        joint.matrix.decompose(
+                            joint.position,
+                            joint.rotation,
+                            joint.scale
+                        );
+                        joint.jointRadius = jointPose.radius;
+                    }
 
-				// Check pinchz
-				const indexTip = hand.joints["index-finger-tip"];
-				const thumbTip = hand.joints["thumb-tip"];
-				const distance = indexTip.position.distanceTo(thumbTip.position);
+                    joint.visible = jointPose !== null;
+                }
 
-				const distanceToPinch = 0.02;
-				const threshold = 0.005;
+                // Custom events
 
-				if (
-					hand.inputState.pinching &&
-					distance > distanceToPinch + threshold
-				) {
-					hand.inputState.pinching = false;
-					this.dispatchEvent({
-						type: "pinchend",
-						handedness: inputSource.handedness,
-						target: this,
-					});
-				} else if (
-					!hand.inputState.pinching &&
-					distance <= distanceToPinch - threshold
-				) {
-					hand.inputState.pinching = true;
-					this.dispatchEvent({
-						type: "pinchstart",
-						handedness: inputSource.handedness,
-						target: this,
-					});
-				}
-			} else {
-				if (grip !== null && inputSource.gripSpace) {
-					gripPose = frame.getPose(inputSource.gripSpace, referenceSpace);
+                // Check pinchz
+                const indexTip = hand.joints['index-finger-tip'];
+                const thumbTip = hand.joints['thumb-tip'];
+                const distance = indexTip.position.distanceTo(
+                    thumbTip.position
+                );
 
-					if (gripPose !== null) {
-						grip.matrix.fromArray(gripPose.transform.matrix);
-						grip.matrix.decompose(grip.position, grip.rotation, grip.scale);
+                const distanceToPinch = 0.02;
+                const threshold = 0.005;
 
-						if (gripPose.linearVelocity) {
-							grip.hasLinearVelocity = true;
-							grip.linearVelocity.copy(gripPose.linearVelocity);
-						} else {
-							grip.hasLinearVelocity = false;
-						}
+                if (
+                    hand.inputState.pinching
+                    && distance > distanceToPinch + threshold
+                ) {
+                    hand.inputState.pinching = false;
+                    this.dispatchEvent({
+                        type: 'pinchend',
+                        handedness: inputSource.handedness,
+                        target: this
+                    });
+                } else if (
+                    !hand.inputState.pinching
+                    && distance <= distanceToPinch - threshold
+                ) {
+                    hand.inputState.pinching = true;
+                    this.dispatchEvent({
+                        type: 'pinchstart',
+                        handedness: inputSource.handedness,
+                        target: this
+                    });
+                }
+            } else if (grip !== null && inputSource.gripSpace) {
+                gripPose = frame.getPose(
+                    inputSource.gripSpace,
+                    referenceSpace
+                );
 
-						if (gripPose.angularVelocity) {
-							grip.hasAngularVelocity = true;
-							grip.angularVelocity.copy(gripPose.angularVelocity);
-						} else {
-							grip.hasAngularVelocity = false;
-						}
-					}
-				}
-			}
-		}
+                if (gripPose !== null) {
+                    grip.matrix.fromArray(gripPose.transform.matrix);
+                    grip.matrix.decompose(
+                        grip.position,
+                        grip.rotation,
+                        grip.scale
+                    );
 
-		if (targetRay !== null) {
-			targetRay.visible = inputPose !== null;
-		}
+                    if (gripPose.linearVelocity) {
+                        grip.hasLinearVelocity = true;
+                        grip.linearVelocity.copy(gripPose.linearVelocity);
+                    } else {
+                        grip.hasLinearVelocity = false;
+                    }
 
-		if (grip !== null) {
-			grip.visible = gripPose !== null;
-		}
+                    if (gripPose.angularVelocity) {
+                        grip.hasAngularVelocity = true;
+                        grip.angularVelocity.copy(gripPose.angularVelocity);
+                    } else {
+                        grip.hasAngularVelocity = false;
+                    }
+                }
+            }
+        }
 
-		if (hand !== null) {
-			hand.visible = handPose !== null;
-		}
+        if (targetRay !== null) {
+            targetRay.visible = inputPose !== null;
+        }
 
-		return this;
-	}
+        if (grip !== null) {
+            grip.visible = gripPose !== null;
+        }
+
+        if (hand !== null) {
+            hand.visible = handPose !== null;
+        }
+
+        return this;
+    }
+
 }
 
 export { WebXRController };

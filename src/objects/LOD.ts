@@ -1,8 +1,8 @@
-import { Camera } from "../cameras/Camera";
-import { Object3D } from "../core/Object3D";
-import { Raycaster } from "../core/Raycaster";
-import { Vector3 } from "../math/Vector3";
-import { IIntersection } from "./IIntersection";
+import { Camera } from '../cameras/Camera';
+import { Object3D } from '../core/Object3D';
+import { Raycaster } from '../core/Raycaster';
+import { Vector3 } from '../math/Vector3';
+import { IIntersection } from './IIntersection';
 
 const _v1 = /* @__PURE__*/ new Vector3();
 const _v2 = /* @__PURE__*/ new Vector3();
@@ -11,129 +11,134 @@ const _v2 = /* @__PURE__*/ new Vector3();
  * @public
  */
 class LOD extends Object3D {
-	_currentLevel: number;
-	levels: any;
 
-	constructor() {
-		super();
+    _currentLevel: number;
+    levels: any;
 
-		this._currentLevel = 0;
+    constructor() {
+        super();
 
-		this.type = "LOD";
+        this._currentLevel = 0;
 
-		Object.defineProperties(this, {
-			levels: {
-				enumerable: true,
-				value: [],
-			},
-			isLOD: {
-				value: true,
-			},
-		});
+        this.type = 'LOD';
 
-		this.autoUpdate = true;
-	}
+        Object.defineProperties(this, {
+            levels: {
+                enumerable: true,
+                value: []
+            },
+            isLOD: {
+                value: true
+            }
+        });
 
-	copy(source: LOD) {
-		super.copy(source, false);
+        this.autoUpdate = true;
+    }
 
-		const levels = source.levels;
+    copy(source: LOD) {
+        super.copy(source, false);
 
-		for (let i = 0, l = levels.length; i < l; i++) {
-			const level = levels[i];
+        const { levels } = source;
 
-			this.addLevel(level.object.clone(), level.distance);
-		}
+        for (let i = 0, l = levels.length; i < l; i++) {
+            const level = levels[i];
 
-		this.autoUpdate = source.autoUpdate;
+            this.addLevel(level.object.clone(), level.distance);
+        }
 
-		return this;
-	}
+        this.autoUpdate = source.autoUpdate;
 
-	addLevel(object, distance = 0) {
-		distance = Math.abs(distance);
+        return this;
+    }
 
-		const levels = this.levels;
+    addLevel(object, distance = 0) {
+        distance = Math.abs(distance);
 
-		let l;
+        const { levels } = this;
 
-		for (l = 0; l < levels.length; l++) {
-			if (distance < levels[l].distance) {
-				break;
-			}
-		}
+        let l;
 
-		levels.splice(l, 0, { distance: distance, object: object });
+        for (l = 0; l < levels.length; l++) {
+            if (distance < levels[l].distance) {
+                break;
+            }
+        }
 
-		this.add(object);
+        levels.splice(l, 0, {
+            distance,
+            object
+        });
 
-		return this;
-	}
+        this.add(object);
 
-	getCurrentLevel() {
-		return this._currentLevel;
-	}
+        return this;
+    }
 
-	getObjectForDistance(distance) {
-		const levels = this.levels;
+    getCurrentLevel() {
+        return this._currentLevel;
+    }
 
-		if (levels.length > 0) {
-			let i;
-			let l;
+    getObjectForDistance(distance) {
+        const { levels } = this;
 
-			for (i = 1, l = levels.length; i < l; i++) {
-				if (distance < levels[i].distance) {
-					break;
-				}
-			}
+        if (levels.length > 0) {
+            let i;
+            let l;
 
-			return levels[i - 1].object;
-		}
+            for (i = 1, l = levels.length; i < l; i++) {
+                if (distance < levels[i].distance) {
+                    break;
+                }
+            }
 
-		return null;
-	}
+            return levels[i - 1].object;
+        }
 
-	raycast(raycaster: Raycaster, intersects: IIntersection[]) {
-		if (this.levels.length > 0) {
-			_v1.setFromMatrixPosition(this.matrixWorld);
+        return null;
+    }
 
-			const distance = raycaster.ray.origin.distanceTo(_v1);
+    raycast(raycaster: Raycaster, intersects: IIntersection[]) {
+        if (this.levels.length > 0) {
+            _v1.setFromMatrixPosition(this.matrixWorld);
 
-			this.getObjectForDistance(distance).raycast(raycaster, intersects);
-		}
-	}
+            const distance = raycaster.ray.origin.distanceTo(_v1);
 
-	update(...args) {
-		const camera = args[0] as Camera;
-		const levels = this.levels;
+            this.getObjectForDistance(distance).raycast(raycaster, intersects);
+        }
+    }
 
-		if (levels.length > 1) {
-			_v1.setFromMatrixPosition(camera.matrixWorld);
-			_v2.setFromMatrixPosition(this.matrixWorld);
+    update(...args) {
+        const camera = args[0] as Camera;
+        const { levels } = this;
 
-			const distance = _v1.distanceTo(_v2) / camera.zoom;
+        if (levels.length > 1) {
+            _v1.setFromMatrixPosition(camera.matrixWorld);
+            _v2.setFromMatrixPosition(this.matrixWorld);
 
-			levels[0].object.visible = true;
+            const distance = _v1.distanceTo(_v2) / camera.zoom;
 
-			let i;
-			let l;
+            levels[0].object.visible = true;
 
-			for (i = 1, l = levels.length; i < l; i++) {
-				if (distance >= levels[i].distance) {
-					levels[i - 1].object.visible = false;
-					levels[i].object.visible = true;
-				} else {
-					break;
-				}
-			}
+            let i;
+            let l;
 
-			this._currentLevel = i - 1;
+            for (i = 1, l = levels.length; i < l; i++) {
+                if (distance >= levels[i].distance) {
+                    levels[i - 1].object.visible = false;
+                    levels[i].object.visible = true;
+                } else {
+                    break;
+                }
+            }
 
-			for (; i < l; i++) {
-				levels[i].object.visible = false;
-			}
-		}
-	}
+            this._currentLevel = i - 1;
+
+            for (; i < l; i++) {
+                levels[i].object.visible = false;
+            }
+        }
+    }
+
 }
 
 export { LOD };

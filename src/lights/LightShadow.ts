@@ -1,130 +1,132 @@
-import { Camera } from "../cameras/Camera";
-import { Frustum } from "../math/Frustum";
-import { Matrix4 } from "../math/Matrix4";
-import { Vector2 } from "../math/Vector2";
-import { Vector3 } from "../math/Vector3";
-import { Vector4 } from "../math/Vector4";
-import { WebGLRenderTarget } from "../renderers/WebGLRenderTarget";
+import { Camera } from '../cameras/Camera';
+import { Frustum } from '../math/Frustum';
+import { Matrix4 } from '../math/Matrix4';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
+import { Vector4 } from '../math/Vector4';
+import { WebGLRenderTarget } from '../renderers/WebGLRenderTarget';
 
 const _projScreenMatrix = /* @__PURE__*/ new Matrix4();
 const _lightPositionWorld = /* @__PURE__*/ new Vector3();
 const _lookTarget = /* @__PURE__*/ new Vector3();
 
 class LightShadow {
-	camera: Camera;
-	bias: number;
-	normalBias: number;
-	radius: number;
-	mapSize: Vector2;
-	map: WebGLRenderTarget;
-	mapPass: WebGLRenderTarget;
-	matrix: Matrix4;
-	autoUpdate: boolean;
-	needsUpdate: boolean;
 
-	_frustum: Frustum;
-	_frameExtents: Vector2;
-	_viewportCount: number;
-	_viewports: Vector4[];
+    camera: Camera;
+    bias: number;
+    normalBias: number;
+    radius: number;
+    mapSize: Vector2;
+    map: WebGLRenderTarget;
+    mapPass: WebGLRenderTarget;
+    matrix: Matrix4;
+    autoUpdate: boolean;
+    needsUpdate: boolean;
 
-	isDirectionalLightShadow: boolean;
-	isPointLightShadow: boolean;
-	isSpotLightShadow: boolean;
+    _frustum: Frustum;
+    _frameExtents: Vector2;
+    _viewportCount: number;
+    _viewports: Vector4[];
 
-	constructor(camera) {
-		this.camera = camera;
+    isDirectionalLightShadow: boolean;
+    isPointLightShadow: boolean;
+    isSpotLightShadow: boolean;
 
-		this.bias = 0;
-		this.normalBias = 0;
-		this.radius = 1;
+    constructor(camera) {
+        this.camera = camera;
 
-		this.mapSize = new Vector2(512, 512);
+        this.bias = 0;
+        this.normalBias = 0;
+        this.radius = 1;
 
-		this.map = null;
-		this.mapPass = null;
-		this.matrix = new Matrix4();
+        this.mapSize = new Vector2(512, 512);
 
-		this.autoUpdate = true;
-		this.needsUpdate = false;
+        this.map = null;
+        this.mapPass = null;
+        this.matrix = new Matrix4();
 
-		this._frustum = new Frustum();
-		this._frameExtents = new Vector2(1, 1);
+        this.autoUpdate = true;
+        this.needsUpdate = false;
 
-		this._viewportCount = 1;
+        this._frustum = new Frustum();
+        this._frameExtents = new Vector2(1, 1);
 
-		this._viewports = [new Vector4(0, 0, 1, 1)];
-	}
+        this._viewportCount = 1;
 
-	getViewportCount() {
-		return this._viewportCount;
-	}
+        this._viewports = [new Vector4(0, 0, 1, 1)];
+    }
 
-	getFrustum() {
-		return this._frustum;
-	}
+    getViewportCount() {
+        return this._viewportCount;
+    }
 
-	updateMatrices(light, viewportIndex?) {
-		const shadowCamera = this.camera;
-		const shadowMatrix = this.matrix;
+    getFrustum() {
+        return this._frustum;
+    }
 
-		_lightPositionWorld.setFromMatrixPosition(light.matrixWorld);
-		shadowCamera.position.copy(_lightPositionWorld);
+    updateMatrices(light, viewportIndex?) {
+        const shadowCamera = this.camera;
+        const shadowMatrix = this.matrix;
 
-		_lookTarget.setFromMatrixPosition(light.target.matrixWorld);
-		shadowCamera.lookAt(_lookTarget);
-		shadowCamera.updateMatrixWorld();
+        _lightPositionWorld.setFromMatrixPosition(light.matrixWorld);
+        shadowCamera.position.copy(_lightPositionWorld);
 
-		_projScreenMatrix.multiplyMatrices(
-			shadowCamera.projectionMatrix,
-			shadowCamera.matrixWorldInverse
-		);
-		this._frustum.setFromProjectionMatrix(_projScreenMatrix);
+        _lookTarget.setFromMatrixPosition(light.target.matrixWorld);
+        shadowCamera.lookAt(_lookTarget);
+        shadowCamera.updateMatrixWorld();
 
-		shadowMatrix.set(
-			0.5,
-			0.0,
-			0.0,
-			0.5,
-			0.0,
-			0.5,
-			0.0,
-			0.5,
-			0.0,
-			0.0,
-			0.5,
-			0.5,
-			0.0,
-			0.0,
-			0.0,
-			1.0
-		);
+        _projScreenMatrix.multiplyMatrices(
+            shadowCamera.projectionMatrix,
+            shadowCamera.matrixWorldInverse
+        );
+        this._frustum.setFromProjectionMatrix(_projScreenMatrix);
 
-		shadowMatrix.multiply(shadowCamera.projectionMatrix);
-		shadowMatrix.multiply(shadowCamera.matrixWorldInverse);
-	}
+        shadowMatrix.set(
+            0.5,
+            0.0,
+            0.0,
+            0.5,
+            0.0,
+            0.5,
+            0.0,
+            0.5,
+            0.0,
+            0.0,
+            0.5,
+            0.5,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+        );
 
-	getViewport(viewportIndex) {
-		return this._viewports[viewportIndex];
-	}
+        shadowMatrix.multiply(shadowCamera.projectionMatrix);
+        shadowMatrix.multiply(shadowCamera.matrixWorldInverse);
+    }
 
-	getFrameExtents() {
-		return this._frameExtents;
-	}
+    getViewport(viewportIndex) {
+        return this._viewports[viewportIndex];
+    }
 
-	copy(source: LightShadow) {
-		this.camera = source.camera.clone();
+    getFrameExtents() {
+        return this._frameExtents;
+    }
 
-		this.bias = source.bias;
-		this.radius = source.radius;
+    copy(source: LightShadow) {
+        this.camera = source.camera.clone();
 
-		this.mapSize.copy(source.mapSize);
+        this.bias = source.bias;
+        this.radius = source.radius;
 
-		return this;
-	}
+        this.mapSize.copy(source.mapSize);
 
-	clone() {
-		return new LightShadow(null).copy(this);
-	}
+        return this;
+    }
+
+    clone() {
+        return new LightShadow(null).copy(this);
+    }
+
 }
 
 export { LightShadow };

@@ -1,69 +1,72 @@
-import { LinearFilter, RGBFormat } from "../constants";
-import { Texture } from "./Texture";
+import { LinearFilter, RGBFormat } from '../constants';
+import { Texture } from './Texture';
 
 /**
  * @public
  */
 class VideoTexture extends Texture {
-	constructor(
-		video,
-		mapping?,
-		wrapS?,
-		wrapT?,
-		magFilter?,
-		minFilter?,
-		format?,
-		type?,
-		anisotropy?
-	) {
-		super(
-			video,
-			mapping,
-			wrapS,
-			wrapT,
-			magFilter,
-			minFilter,
-			format,
-			type,
-			anisotropy
-		);
 
-		this.isVideoTexture = true;
+    constructor(
+        video,
+        mapping?,
+        wrapS?,
+        wrapT?,
+        magFilter?,
+        minFilter?,
+        format?,
+        type?,
+        anisotropy?
+    ) {
+        super(
+            video,
+            mapping,
+            wrapS,
+            wrapT,
+            magFilter,
+            minFilter,
+            format,
+            type,
+            anisotropy
+        );
 
-		this.format = format !== undefined ? format : RGBFormat;
+        this.isVideoTexture = true;
 
-		this.minFilter = minFilter !== undefined ? minFilter : LinearFilter;
-		this.magFilter = magFilter !== undefined ? magFilter : LinearFilter;
+        this.format = format !== undefined ? format : RGBFormat;
 
-		this.generateMipmaps = false;
+        this.minFilter = minFilter !== undefined ? minFilter : LinearFilter;
+        this.magFilter = magFilter !== undefined ? magFilter : LinearFilter;
 
-		const scope = this;
+        this.generateMipmaps = false;
 
-		function updateVideo() {
-			scope.needsUpdate = true;
-			video.requestVideoFrameCallback(updateVideo);
-		}
+        // eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias
+        const scope = this;
 
-		if (typeof video["requestVideoFrameCallback"] !== "undefined") {
-			video.requestVideoFrameCallback(updateVideo);
-		}
-	}
+        function updateVideo() {
+            scope.needsUpdate = true;
+            video.requestVideoFrameCallback(updateVideo);
+        }
 
-	clone() {
-		return new VideoTexture(this.image).copy(this);
-	}
+        if (typeof video.requestVideoFrameCallback !== 'undefined') {
+            video.requestVideoFrameCallback(updateVideo);
+        }
+    }
 
-	update() {
-		const video = this.image;
-		const hasVideoFrameCallback = "requestVideoFrameCallback" in video;
+    clone() {
+        return new VideoTexture(this.image).copy(this);
+    }
 
-		if (
-			hasVideoFrameCallback === false &&
-			video.readyState >= video.HAVE_CURRENT_DATA
-		) {
-			this.needsUpdate = true;
-		}
-	}
+    update() {
+        const video = this.image;
+        const hasVideoFrameCallback = 'requestVideoFrameCallback' in video;
+
+        if (
+            hasVideoFrameCallback === false
+            && video.readyState >= video.HAVE_CURRENT_DATA
+        ) {
+            this.needsUpdate = true;
+        }
+    }
+
 }
 
 export { VideoTexture };

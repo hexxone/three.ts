@@ -1,70 +1,72 @@
-import { Loader } from "./Loader";
-import { Cache } from "./Cache"
+import { Loader } from './Loader';
+import { Cache } from './Cache';
 
 export class ImageLoader extends Loader {
-	constructor(manager?) {
-		super(manager);
-	}
 
-	load(url, onLoad?, onProgress?, onError?) {
-		if (this.path !== undefined) url = this.path + url;
+    constructor(manager?) {
+        super(manager);
+    }
 
-		url = this.manager.resolveURL(url);
+    load(url, onLoad?, onProgress?, onError?) {
+        if (this.path !== undefined) { url = this.path + url; }
 
-		const scope = this;
+        url = this.manager.resolveURL(url);
 
-		const cached = Cache.get(url);
+        // eslint-disable-next-line consistent-this, @typescript-eslint/no-this-alias
+        const scope = this;
 
-		if (cached !== undefined) {
-			scope.manager.itemStart(url);
+        const cached = Cache.get(url);
 
-			setTimeout(function () {
-				if (onLoad) onLoad(cached);
+        if (cached !== undefined) {
+            scope.manager.itemStart(url);
 
-				scope.manager.itemEnd(url);
-			}, 0);
+            setTimeout(() => {
+                if (onLoad) { onLoad(cached); }
 
-			return cached;
-		}
+                scope.manager.itemEnd(url);
+            }, 0);
 
-		const image = document.createElementNS(
-			"http://www.w3.org/1999/xhtml",
-			"img"
-		);
+            return cached;
+        }
 
-		const onImageLoad = function (event) {
-			image.removeEventListener("load", onImageLoad, false);
-			image.removeEventListener("error", onImageError, false);
+        const image = document.createElementNS(
+            'http://www.w3.org/1999/xhtml',
+            'img'
+        );
 
-			Cache.add(url, this);
+        const onImageLoad = function(event) {
+            image.removeEventListener('load', onImageLoad, false);
+            image.removeEventListener('error', onImageError, false);
 
-			if (onLoad) onLoad(this);
+            Cache.add(url, this);
 
-			scope.manager.itemEnd(url);
-		};
+            if (onLoad) { onLoad(this); }
 
-		const onImageError = function (event) {
-			image.removeEventListener("load", onImageLoad, false);
-			image.removeEventListener("error", onImageError, false);
+            scope.manager.itemEnd(url);
+        };
 
-			if (onError) onError(event);
+        const onImageError = function(event) {
+            image.removeEventListener('load', onImageLoad, false);
+            image.removeEventListener('error', onImageError, false);
 
-			scope.manager.itemError(url);
-			scope.manager.itemEnd(url);
-		};
+            if (onError) { onError(event); }
 
-		image.addEventListener("load", onImageLoad, false);
-		image.addEventListener("error", onImageError, false);
+            scope.manager.itemError(url);
+            scope.manager.itemEnd(url);
+        };
 
-		if (url.substr(0, 5) !== "data:") {
-			if (this.crossOrigin !== undefined)
-				image.setAttribute("crossOrigin", this.crossOrigin);
-		}
+        image.addEventListener('load', onImageLoad, false);
+        image.addEventListener('error', onImageError, false);
 
-		scope.manager.itemStart(url);
+        if (url.substr(0, 5) !== 'data:') {
+            if (this.crossOrigin !== undefined) { image.setAttribute('crossOrigin', this.crossOrigin); }
+        }
 
-		image.setAttribute("src", url);
+        scope.manager.itemStart(url);
 
-		return image;
-	}
+        image.setAttribute('src', url);
+
+        return image;
+    }
+
 }

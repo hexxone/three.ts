@@ -35,7 +35,7 @@ void main() {
 
 #ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED
 
-	vNormal = normalize(transformedNormal);
+    vNormal = normalize(transformedNormal);
 
 #endif
 
@@ -47,7 +47,7 @@ void main() {
 	#include <logdepthbuf_vertex>
 	#include <clipping_planes_vertex>
 
-	vViewPosition = -mvPosition.xyz;
+    vViewPosition = -mvPosition.xyz;
 
 	#include <worldpos_vertex>
 	#include <shadowmap_vertex>

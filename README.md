@@ -77,6 +77,3 @@ git clone --depth=1 https://github.com/hexxone/three.ts.git
 ### Change log
 
 [Original Releases](https://github.com/mrdoob/three.js/releases)
-
-[lgtm]: https://img.shields.io/lgtm/alerts/github/hexxone/three.ts
-[lgtm-url]: https://lgtm.com/projects/g/hexxone/three.ts/

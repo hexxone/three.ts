@@ -1,105 +1,106 @@
-
 /**
  * @public
  */
 export class LoadingManager {
-	onStart: any;
-	onLoad: any;
-	onProgress: any;
-	onError: any;
-	isLoading = false;
-	itemsLoaded = 0;
-	itemsTotal = 0;
-	urlModifier = undefined;
-	handlers = [];
 
-	constructor(onLoad?, onProgress?, onError?) {
-		// Refer to #5689 for the reason why we don't set .onStart
-		// in the constructor
-		this.onStart = undefined;
-		this.onLoad = onLoad;
-		this.onProgress = onProgress;
-		this.onError = onError;
-	}
+    onStart: any;
+    onLoad: any;
+    onProgress: any;
+    onError: any;
+    isLoading = false;
+    itemsLoaded = 0;
+    itemsTotal = 0;
+    urlModifier = undefined;
+    handlers = [];
 
-	itemStart(url) {
-		this.itemsTotal++;
+    constructor(onLoad?, onProgress?, onError?) {
+        // Refer to #5689 for the reason why we don't set .onStart
+        // in the constructor
+        this.onStart = undefined;
+        this.onLoad = onLoad;
+        this.onProgress = onProgress;
+        this.onError = onError;
+    }
 
-		if (this.isLoading === false) {
-			if (this.onStart !== undefined) {
-				this.onStart(url, this.itemsLoaded, this.itemsTotal);
-			}
-		}
+    itemStart(url) {
+        this.itemsTotal++;
 
-		this.isLoading = true;
-	}
+        if (this.isLoading === false) {
+            if (this.onStart !== undefined) {
+                this.onStart(url, this.itemsLoaded, this.itemsTotal);
+            }
+        }
 
-	itemEnd(url) {
-		this.itemsLoaded++;
+        this.isLoading = true;
+    }
 
-		if (this.onProgress !== undefined) {
-			this.onProgress(url, this.itemsLoaded, this.itemsTotal);
-		}
+    itemEnd(url) {
+        this.itemsLoaded++;
 
-		if (this.itemsLoaded === this.itemsTotal) {
-			this.isLoading = false;
+        if (this.onProgress !== undefined) {
+            this.onProgress(url, this.itemsLoaded, this.itemsTotal);
+        }
 
-			if (this.onLoad !== undefined) {
-				this.onLoad();
-			}
-		}
-	}
+        if (this.itemsLoaded === this.itemsTotal) {
+            this.isLoading = false;
 
-	itemError(url) {
-		if (this.onError !== undefined) {
-			this.onError(url);
-		}
-	}
+            if (this.onLoad !== undefined) {
+                this.onLoad();
+            }
+        }
+    }
 
-	resolveURL(url) {
-		if (this.urlModifier) {
-			return this.urlModifier(url);
-		}
+    itemError(url) {
+        if (this.onError !== undefined) {
+            this.onError(url);
+        }
+    }
 
-		return url;
-	}
+    resolveURL(url) {
+        if (this.urlModifier) {
+            return this.urlModifier(url);
+        }
 
-	setURLModifier(transform) {
-		this.urlModifier = transform;
+        return url;
+    }
 
-		return this;
-	}
+    setURLModifier(transform) {
+        this.urlModifier = transform;
 
-	addHandler(regex, loader) {
-		this.handlers.push(regex, loader);
+        return this;
+    }
 
-		return this;
-	}
+    addHandler(regex, loader) {
+        this.handlers.push(regex, loader);
 
-	removeHandler(regex) {
-		const index = this.handlers.indexOf(regex);
+        return this;
+    }
 
-		if (index !== -1) {
-			this.handlers.splice(index, 2);
-		}
+    removeHandler(regex) {
+        const index = this.handlers.indexOf(regex);
 
-		return this;
-	}
+        if (index !== -1) {
+            this.handlers.splice(index, 2);
+        }
 
-	getHandler(file) {
-		for (let i = 0, l = this.handlers.length; i < l; i += 2) {
-			const regex = this.handlers[i];
-			const loader = this.handlers[i + 1];
+        return this;
+    }
 
-			if (regex.global) regex.lastIndex = 0; // see #17920
+    getHandler(file) {
+        for (let i = 0, l = this.handlers.length; i < l; i += 2) {
+            const regex = this.handlers[i];
+            const loader = this.handlers[i + 1];
 
-			if (regex.test(file)) {
-				return loader;
-			}
-		}
+            if (regex.global) { regex.lastIndex = 0; } // see #17920
 
-		return null;
-	}
+            if (regex.test(file)) {
+                return loader;
+            }
+        }
+
+        return null;
+    }
+
 }
 
 export const DefaultLoadingManager = new LoadingManager();

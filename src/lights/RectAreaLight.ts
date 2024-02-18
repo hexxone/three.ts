@@ -1,26 +1,27 @@
-import { Light } from "./Light";
-
+import { Light } from './Light';
 
 class RectAreaLight extends Light {
-	constructor(color, intensity, width = 10, height = 10) {
-		super(color, intensity);
 
-		this.isRectAreaLight = true;
+    constructor(color, intensity, width = 10, height = 10) {
+        super(color, intensity);
 
-		this.type = "RectAreaLight";
+        this.isRectAreaLight = true;
 
-		this.width = width;
-		this.height = height;
-	}
+        this.type = 'RectAreaLight';
 
-	copy(source: RectAreaLight) {
-		super.copy(source);
+        this.width = width;
+        this.height = height;
+    }
 
-		this.width = source.width;
-		this.height = source.height;
+    copy(source: RectAreaLight) {
+        super.copy(source);
 
-		return this;
-	}
+        this.width = source.width;
+        this.height = source.height;
+
+        return this;
+    }
+
 }
 
 export { RectAreaLight };

@@ -32,7 +32,7 @@ void main() {
 
 	#ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED
 
-	vNormal = normalize(transformedNormal);
+    vNormal = normalize(transformedNormal);
 
 	#endif
 
@@ -46,6 +46,6 @@ void main() {
 	#include <clipping_planes_vertex>
 	#include <fog_vertex>
 
-	vViewPosition = -mvPosition.xyz;
+    vViewPosition = -mvPosition.xyz;
 
 }

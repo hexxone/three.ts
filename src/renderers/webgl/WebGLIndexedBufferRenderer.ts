@@ -1,84 +1,87 @@
-import { IBuffered } from "./WebGLAttributes";
-import { WebGLCapabilities } from "./WebGLCapabilities";
-import { WebGLExtensions } from "./WebGLExtensions";
-import { WebGLInfo } from "./WebGLInfo";
+import { IBuffered } from './WebGLAttributes';
+import { WebGLCapabilities } from './WebGLCapabilities';
+import { WebGLExtensions } from './WebGLExtensions';
+import { WebGLInfo } from './WebGLInfo';
 
 /**
  * @public
  */
 class WebGLIndexedBufferRenderer {
-	gl: GLESRenderingContext;
-	extensions: WebGLExtensions;
-	info: WebGLInfo;
-	capabilities: WebGLCapabilities;
 
-	mode: number;
-	type: number;
-	bytesPerElement: number;
+    gl: GLESRenderingContext;
+    extensions: WebGLExtensions;
+    info: WebGLInfo;
+    capabilities: WebGLCapabilities;
 
-	constructor(
-		gl: GLESRenderingContext,
-		extensions: WebGLExtensions,
-		info: WebGLInfo,
-		capabilities: WebGLCapabilities
-	) {
-		this.gl = gl;
-		this.extensions = extensions;
-		this.info = info;
-		this.capabilities = capabilities;
-	}
+    mode: number;
+    type: number;
+    bytesPerElement: number;
 
-	setMode(value) {
-		this.mode = value;
-	}
+    constructor(
+        gl: GLESRenderingContext,
+        extensions: WebGLExtensions,
+        info: WebGLInfo,
+        capabilities: WebGLCapabilities
+    ) {
+        this.gl = gl;
+        this.extensions = extensions;
+        this.info = info;
+        this.capabilities = capabilities;
+    }
 
-	setIndex(value: IBuffered) {
-		this.type = value.type;
-		this.bytesPerElement = value.bytesPerElement;
-	}
+    setMode(value) {
+        this.mode = value;
+    }
 
-	render(start, count) {
-		this.gl.drawElements(
-			this.mode,
-			count,
-			this.type,
-			start * this.bytesPerElement
-		);
+    setIndex(value: IBuffered) {
+        this.type = value.type;
+        this.bytesPerElement = value.bytesPerElement;
+    }
 
-		this.info.update(count, this.mode, 1);
-	}
+    render(start, count) {
+        this.gl.drawElements(
+            this.mode,
+            count,
+            this.type,
+            start * this.bytesPerElement
+        );
 
-	renderInstances(start, count, primcount) {
-		if (primcount === 0) return;
+        this.info.update(count, this.mode, 1);
+    }
 
-		let extension;
-		let methodName;
+    renderInstances(start, count, primcount) {
+        if (primcount === 0) { return; }
 
-		if (this.capabilities.isWebGL2) {
-			extension = this.gl;
-			methodName = "drawElementsInstanced";
-		} else {
-			extension = this.extensions.get("ANGLE_instanced_arrays");
-			methodName = "drawElementsInstancedANGLE";
+        let extension;
+        let methodName;
 
-			if (extension === null) {
-				console.error(
-					"WebGLIndexedBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays."
-				);
-				return;
-			}
-		}
+        if (this.capabilities.isWebGL2) {
+            extension = this.gl;
+            methodName = 'drawElementsInstanced';
+        } else {
+            extension = this.extensions.get('ANGLE_instanced_arrays');
+            methodName = 'drawElementsInstancedANGLE';
 
-		extension[methodName](
-			this.mode,
-			count,
-			this.type,
-			start * this.bytesPerElement,
-			primcount
-		);
+            if (extension === null) {
+                console.error(
+                    'WebGLIndexedBufferRenderer: using InstancedBufferGeometry but hardware does not support extension ANGLE_instanced_arrays.'
+                );
 
-		this.info.update(count, this.mode, primcount);
-	}
+                return;
+            }
+        }
+
+        extension[methodName](
+            this.mode,
+            count,
+            this.type,
+            start * this.bytesPerElement,
+            primcount
+        );
+
+        this.info.update(count, this.mode, primcount);
+    }
+
 }
 
 export { WebGLIndexedBufferRenderer };

@@ -2,84 +2,95 @@
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-import { AnimationAction } from "../animation/AnimationAction";
+import { AnimationAction } from '../animation/AnimationAction';
 
-export interface EventObject {
-	target?: EventDispatcher;
-	action?: AnimationAction;
-	direction?: number;
-	loopDelta?: number;
-	type: string;
-}
+export type EventObject = {
+    target?: EventDispatcher;
+    action?: AnimationAction;
+    direction?: number;
+    loopDelta?: number;
+    type: string;
+};
 
-const EventCallback = function (event: EventObject): void {};
+type EventCallback = (event: EventObject) => void;
 
 /**
  * @public
  */
 class EventDispatcher {
-	_listeners: {
-		[name: string]: typeof EventCallback[];
-	};
 
-	isWebGLRenderTarget: boolean;
+    _listeners: {
+        [name: string]: EventCallback[];
+    };
 
-	addEventListener(type: string, listener: typeof EventCallback) {
-		if (this._listeners === undefined) this._listeners = {};
+    isWebGLRenderTarget: boolean;
 
-		const listeners = this._listeners;
+    addEventListener(type: string, listener: EventCallback) {
+        if (this._listeners === undefined) {
+            this._listeners = {};
+        }
 
-		if (listeners[type] === undefined) {
-			listeners[type] = [];
-		}
+        const listeners = this._listeners;
 
-		if (listeners[type].indexOf(listener) === -1) {
-			listeners[type].push(listener);
-		}
-	}
+        if (listeners[type] === undefined) {
+            listeners[type] = [];
+        }
 
-	hasEventListener(type: string, listener: typeof EventCallback) {
-		if (this._listeners === undefined) return false;
+        if (listeners[type].indexOf(listener) === -1) {
+            listeners[type].push(listener);
+        }
+    }
 
-		const listeners = this._listeners;
+    hasEventListener(type: string, listener: EventCallback) {
+        if (this._listeners === undefined) {
+            return false;
+        }
 
-		return (
-			listeners[type] !== undefined && listeners[type].indexOf(listener) !== -1
-		);
-	}
+        const listeners = this._listeners;
 
-	removeEventListener(type: string, listener: typeof EventCallback) {
-		if (this._listeners === undefined) return;
+        return (
+            listeners[type] !== undefined
+            && listeners[type].indexOf(listener) !== -1
+        );
+    }
 
-		const listeners = this._listeners;
-		const listenerArray = listeners[type];
+    removeEventListener(type: string, listener: EventCallback) {
+        if (this._listeners === undefined) {
+            return;
+        }
 
-		if (listenerArray !== undefined) {
-			const index = listenerArray.indexOf(listener);
+        const listeners = this._listeners;
+        const listenerArray = listeners[type];
 
-			if (index !== -1) {
-				listenerArray.splice(index, 1);
-			}
-		}
-	}
+        if (listenerArray !== undefined) {
+            const index = listenerArray.indexOf(listener);
 
-	dispatchEvent(event: EventObject) {
-		if (this._listeners === undefined) return;
+            if (index !== -1) {
+                listenerArray.splice(index, 1);
+            }
+        }
+    }
 
-		const listeners = this._listeners;
-		const listenerArray = listeners[event.type];
+    dispatchEvent(event: EventObject) {
+        if (this._listeners === undefined) {
+            return;
+        }
 
-		if (listenerArray !== undefined) {
-			event.target = this;
+        const listeners = this._listeners;
+        const listenerArray = listeners[event.type];
 
-			// Make a copy, in case listeners are removed while iterating.
-			const array = listenerArray.slice(0);
+        if (listenerArray !== undefined) {
+            event.target = this;
 
-			for (let i = 0, l = array.length; i < l; i++) {
-				array[i].call(this, event);
-			}
-		}
-	}
+            // Make a copy, in case listeners are removed while iterating.
+            const array = listenerArray.slice(0);
+
+            for (let i = 0, l = array.length; i < l; i++) {
+                array[i].call(this, event);
+            }
+        }
+    }
+
 }
 
 export { EventDispatcher };

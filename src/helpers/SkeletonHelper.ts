@@ -1,107 +1,116 @@
-import { Float32BufferAttribute } from "../core/BufferAttribute";
-import { BufferGeometry } from "../core/BufferGeometry";
-import { Object3D } from "../core/Object3D";
-import { LineBasicMaterial } from "../materials/LineBasicMaterial";
-import { Color } from "../math/Color";
-import { Vector3 } from "../math/Vector3";
-import { Matrix4 } from "../math/Matrix4";
-import { LineSegments } from "../objects/LineSegments";
+import { Float32BufferAttribute } from '../core/BufferAttribute';
+import { BufferGeometry } from '../core/BufferGeometry';
+import { Object3D } from '../core/Object3D';
+import { LineBasicMaterial } from '../materials/LineBasicMaterial';
+import { Color } from '../math/Color';
+import { Vector3 } from '../math/Vector3';
+import { Matrix4 } from '../math/Matrix4';
+import { LineSegments } from '../objects/LineSegments';
 
 const _vector = /* @__PURE__*/ new Vector3();
 const _boneMatrix = /* @__PURE__*/ new Matrix4();
 const _matrixWorldInv = /* @__PURE__*/ new Matrix4();
 
 class SkeletonHelper extends LineSegments {
-	root: any;
-	bones: any[];
 
-	constructor(object: Object3D) {
-		const bones = getBoneList(object);
+    root: any;
+    bones: any[];
 
-		const geometry = new BufferGeometry();
+    constructor(object: Object3D) {
+        const bones = getBoneList(object);
 
-		const vertices = [];
-		const colors = [];
+        const geometry = new BufferGeometry();
 
-		const color1 = new Color(0, 0, 1);
-		const color2 = new Color(0, 1, 0);
+        const vertices = [];
+        const colors = [];
 
-		for (let i = 0; i < bones.length; i++) {
-			const bone = bones[i];
+        const color1 = new Color(0, 0, 1);
+        const color2 = new Color(0, 1, 0);
 
-			if (bone.parent && bone.parent.isBone) {
-				vertices.push(0, 0, 0);
-				vertices.push(0, 0, 0);
-				colors.push(color1.r, color1.g, color1.b);
-				colors.push(color2.r, color2.g, color2.b);
-			}
-		}
+        for (let i = 0; i < bones.length; i++) {
+            const bone = bones[i];
 
-		geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
-		geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
+            if (bone.parent && bone.parent.isBone) {
+                vertices.push(0, 0, 0);
+                vertices.push(0, 0, 0);
+                colors.push(color1.r, color1.g, color1.b);
+                colors.push(color2.r, color2.g, color2.b);
+            }
+        }
 
-		const material = new LineBasicMaterial();
-		material.vertexColors = true;
-		material.depthTest = false;
-		material.depthWrite = false;
-		material.toneMapped = false;
-		material.transparent = true;
+        geometry.setAttribute(
+            'position',
+            new Float32BufferAttribute(vertices, 3)
+        );
+        geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
 
-		super(geometry, material);
+        const material = new LineBasicMaterial();
 
-		this.isSkeletonHelper = true;
+        material.vertexColors = true;
+        material.depthTest = false;
+        material.depthWrite = false;
+        material.toneMapped = false;
+        material.transparent = true;
 
-		this.type = "SkeletonHelper";
+        super(geometry, material);
 
-		this.root = object;
-		this.bones = bones;
+        this.isSkeletonHelper = true;
 
-		this.matrix = object.matrixWorld;
-		this.matrixAutoUpdate = false;
-	}
+        this.type = 'SkeletonHelper';
 
-	updateMatrixWorld(force) {
-		const bones = this.bones;
+        this.root = object;
+        this.bones = bones;
 
-		const geometry = this.geometry;
-		const position = geometry.getAttribute("position");
+        this.matrix = object.matrixWorld;
+        this.matrixAutoUpdate = false;
+    }
 
-		_matrixWorldInv.copy(this.root.matrixWorld).invert();
+    updateMatrixWorld(force) {
+        const { bones } = this;
 
-		for (let i = 0, j = 0; i < bones.length; i++) {
-			const bone = bones[i];
+        const { geometry } = this;
+        const position = geometry.getAttribute('position');
 
-			if (bone.parent && bone.parent.isBone) {
-				_boneMatrix.multiplyMatrices(_matrixWorldInv, bone.matrixWorld);
-				_vector.setFromMatrixPosition(_boneMatrix);
-				position.setXYZ(j, _vector.x, _vector.y, _vector.z);
+        _matrixWorldInv.copy(this.root.matrixWorld).invert();
 
-				_boneMatrix.multiplyMatrices(_matrixWorldInv, bone.parent.matrixWorld);
-				_vector.setFromMatrixPosition(_boneMatrix);
-				position.setXYZ(j + 1, _vector.x, _vector.y, _vector.z);
+        for (let i = 0, j = 0; i < bones.length; i++) {
+            const bone = bones[i];
 
-				j += 2;
-			}
-		}
+            if (bone.parent && bone.parent.isBone) {
+                _boneMatrix.multiplyMatrices(_matrixWorldInv, bone.matrixWorld);
+                _vector.setFromMatrixPosition(_boneMatrix);
+                position.setXYZ(j, _vector.x, _vector.y, _vector.z);
 
-		geometry.getAttribute("position").needsUpdate = true;
+                _boneMatrix.multiplyMatrices(
+                    _matrixWorldInv,
+                    bone.parent.matrixWorld
+                );
+                _vector.setFromMatrixPosition(_boneMatrix);
+                position.setXYZ(j + 1, _vector.x, _vector.y, _vector.z);
 
-		super.updateMatrixWorld(force);
-	}
+                j += 2;
+            }
+        }
+
+        geometry.getAttribute('position').needsUpdate = true;
+
+        super.updateMatrixWorld(force);
+    }
+
 }
 
 function getBoneList(object: Object3D) {
-	const boneList = [];
+    const boneList = [];
 
-	if (object && object.isBone) {
-		boneList.push(object);
-	}
+    if (object && object.isBone) {
+        boneList.push(object);
+    }
 
-	for (let i = 0; i < object.children.length; i++) {
-		boneList.push(...getBoneList(object.children[i]));
-	}
+    for (let i = 0; i < object.children.length; i++) {
+        boneList.push(...getBoneList(object.children[i]));
+    }
 
-	return boneList;
+    return boneList;
 }
 
 export { SkeletonHelper };

@@ -1,119 +1,135 @@
-import { Camera } from "../cameras/Camera";
-import { Ray } from "../math/Ray";
-import { Vector2 } from "../math/Vector2";
-import { Vector3 } from "../math/Vector3";
-import { IIntersection } from "../objects/IIntersection";
-import { Mesh } from "../objects/Mesh";
-import { Layers } from "./Layers";
-import { Object3D } from "./Object3D";
+import { Camera } from '../cameras/Camera';
+import { Ray } from '../math/Ray';
+import { Vector2 } from '../math/Vector2';
+import { Vector3 } from '../math/Vector3';
+import { IIntersection } from '../objects/IIntersection';
+import { Mesh } from '../objects/Mesh';
+import { Layers } from './Layers';
+import { Object3D } from './Object3D';
 
 function ascSort(a, b) {
-	return a.distance - b.distance;
+    return a.distance - b.distance;
 }
 
 function intersectObject(
-	object: Object3D,
-	raycaster: Raycaster,
-	intersects: IIntersection[],
-	recursive: boolean
+    object: Object3D,
+    raycaster: Raycaster,
+    intersects: IIntersection[],
+    recursive: boolean
 ) {
-	if (object.layers.test(raycaster.layers)) {
-		object.raycast(raycaster, intersects);
-	}
+    if (object.layers.test(raycaster.layers)) {
+        object.raycast(raycaster, intersects);
+    }
 
-	if (recursive === true) {
-		const children = object.children;
+    if (recursive === true) {
+        const { children } = object;
 
-		for (let i = 0, l = children.length; i < l; i++) {
-			intersectObject(children[i], raycaster, intersects, true);
-		}
-	}
+        for (let i = 0, l = children.length; i < l; i++) {
+            intersectObject(children[i], raycaster, intersects, true);
+        }
+    }
 }
 
 /**
  * @public
  */
 class Raycaster {
-	ray: Ray;
-	near: number;
-	far: number;
 
-	camera: Camera;
-	layers: Layers;
+    ray: Ray;
+    near: number;
+    far: number;
 
-	params: {
-		Mesh: Mesh;
-		Line: { threshold: number };
-		LOD: {};
-		Points: { threshold: number };
-		Sprite: {};
-	};
+    camera: Camera;
+    layers: Layers;
 
-	constructor(origin?: Vector3, direction?, near = 0, far = Infinity) {
-		this.ray = new Ray(origin, direction);
-		// direction is assumed to be normalized (for accurate distance calculations)
+    params: {
+        Mesh: Mesh;
+        Line: { threshold: number };
+        LOD: any;
+        Points: { threshold: number };
+        Sprite: any;
+    };
 
-		this.near = near;
-		this.far = far;
-		this.camera = null;
-		this.layers = new Layers();
+    constructor(origin?: Vector3, direction?, near = 0, far = Infinity) {
+        this.ray = new Ray(origin, direction);
+        // direction is assumed to be normalized (for accurate distance calculations)
 
-		this.params = {
-			Mesh: new Mesh(),
-			Line: { threshold: 1 },
-			LOD: {},
-			Points: { threshold: 1 },
-			Sprite: {},
-		};
-	}
+        this.near = near;
+        this.far = far;
+        this.camera = null;
+        this.layers = new Layers();
 
-	set(origin: Vector3, direction) {
-		// direction is assumed to be normalized (for accurate distance calculations)
+        this.params = {
+            Mesh: new Mesh(),
+            Line: {
+                threshold: 1
+            },
+            LOD: {},
+            Points: {
+                threshold: 1
+            },
+            Sprite: {}
+        };
+    }
 
-		this.ray.set(origin, direction);
-	}
+    set(origin: Vector3, direction) {
+        // direction is assumed to be normalized (for accurate distance calculations)
 
-	setFromCamera(coords: Vector2 | Vector3, camera: Camera) {
-		if (camera && camera.isPerspectiveCamera) {
-			this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
-			this.ray.direction
-				.set(coords.x, coords.y, 0.5) // TODO z coord ???
-				.unproject(camera)
-				.sub(this.ray.origin)
-				.normalize();
-			this.camera = camera;
-		} else if (camera && camera.isOrthographicCamera) {
-			this.ray.origin
-				.set(
-					coords.x,
-					coords.y,
-					(camera.near + camera.far) / (camera.near - camera.far)
-				)
-				.unproject(camera); // set origin in plane of camera
-			this.ray.direction.set(0, 0, -1).transformDirection(camera.matrixWorld);
-			this.camera = camera;
-		} else {
-			console.error("Raycaster: Unsupported camera type: " + camera.type);
-		}
-	}
+        this.ray.set(origin, direction);
+    }
 
-	intersectObject(object: Object3D, recursive = false, intersects = []): IIntersection[] {
-		intersectObject(object, this, intersects, recursive);
+    setFromCamera(coords: Vector2 | Vector3, camera: Camera) {
+        if (camera && camera.isPerspectiveCamera) {
+            this.ray.origin.setFromMatrixPosition(camera.matrixWorld);
+            this.ray.direction
+                .set(coords.x, coords.y, 0.5) // TODO z coord ???
+                .unproject(camera)
+                .sub(this.ray.origin)
+                .normalize();
+            this.camera = camera;
+        } else if (camera && camera.isOrthographicCamera) {
+            this.ray.origin
+                .set(
+                    coords.x,
+                    coords.y,
+                    (camera.near + camera.far) / (camera.near - camera.far)
+                )
+                .unproject(camera); // set origin in plane of camera
+            this.ray.direction
+                .set(0, 0, -1)
+                .transformDirection(camera.matrixWorld);
+            this.camera = camera;
+        } else {
+            console.error(`Raycaster: Unsupported camera type: ${camera.type}`);
+        }
+    }
 
-		intersects.sort(ascSort);
+    intersectObject(
+        object: Object3D,
+        recursive = false,
+        intersects = []
+    ): IIntersection[] {
+        intersectObject(object, this, intersects, recursive);
 
-		return intersects;
-	}
+        intersects.sort(ascSort);
 
-	intersectObjects(objects: Object3D[], recursive = false, intersects = []): IIntersection[] {
-		for (let i = 0, l = objects.length; i < l; i++) {
-			intersectObject(objects[i], this, intersects, recursive);
-		}
+        return intersects;
+    }
 
-		intersects.sort(ascSort);
+    intersectObjects(
+        objects: Object3D[],
+        recursive = false,
+        intersects = []
+    ): IIntersection[] {
+        for (let i = 0, l = objects.length; i < l; i++) {
+            intersectObject(objects[i], this, intersects, recursive);
+        }
 
-		return intersects;
-	}
+        intersects.sort(ascSort);
+
+        return intersects;
+    }
+
 }
 
 export { Raycaster };

@@ -1,3 +1,4 @@
+/* eslint-disable no-invalid-this */
 import { Loader } from './Loader';
 import { Cache } from './Cache';
 
@@ -34,7 +35,7 @@ export class ImageLoader extends Loader {
             'img'
         );
 
-        const onImageLoad = function(event) {
+        const onImageLoad = function() {
             image.removeEventListener('load', onImageLoad, false);
             image.removeEventListener('error', onImageError, false);
 

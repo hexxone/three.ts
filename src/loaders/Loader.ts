@@ -24,10 +24,10 @@ export class Loader {
 
     /**
      * functions needs to be overwritten by each loader
-     * @param url file source
-     * @param onLoad callback
-     * @param onProgress callback
-     * @param onError callback
+     * @param {string} url file source
+     * @param {Function} onLoad callback
+     * @param {Function} onProgress callback
+     * @param {Function} onError callback
      * @returns {void}
      * @public
      */

@@ -181,7 +181,7 @@ class Interpolant {
     }
 
     // TODO
-    copySampleValue_(index, to?, d?) {
+    copySampleValue_(index, _to?, _d?) {
         // copies a sample value to the result buffer
 
         const result = this.resultBuffer;
@@ -198,12 +198,12 @@ class Interpolant {
 
     // Template methods for derived classes:
 
-    interpolate_(...args) {
+    interpolate_(..._args) {
         throw new Error('call to abstract method');
         // implementations shall return this.resultBuffer
     }
 
-    intervalChanged_(...args) {
+    intervalChanged_(..._args) {
         throw new Error('call to abstract method');
         // empty
     }

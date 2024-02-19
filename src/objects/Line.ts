@@ -26,8 +26,8 @@ class Line extends Object3D {
 
     /**
      * Construct a new basic line
-     * @param geometry Line path
-     * @param material Line visuals
+     * @param {BufferGeometry} geometry Line path
+     * @param {Material} material Line visuals
      */
     constructor(
         geometry: BufferGeometry = new BufferGeometry(),

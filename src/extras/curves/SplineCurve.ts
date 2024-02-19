@@ -1,5 +1,4 @@
 import { Vector2 } from '../../math/Vector2';
-import { Vector3 } from '../../math/Vector3';
 import { Curve } from '../core/Curve';
 import { catmullRom } from '../core/Interpolations';
 

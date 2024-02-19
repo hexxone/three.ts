@@ -297,17 +297,23 @@ class Material extends EventDispatcher {
         this._clearcoat = value;
     }
 
-    /* shaderobject, renderer */
-    onBuild(...args) {}
+    onBuild(..._args) {
 
-    /* renderer, scene, camera, geometry, object, group */
-    onBeforeRender(...args) {}
+        /* shaderobject, renderer */
+    }
 
-    /** function which runs before compilation */
+    onBeforeRender(..._args) {
+
+        /* renderer, scene, camera, geometry, object, group */
+    }
+
     onBeforeCompile(
-        shaderobject: WebGlProgramsParameters,
-        renderer: WebGLRenderer
-    ) {}
+        _shaderobject: WebGlProgramsParameters,
+        _renderer: WebGLRenderer
+    ) {
+
+        /** function which runs before compilation */
+    }
 
     customProgramCacheKey() {
         return this.onBeforeCompile.toString();
@@ -395,7 +401,7 @@ class Material extends EventDispatcher {
             type: 'dispose'
         });
     }
-    dispatchEvent(arg0: { type: string }) {
+    dispatchEvent(_arg0: { type: string }) {
         throw new Error('Method not implemented.');
     }
 

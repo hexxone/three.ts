@@ -515,7 +515,7 @@ class Vector3 {
 
     /**
      * Takes the dot product of the distance, without the square root, for being more efficient.
-     * @param v Distance to calculate to
+     * @param {Vector3} v Distance to calculate to
      * @returns {number} float
      */
     distanceToSquared(v: Vector3) {

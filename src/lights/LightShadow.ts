@@ -64,7 +64,7 @@ class LightShadow {
         return this._frustum;
     }
 
-    updateMatrices(light, viewportIndex?) {
+    updateMatrices(light, _viewportIndex?: number) {
         const shadowCamera = this.camera;
         const shadowMatrix = this.matrix;
 

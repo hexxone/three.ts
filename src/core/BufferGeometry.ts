@@ -984,7 +984,7 @@ export class BufferGeometry extends EventDispatcher {
         });
     }
 
-    dispatchEvent(arg0: { type: string }) {
+    dispatchEvent(_arg0: { type: string }) {
         throw new Error('Method not implemented.');
     }
 

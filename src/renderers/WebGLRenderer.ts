@@ -341,7 +341,7 @@ export class WebGLRenderer implements Renderer {
             );
             this.domElement.addEventListener(
                 'webglcontextrestored',
-                (e) => { return this._onContextRestore(); },
+                () => { return this._onContextRestore(); },
                 false
             );
 

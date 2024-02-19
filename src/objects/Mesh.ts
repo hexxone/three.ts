@@ -104,8 +104,8 @@ export class Mesh extends Object3D {
 
     /**
      *
-     * @param raycaster to shoot
-     * @param intersects result data
+     * @param {Raycaster} raycaster to shoot
+     * @param {IIntersection[]} intersects result data
      * @returns {void}
      */
     raycast(raycaster: Raycaster, intersects: IIntersection[]) {

@@ -72,9 +72,18 @@ function animation(time) {
 
 If everything went well, you should maybe see something like [this](https://jsfiddle.net/vy29n6aj/).
 
+### Used by
+
+I am actively using this library in the following repos/projects:
+
+- [we_utils](https://github.com/hexxone/we_utils) - submodule with helpers for shaders etc.
+- [audiorbits](https://github.com/hexxone/audiorbits)
+- [reactiveink](https://github.com/hexxone/ReactiveInk)
+
 ### Cloning this repository
 
 Cloning the repo with all its history results in a >2GB download.
+
 If you don't need the whole history you can use the `depth` parameter to significantly reduce download size.
 
 ```sh

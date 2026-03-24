@@ -1,5 +1,11 @@
 if (self.GPUShaderStage === undefined) {
     self.GPUShaderStage = {
+        prototype: { // ???? ok Microsoft.
+            __brand: 'GPUShaderStage',
+            VERTEX: 1,
+            FRAGMENT: 2,
+            COMPUTE: 4
+        },
         VERTEX: 1,
         FRAGMENT: 2,
         COMPUTE: 4

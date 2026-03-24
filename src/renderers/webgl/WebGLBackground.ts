@@ -247,7 +247,7 @@ class WebGLBackground {
         return this.clearColor;
     }
 
-    setClearColor(color: Color, alpha = 1) {
+    setClearColor(color: Color | string | number, alpha = 1) {
         this.clearColor.set(color);
         this.clearAlpha = alpha;
         this.setClear(this.clearColor, this.clearAlpha);

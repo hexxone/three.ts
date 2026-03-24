@@ -131,7 +131,7 @@ class InterleavedBufferAttribute {
 
     clone(data) {
         if (data === undefined) {
-            console.log(
+            console.warn(
                 'InterleavedBufferAttribute.clone(): Cloning an interlaved buffer attribute will deinterleave buffer data.'
             );
 

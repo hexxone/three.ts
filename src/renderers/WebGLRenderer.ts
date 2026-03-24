@@ -429,13 +429,13 @@ export class WebGLRenderer implements Renderer {
     _onContextLost(event) {
         event.preventDefault();
 
-        console.log('WebGLRenderer: Context Lost.');
+        console.debug('WebGLRenderer: Context Lost.');
 
         this._isContextLost = true;
     }
 
     _onContextRestore(/* event */) {
-        console.log('WebGLRenderer: Context Restored.');
+        console.debug('WebGLRenderer: Context Restored.');
         this._isContextLost = false;
         this._initGLContext();
     }
@@ -750,7 +750,7 @@ export class WebGLRenderer implements Renderer {
         return target.copy(this.background.getClearColor());
     }
 
-    setClearColor(color: Color, alpha = 1) {
+    setClearColor(color: Color | string | number, alpha = 1) {
         this.background.setClearColor(color, alpha);
     }
 

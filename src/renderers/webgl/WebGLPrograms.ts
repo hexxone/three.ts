@@ -1,11 +1,13 @@
-import { BackSide,
+import {
+    BackSide,
     CubeUVReflectionMapping,
     CubeUVRefractionMapping,
     DoubleSide,
     LinearEncoding,
     NoToneMapping,
     ObjectSpaceNormalMap,
-    TangentSpaceNormalMap } from '../../constants';
+    TangentSpaceNormalMap
+} from '../../constants';
 import { Object3D } from '../../core/Object3D';
 import { LineBasicMaterial } from '../../materials/LineBasicMaterial';
 import { LineDashedMaterial } from '../../materials/LineDashedMaterial';
@@ -119,6 +121,7 @@ export type WebGlProgramsParameters = {
     toneMapping: number;
     physicallyCorrectLights: boolean;
     premultipliedAlpha: boolean;
+    alphaHash: boolean;
     alphaTest: number;
     doubleSided: boolean;
     flipSided: boolean;
@@ -136,7 +139,6 @@ export type WebGlProgramsParameters = {
 };
 
 class WebGLPrograms {
-
     _renderer: WebGLRenderer;
     _cubemaps: WebGLCubeMaps;
     _extensions: WebGLExtensions;
@@ -231,6 +233,7 @@ class WebGLPrograms {
         'maxMorphTargets',
         'maxMorphNormals',
         'premultipliedAlpha',
+        'alphaHash',
         'numDirLights',
         'numPointLights',
         'numSpotLights',
@@ -275,11 +278,7 @@ class WebGLPrograms {
 
         if (maxBones < bones.length) {
             console.warn(
-                `WebGLRenderer: Skeleton has ${
-                    bones.length
-                } bones. This GPU supports ${
-                    maxBones
-                }.`
+                `WebGLRenderer: Skeleton has ${bones.length} bones. This GPU supports ${maxBones}.`
             );
 
             return 0;
@@ -295,7 +294,7 @@ class WebGLPrograms {
             ({ encoding } = map);
         } else if (map && map instanceof WebGLRenderTarget) {
             console.warn(
-                'WebGLPrograms.getTextureEncodingFromMap: don\'t use render targets as textures. Use their .texture property instead.'
+                "WebGLPrograms.getTextureEncodingFromMap: don't use render targets as textures. Use their .texture property instead."
             );
             ({ encoding } = map.texture);
         } else {
@@ -425,8 +424,8 @@ class WebGLPrograms {
             outputEncoding:
                 currentRenderTarget !== null
                     ? this.getTextureEncodingFromMap(
-                        currentRenderTarget.texture
-                    )
+                          currentRenderTarget.texture
+                      )
                     : this._renderer.outputEncoding,
             map: !!material.map,
             mapEncoding: this.getTextureEncodingFromMap(material.map),
@@ -436,9 +435,9 @@ class WebGLPrograms {
             envMapMode: envMap && envMap.mapping,
             envMapEncoding: this.getTextureEncodingFromMap(envMap),
             envMapCubeUV:
-                !!envMap
-                && (envMap.mapping === CubeUVReflectionMapping
-                    || envMap.mapping === CubeUVRefractionMapping),
+                !!envMap &&
+                (envMap.mapping === CubeUVReflectionMapping ||
+                    envMap.mapping === CubeUVRefractionMapping),
             lightMap: !!material.lightMap,
             lightMapEncoding: this.getTextureEncodingFromMap(material.lightMap),
             aoMap: !!material.aoMap,
@@ -474,32 +473,32 @@ class WebGLPrograms {
             vertexColors: material.vertexColors,
 
             vertexUvs:
-                !!material.map
-                || !!material.bumpMap
-                || !!material.normalMap
-                || !!material.specularMap
-                || !!material.alphaMap
-                || !!material.emissiveMap
-                || !!material.roughnessMap
-                || !!material.metalnessMap
-                || !!material.clearcoatMap
-                || !!material.clearcoatRoughnessMap
-                || !!material.clearcoatNormalMap
-                || !!material.displacementMap
-                || !!meshPhysMaterial.transmissionMap,
+                !!material.map ||
+                !!material.bumpMap ||
+                !!material.normalMap ||
+                !!material.specularMap ||
+                !!material.alphaMap ||
+                !!material.emissiveMap ||
+                !!material.roughnessMap ||
+                !!material.metalnessMap ||
+                !!material.clearcoatMap ||
+                !!material.clearcoatRoughnessMap ||
+                !!material.clearcoatNormalMap ||
+                !!material.displacementMap ||
+                !!meshPhysMaterial.transmissionMap,
 
             uvsVertexOnly:
                 !(
-                    !!material.map
-                    || !!material.bumpMap
-                    || !!material.normalMap
-                    || !!material.specularMap
-                    || !!material.alphaMap
-                    || !!material.emissiveMap
-                    || !!material.roughnessMap
-                    || !!material.metalnessMap
-                    || !!material.clearcoatNormalMap
-                    || !!meshPhysMaterial.transmissionMap
+                    !!material.map ||
+                    !!material.bumpMap ||
+                    !!material.normalMap ||
+                    !!material.specularMap ||
+                    !!material.alphaMap ||
+                    !!material.emissiveMap ||
+                    !!material.roughnessMap ||
+                    !!material.metalnessMap ||
+                    !!material.clearcoatNormalMap ||
+                    !!meshPhysMaterial.transmissionMap
                 ) && !!material.displacementMap,
 
             fog: !!fog,
@@ -546,6 +545,7 @@ class WebGLPrograms {
             physicallyCorrectLights: this._renderer.physicallyCorrectLights,
 
             premultipliedAlpha: material.premultipliedAlpha,
+            alphaHash: material.alphaHash,
 
             alphaTest: material.alphaTest,
             doubleSided: material.side === DoubleSide,
@@ -559,17 +559,17 @@ class WebGLPrograms {
             index0AttributeName: shaderMaterial.index0AttributeName,
 
             extensionDerivatives:
-                shaderMaterial.extensions
-                && !!shaderMaterial.extensions.derivatives,
+                shaderMaterial.extensions &&
+                !!shaderMaterial.extensions.derivatives,
             extensionFragDepth:
-                shaderMaterial.extensions
-                && !!shaderMaterial.extensions.fragDepth,
+                shaderMaterial.extensions &&
+                !!shaderMaterial.extensions.fragDepth,
             extensionDrawBuffers:
-                shaderMaterial.extensions
-                && !!shaderMaterial.extensions.drawBuffers,
+                shaderMaterial.extensions &&
+                !!shaderMaterial.extensions.drawBuffers,
             extensionShaderTextureLOD:
-                shaderMaterial.extensions
-                && !!shaderMaterial.extensions.shaderTextureLOD,
+                shaderMaterial.extensions &&
+                !!shaderMaterial.extensions.shaderTextureLOD,
 
             rendererExtensionFragDepth:
                 this.isWebGL2 || this._extensions.has('EXT_frag_depth'),
@@ -622,7 +622,7 @@ class WebGLPrograms {
         if (shadr) {
             uniforms = UniformsUtils.clone(shadr.uniforms);
         } else {
-            ({ uniforms } = (material as ShaderMaterial));
+            ({ uniforms } = material as ShaderMaterial);
         }
 
         return uniforms;
@@ -671,7 +671,6 @@ class WebGLPrograms {
             program.destroy();
         }
     }
-
 }
 
 export { WebGLPrograms };

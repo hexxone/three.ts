@@ -1,12 +1,18 @@
-import { ClampToEdgeWrapping,
+import {
+    ClampToEdgeWrapping,
+    LinearSRGBColorSpace,
     LinearEncoding,
     LinearFilter,
     LinearMipmapLinearFilter,
     MirroredRepeatWrapping,
+    NoColorSpace,
     RepeatWrapping,
     RGBAFormat,
+    SRGBColorSpace,
+    sRGBEncoding,
     UnsignedByteType,
-    UVMapping } from '../constants';
+    UVMapping
+} from '../constants';
 import { EventDispatcher } from '../core/EventDispatcher';
 import { generateUUID } from '../math/MathUtils';
 import { Matrix3 } from '../math/Matrix3';
@@ -34,7 +40,6 @@ export type IImage = {
  * @public
  */
 export class Texture extends EventDispatcher {
-
     static DEFAULT_IMAGE: any;
     static DEFAULT_MAPPING: any;
 
@@ -158,6 +163,23 @@ export class Texture extends EventDispatcher {
         return new Texture().copy(this);
     }
 
+    get colorSpace() {
+        if (this.encoding === sRGBEncoding) {
+            return SRGBColorSpace;
+        }
+
+        if (this.encoding === LinearEncoding) {
+            return LinearSRGBColorSpace;
+        }
+
+        return NoColorSpace;
+    }
+
+    set colorSpace(value: string) {
+        this.encoding =
+            value === SRGBColorSpace ? sRGBEncoding : LinearEncoding;
+    }
+
     copy(source: Texture) {
         this.name = source.name;
 
@@ -266,7 +288,6 @@ export class Texture extends EventDispatcher {
             this.version++;
         }
     }
-
 }
 
 Texture.DEFAULT_IMAGE = undefined;

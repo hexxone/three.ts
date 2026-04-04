@@ -1,4 +1,5 @@
-import { ACESFilmicToneMapping,
+import {
+    ACESFilmicToneMapping,
     AddOperation,
     CineonToneMapping,
     CubeReflectionMapping,
@@ -22,7 +23,8 @@ import { ACESFilmicToneMapping,
     RGBM16Encoding,
     RGBM7Encoding,
     sRGBEncoding,
-    VSMShadowMap } from '../../constants';
+    VSMShadowMap
+} from '../../constants';
 import { ShaderChunk } from '../shaders/ShaderChunk';
 import { WebGLRenderer } from '../WebGLRenderer';
 import { WebGLBindingStates } from './WebGLBindingStates';
@@ -71,47 +73,28 @@ function getShaderErrors(gl, shader, type) {
     const status = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
     const log = gl.getShaderInfoLog(shader).trim();
 
-    if (status && log === '') { return ''; }
+    if (status && log === '') {
+        return '';
+    }
 
     // --enable-privileged-webgl-extension
     // console.log( '**' + type + '**', gl.getExtension( 'WEBGL_debug_shaders' ).getTranslatedShaderSource( shader ) );
 
     const source = gl.getShaderSource(shader);
 
-    return (
-        `WebGLShader: gl.getShaderInfoLog() ${
-            type
-        }\n${
-            log
-        }${addLineNumbers(source)}`
-    );
+    return `WebGLShader: gl.getShaderInfoLog() ${type}\n${log}${addLineNumbers(source)}`;
 }
 
 function getTexelDecodingFunction(functionName, encoding) {
     const components = getEncodingComponents(encoding);
 
-    return (
-        `vec4 ${
-            functionName
-        }( vec4 value ) { return ${
-            components[0]
-        }ToLinear${
-            components[1]
-        }; }`
-    );
+    return `vec4 ${functionName}( vec4 value ) { return ${components[0]}ToLinear${components[1]}; }`;
 }
 
 function getTexelEncodingFunction(functionName, encoding) {
     const components = getEncodingComponents(encoding);
 
-    return (
-        `vec4 ${
-            functionName
-        }( vec4 value ) { return LinearTo${
-            components[0]
-        }${components[1]
-        }; }`
-    );
+    return `vec4 ${functionName}( vec4 value ) { return LinearTo${components[0]}${components[1]}; }`;
 }
 
 function getToneMappingFunction(functionName, toneMapping) {
@@ -143,36 +126,30 @@ function getToneMappingFunction(functionName, toneMapping) {
             toneMappingName = 'Linear';
     }
 
-    return (
-        `vec3 ${
-            functionName
-        }( vec3 color ) { return ${
-            toneMappingName
-        }ToneMapping( color ); }`
-    );
+    return `vec3 ${functionName}( vec3 color ) { return ${toneMappingName}ToneMapping( color ); }`;
 }
 
 function generateExtensions(parameters) {
     const chunks = [
-        parameters.extensionDerivatives
-        || parameters.envMapCubeUV
-        || parameters.bumpMap
-        || parameters.tangentSpaceNormalMap
-        || parameters.clearcoatNormalMap
-        || parameters.flatShading
-        || parameters.shaderID === 'physical'
+        parameters.extensionDerivatives ||
+        parameters.envMapCubeUV ||
+        parameters.bumpMap ||
+        parameters.tangentSpaceNormalMap ||
+        parameters.clearcoatNormalMap ||
+        parameters.flatShading ||
+        parameters.shaderID === 'physical'
             ? '#extension GL_OES_standard_derivatives : enable'
             : '',
-        (parameters.extensionFragDepth || parameters.logarithmicDepthBuffer)
-        && parameters.rendererExtensionFragDepth
+        (parameters.extensionFragDepth || parameters.logarithmicDepthBuffer) &&
+        parameters.rendererExtensionFragDepth
             ? '#extension GL_EXT_frag_depth : enable'
             : '',
-        parameters.extensionDrawBuffers
-        && parameters.rendererExtensionDrawBuffers
+        parameters.extensionDrawBuffers &&
+        parameters.rendererExtensionDrawBuffers
             ? '#extension GL_EXT_draw_buffers : require'
             : '',
-        (parameters.extensionShaderTextureLOD || parameters.envMap)
-        && parameters.rendererExtensionShaderTextureLod
+        (parameters.extensionShaderTextureLOD || parameters.envMap) &&
+        parameters.rendererExtensionShaderTextureLod
             ? '#extension GL_EXT_shader_texture_lod : enable'
             : ''
     ];
@@ -186,7 +163,9 @@ function generateDefines(defines) {
     for (const name in defines) {
         const value = defines[name];
 
-        if (value === false) { continue; }
+        if (value === false) {
+            continue;
+        }
 
         chunks.push(`#define ${name} ${value}`);
     }
@@ -259,10 +238,10 @@ function includeReplacer(match, include) {
 
 // Unroll Loops
 
-const deprecatedUnrollLoopPattern
-    = /#pragma unroll_loop[\s]+?for \( int i = (\d+); i < (\d+); i \+\+ \) \{([\s\S]+?)(?=\})\}/g;
-const unrollLoopPattern
-    = /#pragma unroll_loop_start\s+for\s*\(\s*int\s+i\s*=\s*(\d+)\s*;\s*i\s*<\s*(\d+)\s*;\s*i\s*\+\+\s*\)\s*{([\s\S]+?)}\s+#pragma unroll_loop_end/g;
+const deprecatedUnrollLoopPattern =
+    /#pragma unroll_loop[\s]+?for \( int i = (\d+); i < (\d+); i \+\+ \) \{([\s\S]+?)(?=\})\}/g;
+const unrollLoopPattern =
+    /#pragma unroll_loop_start\s+for\s*\(\s*int\s+i\s*=\s*(\d+)\s*;\s*i\s*<\s*(\d+)\s*;\s*i\s*\+\+\s*\)\s*{([\s\S]+?)}\s+#pragma unroll_loop_end/g;
 
 function unrollLoops(string) {
     return string
@@ -293,12 +272,7 @@ function loopReplacer(match, start, end, snippet) {
 //
 
 function generatePrecision(parameters) {
-    let precisionstring
-        = `precision ${
-            parameters.precision
-        } float;\nprecision ${
-            parameters.precision
-        } int;`;
+    let precisionstring = `precision ${parameters.precision} float;\nprecision ${parameters.precision} int;`;
 
     if (parameters.precision === 'highp') {
         precisionstring += '\n#define HIGH_PRECISION';
@@ -386,7 +360,6 @@ function generateEnvMapBlendingDefine(parameters) {
  * @public
  */
 class WebGLProgram {
-
     gl: GLESRenderingContext;
     defines;
     cacheKey: any;
@@ -440,8 +413,9 @@ class WebGLProgram {
         this.envMapModeDefine = generateEnvMapModeDefine(parameters);
         this.envMapBlendingDefine = generateEnvMapBlendingDefine(parameters);
 
-        this.gammaFactorDefine
-            = renderer.gammaFactor > 0 ? renderer.gammaFactor : 1.0;
+        this.gammaFactorDefine =
+            renderer.gammaFactor > 0 ? renderer.gammaFactor : 1.0;
+
         this.customExtensions = parameters.isWebGL2
             ? ''
             : generateExtensions(parameters);
@@ -553,8 +527,8 @@ class WebGLProgram {
                 parameters.logarithmicDepthBuffer
                     ? '#define USE_LOGDEPTHBUF'
                     : '',
-                parameters.logarithmicDepthBuffer
-                && parameters.rendererExtensionFragDepth
+                parameters.logarithmicDepthBuffer &&
+                parameters.rendererExtensionFragDepth
                     ? '#define USE_LOGDEPTHBUF_EXT'
                     : '',
 
@@ -623,9 +597,10 @@ class WebGLProgram {
 
                 parameters.alphaTest
                     ? `#define ALPHATEST ${
-                        parameters.alphaTest
-                    }${parameters.alphaTest % 1 ? '' : '.0'}`
+                          parameters.alphaTest
+                      }${parameters.alphaTest % 1 ? '' : '.0'}`
                     : '', // add '.0' if integer
+                parameters.alphaHash ? '#define USE_ALPHAHASH' : '',
 
                 `#define GAMMA_FACTOR ${this.gammaFactorDefine}`,
 
@@ -696,13 +671,13 @@ class WebGLProgram {
                 parameters.logarithmicDepthBuffer
                     ? '#define USE_LOGDEPTHBUF'
                     : '',
-                parameters.logarithmicDepthBuffer
-                && parameters.rendererExtensionFragDepth
+                parameters.logarithmicDepthBuffer &&
+                parameters.rendererExtensionFragDepth
                     ? '#define USE_LOGDEPTHBUF_EXT'
                     : '',
 
-                (parameters.extensionShaderTextureLOD || parameters.envMap)
-                && parameters.rendererExtensionShaderTextureLod
+                (parameters.extensionShaderTextureLOD || parameters.envMap) &&
+                parameters.rendererExtensionShaderTextureLod
                     ? '#define TEXTURE_LOD_EXT'
                     : '',
 
@@ -718,9 +693,9 @@ class WebGLProgram {
                     : '', // this code is required here because it is used by the toneMapping() function defined below
                 parameters.toneMapping !== NoToneMapping
                     ? getToneMappingFunction(
-                        'toneMapping',
-                        parameters.toneMapping
-                    )
+                          'toneMapping',
+                          parameters.toneMapping
+                      )
                     : '',
 
                 parameters.dithering ? '#define DITHERING' : '',
@@ -728,33 +703,33 @@ class WebGLProgram {
                 ShaderChunk.encodings_pars_fragment, // this code is required here because it is used by the various encoding/decoding function defined below
                 parameters.map
                     ? getTexelDecodingFunction(
-                        'mapTexelToLinear',
-                        parameters.mapEncoding
-                    )
+                          'mapTexelToLinear',
+                          parameters.mapEncoding
+                      )
                     : '',
                 parameters.matcap
                     ? getTexelDecodingFunction(
-                        'matcapTexelToLinear',
-                        parameters.matcapEncoding
-                    )
+                          'matcapTexelToLinear',
+                          parameters.matcapEncoding
+                      )
                     : '',
                 parameters.envMap
                     ? getTexelDecodingFunction(
-                        'envMapTexelToLinear',
-                        parameters.envMapEncoding
-                    )
+                          'envMapTexelToLinear',
+                          parameters.envMapEncoding
+                      )
                     : '',
                 parameters.emissiveMap
                     ? getTexelDecodingFunction(
-                        'emissiveMapTexelToLinear',
-                        parameters.emissiveMapEncoding
-                    )
+                          'emissiveMapTexelToLinear',
+                          parameters.emissiveMapEncoding
+                      )
                     : '',
                 parameters.lightMap
                     ? getTexelDecodingFunction(
-                        'lightMapTexelToLinear',
-                        parameters.lightMapEncoding
-                    )
+                          'lightMapTexelToLinear',
+                          parameters.lightMapEncoding
+                      )
                     : '',
                 getTexelEncodingFunction(
                     'linearToOutputTexel',
@@ -793,42 +768,36 @@ class WebGLProgram {
 
             versionString = '#version 300 es\n';
 
-            prefixVertex
-                = `${[
-                    '#define attribute in',
-                    '#define varying out',
-                    '#define texture2D texture'
-                ].join('\n')
-                }\n${
-                    prefixVertex}`;
+            prefixVertex = `${[
+                '#define attribute in',
+                '#define varying out',
+                '#define texture2D texture'
+            ].join('\n')}\n${prefixVertex}`;
 
-            prefixFragment
-                = `${[
-                    '#define varying in',
-                    parameters.glslVersion === GLSL3
-                        ? ''
-                        : 'out highp vec4 pc_fragColor;',
-                    parameters.glslVersion === GLSL3
-                        ? ''
-                        : '#define gl_FragColor pc_fragColor',
-                    '#define gl_FragDepthEXT gl_FragDepth',
-                    '#define texture2D texture',
-                    '#define textureCube texture',
-                    '#define texture2DProj textureProj',
-                    '#define texture2DLodEXT textureLod',
-                    '#define texture2DProjLodEXT textureProjLod',
-                    '#define textureCubeLodEXT textureLod',
-                    '#define texture2DGradEXT textureGrad',
-                    '#define texture2DProjGradEXT textureProjGrad',
-                    '#define textureCubeGradEXT textureGrad'
-                ].join('\n')
-                }\n${
-                    prefixFragment}`;
+            prefixFragment = `${[
+                '#define varying in',
+                parameters.glslVersion === GLSL3
+                    ? ''
+                    : 'out highp vec4 pc_fragColor;',
+                parameters.glslVersion === GLSL3
+                    ? ''
+                    : '#define gl_FragColor pc_fragColor',
+                '#define gl_FragDepthEXT gl_FragDepth',
+                '#define texture2D texture',
+                '#define textureCube texture',
+                '#define texture2DProj textureProj',
+                '#define texture2DLodEXT textureLod',
+                '#define texture2DProjLodEXT textureProjLod',
+                '#define textureCubeLodEXT textureLod',
+                '#define texture2DGradEXT textureGrad',
+                '#define texture2DProjGradEXT textureProjGrad',
+                '#define textureCubeGradEXT textureGrad'
+            ].join('\n')}\n${prefixFragment}`;
         }
 
         const vertexGlsl = versionString + prefixVertex + this.vertexShader;
-        const fragmentGlsl
-            = versionString + prefixFragment + this.fragmentShader;
+        const fragmentGlsl =
+            versionString + prefixFragment + this.fragmentShader;
 
         // console.log( '*VERTEX*', vertexGlsl );
         // console.log( '*FRAGMENT*', fragmentGlsl );
@@ -977,7 +946,6 @@ class WebGLProgram {
         this.gl.deleteProgram(this.program);
         this.program = undefined;
     }
-
 }
 
 export { WebGLProgram };

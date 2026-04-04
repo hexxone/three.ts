@@ -1,11 +1,13 @@
-import { AddEquation,
+import {
+    AddEquation,
     AlwaysStencilFunc,
     FrontSide,
     KeepStencilOp,
     LessEqualDepth,
     NormalBlending,
     OneMinusSrcAlphaFactor,
-    SrcAlphaFactor } from '../constants';
+    SrcAlphaFactor
+} from '../constants';
 import { EventDispatcher } from '../core/EventDispatcher';
 import { Color } from '../math/Color';
 import { generateUUID } from '../math/MathUtils';
@@ -18,6 +20,7 @@ import { Texture } from '../textures/Texture';
 let materialId = 0;
 
 export type MaterialParameters = {
+    alphaHash?: boolean;
     alphaTest?: number;
     blendDst?: number;
     blendDstAlpha?: number;
@@ -71,7 +74,6 @@ export type MaterialParameters = {
  * @public
  */
 class Material extends EventDispatcher {
-
     id: number;
     uuid: string;
     name: string;
@@ -115,6 +117,7 @@ class Material extends EventDispatcher {
     polygonOffsetFactor: number;
     polygonOffsetUnits: number;
     dithering: boolean;
+    alphaHash: boolean;
     alphaTest: number;
     premultipliedAlpha: boolean;
     visible: boolean;
@@ -207,7 +210,9 @@ class Material extends EventDispatcher {
         });
         Object.defineProperty(this, 'needsUpdate', {
             set(value) {
-                if (value === true) { this.version++; }
+                if (value === true) {
+                    this.version++;
+                }
             }
         });
 
@@ -261,6 +266,7 @@ class Material extends EventDispatcher {
 
         this.dithering = false;
 
+        this.alphaHash = false;
         this.alphaTest = 0;
         this.premultipliedAlpha = false;
 
@@ -298,12 +304,10 @@ class Material extends EventDispatcher {
     }
 
     onBuild(..._args) {
-
         /* shaderobject, renderer */
     }
 
     onBeforeRender(..._args) {
-
         /* renderer, scene, camera, geometry, object, group */
     }
 
@@ -311,7 +315,6 @@ class Material extends EventDispatcher {
         _shaderobject: WebGlProgramsParameters,
         _renderer: WebGLRenderer
     ) {
-
         /** function which runs before compilation */
     }
 
@@ -384,6 +387,7 @@ class Material extends EventDispatcher {
 
         this.dithering = source.dithering;
 
+        this.alphaHash = source.alphaHash;
         this.alphaTest = source.alphaTest;
         this.premultipliedAlpha = source.premultipliedAlpha;
 
@@ -404,7 +408,6 @@ class Material extends EventDispatcher {
     dispatchEvent(_arg0: { type: string }) {
         throw new Error('Method not implemented.');
     }
-
 }
 
 export { Material };

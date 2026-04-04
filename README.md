@@ -19,6 +19,46 @@ A WebXR/3D-compatible shader renderer (with alpha support) is available in the '
 
 WebGPU, SVG and CSS3D renderers are only available in the old three.js examples and need to be ported.
 
+## Fork Baseline
+
+This TypeScript fork is currently derived from the `three` package version declared in this repository:
+
+- upstream baseline: `0.133.7`
+- practical upstream era: roughly `three.js r133`
+
+The code in this repository is not a clean rebase on current upstream `three.js`.
+It is a long-lived fork with local renderer and workflow changes for `we_utils`, custom post-processing, and direct internal TypeScript access.
+
+The original TypeScript conversion and rewrite was done fully manually by me over roughly `100-200` hours of excruciating pain, without AI-assisted code generation.
+It has been exercised in real projects such as `audiorbits` and my personal website, both of which use a substantial subset of the fork even though they do not cover every feature.
+
+## Backported And Custom Features
+
+The following newer or project-specific features are present in this vendored fork:
+
+- `WebGLRenderer.compileAsync()` backed by `KHR_parallel_shader_compile`
+- `WebGLRenderer.outputColorSpace` alias support
+- `Texture.colorSpace` alias support
+- project-specific shader alpha and transparency handling work used by `we_utils` and downstream projects
+- `Material.alphaHash` support and matching shader chunk handling
+- working `WebGLMultipleRenderTargets` attachment setup and draw-buffer binding in the WebGL renderer
+- additional XR support paths in the WebGL renderer and related helpers
+- additional project-specific renderer integration used by the `we_utils` effect and pass pipeline
+
+These additions were applied selectively and do not imply broad API parity with current upstream `three.js`.
+
+## Known Gaps
+
+This fork still has several known gaps compared to modern upstream `three.js`:
+
+- no proper `reversedDepthBuffer` implementation
+- still relies on the older `logarithmicDepthBuffer` path where enabled
+- no modern upstream WebGPU renderer port
+- no broad audit for recent loader, material, and helper additions from newer upstream releases
+- no guarantee that newer upstream examples or docs map directly onto this fork without porting
+
+In practice, "new" upstream features since v133 should be evaluated and ported one-by-one instead of assuming compatibility.
+
 [Examples](https://threejs.org/examples/)
 &mdash;
 [Documentation](https://threejs.org/docs/)

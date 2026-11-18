@@ -2,6 +2,17 @@ import { Object3D } from '../core/Object3D';
 import { Matrix4 } from '../math/Matrix4';
 import { Vector3 } from '../math/Vector3';
 
+/** Pixel rectangle within the full camera view used for tiled projections. */
+export type CameraView = {
+    enabled: boolean;
+    fullWidth: number;
+    fullHeight: number;
+    offsetX: number;
+    offsetY: number;
+    width: number;
+    height: number;
+};
+
 /**
  * @public
  */
@@ -13,7 +24,7 @@ export class Camera extends Object3D {
     isArrayCamera: boolean;
 
     zoom: number;
-    view: any;
+    view?: CameraView | null;
     near: number;
     far: number;
 
@@ -32,7 +43,7 @@ export class Camera extends Object3D {
         this.projectionMatrixInverse = new Matrix4();
     }
 
-    copy(source, recursive?) {
+    copy(source: Camera, recursive?: boolean): this {
         super.copy(source, recursive);
 
         this.matrixWorldInverse.copy(source.matrixWorldInverse);
@@ -43,7 +54,7 @@ export class Camera extends Object3D {
         return this;
     }
 
-    getWorldDirection(target) {
+    getWorldDirection(target: Vector3): Vector3 {
         if (target === undefined) {
             console.warn('Camera: .getWorldDirection() target is now required');
             target = new Vector3();
@@ -56,21 +67,21 @@ export class Camera extends Object3D {
         return target.set(-e[8], -e[9], -e[10]).normalize();
     }
 
-    updateMatrixWorld(force?) {
+    updateMatrixWorld(force?: boolean): void {
         super.updateMatrixWorld(force);
 
         this.matrixWorldInverse.copy(this.matrixWorld).invert();
     }
 
-    updateWorldMatrix(updateParents, updateChildren) {
+    updateWorldMatrix(updateParents: boolean, updateChildren: boolean): void {
         super.updateWorldMatrix(updateParents, updateChildren);
 
         this.matrixWorldInverse.copy(this.matrixWorld).invert();
     }
 
-    updateProjectionMatrix() {}
+    updateProjectionMatrix(): void {}
 
-    clone() {
+    clone(): Camera {
         return new Camera().copy(this);
     }
 

@@ -34,7 +34,7 @@ class OrthographicCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    copy(source: OrthographicCamera, recursive: boolean) {
+    copy(source: OrthographicCamera, recursive?: boolean): this {
         super.copy(source, recursive);
 
         this.left = source.left;
@@ -53,7 +53,14 @@ class OrthographicCamera extends Camera {
         return this;
     }
 
-    setViewOffset(fullWidth, fullHeight, x, y, width, height) {
+    setViewOffset(
+        fullWidth: number,
+        fullHeight: number,
+        x: number,
+        y: number,
+        width: number,
+        height: number
+    ): void {
         if (this.view === null) {
             this.view = {
                 enabled: true,

@@ -36,7 +36,7 @@ export class PerspectiveCamera extends Camera {
         this.updateProjectionMatrix();
     }
 
-    copy(source: PerspectiveCamera, recursive) {
+    copy(source: PerspectiveCamera, recursive?: boolean): this {
         super.copy(source, recursive);
 
         this.fov = source.fov;
@@ -70,7 +70,7 @@ export class PerspectiveCamera extends Camera {
      * @param {number} focalLength FOV by local length
      * @returns {void} nothing
      */
-    setFocalLength(focalLength) {
+    setFocalLength(focalLength: number): void {
         const vExtentSlope = (0.5 * this.getFilmHeight()) / focalLength;
 
         this.fov = RAD2DEG * 2 * Math.atan(vExtentSlope);
@@ -143,7 +143,14 @@ export class PerspectiveCamera extends Camera {
      *   Note there is no reason monitors have to be the same size or in a grid.
      */
 
-    setViewOffset(fullWidth, fullHeight, x, y, width, height) {
+    setViewOffset(
+        fullWidth: number,
+        fullHeight: number,
+        x: number,
+        y: number,
+        width: number,
+        height: number
+    ): void {
         this.aspect = fullWidth / fullHeight;
 
         if (this.view === null) {

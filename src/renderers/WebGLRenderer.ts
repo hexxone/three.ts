@@ -772,6 +772,11 @@ export class WebGLRenderer implements Renderer {
 
     // Clearing
 
+    /** Controls automatic buffer clearing before a draw. */
+    setAutoClear(enabled: boolean): void {
+        this.autoClear = enabled;
+    }
+
     getClearColor(target: Color) {
         if (target === undefined) {
             target = new Color(0, 0, 0);

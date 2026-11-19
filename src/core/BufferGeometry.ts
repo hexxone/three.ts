@@ -8,10 +8,12 @@ import { Sphere } from '../math/Sphere';
 import { Vector2 } from '../math/Vector2';
 import { Vector3 } from '../math/Vector3';
 import { arrayMax } from '../utils';
-import { BufferAttribute,
+import {
+    BufferAttribute,
     Float32BufferAttribute,
     Uint16BufferAttribute,
-    Uint32BufferAttribute } from './BufferAttribute';
+    Uint32BufferAttribute
+} from './BufferAttribute';
 import { EventDispatcher } from './EventDispatcher';
 import { GLBufferAttribute } from './GLBufferAttribute';
 import { Object3D } from './Object3D';
@@ -759,7 +761,7 @@ export class BufferGeometry extends EventDispatcher {
 
             console.warn(
                 'BufferGeometry.merge(): Overwriting original geometry, starting at offset=0. '
-                    + 'Use BufferGeometryUtils.mergeBufferGeometries() for lossless merge.'
+                + 'Use BufferGeometryUtils.mergeBufferGeometries() for lossless merge.'
             );
         }
 

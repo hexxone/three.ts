@@ -587,9 +587,12 @@ class WebGLState {
         }
     }
 
-    texImage2D(...args: Parameters<GLESRenderingContext['texImage2D']>) {
+    texImage2D(...args:
+        | [target: number, level: number, internalFormat: number, format: number, type: number, source: TexImageSource]
+        | Parameters<GLESRenderingContext['texImage2D']>
+    ) {
         try {
-            this._gl.texImage2D(...args);
+            Reflect.apply(this._gl.texImage2D, this._gl, args);
         } catch (error) {
             console.error('WebGLState:', error);
         }
